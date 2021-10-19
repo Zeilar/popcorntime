@@ -1,0 +1,22 @@
+{
+    "include": ["src"],
+    "compilerOptions": {
+        "strict": true,
+        "esModuleInterop": true,
+        "noImplicitReturns": false,
+        "noImplicitAny": true,
+        "outDir": "dist/src",
+        "declaration": true,
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "target": "ES2017",
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "skipLibCheck": true,
+        "strictPropertyInitialization": false,
+        "baseUrl": "src",
+        "paths": {
+            "@/*": ["*"]
+        }
+    }
+}
