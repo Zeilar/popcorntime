@@ -1,7 +1,7 @@
 {
     "main": "src/server.ts",
     "scripts": {
-        "start": "nodemon --transpile-only -r tsconfig-paths/register"
+        "start": "nodemon --transpile-only"
     },
     "devDependencies": {
         "@types/express": "^4.17.13",

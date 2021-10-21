@@ -13,10 +13,6 @@
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
         "skipLibCheck": true,
-        "strictPropertyInitialization": false,
-        "baseUrl": "src",
-        "paths": {
-            "@/*": ["*"]
-        }
+        "strictPropertyInitialization": false
     }
 }

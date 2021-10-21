@@ -5,6 +5,8 @@ import express from "express";
 import { Server } from "socket.io";
 import cors from "cors";
 import { validate } from "uuid"; // uuid has no default export
+import { Room } from "./Room";
+import { WS } from "./WS";
 
 const clientPath = join(__dirname, "../../client");
 const { PORT } = process.env;
@@ -34,32 +36,23 @@ io.on("connection", (socket) => {
             return socket.emit("error", "Invalid room id.");
         }
 
+        const room = new Room(roomId);
+        const ws = new WS(io);
+
         // for getting random color:
         // filter out the colors that are not picked by anyone in the room and assign a random of those
         // if filter is empty, pick any random
 
-        socket.join(roomId);
+        socket.join(room.id);
 
         // @ts-ignore
         socket.username = "random unique username";
         // @ts-ignore
         socket.color = "black";
 
-        const socketsInRoom = [...(io.sockets.adapter.rooms.get(roomId) ?? [])];
-
-        // TODO: make this a Set and anonymous names like "Anonymous Crocodile",
+        // TODO: make sockets a Set and anonymous names like "Anonymous Crocodile",
         // but the actual name variable does not contain "Anonymous", append that in frontend
-        const users = socketsInRoom.map((element) => {
-            const user = io.sockets.sockets.get(element);
-            return {
-                id: user?.id,
-                // @ts-ignore
-                username: "random unique username",
-                // @ts-ignore
-                color: "random preferably unique color",
-            };
-        });
 
-        socket.emit("users", users);
+        socket.emit("users", room.socketsDTO);
     });
 });
