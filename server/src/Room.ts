@@ -1,4 +1,5 @@
 import { io } from "./server";
+import { Socket } from "./Socket";
 import { WS } from "./WS";
 
 export class Room {
@@ -15,11 +16,14 @@ export class Room {
     public get socketsDTO() {
         return this.sockets.map((socket) => {
             const user = this.ws.sockets.get(socket);
-            return {
-                id: user?.id,
-                username: "random unique username",
-                color: "random preferably unique color",
-            };
+            if (!user) {
+                return null;
+            }
+            return new Socket(
+                user.id,
+                "random unique username",
+                "random preferably unique color"
+            );
         });
     }
 }
