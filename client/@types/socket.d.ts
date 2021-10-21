@@ -1,6 +1,6 @@
 import { Color } from "./color";
 
-export interface IUser {
+export interface ISocket {
     id: string;
     username: string;
     color: Color;

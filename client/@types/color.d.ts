@@ -1,1 +1,1 @@
-export type Color = string;
+export type Color = string; // "red" | "yellow" etc

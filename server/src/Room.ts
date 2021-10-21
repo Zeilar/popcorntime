@@ -15,9 +15,7 @@ export class Room {
             const user = ws.sockets.get(socket);
             return {
                 id: user?.id,
-                // @ts-ignore
                 username: "random unique username",
-                // @ts-ignore
                 color: "random preferably unique color",
             };
         });

@@ -37,7 +37,6 @@ io.on("connection", (socket) => {
         }
 
         const room = new Room(roomId);
-        const ws = new WS(io);
 
         // for getting random color:
         // filter out the colors that are not picked by anyone in the room and assign a random of those
@@ -53,6 +52,6 @@ io.on("connection", (socket) => {
         // TODO: make sockets a Set and anonymous names like "Anonymous Crocodile",
         // but the actual name variable does not contain "Anonymous", append that in frontend
 
-        socket.emit("users", room.socketsDTO);
+        socket.emit("room:update", room.socketsDTO);
     });
 });
