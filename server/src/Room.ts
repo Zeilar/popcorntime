@@ -3,6 +3,8 @@ import { Socket } from "./Socket";
 import { WS } from "./WS";
 
 export class Room {
+    public static readonly MAX_SOCKETS = 0;
+
     public readonly ws: WS;
 
     public get sockets() {

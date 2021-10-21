@@ -38,6 +38,13 @@ io.on("connection", (socket) => {
 
         const room = new Room(roomId);
 
+        if (room.sockets.length > Room.MAX_SOCKETS) {
+            return socket.emit(
+                "error",
+                "This room is full. Try again at a later time."
+            );
+        }
+
         // for getting random color:
         // filter out the colors that are not picked by anyone in the room and assign a random of those
         // if filter is empty, pick any random
