@@ -1,18 +1,20 @@
 import { io } from "./server";
 import { WS } from "./WS";
 
-const ws = new WS(io);
-
 export class Room {
+    public readonly ws: WS;
+
     public get sockets() {
-        return [...(ws.rooms.get(this.id) ?? [])];
+        return [...(this.ws.rooms.get(this.id) ?? [])];
     }
 
-    constructor(public readonly id: string) {}
+    constructor(public readonly id: string) {
+        this.ws = new WS(io);
+    }
 
     public get socketsDTO() {
         return this.sockets.map((socket) => {
-            const user = ws.sockets.get(socket);
+            const user = this.ws.sockets.get(socket);
             return {
                 id: user?.id,
                 username: "random unique username",
