@@ -14,7 +14,7 @@ export class Room {
     }
 
     public get socketsDTO() {
-        return this.sockets.map((socket) => {
+        const sockets = this.sockets.map((socket) => {
             const user = this.ws.sockets.get(socket);
             if (!user) {
                 return null;
@@ -25,5 +25,6 @@ export class Room {
                 "random preferably unique color"
             );
         });
+        return sockets.filter((socket) => socket !== null);
     }
 }
