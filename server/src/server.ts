@@ -14,7 +14,7 @@ const { PORT } = process.env;
 export const app = express();
 
 // Global middlewares
-app.use(express.static(clientPath), cors({ origin: "http://localhost:3000" }));
+app.use(express.static(clientPath), cors({ origin: "http://localhost:3000" })); // TODO: remove cors in production
 
 app.get("/*", (req, res) => {
     res.sendFile(`${clientPath}\\index.html`);
@@ -31,8 +31,8 @@ export const io = new Server(server, {
 io.on("connection", (socket) => {
     socket.leave(socket.id);
 
-    socket.on("join", (roomId: string) => {
-        if (!validate(roomId)) {
+    socket.on("join", (roomId: string | undefined | null) => {
+        if (!roomId || !validate(roomId)) {
             return socket.emit("error", "Invalid room id.");
         }
 
