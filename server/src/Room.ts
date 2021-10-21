@@ -14,13 +14,13 @@ export class Room {
     }
 
     public get socketsDTO() {
-        const sockets = this.sockets.map((socket) => {
-            const user = this.ws.sockets.get(socket);
-            if (!user) {
+        const sockets = this.sockets.map((element) => {
+            const socket = this.ws.sockets.get(element);
+            if (!socket) {
                 return null;
             }
             return new Socket(
-                user.id,
+                socket.id,
                 "random unique username",
                 "random preferably unique color"
             );
