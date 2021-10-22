@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { toast } from "react-toastify";
-import { socket } from "../App";
+import { socket } from "../components/App";
 
 export default function useSocket() {
     useEffect(() => {

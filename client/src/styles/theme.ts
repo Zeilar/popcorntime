@@ -1,8 +1,11 @@
 import "@fontsource/roboto/400.css";
+import "@fontsource/open-sans/600.css";
 import { extendTheme, ThemeConfig } from "@chakra-ui/react";
 
-const colors = {
-    accent: "#47daff",
+const colors: Record<string, string> = {
+    brand: "#2F855A",
+    "brand.light": "#33915f",
+    "brand.dark": "#276749",
 };
 
 const config: ThemeConfig = {
@@ -12,20 +15,12 @@ const config: ThemeConfig = {
 
 export const theme = extendTheme({
     config,
-    components: {
-        Link: {
-            baseStyle: {
-                ":focus": {
-                    boxShadow: "none",
-                },
-            },
-        },
-    },
+    colors,
     styles: {
         global: {
             "::selection": {
                 backgroundColor: "blackAlpha.500",
-                color: colors.accent,
+                color: colors.brand,
             },
             body: {
                 backgroundColor: "gray.900",
@@ -36,9 +31,6 @@ export const theme = extendTheme({
                     border: "4px solid transparent",
                 },
             },
-            button: {
-                outline: 0,
-            },
             "img, svg, ::placeholder": {
                 userSelect: "none",
             },
@@ -47,7 +39,7 @@ export const theme = extendTheme({
                 height: "0.5rem",
             },
             "::-webkit-scrollbar-thumb": {
-                backgroundColor: colors.accent,
+                backgroundColor: colors.brand,
                 borderRadius: 100,
             },
         },
@@ -58,7 +50,6 @@ export const theme = extendTheme({
         lg: "0 0 8px 0 rgba(0, 0, 0, 0.5)",
         xl: "0 0 12px 0 rgba(0, 0, 0, 0.75)",
     },
-    colors,
     fonts: {
         heading: "Open Sans",
         body: "Roboto",

@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router";
-import { ISocket } from "../@types/socket";
+import { ISocket } from "../../@types/socket";
 import { socket } from "./App";
 
 interface IParams {
@@ -9,15 +9,17 @@ interface IParams {
 
 export default function Room() {
     const { roomId } = useParams<IParams>();
-    const [room, setRoom] = useState<ISocket[]>([]);
-    const [user, setUser] = useState<ISocket>();
+    const [sockets, setSockets] = useState<ISocket[]>([]);
+
+    const me = useMemo(
+        () => sockets.find((element) => element.id === socket.id),
+        [sockets]
+    );
 
     useEffect(() => {
         socket.emit("room:join", roomId);
         socket.on("room:update", (sockets: ISocket[]) => {
-            console.log({ sockets });
-            setRoom(sockets);
-            setUser(sockets.find((element) => element.id === socket.id));
+            setSockets(sockets);
         });
         return () => {
             socket.removeAllListeners();
@@ -25,7 +27,7 @@ export default function Room() {
         };
     }, [roomId]);
 
-    console.log({ room, user });
+    console.log({ sockets, me });
 
     return <div>A room {roomId}</div>;
 }

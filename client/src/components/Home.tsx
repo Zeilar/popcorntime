@@ -1,7 +1,7 @@
-import { Button } from "@chakra-ui/button";
 import { AbsoluteCenter, Box } from "@chakra-ui/layout";
 import { useHistory } from "react-router";
 import { v4 as uuidv4 } from "uuid";
+import { PrimaryButton } from "./styles/button";
 
 export default function Home() {
     const { push } = useHistory();
@@ -13,9 +13,9 @@ export default function Home() {
     return (
         <Box height="100vh">
             <AbsoluteCenter>
-                <Button variant="solid" onClick={createRoom}>
+                <PrimaryButton onClick={createRoom}>
                     Create new room
-                </Button>
+                </PrimaryButton>
             </AbsoluteCenter>
         </Box>
     );

@@ -1,8 +1,8 @@
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import { io } from "socket.io-client";
-import { HOST } from "./config/host";
+import { HOST } from "../config/host";
 import Home from "./Home";
-import useSocket from "./hooks/useSocket";
+import useSocket from "../hooks/useSocket";
 import Room from "./Room";
 
 export const socket = io(HOST);
