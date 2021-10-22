@@ -23,13 +23,17 @@ export const theme = extendTheme({
                 color: colors.brand,
             },
             body: {
+                height: "100vh",
                 backgroundColor: "gray.900",
-                overflowY: "overlay",
-                overflowX: "hidden",
+                overflow: "hidden",
                 "::-webkit-scrollbar-thumb": {
                     backgroundClip: "padding-box",
                     border: "4px solid transparent",
                 },
+            },
+            "#root": {
+                height: "100%",
+                display: "flex",
             },
             "img, svg, ::placeholder": {
                 userSelect: "none",

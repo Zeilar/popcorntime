@@ -11,7 +11,7 @@ export default function Home() {
     }
 
     return (
-        <Box height="100vh">
+        <Box h="100vh">
             <AbsoluteCenter>
                 <PrimaryButton onClick={createRoom}>
                     Create new room

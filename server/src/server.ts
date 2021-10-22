@@ -4,9 +4,10 @@ import { join } from "path";
 import express from "express";
 import { Server } from "socket.io";
 import cors from "cors";
-import { validate } from "uuid"; // uuid has no default export
+import { validate, v4 as uuidv4 } from "uuid"; // uuid has no default export
 import { Room } from "./Room";
-import { WS } from "./WS";
+import { IMessage } from "../@types/message";
+import { Socket } from "./Socket";
 
 const clientPath = join(__dirname, "../../client");
 const { PORT } = process.env;
@@ -31,14 +32,33 @@ export const io = new Server(server, {
 io.on("connection", (socket) => {
     socket.leave(socket.id);
 
-    socket.on("room:join", (roomId: string | undefined | null) => {
-        if (!roomId || !validate(roomId)) {
+    socket.on("message:send", ({ roomId, body }: IMessage) => {
+        const room = new Room(roomId);
+
+        if (!room.hasSocket(socket.id)) {
+            return socket.emit("error", "You do not belong to that room.");
+        }
+
+        if (!body) {
+            return socket.emit("error", "Invalid message.");
+        }
+
+        io.to(room.id).emit("message:new", {
+            body,
+            id: uuidv4(),
+            date: new Date(),
+            socket: new Socket(socket).dto,
+        });
+    });
+
+    socket.on("room:join", (roomId: string) => {
+        if (!validate(roomId)) {
             return socket.emit("error", "Invalid room id.");
         }
 
         const room = new Room(roomId);
 
-        if (room.sockets.length > Room.MAX_SOCKETS) {
+        if (room.sockets.length >= Room.MAX_SOCKETS) {
             return socket.emit(
                 "error",
                 "This room is full. Try again at a later time."
@@ -51,14 +71,9 @@ io.on("connection", (socket) => {
 
         socket.join(room.id);
 
-        // @ts-ignore
-        socket.username = "random unique username";
-        // @ts-ignore
-        socket.color = "black";
-
-        // TODO: make sockets a Set and anonymous names like "Anonymous Crocodile",
+        // TODO: make sockets anonymous names like "Anonymous Crocodile",
         // but the actual name variable does not contain "Anonymous", append that in frontend
 
-        socket.to(room.id).emit("room:update", room.socketsDTO);
+        socket.to(room.id).emit("room:update:socket", room.socketsDTO);
     });
 });
