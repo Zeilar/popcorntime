@@ -43,11 +43,11 @@ io.on("connection", (socket) => {
             return socket.emit("error", "Invalid message.");
         }
 
-        io.to(room.id).emit("message:new", {
-            body,
+        socket.broadcast.to(room.id).emit("message:new", {
             id: uuidv4(),
-            date: new Date(),
+            body,
             socket: new Socket(socket).dto,
+            date: new Date(),
         });
     });
 
@@ -55,6 +55,11 @@ io.on("connection", (socket) => {
         if (!validate(roomId)) {
             return socket.emit("error", "Invalid room id.");
         }
+
+        // Make sure socket is only ever connected to one room at a time
+        socket.rooms.forEach((room) => {
+            socket.leave(room);
+        });
 
         const room = new Room(roomId);
 

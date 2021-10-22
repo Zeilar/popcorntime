@@ -49,8 +49,6 @@ export default function Room() {
 
         // Just to be safe
         return () => {
-            socket.removeAllListeners();
-            socket.disconnect();
             setSockets([]);
             setPlaylist([]);
             setPlaylistInput("");
