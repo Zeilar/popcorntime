@@ -30,7 +30,7 @@ export const io = new Server(server, {
 });
 
 io.on("connection", (socket) => {
-    socket.leave(socket.id);
+    socket.leave(socket.id); // socket.io puts every socket in its own private room by default, we don't want that
 
     socket.on("message:send", ({ roomId, body }: IMessage) => {
         const room = new Room(roomId);
@@ -56,12 +56,10 @@ io.on("connection", (socket) => {
             return socket.emit("error", "Invalid room id.");
         }
 
-        // Make sure socket is only ever connected to one room at a time
-        socket.rooms.forEach((room) => {
-            socket.leave(room);
-        });
-
         const room = new Room(roomId);
+        const _socket = new Socket(socket);
+
+        _socket.leaveAllRooms(); // Make sure socket is only ever connected to one room at a time
 
         if (room.sockets.length >= Room.MAX_SOCKETS) {
             return socket.emit(

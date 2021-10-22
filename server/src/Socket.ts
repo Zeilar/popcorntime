@@ -24,6 +24,20 @@ export class Socket {
         };
     }
 
+    public leaveRoom(id: string) {
+        console.log("leave", id);
+        this.ref?.leave(id);
+        return this;
+    }
+
+    public leaveAllRooms(ids?: string[]) {
+        const rooms = ids ?? this.ref?.rooms ?? [];
+        rooms.forEach((room) => {
+            this.leaveRoom(room);
+        });
+        return this;
+    }
+
     public setRandomName() {
         this.username = "some random username";
         return this;
