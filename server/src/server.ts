@@ -77,6 +77,6 @@ io.on("connection", (socket) => {
         // TODO: make sockets anonymous names like "Anonymous Crocodile",
         // but the actual name variable does not contain "Anonymous", append that in frontend
 
-        socket.to(room.id).emit("room:update:socket", room.socketsDTO);
+        socket.to(room.id).emit("room:update:socket", room.sockets);
     });
 });

@@ -12,18 +12,14 @@ export class Room {
     }
 
     public get sockets() {
-        return [...(this.ws.rooms.get(this.id) ?? [])];
-    }
-
-    public hasSocket(id: string) {
-        return this.ref.has(id);
-    }
-
-    public get socketsDTO() {
-        const sockets = this.sockets.map((element) => {
+        const sockets = [...this.ref].map((element) => {
             const socket = this.ws.sockets.get(element);
             return socket ? new Socket(socket.id).dto : null;
         });
         return sockets.filter((socket) => socket !== null);
+    }
+
+    public hasSocket(id: string) {
+        return this.ref.has(id);
     }
 }
