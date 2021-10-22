@@ -1,15 +1,14 @@
 import { WS } from "./WS";
 import { Socket as S } from "socket.io";
 
-export class Socket {
+export class Socket extends WS {
     private readonly ref: S | undefined;
-    private readonly ws: WS;
     public username: string;
     public color: string; // make type Color
 
     constructor(public readonly socket: string | S) {
-        this.ws = new WS();
-        this.ref = this.ws.sockets.get(
+        super();
+        this.ref = this.allSockets.get(
             typeof socket === "string" ? socket : socket.id
         );
         this.setRandomColor();

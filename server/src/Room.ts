@@ -1,19 +1,18 @@
 import { Socket } from "./Socket";
 import { WS } from "./WS";
 
-export class Room {
+export class Room extends WS {
     public static readonly MAX_SOCKETS = 10;
-    private readonly ws: WS;
     private readonly ref: Set<string>;
 
     constructor(public readonly id: string) {
-        this.ws = new WS();
-        this.ref = this.ws.rooms.get(id) ?? new Set<string>();
+        super();
+        this.ref = this.allRooms.get(id) ?? new Set<string>();
     }
 
     public get sockets() {
         const sockets = [...this.ref].map((element) => {
-            const socket = this.ws.sockets.get(element);
+            const socket = this.allSockets.get(element);
             return socket ? new Socket(socket.id).dto : null;
         });
         return sockets.filter((socket) => socket !== null);
@@ -21,5 +20,9 @@ export class Room {
 
     public hasSocket(id: string) {
         return this.ref.has(id);
+    }
+
+    public sendMessage() {
+        return this;
     }
 }

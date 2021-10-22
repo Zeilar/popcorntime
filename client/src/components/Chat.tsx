@@ -38,7 +38,6 @@ export default function Chat({ roomId }: IProps) {
 
     return (
         <Flex flexDir="column" bgColor="gray.800">
-            Chat
             {messages.map((message) => (
                 <Box key={message.id}>{message.body}</Box>
             ))}
