@@ -31,7 +31,7 @@ export const io = new Server(server, {
 io.on("connection", (socket) => {
     socket.leave(socket.id);
 
-    socket.on("join", (roomId: string | undefined | null) => {
+    socket.on("room:join", (roomId: string | undefined | null) => {
         if (!roomId || !validate(roomId)) {
             return socket.emit("error", "Invalid room id.");
         }
@@ -59,6 +59,6 @@ io.on("connection", (socket) => {
         // TODO: make sockets a Set and anonymous names like "Anonymous Crocodile",
         // but the actual name variable does not contain "Anonymous", append that in frontend
 
-        socket.emit("room:update", room.socketsDTO);
+        socket.to(room.id).emit("room:update", room.socketsDTO);
     });
 });

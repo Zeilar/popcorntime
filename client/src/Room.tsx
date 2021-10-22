@@ -13,7 +13,7 @@ export default function Room() {
     const [user, setUser] = useState<ISocket>();
 
     useEffect(() => {
-        socket.emit("join", roomId);
+        socket.emit("room:join", roomId);
         socket.on("room:update", (sockets: ISocket[]) => {
             console.log({ sockets });
             setRoom(sockets);
