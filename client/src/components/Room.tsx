@@ -20,6 +20,7 @@ export default function Room() {
     const [sockets, setSockets] = useState<ISocket[]>([]);
     const [playlist, setPlaylist] = useState<string[]>([]);
     const [playlistInput, setPlaylistInput] = useState("");
+    const [isConnected, setIsConnected] = useState(false);
     const player = useRef<ReactPlayer>(null);
 
     const me = useMemo(
@@ -39,21 +40,40 @@ export default function Room() {
 
     useEffect(() => {
         if (!validate(roomId)) {
+            toast.error("Invalid room id.");
             return;
         }
 
         socket.emit("room:join", roomId);
+        socket.on("room:join", (id: string) => {
+            if (roomId !== id) {
+                return toast.error(
+                    "Could not join room, please reload the page."
+                );
+            }
+            toast.success("Joined room.");
+            setIsConnected(true);
+        });
         socket.on("room:update:socket", (sockets: ISocket[]) => {
             setSockets(sockets);
         });
 
         // Just to be safe
         return () => {
+            socket.off("room:join").off("room:update:socket");
             setSockets([]);
             setPlaylist([]);
             setPlaylistInput("");
         };
     }, [roomId]);
+
+    useEffect(() => {
+        return () => {
+            if (isConnected) {
+                toast.success("Left room.");
+            }
+        };
+    }, [isConnected]);
 
     useEffect(() => {
         if (!me) return;
@@ -63,7 +83,6 @@ export default function Room() {
     // TODO: use "light" prop for playlist thumbnails
 
     if (!validate(roomId)) {
-        console.log(roomId, "is invalid");
         toast.error(
             "Invalid room id. Please click the button to generate one.",
             { toastId: "invalid-room-id" } // For some reason this toast fires twice, prevent this with id

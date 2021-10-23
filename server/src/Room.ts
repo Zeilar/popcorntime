@@ -3,26 +3,34 @@ import { WS } from "./WS";
 
 export class Room extends WS {
     public static readonly MAX_SOCKETS = 10;
-    private readonly ref: Set<string>;
+    public sockets: Socket[] = [];
 
     constructor(public readonly id: string) {
         super();
-        this.ref = this.allRooms.get(id) ?? new Set<string>();
     }
 
-    public get sockets() {
-        const sockets = [...this.ref].map((element) => {
-            const socket = this.allSockets.get(element);
-            return socket ? new Socket(socket.id).dto : null;
-        });
-        return sockets.filter((socket) => socket !== null);
+    public get socketsDto() {
+        return this.sockets.map((socket) => socket.dto);
     }
 
-    public hasSocket(id: string) {
-        return this.ref.has(id);
+    public hasSocket(socket: Socket) {
+        return this.sockets.some((element) => element.id === socket.id);
     }
 
     public sendMessage() {
         return this;
+    }
+
+    public addSocket(socket: Socket) {
+        if (this.hasSocket(socket)) {
+            return false;
+        }
+        this.sockets.push(socket);
+    }
+
+    public removeSocket(socket: Socket) {
+        this.sockets = this.sockets.filter(
+            (element) => element.id !== socket.id
+        );
     }
 }

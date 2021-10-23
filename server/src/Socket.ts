@@ -1,39 +1,44 @@
 import { WS } from "./WS";
-import { Socket as S } from "socket.io";
+import { Room } from "./Room";
 
 export class Socket extends WS {
-    private readonly ref: S | undefined;
+    public roomId: string | null;
     public username: string;
     public color: string; // make type Color
 
-    constructor(public readonly socket: string | S) {
+    constructor(public readonly id: string) {
         super();
-        this.ref = this.allSockets.get(
-            typeof socket === "string" ? socket : socket.id
-        );
         this.setRandomColor();
         this.setRandomName();
     }
 
     public get dto() {
         return {
-            id: this.ref?.id,
+            id: this.id,
             username: this.username,
             color: this.color,
         };
     }
 
-    public leaveRoom(id: string) {
-        console.log("leave", id);
-        this.ref?.leave(id);
+    public join(room: Room | string) {
+        if (typeof room === "string") {
+            this.roomId = room;
+        } else {
+            room.addSocket(this);
+            this.roomId = room.id;
+        }
         return this;
     }
 
-    public leaveAllRooms(ids?: string[]) {
-        const rooms = ids ?? this.ref?.rooms ?? [];
-        rooms.forEach((room) => {
-            this.leaveRoom(room);
-        });
+    // If no room is provided, remove the previous room state
+    public leave(room?: Room) {
+        if (room) {
+            room.removeSocket(this);
+        } else {
+            const room = this.allRooms.find((room) => room.id === this.roomId);
+            room?.removeSocket(this);
+        }
+        this.roomId = null;
         return this;
     }
 
