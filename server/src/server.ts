@@ -98,7 +98,7 @@ io.on("connection", (socket) => {
 
         _socket.join(room);
 
-        socket.emit("room:join", room.id);
+        socket.emit("room:join", { roomId: room.id, sockets: room.socketsDto });
 
         // TODO: make sockets anonymous names like "Anonymous Crocodile",
         // but the actual name variable does not contain "Anonymous", append that in frontend
@@ -111,7 +111,7 @@ io.on("connection", (socket) => {
     socket.on("room:leave", (roomId: string) => {
         const room = ws.getRoom(roomId);
         if (!room) {
-            return socket.emit("error", "That room does not exist.");
+            return;
         }
         _socket.leave(room);
         socket.to(room.id).emit("room:socket:leave", _socket.dto);

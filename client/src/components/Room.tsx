@@ -28,8 +28,6 @@ export default function Room() {
         [sockets]
     );
 
-    console.log({ isConnected, me });
-
     function addVideo() {
         const canPlay = ReactPlayer.canPlay(
             "https://www.youtube.com/watch?v=ig44rDYo8IM&list=PLfGn95Njqu_SDNqqJdVZi3jq6ILi_pWgt&index=5"
@@ -47,24 +45,19 @@ export default function Room() {
         }
 
         socket.emit("room:join", roomId);
-        socket.once("room:join", (id: string) => {
-            if (roomId !== id) {
-                return toast.error(
-                    "Could not join room, please reload the page."
-                );
-            }
+        socket.once("room:join", () => {
             toast.success("Joined room.");
             setIsConnected(true);
+        });
+        socket.on("room:socket:join", (socket: ISocket) => {
+            setSockets((sockets) => [...sockets, socket]);
+            toast.info(`${socket.id} joined.`);
         });
         socket.on("room:socket:leave", (socket: ISocket) => {
             setSockets((sockets) =>
                 sockets.filter((element) => element.id !== socket.id)
             );
             toast.info(`${socket.id} left.`);
-        });
-        socket.on("room:socket:join", (socket: ISocket) => {
-            setSockets((sockets) => [...sockets, socket]);
-            toast.info(`${socket.id} joined.`);
         });
 
         // Just to be safe
@@ -83,7 +76,7 @@ export default function Room() {
     useEffect(() => {
         return () => {
             if (isConnected) {
-                toast.success("Left room.");
+                toast.info("Left room.");
             }
         };
     }, [isConnected]);
@@ -106,12 +99,6 @@ export default function Room() {
     return (
         <Flex m="auto" w="100%" h="100%" p="5%">
             <PrimaryButton onClick={addVideo}>Add video</PrimaryButton>
-            <Flex flexDir="column" gridGap="1rem">
-                {sockets.map((socket) => (
-                    <div>{socket.id}</div>
-                ))}
-                <div>me: {me?.id}</div>
-            </Flex>
             <Grid w="100%" gridTemplateColumns="75% 25%" gridGap="2rem">
                 <Box w="100%">
                     <ReactPlayer

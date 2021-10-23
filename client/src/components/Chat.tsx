@@ -42,7 +42,9 @@ export default function Chat({ roomId, sockets, me }: IProps) {
     return (
         <Flex flexDir="column" bgColor="gray.800">
             {messages.map((message) => (
-                <Box key={message.id}>{message.body}</Box>
+                <Box key={message.id}>
+                    {message.socket.id}: <strong>{message.body}</strong>
+                </Box>
             ))}
             <Box as="form" onSubmit={sendMessage}>
                 <Input
@@ -50,6 +52,16 @@ export default function Chat({ roomId, sockets, me }: IProps) {
                     onChange={(e) => setInput(e.target.value)}
                 />
             </Box>
+            <Flex flexDir="column" gridGap="1rem">
+                {sockets.map((socket) => (
+                    <Box
+                        key={socket.id}
+                        bgColor={socket.id === me?.id ? "blue.600" : "gray.600"}
+                    >
+                        {socket.id}
+                    </Box>
+                ))}
+            </Flex>
         </Flex>
     );
 }
