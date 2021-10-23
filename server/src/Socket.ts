@@ -36,7 +36,7 @@ export class Socket extends WS {
 
     // If no room is provided, remove the previous room this socket joined
     public leave(room?: Room) {
-        const roomToRemove = room ?? this.getRoom(this.roomId);
+        const roomToRemove = room ?? this.room;
         roomToRemove?.removeSocket(this);
         if (roomToRemove) {
             this.ref?.leave(roomToRemove.id);
