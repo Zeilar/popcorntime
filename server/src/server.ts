@@ -33,7 +33,11 @@ export const io = new Server(server, {
 export const ws = new WS();
 
 io.on("connection", (socket) => {
-    socket.leave(socket.id); // socket.io puts every socket in its own private room by default, we don't want that
+    /*
+     * socket.io puts every socket in its own private room by default
+     * we don't want that, despite not really using socket.io's room system
+     */
+    socket.leave(socket.id);
 
     const _socket = new Socket(socket.id);
     ws.addSocket(_socket);
@@ -84,7 +88,7 @@ io.on("connection", (socket) => {
         if (room.sockets.length >= Room.MAX_SOCKETS) {
             return socket.emit(
                 "error",
-                "This room is full. Try again at a later time."
+                "This room is full. Try again at a later time, or create a new one."
             );
         }
 
@@ -115,6 +119,7 @@ io.on("connection", (socket) => {
 
     socket.on("disconnect", () => {
         const room = _socket.room;
+        // If user was not part of a room when they leave, no need to do anything
         if (room) {
             _socket.leave(room);
             io.to(room.id).emit("room:socket:leave", _socket.dto);
