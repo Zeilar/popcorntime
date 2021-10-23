@@ -1,14 +1,12 @@
-import { io } from "./server";
+import { io, ws } from "./server";
 import { Socket } from "./Socket";
-import { WS } from "./WS";
 
-export class Room extends WS {
+export class Room {
     public static readonly MAX_SOCKETS = 10;
     public sockets: Socket[] = [];
     public ref: Set<string> | undefined;
 
     constructor(public readonly id: string) {
-        super();
         this.ref = io.sockets.adapter.rooms.get(id);
     }
 

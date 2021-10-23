@@ -60,6 +60,7 @@ export default function Room() {
 
         // Just to be safe
         return () => {
+            socket.emit("room:leave", roomId);
             socket.off("room:join").off("room:update:socket");
             setSockets([]);
             setPlaylist([]);

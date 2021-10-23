@@ -4,7 +4,7 @@ import { io } from "./server";
 import { Socket } from "./Socket";
 
 export class WS {
-    public allSockets: Socket[] = [];
+    private allSockets: Socket[] = [];
     public allRooms: Room[] = [];
     public io: Server;
 
@@ -13,6 +13,10 @@ export class WS {
     }
 
     public getRoom(roomId?: string | null) {
+        console.log(
+            "all rooms",
+            this.allRooms.map((room) => room.id)
+        );
         return this.allRooms.find((room) => room.id === roomId);
     }
 
@@ -41,8 +45,10 @@ export class WS {
     }
 
     public removeGlobalRoom(room: Room) {
+        console.log("removeGlobalRoom rooms: ", this.allRooms.length);
         this.allRooms = this.allRooms.filter(
             (element) => element.id !== room.id
         );
+        console.log("removeGlobalRoom rooms: ", this.allRooms.length);
     }
 }

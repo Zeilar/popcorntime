@@ -30,7 +30,7 @@ export const io = new Server(server, {
     cors: { origin: "http://localhost:3000" }, // TODO: remove cors in production
 });
 
-const ws = new WS();
+export const ws = new WS();
 
 io.on("connection", (socket) => {
     socket.leave(socket.id); // socket.io puts every socket in its own private room by default, we don't want that
@@ -71,11 +71,11 @@ io.on("connection", (socket) => {
     });
 
     socket.on("room:join", (roomId: string) => {
-        const room = ws.getRoom(roomId);
-
-        if (!room) {
-            return socket.emit("error", "That room does not exist.");
+        if (!validate(roomId)) {
+            return socket.emit("error", "Invalid room id.");
         }
+
+        const room = ws.getRoom(roomId) ?? new Room(roomId);
 
         if (room.sockets.length >= Room.MAX_SOCKETS) {
             return socket.emit(
@@ -88,7 +88,7 @@ io.on("connection", (socket) => {
         // filter out the colors that are not picked by anyone in the room and assign a random of those
         // if filter is empty, pick any random
 
-        _socket.leave().join(room);
+        _socket.join(room);
 
         socket.emit("room:join", room.id);
 
@@ -98,7 +98,18 @@ io.on("connection", (socket) => {
         socket.to(room.id).emit("room:update:socket", room.socketsDto);
     });
 
+    socket.on("room:leave", (roomId: string) => {
+        const room = ws.getRoom(roomId);
+        if (!room) {
+            return socket.emit("error", "That room does not exist.");
+        }
+        _socket.leave(room);
+    });
+
     socket.on("disconnect", () => {
-        _socket.leave();
+        const room = _socket.room;
+        if (room) {
+            _socket.leave(room);
+        }
     });
 });
