@@ -12,11 +12,11 @@ export class WS {
         this.io = io;
     }
 
-    public getRoom(roomId: string) {
+    public getRoom(roomId?: string | null) {
         return this.allRooms.find((room) => room.id === roomId);
     }
 
-    public getSocket(socketId: string) {
+    public getSocket(socketId?: string | null) {
         return this.allSockets.find((socket) => socket.id === socketId);
     }
 

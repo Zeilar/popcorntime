@@ -24,7 +24,7 @@ export class Socket extends WS {
     }
 
     public get room() {
-        return this.allRooms.find((room) => room.id === this.roomId);
+        return this.getRoom(this.roomId);
     }
 
     public join(room: Room) {
@@ -36,12 +36,10 @@ export class Socket extends WS {
 
     // If no room is provided, remove the previous room this socket joined
     public leave(room?: Room) {
-        if (room) {
-            this.ref?.leave(room.id);
-            room.removeSocket(this);
-        } else {
-            const room = this.allRooms.find((room) => room.id === this.roomId);
-            room?.removeSocket(this);
+        const roomToRemove = room ?? this.getRoom(this.roomId);
+        roomToRemove?.removeSocket(this);
+        if (roomToRemove) {
+            this.ref?.leave(roomToRemove.id);
         }
         this.roomId = null;
         return this;
