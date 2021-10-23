@@ -61,7 +61,9 @@ io.on("connection", (socket) => {
         if (!validate(roomId)) {
             return socket.emit("error", "Invalid room id.");
         }
-        ws.addGlobalRoom(new Room(roomId));
+        const room = new Room(roomId);
+        ws.addGlobalRoom(room);
+        _socket.join(room);
     });
 
     socket.on("room:join", (roomId: string) => {
@@ -91,5 +93,9 @@ io.on("connection", (socket) => {
         // but the actual name variable does not contain "Anonymous", append that in frontend
 
         socket.to(room.id).emit("room:update:socket", room.socketsDto);
+    });
+
+    socket.on("disconnect", () => {
+        _socket.leave();
     });
 });

@@ -40,7 +40,7 @@ export default function Room() {
 
     useEffect(() => {
         if (!validate(roomId)) {
-            toast.error("Invalid room id.");
+            // No need to toast here, the redirect further down takes care of that, this is just to stop unnecessary code from running
             return;
         }
 

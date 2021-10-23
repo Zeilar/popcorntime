@@ -1,9 +1,16 @@
+import { Server } from "socket.io";
 import { Room } from "./Room";
+import { io } from "./server";
 import { Socket } from "./Socket";
 
 export class WS {
     public allSockets: Socket[] = [];
     public allRooms: Room[] = [];
+    public io: Server;
+
+    constructor() {
+        this.io = io;
+    }
 
     public getRoom(roomId: string) {
         return this.allRooms.find((room) => room.id === roomId);
