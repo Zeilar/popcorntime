@@ -39,7 +39,11 @@ io.on("connection", (socket) => {
     ws.addGlobalSocket(_socket);
 
     socket.on("message:send", ({ roomId, body }: IMessage) => {
-        const room = new Room(roomId);
+        const room = ws.getRoom(roomId);
+
+        if (!room) {
+            return socket.emit("error", "That room does not exist.");
+        }
 
         if (!room.hasSocket(_socket)) {
             return socket.emit("error", "You do not belong to that room.");
@@ -84,8 +88,7 @@ io.on("connection", (socket) => {
         // filter out the colors that are not picked by anyone in the room and assign a random of those
         // if filter is empty, pick any random
 
-        _socket.leave();
-        _socket.join(room);
+        _socket.leave().join(room);
 
         socket.emit("room:join", room.id);
 

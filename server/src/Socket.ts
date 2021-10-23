@@ -34,7 +34,7 @@ export class Socket extends WS {
         return this;
     }
 
-    // If no room is provided, remove the previous room state
+    // If no room is provided, remove the previous room this socket joined
     public leave(room?: Room) {
         if (room) {
             this.ref?.leave(room.id);
