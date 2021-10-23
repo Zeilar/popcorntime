@@ -13,10 +13,6 @@ export class WS {
     }
 
     public getRoom(roomId?: string | null) {
-        console.log(
-            "all rooms",
-            this.allRooms.map((room) => room.id)
-        );
         return this.allRooms.find((room) => room.id === roomId);
     }
 
