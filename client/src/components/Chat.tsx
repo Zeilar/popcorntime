@@ -2,13 +2,16 @@ import { Input } from "@chakra-ui/input";
 import { Box, Flex } from "@chakra-ui/layout";
 import { FormEvent, useEffect, useState } from "react";
 import { IMessage } from "../../@types/message";
+import { ISocket } from "../../@types/socket";
 import { socket } from "./App";
 
 interface IProps {
     roomId: string;
+    sockets: ISocket[];
+    me: ISocket | undefined;
 }
 
-export default function Chat({ roomId }: IProps) {
+export default function Chat({ roomId, sockets, me }: IProps) {
     const [isOpen, setIsOpen] = useState(true); // useLocalStorage for initial value
     const [input, setInput] = useState("");
     const [messages, setMessages] = useState<IMessage[]>([]);

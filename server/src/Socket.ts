@@ -28,27 +28,26 @@ export class Socket {
 
     public join(room: Room) {
         this.ref?.join(room.id);
-        room.addSocket(this);
+        room.add(this);
         this.roomId = room.id;
         return this;
     }
 
-    // If no room is provided, remove the previous room this socket joined
     public leave(room: Room) {
-        room.removeSocket(this);
+        room.remove(this);
         if (room.sockets.length <= 0) {
-            ws.removeGlobalRoom(room);
+            ws.removeRoom(room);
         }
         this.roomId = null;
         return this;
     }
 
-    public setRandomName() {
+    private setRandomName() {
         this.username = "some random username";
         return this;
     }
 
-    public setRandomColor() {
+    private setRandomColor() {
         this.color = "some random color";
         return this;
     }

@@ -1,4 +1,4 @@
-import { io, ws } from "./server";
+import { io } from "./server";
 import { Socket } from "./Socket";
 
 export class Room {
@@ -18,18 +18,14 @@ export class Room {
         return this.sockets.some((element) => element.id === socket.id);
     }
 
-    public sendMessage() {
-        return this;
-    }
-
-    public addSocket(socket: Socket) {
+    public add(socket: Socket) {
         if (this.hasSocket(socket)) {
             return false;
         }
         this.sockets.push(socket);
     }
 
-    public removeSocket(socket: Socket) {
+    public remove(socket: Socket) {
         this.sockets = this.sockets.filter(
             (element) => element.id !== socket.id
         );

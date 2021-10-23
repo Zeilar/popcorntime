@@ -36,7 +36,7 @@ io.on("connection", (socket) => {
     socket.leave(socket.id); // socket.io puts every socket in its own private room by default, we don't want that
 
     const _socket = new Socket(socket.id);
-    ws.addGlobalSocket(_socket);
+    ws.addSocket(_socket);
 
     socket.on("message:send", ({ roomId, body }: IMessage) => {
         const room = ws.getRoom(roomId);
@@ -53,7 +53,7 @@ io.on("connection", (socket) => {
             return socket.emit("error", "Invalid message.");
         }
 
-        socket.broadcast.to(room.id).emit("message:new", {
+        socket.to(room.id).emit("message:new", {
             id: uuidv4(),
             body,
             socket: _socket.dto,
@@ -66,7 +66,7 @@ io.on("connection", (socket) => {
             return socket.emit("error", "Invalid room id.");
         }
         const room = new Room(roomId);
-        ws.addGlobalRoom(room);
+        ws.addRoom(room);
         _socket.join(room);
     });
 
@@ -75,7 +75,11 @@ io.on("connection", (socket) => {
             return socket.emit("error", "Invalid room id.");
         }
 
-        const room = ws.getRoom(roomId) ?? new Room(roomId);
+        const room = ws.getRoom(roomId);
+
+        if (!room) {
+            return socket.emit("error", "That room could not be found.");
+        }
 
         if (room.sockets.length >= Room.MAX_SOCKETS) {
             return socket.emit(
@@ -95,7 +99,9 @@ io.on("connection", (socket) => {
         // TODO: make sockets anonymous names like "Anonymous Crocodile",
         // but the actual name variable does not contain "Anonymous", append that in frontend
 
-        socket.to(room.id).emit("room:update:socket", room.socketsDto);
+        console.log("send room:socket:join to everyone but", _socket.id);
+
+        socket.to(room.id).emit("room:socket:join", _socket.dto);
     });
 
     socket.on("room:leave", (roomId: string) => {
@@ -104,12 +110,14 @@ io.on("connection", (socket) => {
             return socket.emit("error", "That room does not exist.");
         }
         _socket.leave(room);
+        socket.to(room.id).emit("room:socket:leave", _socket.dto);
     });
 
     socket.on("disconnect", () => {
         const room = _socket.room;
         if (room) {
             _socket.leave(room);
+            io.to(room.id).emit("room:socket:leave", _socket.dto);
         }
     });
 });

@@ -15,6 +15,7 @@ ReactDOM.render(
                 hideProgressBar={true}
                 limit={3}
                 autoClose={2500}
+                pauseOnFocusLoss={false}
             />
         </ChakraProvider>
     </React.StrictMode>,

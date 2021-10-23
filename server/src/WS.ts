@@ -5,7 +5,7 @@ import { Socket } from "./Socket";
 
 export class WS {
     private allSockets: Socket[] = [];
-    public allRooms: Room[] = [];
+    private allRooms: Room[] = [];
     public io: Server;
 
     constructor() {
@@ -20,31 +20,29 @@ export class WS {
         return this.allSockets.find((socket) => socket.id === socketId);
     }
 
-    public addGlobalSocket(socket: Socket) {
+    public addSocket(socket: Socket) {
         if (this.allSockets.some((element) => element.id === socket.id)) {
             return false;
         }
         this.allSockets.push(socket);
     }
 
-    public removeGlobalSocket(socket: Socket) {
+    public removeSocket(socket: Socket) {
         this.allSockets = this.allSockets.filter(
             (element) => element.id !== socket.id
         );
     }
 
-    public addGlobalRoom(room: Room) {
+    public addRoom(room: Room) {
         if (this.allRooms.some((element) => element.id === room.id)) {
             return false;
         }
         this.allRooms.push(room);
     }
 
-    public removeGlobalRoom(room: Room) {
-        console.log("removeGlobalRoom rooms: ", this.allRooms.length);
+    public removeRoom(room: Room) {
         this.allRooms = this.allRooms.filter(
             (element) => element.id !== room.id
         );
-        console.log("removeGlobalRoom rooms: ", this.allRooms.length);
     }
 }
