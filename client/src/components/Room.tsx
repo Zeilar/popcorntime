@@ -13,20 +13,19 @@ interface IParams {
     roomId: string;
 }
 
+interface IProps {
+    me: ISocket;
+}
+
 const defaultVideo = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"; // What video could this possibly be, I wonder
 
-export default function Room() {
+export default function Room({ me }: IProps) {
     const { roomId } = useParams<IParams>();
     const [sockets, setSockets] = useState<ISocket[]>([]);
     const [playlist, setPlaylist] = useState<string[]>([]);
     const [playlistInput, setPlaylistInput] = useState("");
     const [isConnected, setIsConnected] = useState(false);
     const player = useRef<ReactPlayer>(null);
-
-    const me = useMemo(
-        () => sockets.find((element) => element.id === socket.id),
-        [sockets]
-    );
 
     function addVideo() {
         const canPlay = ReactPlayer.canPlay(
@@ -84,11 +83,6 @@ export default function Room() {
             }
         };
     }, [isConnected]);
-
-    useEffect(() => {
-        if (!me) return;
-        console.log(`welcome ${me.username}`);
-    }, [me]);
 
     // TODO: use "light" prop for playlist thumbnails
 

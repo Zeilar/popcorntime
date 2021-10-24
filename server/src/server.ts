@@ -36,8 +36,7 @@ io.on("connection", async (socket) => {
     const _socket = new Socket(socket.id).setRandomColor();
     await _socket.setRandomName();
     ws.addSocket(_socket);
-
-    console.log(_socket.dto);
+    socket.emit("connection:success", _socket.dto);
 
     socket.on("message:send", ({ roomId, body, id }: IMessage) => {
         const room = ws.getRoom(roomId);

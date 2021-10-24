@@ -10,7 +10,7 @@ import { socket } from "./App";
 interface IProps {
     roomId: string;
     sockets: ISocket[];
-    me: ISocket | undefined;
+    me: ISocket;
 }
 
 export default function Chat({ roomId, sockets, me }: IProps) {
@@ -51,8 +51,8 @@ export default function Chat({ roomId, sockets, me }: IProps) {
     function sendMessage(e: FormEvent) {
         e.preventDefault();
         setInput("");
-        if (!input || !me) {
-            return; // Chat should be loading at this state, this clause should in theory never run however
+        if (!input) {
+            return;
         }
         const message: IMessage = {
             body: input,
