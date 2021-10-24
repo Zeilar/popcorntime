@@ -5,6 +5,7 @@ import { Socket as S } from "socket.io";
 
 export class Room {
     public static readonly MAX_SOCKETS = 10;
+    public static readonly MAX_MESSAGES = 30;
     public sockets: Socket[] = [];
     public messages: IMessage[] = [];
     public ref: Set<string> | undefined;
@@ -36,5 +37,9 @@ export class Room {
 
     public sendMessage(socket: S, message: IMessage) {
         socket.to(this.id).emit("message:send", message);
+        this.messages.push(message);
+        if (this.messages.length > Room.MAX_MESSAGES) {
+            this.messages.splice(0, 1);
+        }
     }
 }
