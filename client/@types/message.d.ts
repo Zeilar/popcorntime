@@ -5,4 +5,5 @@ export interface IMessage {
     body: string;
     created_at: Date;
     id: string;
+    notSent?: boolean;
 }

@@ -41,30 +41,40 @@ io.on("connection", (socket) => {
     const _socket = new Socket(socket.id);
     ws.addSocket(_socket);
 
-    socket.on("message:send", ({ roomId, body }: IMessage) => {
+    socket.on("message:send", ({ roomId, body, id }: IMessage) => {
         const room = ws.getRoom(roomId);
 
         if (!room) {
-            return socket.emit("error", "That room does not exist.");
+            return socket.emit("message:error", {
+                error: "That room does not exist.",
+                id,
+            });
         }
 
         if (!room.hasSocket(_socket)) {
-            return socket.emit("error", "You do not belong to that room.");
+            return socket.emit("message:error", {
+                error: "You do not belong to that room.",
+                id,
+            });
         }
 
         if (!body) {
-            return socket.emit("error", "Invalid message.");
+            return socket.emit("message:error", {
+                error: "Invalid message.",
+                id,
+            });
         }
 
         if (body.length > 255) {
-            return socket.emit(
-                "error",
-                "Message is too long. Max 255 characters."
-            );
+            console.log({ id });
+            return socket.emit("message:error", {
+                error: "Message is too long. Max 255 characters.",
+                id,
+            });
         }
 
         socket.to(room.id).emit("message:new", {
-            id: uuidv4(),
+            id,
             body,
             socket: _socket.dto,
             date: new Date(),
