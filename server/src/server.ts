@@ -105,7 +105,7 @@ io.on("connection", (socket) => {
 
         _socket.join(room);
 
-        // socket.emit("room:join", room.socketsDto);
+        socket.emit("room:join", room.socketsDto);
 
         // TODO: make sockets anonymous names like "Anonymous Crocodile",
         // but the actual name variable does not contain "Anonymous", append that in frontend

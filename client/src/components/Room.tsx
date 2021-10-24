@@ -46,22 +46,22 @@ export default function Room() {
 
         socket.emit("room:join", roomId);
         socket.once("room:join", (sockets: ISocket[]) => {
-            // toast.success("Joined room.");
+            toast.success("Joined room.");
             // setSockets(sockets);
-            // setIsConnected(true);
+            setIsConnected(true);
         });
         socket.on("room:socket:update", (sockets: ISocket[]) => {
             setSockets(sockets);
         });
-        socket.on("room:socket:join", (socket: ISocket) => {
-            // setSockets((sockets) => [...sockets, socket]);
-            toast.info(`${socket.id} joined.`);
+        socket.on("room:socket:join", (_socket: ISocket) => {
+            if (socket.id !== _socket.id) {
+                toast.info(`${socket.id} joined.`);
+            }
         });
-        socket.on("room:socket:leave", (socket: ISocket) => {
-            setSockets((sockets) =>
-                sockets.filter((element) => element.id !== socket.id)
-            );
-            toast.info(`${socket.id} left.`);
+        socket.on("room:socket:leave", (_socket: ISocket) => {
+            if (socket.id !== _socket.id) {
+                toast.info(`${socket.id} left.`);
+            }
         });
 
         // Just to be safe
