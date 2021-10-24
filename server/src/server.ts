@@ -66,19 +66,20 @@ io.on("connection", (socket) => {
         }
 
         if (body.length > 255) {
-            console.log({ id });
             return socket.emit("message:error", {
                 error: "Message is too long. Max 255 characters.",
                 id,
             });
         }
 
-        socket.to(room.id).emit("message:new", {
+        const message: IMessage = {
             id,
             body,
             socket: _socket.dto,
             date: new Date(),
-        });
+        };
+
+        room.sendMessage(socket, message);
     });
 
     socket.on("room:create", (roomId: string) => {

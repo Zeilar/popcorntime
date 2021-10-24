@@ -3,6 +3,7 @@ import { Socket as S } from "socket.io";
 import { ws } from "./server";
 import { Color } from "../@types/color";
 import generate from "@nwlongnecker/adjective-adjective-animal";
+import { ISocketDto } from "../@types/socket";
 
 console.log(generate);
 
@@ -18,7 +19,7 @@ export class Socket {
         this.setRandomName();
     }
 
-    public get dto() {
+    public get dto(): ISocketDto {
         return {
             id: this.id,
             username: this.username,
