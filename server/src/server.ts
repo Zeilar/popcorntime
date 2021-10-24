@@ -57,6 +57,13 @@ io.on("connection", (socket) => {
             return socket.emit("error", "Invalid message.");
         }
 
+        if (body.length > 255) {
+            return socket.emit(
+                "error",
+                "Message is too long. Max 255 characters."
+            );
+        }
+
         socket.to(room.id).emit("message:new", {
             id: uuidv4(),
             body,
@@ -98,14 +105,20 @@ io.on("connection", (socket) => {
 
         _socket.join(room);
 
-        socket.emit("room:join", { roomId: room.id, sockets: room.socketsDto });
+        // socket.emit("room:join", room.socketsDto);
 
         // TODO: make sockets anonymous names like "Anonymous Crocodile",
         // but the actual name variable does not contain "Anonymous", append that in frontend
 
-        console.log("send room:socket:join to everyone but", _socket.id);
+        console.log(
+            "send room:socket:join to everyone but",
+            [socket.id],
+            "room:",
+            io.sockets.adapter.rooms.get(room.id)
+        );
 
         socket.to(room.id).emit("room:socket:join", _socket.dto);
+        socket.to(room.id).emit("room:socket:update", room.socketsDto);
     });
 
     socket.on("room:leave", (roomId: string) => {
