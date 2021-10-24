@@ -4,6 +4,7 @@ import { ws } from "./server";
 import { Color } from "../@types/color";
 import generate from "@nwlongnecker/adjective-adjective-animal";
 import { ISocketDto } from "../@types/socket";
+import { colors } from "./data/colors";
 
 export class Socket {
     public roomId: string | null;
@@ -49,7 +50,7 @@ export class Socket {
     }
 
     public setRandomColor() {
-        this.color = "some random color";
+        this.color = colors[Math.floor(Math.random() * colors.length)];
         return this;
     }
 }

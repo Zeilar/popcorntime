@@ -83,10 +83,7 @@ export default function Chat({ roomId, sockets, me }: IProps) {
             </Box>
             <Flex flexDir="column" gridGap="1rem">
                 {sockets.map((socket) => (
-                    <Box
-                        key={socket.id}
-                        bgColor={socket.id === me?.id ? "blue.600" : "gray.600"}
-                    >
+                    <Box key={socket.id} bgColor={`${socket.color}.800`}>
                         {socket.username}
                     </Box>
                 ))}
