@@ -71,7 +71,7 @@ export default function Chat({ roomId, sockets, me }: IProps) {
                     key={message.id}
                     className={message.notSent ? "not-sent" : undefined}
                 >
-                    {message.socket.id}: <strong>{message.body}</strong>{" "}
+                    {message.socket.username}: <strong>{message.body}</strong>{" "}
                     {message.notSent && "NOT SENT"}
                 </Box>
             ))}
@@ -87,7 +87,7 @@ export default function Chat({ roomId, sockets, me }: IProps) {
                         key={socket.id}
                         bgColor={socket.id === me?.id ? "blue.600" : "gray.600"}
                     >
-                        {socket.id}
+                        {socket.username}
                     </Box>
                 ))}
             </Flex>

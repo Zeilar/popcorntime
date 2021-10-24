@@ -53,15 +53,15 @@ export default function Room() {
         socket.on("room:socket:update", (sockets: ISocket[]) => {
             setSockets(sockets);
         });
-        socket.on("room:socket:join", (_socket: ISocket) => {
-            setSockets((sockets) => [...sockets, _socket]);
-            toast.info(`${socket.id} joined.`);
+        socket.on("room:socket:join", (socket: ISocket) => {
+            setSockets((sockets) => [...sockets, socket]);
+            toast.info(`${socket.username} joined.`);
         });
         socket.on("room:socket:leave", (socket: ISocket) => {
             setSockets((sockets) =>
                 sockets.filter((element) => element.id !== socket.id)
             );
-            toast.info(`${socket.id} left.`);
+            toast.info(`${socket.username} left.`);
         });
 
         // Just to be safe
@@ -87,7 +87,7 @@ export default function Room() {
 
     useEffect(() => {
         if (!me) return;
-        console.log(`welcome ${me.id}`);
+        console.log(`welcome ${me.username}`);
     }, [me]);
 
     // TODO: use "light" prop for playlist thumbnails

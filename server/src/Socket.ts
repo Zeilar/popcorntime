@@ -5,8 +5,6 @@ import { Color } from "../@types/color";
 import generate from "@nwlongnecker/adjective-adjective-animal";
 import { ISocketDto } from "../@types/socket";
 
-console.log(generate);
-
 export class Socket {
     public roomId: string | null;
     public username: string;
@@ -15,8 +13,6 @@ export class Socket {
 
     constructor(public readonly id: string) {
         this.ref = ws.io.sockets.sockets.get(id);
-        this.setRandomColor();
-        this.setRandomName();
     }
 
     public get dto(): ISocketDto {
@@ -47,12 +43,12 @@ export class Socket {
         return this;
     }
 
-    private setRandomName() {
-        this.username = "some random username";
+    public async setRandomName() {
+        this.username = await generate({ adjectives: 1, format: "title" });
         return this;
     }
 
-    private setRandomColor() {
+    public setRandomColor() {
         this.color = "some random color";
         return this;
     }

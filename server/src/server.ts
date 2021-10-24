@@ -4,16 +4,11 @@ import { join } from "path";
 import express from "express";
 import { Server } from "socket.io";
 import cors from "cors";
-import { validate, v4 as uuidv4 } from "uuid"; // uuid has no default export
+import { validate } from "uuid"; // uuid has no default export
 import { Room } from "./Room";
 import { IMessage } from "../@types/message";
 import { Socket } from "./Socket";
 import { WS } from "./WS";
-import generate from "@nwlongnecker/adjective-adjective-animal";
-
-// console.log(
-//     generate({ adjectives: 1, format: "title" }).then((e) => console.log(e))
-// );
 
 const clientPath = join(__dirname, "../../client");
 const { PORT } = process.env;
@@ -37,9 +32,12 @@ export const io = new Server(server, {
 
 export const ws = new WS();
 
-io.on("connection", (socket) => {
-    const _socket = new Socket(socket.id);
+io.on("connection", async (socket) => {
+    const _socket = new Socket(socket.id).setRandomColor();
+    await _socket.setRandomName();
     ws.addSocket(_socket);
+
+    console.log(_socket.dto);
 
     socket.on("message:send", ({ roomId, body, id }: IMessage) => {
         const room = ws.getRoom(roomId);
