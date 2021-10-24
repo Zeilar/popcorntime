@@ -1,11 +1,15 @@
 import { Room } from "./Room";
 import { Socket as S } from "socket.io";
 import { ws } from "./server";
+import { Color } from "../@types/color";
+import generate from "@nwlongnecker/adjective-adjective-animal";
+
+console.log(generate);
 
 export class Socket {
     public roomId: string | null;
     public username: string;
-    public color: string; // make type Color
+    public color: Color;
     public ref: S | undefined;
 
     constructor(public readonly id: string) {

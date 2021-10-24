@@ -9,6 +9,11 @@ import { Room } from "./Room";
 import { IMessage } from "../@types/message";
 import { Socket } from "./Socket";
 import { WS } from "./WS";
+import generate from "@nwlongnecker/adjective-adjective-animal";
+
+// console.log(
+//     generate({ adjectives: 1, format: "title" }).then((e) => console.log(e))
+// );
 
 const clientPath = join(__dirname, "../../client");
 const { PORT } = process.env;
@@ -16,7 +21,7 @@ const { PORT } = process.env;
 export const app = express();
 
 // Global middlewares
-app.use(express.static(clientPath), cors({ origin: "http://localhost:3000" })); // TODO: remove cors in production
+app.use(express.static(clientPath), cors({ origin: "*" })); // TODO: remove cors in production
 
 app.get("/*", (req, res) => {
     res.sendFile(`${clientPath}\\index.html`);
@@ -27,18 +32,12 @@ const server = app.listen(PORT, () => {
 });
 
 export const io = new Server(server, {
-    cors: { origin: "http://localhost:3000" }, // TODO: remove cors in production
+    cors: { origin: "*" }, // TODO: remove cors in production
 });
 
 export const ws = new WS();
 
 io.on("connection", (socket) => {
-    /*
-     * socket.io puts every socket in its own private room by default
-     * we don't want that, despite not really using socket.io's room system
-     */
-    socket.leave(socket.id);
-
     const _socket = new Socket(socket.id);
     ws.addSocket(_socket);
 
@@ -89,7 +88,7 @@ io.on("connection", (socket) => {
         const room = ws.getRoom(roomId);
 
         if (!room) {
-            return socket.emit("error", "That room could not be found.");
+            return socket.emit("error", "That room does not exist.");
         }
 
         if (room.sockets.length >= Room.MAX_SOCKETS) {
@@ -105,20 +104,10 @@ io.on("connection", (socket) => {
 
         _socket.join(room);
 
+        // For the user that just joined, so they get the correct username/color etc
         socket.emit("room:join", room.socketsDto);
 
-        // TODO: make sockets anonymous names like "Anonymous Crocodile",
-        // but the actual name variable does not contain "Anonymous", append that in frontend
-
-        console.log(
-            "send room:socket:join to everyone but",
-            [socket.id],
-            "room:",
-            io.sockets.adapter.rooms.get(room.id)
-        );
-
         socket.to(room.id).emit("room:socket:join", _socket.dto);
-        socket.to(room.id).emit("room:socket:update", room.socketsDto);
     });
 
     socket.on("room:leave", (roomId: string) => {
