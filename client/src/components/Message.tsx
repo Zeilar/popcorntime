@@ -19,7 +19,6 @@ export default function Message({ message }: IProps) {
     const notSentStyling: any = message.notSent
         ? {
               opacity: 0.25,
-              pointerEvents: "none",
               userSelect: "none",
           }
         : {};
@@ -48,7 +47,13 @@ export default function Message({ message }: IProps) {
             _first={{ marginTop: 0 }}
             bgColor={`${message.socket.color}.900`}
         >
-            <Box pos="relative" w="2.5rem" h="2.5rem" mr="0.5rem">
+            <Box
+                pos="relative"
+                w="2.5rem"
+                h="2.5rem"
+                mr="0.5rem"
+                title={message.socket.username}
+            >
                 <AbsoluteCenter
                     w="100%"
                     h="100%"
