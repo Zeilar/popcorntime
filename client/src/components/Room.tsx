@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Redirect, useParams } from "react-router";
 import { ISocket } from "../../@types/socket";
 import { socket } from "./App";

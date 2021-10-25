@@ -1,6 +1,6 @@
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import { io } from "socket.io-client";
-import { HOST } from "../config/host";
+import { WS_HOST } from "../config/host";
 import Home from "./Home";
 import Room from "./Room";
 import { useEffect, useState } from "react";
@@ -10,13 +10,40 @@ import { Spinner } from "@chakra-ui/spinner";
 
 export const socket = io(HOST);
 
+export const socket = io(WS_HOST);
+
 export default function App() {
     const [me, setMe] = useState<ISocket>();
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | undefined>();
 
     useEffect(() => {
         socket.on("error", (error: string) => {
             toast.error(error);
+        });
+
+        socket.on("connect_failed", (error: any) => {
+            console.error(error);
+            // TODO: error handling
+            setLoading(false);
+        });
+        socket.on("connect_error", (error: any) => {
+            console.error(error);
+            // TODO: error handling
+            setError(error);
+            setLoading(false);
+        });
+        socket.on("disconnect", (error: string) => {
+            console.error(error);
+            // TODO: error handling
+            setError(error);
+            setLoading(false);
+        });
+
+        socket.on("connection:error", (error: string) => {
+            toast.error(error);
+            setError(error);
+            setLoading(false);
         });
 
         socket.on("connection:success", (socket: ISocket) => {
@@ -25,15 +52,14 @@ export default function App() {
             setLoading(false);
         });
 
-        socket.on("connection:error", (error: string) => {
-            toast.error(error);
-            setLoading(false);
-        });
-
         return () => {
             socket.removeAllListeners();
         };
     }, []);
+
+    if (error) {
+        return <h1>Oh dear {JSON.stringify(error)}</h1>;
+    }
 
     if (loading) {
         return <Spinner color="accent" />;
