@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from "uuid";
 import { IMessage } from "../../@types/message";
 import { ISocket } from "../../@types/socket";
 import { socket } from "./App";
+import Message from "./Message";
 
 interface IProps {
     roomId: string;
@@ -65,15 +66,14 @@ export default function Chat({ roomId, sockets, me }: IProps) {
     }
 
     return (
-        <Flex flexDir="column" bgColor="gray.800">
+        <Flex
+            flexDir="column"
+            bgColor="gray.800"
+            overflowY="auto"
+            overflowX="hidden"
+        >
             {messages.map((message) => (
-                <Box
-                    key={message.id}
-                    className={message.notSent ? "not-sent" : undefined}
-                >
-                    {message.socket.username}: <strong>{message.body}</strong>{" "}
-                    {message.notSent && "NOT SENT"}
-                </Box>
+                <Message key={message.id} message={message} />
             ))}
             <Box as="form" onSubmit={sendMessage}>
                 <Input
