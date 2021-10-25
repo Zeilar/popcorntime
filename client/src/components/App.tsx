@@ -8,8 +8,6 @@ import { ISocket } from "../../@types/socket";
 import { toast } from "react-toastify";
 import { Spinner } from "@chakra-ui/spinner";
 
-export const socket = io(HOST);
-
 export const socket = io(WS_HOST);
 
 export default function App() {
