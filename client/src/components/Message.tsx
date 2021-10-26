@@ -56,7 +56,14 @@ export default function Message({ message }: IProps) {
                 openDelay={150}
                 placement="top"
             >
-                <Box pos="relative" w="2.5rem" h="2.5rem" mr="0.5rem">
+                <Box
+                    pos="relative"
+                    w="2.5rem"
+                    h="2.5rem"
+                    mr="0.5rem"
+                    alignSelf="flex-start"
+                    flexShrink={0}
+                >
                     <AbsoluteCenter
                         w="100%"
                         h="100%"
