@@ -66,7 +66,7 @@ export default function Chat({ roomId, sockets, me }: IProps) {
 
     useEffect(() => {
         scrollChat.current = false;
-        chatElement.current?.scrollTo({ top: 9999 });
+        chatElement.current?.scrollTo({ top: 9999, behavior: "smooth" });
     }, [messages]);
 
     if (!isOpen) {
