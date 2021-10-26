@@ -1,4 +1,5 @@
 import { AbsoluteCenter, Box, Flex, FlexProps, Text } from "@chakra-ui/layout";
+import { Tooltip } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { IMessage } from "../../@types/message";
 import { socket } from "./App";
@@ -18,7 +19,6 @@ export default function Message({ message }: IProps) {
     // Using Chakra FlexProps type for some reason won't work
     const notSentStyling: any = message.notSent
         ? {
-              title: "Message could not be sent.",
               opacity: 0.25,
               userSelect: "none",
           }
@@ -48,29 +48,29 @@ export default function Message({ message }: IProps) {
             _first={{ marginTop: 0 }}
             bgColor={`${message.socket.color}.900`}
         >
-            <Box
-                pos="relative"
-                w="2.5rem"
-                h="2.5rem"
-                mr="0.5rem"
-                title={message.socket.username}
+            <Tooltip
+                label={message.socket.username}
+                bgColor="brand"
+                placement="top"
             >
-                <AbsoluteCenter
-                    w="100%"
-                    h="100%"
-                    as="span"
-                    userSelect="none"
-                    rounded="full"
-                    display="flex"
-                    justifyContent="center"
-                    alignItems="center"
-                    fontWeight="600"
-                    letterSpacing={2}
-                    bgColor={`${message.socket.color}.600`}
-                >
-                    {shortenUsername(message.socket.username)}
-                </AbsoluteCenter>
-            </Box>
+                <Box pos="relative" w="2.5rem" h="2.5rem" mr="0.5rem">
+                    <AbsoluteCenter
+                        w="100%"
+                        h="100%"
+                        as="span"
+                        userSelect="none"
+                        rounded="full"
+                        display="flex"
+                        justifyContent="center"
+                        alignItems="center"
+                        fontWeight="600"
+                        letterSpacing={2}
+                        bgColor={`${message.socket.color}.600`}
+                    >
+                        {shortenUsername(message.socket.username)}
+                    </AbsoluteCenter>
+                </Box>
+            </Tooltip>
             <Text>{message.body}</Text>
         </MotionBox>
     );
