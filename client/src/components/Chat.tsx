@@ -16,15 +16,21 @@ interface IProps {
 
 export default function Chat({ roomId, sockets, me }: IProps) {
     const [isOpen, setIsOpen] = useState(true); // useLocalStorage for initial value
-    const [input, setInput] = useState("");
     const [messages, setMessages] = useState<IMessage[]>([]);
     const scrollChat = useRef<boolean>(true);
     const chatElement = useRef<HTMLDivElement>(null);
+    const input = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
         socket.on("message:new", (message: IMessage) => {
             scrollChat.current = true;
-            setMessages((messages) => [...messages, message]);
+            setMessages((messages) => {
+                const array = [...messages, message];
+                if (array.length > 30) {
+                    array.shift();
+                }
+                return array;
+            });
         });
 
         socket.on("message:error", (payload: { id: string; error: string }) => {
@@ -54,18 +60,22 @@ export default function Chat({ roomId, sockets, me }: IProps) {
 
     function sendMessage(e: FormEvent) {
         e.preventDefault();
-        setInput("");
-        if (!input) {
+        if (!input.current) {
             return;
         }
+        const body = input.current.value;
+        if (!body) {
+            return;
+        }
+        input.current.value = "";
         const message: IMessage = {
-            body: input,
+            body,
             created_at: new Date(),
             id: uuidv4(),
             socket: me,
         };
         setMessages((messages) => [...messages, message]);
-        socket.emit("message:send", { roomId, body: input, id: message.id });
+        socket.emit("message:send", { roomId, body, id: message.id });
     }
 
     useEffect(() => {
@@ -73,35 +83,34 @@ export default function Chat({ roomId, sockets, me }: IProps) {
         chatElement.current?.scrollTo({ top: 9999, behavior: "smooth" });
     }, [messages]);
 
+    console.log("should scroll", scrollChat.current);
+
     if (!isOpen) {
         return null;
     }
 
     return (
-        <Flex
-            flexDir="column"
-            bgColor="gray.800"
-            overflowY="auto"
-            overflowX="hidden"
-            p="1rem"
-            ref={chatElement}
-        >
-            {messages.map((message) => (
-                <Message key={message.id} message={message} />
-            ))}
-            <Box as="form" onSubmit={sendMessage}>
-                <Input
-                    value={input}
-                    onChange={(e) => setInput(e.target.value)}
-                />
-            </Box>
-            <Flex flexDir="column" gridGap="1rem">
-                {sockets.map((socket) => (
-                    <Box key={socket.id} bgColor={`${socket.color}.800`}>
-                        {socket.username}
-                    </Box>
+        <Flex flexDir="column" h="100vh" bgColor="gray.900">
+            <Flex
+                flexDir="column"
+                overflowY="auto"
+                overflowX="hidden"
+                p="1rem"
+                ref={chatElement}
+            >
+                {messages.map((message) => (
+                    <Message key={message.id} message={message} />
                 ))}
             </Flex>
+            <Box
+                as="form"
+                onSubmit={sendMessage}
+                mt="auto"
+                p="1rem"
+                bgColor="gray.800"
+            >
+                <Input ref={input} />
+            </Box>
         </Flex>
     );
 }

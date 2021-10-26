@@ -1,4 +1,4 @@
-import { AbsoluteCenter, Box, Flex, FlexProps } from "@chakra-ui/layout";
+import { AbsoluteCenter, Box, Flex, FlexProps, Text } from "@chakra-ui/layout";
 import { motion } from "framer-motion";
 import { IMessage } from "../../@types/message";
 import { socket } from "./App";
@@ -70,7 +70,7 @@ export default function Message({ message }: IProps) {
                     {shortenUsername(message.socket.username)}
                 </AbsoluteCenter>
             </Box>
-            {message.body}
+            <Text>{message.body}</Text>
         </MotionBox>
     );
 }

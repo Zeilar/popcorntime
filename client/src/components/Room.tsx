@@ -3,9 +3,8 @@ import { Redirect, useParams } from "react-router";
 import { ISocket } from "../../@types/socket";
 import { socket } from "./App";
 import ReactPlayer from "react-player";
-import { PrimaryButton } from "./styles/button";
 import { toast } from "react-toastify";
-import { Box, Flex, Grid } from "@chakra-ui/layout";
+import { Box, Grid } from "@chakra-ui/layout";
 import Chat from "./Chat";
 import { validate } from "uuid";
 
@@ -48,9 +47,6 @@ export default function Room({ me }: IProps) {
             toast.success("Joined room.");
             setSockets(payload.sockets);
             setIsConnected(true);
-        });
-        socket.on("room:socket:update", (sockets: ISocket[]) => {
-            setSockets(sockets);
         });
         socket.on("room:socket:join", (socket: ISocket) => {
             setSockets((sockets) => [...sockets, socket]);
@@ -95,19 +91,16 @@ export default function Room({ me }: IProps) {
     }
 
     return (
-        <Flex m="auto" w="100%" h="100%" p="5%">
-            <PrimaryButton onClick={addVideo}>Add video</PrimaryButton>
-            <Grid w="100%" gridTemplateColumns="75% 25%" gridGap="2rem">
-                <Box w="100%">
-                    <ReactPlayer
-                        width="100%"
-                        height="100%"
-                        ref={player}
-                        url={playlist[0] || defaultVideo}
-                    />
-                </Box>
-                <Chat roomId={roomId} sockets={sockets} me={me} />
-            </Grid>
-        </Flex>
+        <Grid w="100%" gridTemplateColumns="75% 25%">
+            <Box>
+                <ReactPlayer
+                    width="100%"
+                    height="100%"
+                    ref={player}
+                    url={playlist[0] || defaultVideo}
+                />
+            </Box>
+            <Chat roomId={roomId} sockets={sockets} me={me} />
+        </Grid>
     );
 }
