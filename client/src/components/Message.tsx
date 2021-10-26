@@ -25,7 +25,7 @@ export default function Message({ message }: IProps) {
 
     // Don't animate user's own messages
     const animationStyling =
-        message.socket.id === socket.id
+        message.socket.id !== socket.id
             ? {
                   animate: {
                       opacity: [0.75, 1],
