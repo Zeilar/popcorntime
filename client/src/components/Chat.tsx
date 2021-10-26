@@ -1,6 +1,7 @@
 import { Input } from "@chakra-ui/input";
 import { Box, Flex } from "@chakra-ui/layout";
-import { FormEvent, useEffect, useRef, useState } from "react";
+import { Textarea } from "@chakra-ui/textarea";
+import { FormEvent, KeyboardEvent, useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
 import { IMessage } from "../../@types/message";
@@ -19,7 +20,7 @@ export default function Chat({ roomId, sockets, me }: IProps) {
     const [messages, setMessages] = useState<IMessage[]>([]);
     const scrollChat = useRef<boolean>(true);
     const chatElement = useRef<HTMLDivElement>(null);
-    const input = useRef<HTMLInputElement>(null);
+    const input = useRef<HTMLTextAreaElement>(null);
 
     useEffect(() => {
         socket.on("message:new", (message: IMessage) => {
@@ -58,8 +59,7 @@ export default function Chat({ roomId, sockets, me }: IProps) {
         };
     }, []);
 
-    function sendMessage(e: FormEvent) {
-        e.preventDefault();
+    function sendMessage() {
         if (!input.current) {
             return;
         }
@@ -76,6 +76,13 @@ export default function Chat({ roomId, sockets, me }: IProps) {
         };
         setMessages((messages) => [...messages, message]);
         socket.emit("message:send", { roomId, body, id: message.id });
+    }
+
+    function inputHandler(e: KeyboardEvent) {
+        if (!e.shiftKey && e.key === "Enter") {
+            e.preventDefault();
+            sendMessage();
+        }
     }
 
     useEffect(() => {
@@ -107,7 +114,12 @@ export default function Chat({ roomId, sockets, me }: IProps) {
                 p="1rem"
                 bgColor="gray.800"
             >
-                <Input ref={input} placeholder="Send a message" />
+                <Textarea
+                    onKeyDown={inputHandler}
+                    ref={input}
+                    placeholder="Send a message"
+                    resize="none"
+                />
             </Box>
         </Flex>
     );
