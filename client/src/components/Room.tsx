@@ -44,9 +44,9 @@ export default function Room({ me }: IProps) {
         }
 
         socket.emit("room:join", roomId);
-        socket.once("room:join", (sockets: ISocket[]) => {
+        socket.once("room:join", (payload: { sockets: ISocket[] }) => {
             toast.success("Joined room.");
-            setSockets(sockets);
+            setSockets(payload.sockets);
             setIsConnected(true);
         });
         socket.on("room:socket:update", (sockets: ISocket[]) => {

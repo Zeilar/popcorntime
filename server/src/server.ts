@@ -112,7 +112,10 @@ io.on("connection", async (socket) => {
         _socket.join(room);
 
         // For the user that just joined, so they get the correct username/color etc
-        socket.emit("room:join", room.socketsDto);
+        socket.emit("room:join", {
+            sockets: room.socketsDto,
+            messages: room.messages,
+        });
 
         socket.to(room.id).emit("room:socket:join", _socket.dto);
     });

@@ -43,8 +43,12 @@ export default function Chat({ roomId, sockets, me }: IProps) {
             toast.error(payload.error);
         });
 
+        socket.once("room:join", (payload: { messages: IMessage[] }) => {
+            setMessages(payload.messages);
+        });
+
         return () => {
-            socket.off("message:new").off("message:error");
+            socket.off("message:new").off("message:error").off("room:join");
         };
     }, []);
 
