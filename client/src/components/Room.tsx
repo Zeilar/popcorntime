@@ -89,7 +89,7 @@ export default function Room({ me }: IProps) {
     if (!validate(roomId)) {
         toast.error(
             "Invalid room id. Please click the button to generate one.",
-            { toastId: "invalid-room-id" } // For some reason this toast fires twice, prevent this with id
+            { toastId: "invalid:room:id" } // For some reason this toast fires twice, prevent this with id
         );
         return <Redirect to="/" />;
     }

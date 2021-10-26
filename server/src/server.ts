@@ -120,11 +120,9 @@ io.on("connection", async (socket) => {
 
     socket.on("room:leave", (roomId: string) => {
         const room = ws.getRoom(roomId);
-        if (!room) {
-            return;
+        if (room) {
+            _socket.leave(room);
         }
-        _socket.leave(room);
-        socket.to(room.id).emit("room:socket:leave", _socket.dto);
     });
 
     socket.on("disconnect", () => {
@@ -132,7 +130,6 @@ io.on("connection", async (socket) => {
         // If user was not part of a room when they leave, no need to do anything
         if (room) {
             _socket.leave(room);
-            io.to(room.id).emit("room:socket:leave", _socket.dto);
         }
     });
 });

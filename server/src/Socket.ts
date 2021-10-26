@@ -40,6 +40,7 @@ export class Socket {
         if (room.sockets.length <= 0) {
             ws.removeRoom(room);
         }
+        this.ref?.to(room.id).emit("room:socket:leave", this.dto);
         this.roomId = null;
         return this;
     }

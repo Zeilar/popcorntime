@@ -13,7 +13,7 @@ export const socket = io(WS_HOST);
 export default function App() {
     const [me, setMe] = useState<ISocket>();
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | undefined>();
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         socket.on("error", (error: string) => {
@@ -48,6 +48,7 @@ export default function App() {
             toast.success(`Welcome ${socket.username}`);
             setMe(socket);
             setLoading(false);
+            setError(null);
         });
 
         return () => {

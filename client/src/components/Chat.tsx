@@ -71,6 +71,7 @@ export default function Chat({ roomId, sockets, me }: IProps) {
             bgColor="gray.800"
             overflowY="auto"
             overflowX="hidden"
+            p="1rem"
         >
             {messages.map((message) => (
                 <Message key={message.id} message={message} />
