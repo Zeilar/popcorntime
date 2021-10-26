@@ -107,7 +107,7 @@ export default function Chat({ roomId, sockets, me }: IProps) {
                 p="1rem"
                 bgColor="gray.800"
             >
-                <Input ref={input} />
+                <Input ref={input} placeholder="Send a message" />
             </Box>
         </Flex>
     );
