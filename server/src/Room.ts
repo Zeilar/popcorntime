@@ -36,7 +36,7 @@ export class Room {
     }
 
     public sendMessage(socket: S, message: IMessage) {
-        socket.to(this.id).emit("message:send", message);
+        socket.to(this.id).emit("message:new", message);
         this.messages.push(message);
         if (this.messages.length > Room.MAX_MESSAGES) {
             this.messages.splice(0, 1);
