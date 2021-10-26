@@ -18,6 +18,7 @@ export default function Message({ message }: IProps) {
     // Using Chakra FlexProps type for some reason won't work
     const notSentStyling: any = message.notSent
         ? {
+              title: "Message could not be sent.",
               opacity: 0.25,
               userSelect: "none",
           }
