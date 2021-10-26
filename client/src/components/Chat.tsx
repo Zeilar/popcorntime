@@ -1,6 +1,6 @@
 import { Input } from "@chakra-ui/input";
 import { Box, Flex } from "@chakra-ui/layout";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
 import { IMessage } from "../../@types/message";
@@ -18,9 +18,12 @@ export default function Chat({ roomId, sockets, me }: IProps) {
     const [isOpen, setIsOpen] = useState(true); // useLocalStorage for initial value
     const [input, setInput] = useState("");
     const [messages, setMessages] = useState<IMessage[]>([]);
+    const scrollChat = useRef<boolean>(true);
+    const chatElement = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         socket.on("message:new", (message: IMessage) => {
+            scrollChat.current = true;
             setMessages((messages) => [...messages, message]);
         });
 
@@ -45,10 +48,6 @@ export default function Chat({ roomId, sockets, me }: IProps) {
         };
     }, []);
 
-    if (!isOpen) {
-        return null;
-    }
-
     function sendMessage(e: FormEvent) {
         e.preventDefault();
         setInput("");
@@ -65,6 +64,15 @@ export default function Chat({ roomId, sockets, me }: IProps) {
         socket.emit("message:send", { roomId, body: input, id: message.id });
     }
 
+    useEffect(() => {
+        scrollChat.current = false;
+        chatElement.current?.scrollTo({ top: 9999 });
+    }, [messages]);
+
+    if (!isOpen) {
+        return null;
+    }
+
     return (
         <Flex
             flexDir="column"
@@ -72,6 +80,7 @@ export default function Chat({ roomId, sockets, me }: IProps) {
             overflowY="auto"
             overflowX="hidden"
             p="1rem"
+            ref={chatElement}
         >
             {messages.map((message) => (
                 <Message key={message.id} message={message} />
