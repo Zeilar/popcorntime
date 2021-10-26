@@ -83,8 +83,6 @@ export default function Chat({ roomId, sockets, me }: IProps) {
         chatElement.current?.scrollTo({ top: 9999, behavior: "smooth" });
     }, [messages]);
 
-    console.log("should scroll", scrollChat.current);
-
     if (!isOpen) {
         return null;
     }
