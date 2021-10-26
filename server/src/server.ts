@@ -33,8 +33,7 @@ export const io = new Server(server, {
 export const ws = new WS();
 
 io.on("connection", async (socket) => {
-    const _socket = new Socket(socket.id).setRandomColor();
-    await _socket.setRandomName();
+    const _socket = await new Socket(socket.id).generate();
     ws.addSocket(_socket);
     socket.emit("connection:success", _socket.dto);
 

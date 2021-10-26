@@ -45,13 +45,17 @@ export class Socket {
         return this;
     }
 
-    public async setRandomName() {
-        this.username = await generate({ adjectives: 1, format: "title" });
+    public async generate() {
+        this.setRandomColor();
+        await this.setRandomName();
         return this;
     }
 
-    public setRandomColor() {
+    private async setRandomName() {
+        this.username = await generate({ adjectives: 1, format: "title" });
+    }
+
+    private setRandomColor() {
         this.color = colors[Math.floor(Math.random() * colors.length)];
-        return this;
     }
 }
