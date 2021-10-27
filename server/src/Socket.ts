@@ -4,7 +4,7 @@ import { ws } from "./server";
 import { Color } from "../@types/color";
 import generate from "@nwlongnecker/adjective-adjective-animal";
 import { ISocketDto } from "../@types/socket";
-import { colors } from "./data/colors";
+import { colors } from "../data/colors";
 
 export class Socket {
     public roomId: string | null;
@@ -25,24 +25,19 @@ export class Socket {
     }
 
     public get room() {
-        return ws.getRoom(this.roomId);
+        return ws.rooms.get(this.roomId ?? "");
     }
 
     public join(room: Room) {
         this.ref?.join(room.id);
         room.add(this);
         this.roomId = room.id;
-        return this;
     }
 
     public leave(room: Room) {
         room.remove(this);
-        if (room.sockets.length <= 0) {
-            ws.removeRoom(room);
-        }
         this.ref?.to(room.id).emit("room:socket:leave", this.dto);
         this.roomId = null;
-        return this;
     }
 
     public async generate() {

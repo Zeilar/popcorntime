@@ -24,7 +24,7 @@ export const theme = extendTheme({
             },
             body: {
                 height: "100vh",
-                backgroundColor: "gray.900",
+                backgroundColor: "blackAlpha.900",
                 overflow: "hidden",
                 "::-webkit-scrollbar-thumb": {
                     backgroundClip: "padding-box",

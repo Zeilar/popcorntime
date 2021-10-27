@@ -1,5 +1,5 @@
 import { IMessage } from "../@types/message";
-import { io } from "./server";
+import { io, ws } from "./server";
 import { Socket } from "./Socket";
 import { Socket as S } from "socket.io";
 
@@ -12,6 +12,13 @@ export class Room {
 
     constructor(public readonly id: string) {
         this.ref = io.sockets.adapter.rooms.get(id);
+    }
+
+    public addMessage(message: IMessage) {
+        if (this.messages.length >= Room.MAX_MESSAGES) {
+            this.messages.shift();
+        }
+        this.messages.push(message);
     }
 
     public get socketsDto() {
@@ -33,13 +40,13 @@ export class Room {
         this.sockets = this.sockets.filter(
             (element) => element.id !== socket.id
         );
+        if (this.sockets.length <= 0) {
+            ws.removeRoom(this);
+        }
     }
 
     public sendMessage(socket: S, message: IMessage) {
         socket.to(this.id).emit("message:new", message);
-        this.messages.push(message);
-        if (this.messages.length > Room.MAX_MESSAGES) {
-            this.messages.splice(0, 1);
-        }
+        this.addMessage(message);
     }
 }

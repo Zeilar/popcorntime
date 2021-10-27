@@ -95,7 +95,7 @@ export default function Chat({ roomId, sockets, me }: IProps) {
     }
 
     return (
-        <Flex flexDir="column" h="100vh" bgColor="gray.900">
+        <Flex flexDir="column" h="100vh">
             <Flex
                 flexDir="column"
                 overflowY="auto"
@@ -112,7 +112,7 @@ export default function Chat({ roomId, sockets, me }: IProps) {
                 onSubmit={sendMessage}
                 mt="auto"
                 p="1rem"
-                bgColor="gray.800"
+                bgColor="gray.900"
             >
                 <Textarea
                     onKeyDown={inputHandler}

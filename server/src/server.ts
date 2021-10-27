@@ -38,7 +38,7 @@ io.on("connection", async (socket) => {
     socket.emit("connection:success", _socket.dto);
 
     socket.on("message:send", ({ roomId, body, id }: IMessage) => {
-        const room = ws.getRoom(roomId);
+        const room = ws.rooms.get(roomId ?? "");
 
         if (!room) {
             return socket.emit("message:error", {
@@ -92,7 +92,7 @@ io.on("connection", async (socket) => {
             return socket.emit("error", "Invalid room id.");
         }
 
-        const room = ws.getRoom(roomId);
+        const room = ws.rooms.get(roomId);
 
         if (!room) {
             return socket.emit("error", "That room does not exist.");
@@ -121,7 +121,7 @@ io.on("connection", async (socket) => {
     });
 
     socket.on("room:leave", (roomId: string) => {
-        const room = ws.getRoom(roomId);
+        const room = ws.rooms.get(roomId);
         if (room) {
             _socket.leave(room);
         }
