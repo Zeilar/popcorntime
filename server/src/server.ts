@@ -105,10 +105,6 @@ io.on("connection", async (socket) => {
             );
         }
 
-        // for getting random color:
-        // filter out the colors that are not picked by anyone in the room and assign a random of those
-        // if filter is empty, pick any random
-
         _socket.join(room);
 
         // For the user that just joined, so they get the correct username/color etc

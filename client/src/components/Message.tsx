@@ -51,7 +51,6 @@ export default function Message({ message }: IProps) {
             <Tooltip
                 label={message.socket.username}
                 bgColor={`${message.socket.color}.500`}
-                fontWeight={600}
                 fontSize="large"
                 openDelay={150}
                 placement="top"

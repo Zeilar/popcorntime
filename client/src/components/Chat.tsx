@@ -1,13 +1,12 @@
-import { Input } from "@chakra-ui/input";
 import { Box, Flex } from "@chakra-ui/layout";
-import { Textarea } from "@chakra-ui/textarea";
-import { FormEvent, KeyboardEvent, useEffect, useRef, useState } from "react";
+import { KeyboardEvent, useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
 import { IMessage } from "../../@types/message";
 import { ISocket } from "../../@types/socket";
 import { socket } from "./App";
 import Message from "./Message";
+import Textarea from "./styles/Textarea";
 
 interface IProps {
     roomId: string;
@@ -95,12 +94,13 @@ export default function Chat({ roomId, sockets, me }: IProps) {
     }
 
     return (
-        <Flex flexDir="column" h="100vh">
+        <Flex flexDir="column" h="100vh" bgColor="whiteAlpha.100">
             <Flex
+                className="custom-scrollbar"
                 flexDir="column"
                 overflowY="auto"
                 overflowX="hidden"
-                p="1rem"
+                p="0.25rem"
                 ref={chatElement}
             >
                 {messages.map((message) => (
@@ -112,11 +112,11 @@ export default function Chat({ roomId, sockets, me }: IProps) {
                 onSubmit={sendMessage}
                 mt="auto"
                 p="1rem"
-                bgColor="gray.900"
+                bgColor="whiteAlpha.50"
             >
                 <Textarea
                     onKeyDown={inputHandler}
-                    ref={input}
+                    forwardRef={input}
                     placeholder="Send a message"
                     resize="none"
                 />

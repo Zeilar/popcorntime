@@ -27,8 +27,10 @@ export const theme = extendTheme({
                 backgroundColor: "blackAlpha.900",
                 overflow: "hidden",
                 "::-webkit-scrollbar-thumb": {
+                    backgroundColor: colors.brand,
                     backgroundClip: "padding-box",
                     border: "4px solid transparent",
+                    borderRadius: 100,
                 },
             },
             "#root": {
@@ -42,8 +44,10 @@ export const theme = extendTheme({
                 width: "0.9rem",
                 height: "0.5rem",
             },
-            "::-webkit-scrollbar-thumb": {
+            ".custom-scrollbar::-webkit-scrollbar-thumb": {
                 backgroundColor: colors.brand,
+                backgroundClip: "padding-box",
+                border: "4px solid transparent",
                 borderRadius: 100,
             },
         },
