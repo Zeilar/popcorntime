@@ -8,6 +8,7 @@ export class Room {
     public static readonly MAX_MESSAGES = 30;
     public sockets: Socket[] = [];
     public messages: IMessage[] = [];
+    public playlist: string[] = ["68ugkg9RePc"]; // YouTube video ids
     public ref: Set<string> | undefined;
 
     constructor(public readonly id: string) {

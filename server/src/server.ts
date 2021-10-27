@@ -111,9 +111,19 @@ io.on("connection", async (socket) => {
         socket.emit("room:join", {
             sockets: room.socketsDto,
             messages: room.messages,
+            playlist: room.playlist,
         });
 
         socket.to(room.id).emit("room:socket:join", _socket.dto);
+    });
+
+    socket.on("video:play", () => {
+        const room = _socket.room;
+        if (!room) {
+            return socket.emit("error", "You must join a room to do that.");
+        }
+        // Make it so the sender gets this at the same time as the others to sync them better.
+        io.to(room.id).emit("video:play");
     });
 
     socket.on("room:leave", (roomId: string) => {

@@ -1,12 +1,15 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Redirect, useParams } from "react-router";
 import { ISocket } from "../../@types/socket";
 import { socket } from "./App";
-import ReactPlayer from "react-player";
+import YouTube from "react-youtube";
 import { toast } from "react-toastify";
 import { Box, Grid } from "@chakra-ui/layout";
 import Chat from "./Chat";
 import { validate } from "uuid";
+import { Flex } from "@chakra-ui/react";
+import { PrimaryButton } from "./styles/button";
+// import {} from "../../@types/youtube";
 
 interface IParams {
     roomId: string;
@@ -16,25 +19,23 @@ interface IProps {
     me: ISocket;
 }
 
-const defaultVideo = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"; // What video could this possibly be, I wonder
-
 export default function Room({ me }: IProps) {
     const { roomId } = useParams<IParams>();
     const [sockets, setSockets] = useState<ISocket[]>([]);
     const [playlist, setPlaylist] = useState<string[]>([]);
     const [playlistInput, setPlaylistInput] = useState("");
     const [isConnected, setIsConnected] = useState(false);
-    const player = useRef<ReactPlayer>(null);
+    const player = useRef<YouTube>(null);
+    const internalPlayer: YT.Player | undefined =
+        player.current?.getInternalPlayer();
 
-    function addVideo() {
-        const canPlay = ReactPlayer.canPlay(
-            "https://www.youtube.com/watch?v=ig44rDYo8IM&list=PLfGn95Njqu_SDNqqJdVZi3jq6ILi_pWgt&index=5"
-        );
-
-        if (!canPlay) {
-            return toast.warn("Invalid URL.");
-        }
+    function play() {
+        socket.emit("video:play");
     }
+
+    const getInternalPlayer = useCallback(() => {
+        return player.current?.getInternalPlayer() as YT.Player | undefined;
+    }, []);
 
     useEffect(() => {
         if (!validate(roomId)) {
@@ -43,11 +44,15 @@ export default function Room({ me }: IProps) {
         }
 
         socket.emit("room:join", roomId);
-        socket.once("room:join", (payload: { sockets: ISocket[] }) => {
-            toast.success("Joined room.");
-            setSockets(payload.sockets);
-            setIsConnected(true);
-        });
+        socket.once(
+            "room:join",
+            (payload: { sockets: ISocket[]; playlist: string[] }) => {
+                toast.success("Joined room.");
+                setSockets(payload.sockets);
+                setPlaylist(payload.playlist);
+                setIsConnected(true);
+            }
+        );
         socket.on("room:socket:join", (socket: ISocket) => {
             setSockets((sockets) => [...sockets, socket]);
             toast.info(`${socket.username} joined.`);
@@ -59,18 +64,26 @@ export default function Room({ me }: IProps) {
             toast.info(`${socket.username} left.`);
         });
 
+        socket.on("video:play", () => {
+            console.log(internalPlayer);
+            internalPlayer?.playVideo();
+            // console.log(getInternalPlayer());
+            // getInternalPlayer()?.playVideo();
+        });
+
         // Just to be safe
         return () => {
             socket.emit("room:leave", roomId);
             socket
                 .off("room:join")
                 .off("room:socket:leave")
-                .off("room:socket:join");
+                .off("room:socket:join")
+                .off("video:play");
             setSockets([]);
             setPlaylist([]);
             setPlaylistInput("");
         };
-    }, [roomId]);
+    }, [roomId, getInternalPlayer]);
 
     useEffect(() => {
         return () => {
@@ -92,14 +105,19 @@ export default function Room({ me }: IProps) {
 
     return (
         <Grid w="100%" gridTemplateColumns="75% 25%">
-            <Box>
-                <ReactPlayer
-                    width="100%"
-                    height="100%"
-                    ref={player}
-                    url={playlist[0] || defaultVideo}
-                />
-            </Box>
+            <Flex flexDir="column">
+                <Box flexGrow={1} sx={{ ".youtube": { height: "100%" } }}>
+                    <YouTube
+                        opts={{ width: "100%", height: "100%" }}
+                        ref={player}
+                        containerClassName="youtube"
+                        videoId={playlist[0]}
+                    />
+                </Box>
+                <Box bgColor="whiteAlpha.100">
+                    <PrimaryButton onClick={play}>Play</PrimaryButton>
+                </Box>
+            </Flex>
             <Chat roomId={roomId} sockets={sockets} me={me} />
         </Grid>
     );
