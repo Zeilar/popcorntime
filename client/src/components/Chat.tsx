@@ -1,5 +1,5 @@
 import { Box, Flex } from "@chakra-ui/layout";
-import { KeyboardEvent, useEffect, useRef, useState } from "react";
+import { KeyboardEvent, useCallback, useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
 import { IMessage } from "../../@types/message";
@@ -21,16 +21,20 @@ export default function Chat({ roomId, sockets, me }: IProps) {
     const chatElement = useRef<HTMLDivElement>(null);
     const input = useRef<HTMLTextAreaElement>(null);
 
+    function addMessage(message: IMessage) {
+        setMessages((messages) => {
+            const array = [...messages, message];
+            if (array.length > 30) {
+                array.shift();
+            }
+            return array;
+        });
+    }
+
     useEffect(() => {
         socket.on("message:new", (message: IMessage) => {
             scrollChat.current = true;
-            setMessages((messages) => {
-                const array = [...messages, message];
-                if (array.length > 30) {
-                    array.shift();
-                }
-                return array;
-            });
+            addMessage(message);
         });
 
         socket.on("message:error", (payload: { id: string; error: string }) => {
@@ -73,7 +77,7 @@ export default function Chat({ roomId, sockets, me }: IProps) {
             id: uuidv4(),
             socket: me,
         };
-        setMessages((messages) => [...messages, message]);
+        addMessage(message);
         socket.emit("message:send", { roomId, body, id: message.id });
     }
 
@@ -100,7 +104,7 @@ export default function Chat({ roomId, sockets, me }: IProps) {
                 flexDir="column"
                 overflowY="auto"
                 overflowX="hidden"
-                p="0.25rem"
+                p="0.5rem"
                 ref={chatElement}
             >
                 {messages.map((message) => (
