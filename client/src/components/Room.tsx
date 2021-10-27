@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Redirect, useParams } from "react-router";
 import { ISocket } from "../../@types/socket";
 import { socket } from "./App";
@@ -9,7 +9,6 @@ import Chat from "./Chat";
 import { validate } from "uuid";
 import { Flex } from "@chakra-ui/react";
 import { PrimaryButton } from "./styles/button";
-// import {} from "../../@types/youtube";
 
 interface IParams {
     roomId: string;
@@ -33,15 +32,14 @@ export default function Room({ me }: IProps) {
         socket.emit("video:play");
     }
 
-    const getInternalPlayer = useCallback(() => {
-        return player.current?.getInternalPlayer() as YT.Player | undefined;
-    }, []);
-
     useEffect(() => {
         if (!validate(roomId)) {
             // No need to toast here, the redirect further down takes care of that, this is just to stop unnecessary code from running
             return;
         }
+
+        const internalPlayer: YT.Player | undefined =
+            player.current?.getInternalPlayer();
 
         socket.emit("room:join", roomId);
         socket.once(
@@ -65,10 +63,7 @@ export default function Room({ me }: IProps) {
         });
 
         socket.on("video:play", () => {
-            console.log(internalPlayer);
             internalPlayer?.playVideo();
-            // console.log(getInternalPlayer());
-            // getInternalPlayer()?.playVideo();
         });
 
         // Just to be safe
@@ -83,7 +78,7 @@ export default function Room({ me }: IProps) {
             setPlaylist([]);
             setPlaylistInput("");
         };
-    }, [roomId, getInternalPlayer]);
+    }, [roomId]);
 
     useEffect(() => {
         return () => {

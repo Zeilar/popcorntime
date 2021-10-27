@@ -23,17 +23,20 @@ export default function App() {
         socket.on("connect_failed", (error: any) => {
             console.error(error);
             // TODO: error handling
+            toast.error("Something went wrong.");
             setLoading(false);
         });
         socket.on("connect_error", (error: any) => {
             console.error(error);
             // TODO: error handling
+            toast.error("Something went wrong.");
             setError(error);
             setLoading(false);
         });
         socket.on("disconnect", (error: string) => {
             console.error(error);
             // TODO: error handling
+            toast.error("Something went wrong.");
             setError(error);
             setLoading(false);
         });
