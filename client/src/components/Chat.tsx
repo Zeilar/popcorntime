@@ -3,6 +3,7 @@ import { KeyboardEvent, useCallback, useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
 import { IMessage } from "../../@types/message";
+import { IMetaData } from "../../@types/room";
 import { ISocket } from "../../@types/socket";
 import { socket } from "./App";
 import Message from "./Message";
@@ -14,9 +15,13 @@ interface IProps {
     me: ISocket;
 }
 
-export default function Chat({ roomId, sockets, me }: IProps) {
+export default function Chat({ roomId, me }: IProps) {
     const [isOpen, setIsOpen] = useState(true); // useLocalStorage for initial value
     const [messages, setMessages] = useState<IMessage[]>([]);
+    const [metaData, setMetaData] = useState<IMetaData>({
+        MAX_MESSAGES: 30,
+        MAX_SOCKETS: 10,
+    });
     const scrollChat = useRef<boolean>(true);
     const chatElement = useRef<HTMLDivElement>(null);
     const input = useRef<HTMLTextAreaElement>(null);
@@ -24,7 +29,7 @@ export default function Chat({ roomId, sockets, me }: IProps) {
     function addMessage(message: IMessage) {
         setMessages((messages) => {
             const array = [...messages, message];
-            if (array.length > 30) {
+            if (array.length > metaData.MAX_MESSAGES) {
                 array.shift();
             }
             return array;
@@ -53,9 +58,13 @@ export default function Chat({ roomId, sockets, me }: IProps) {
             toast.error(payload.error);
         });
 
-        socket.once("room:join", (payload: { messages: IMessage[] }) => {
-            setMessages(payload.messages);
-        });
+        socket.once(
+            "room:join",
+            (payload: { messages: IMessage[]; metaData: IMetaData }) => {
+                setMetaData(payload.metaData);
+                setMessages(payload.messages);
+            }
+        );
 
         return () => {
             socket.off("message:new").off("message:error").off("room:join");

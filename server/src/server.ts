@@ -112,7 +112,7 @@ io.on("connection", async (socket) => {
             sockets: room.socketsDto,
             messages: room.messages,
             playlist: room.playlist,
-            meta: {
+            metaData: {
                 MAX_SOCKETS: Room.MAX_SOCKETS,
                 MAX_MESSAGES: Room.MAX_MESSAGES,
             },
