@@ -112,6 +112,10 @@ io.on("connection", async (socket) => {
             sockets: room.socketsDto,
             messages: room.messages,
             playlist: room.playlist,
+            meta: {
+                MAX_SOCKETS: Room.MAX_SOCKETS,
+                MAX_MESSAGES: Room.MAX_MESSAGES,
+            },
         });
 
         socket.to(room.id).emit("room:socket:join", _socket.dto);
