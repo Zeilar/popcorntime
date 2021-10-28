@@ -16,11 +16,16 @@ export default function Home() {
 
     return (
         <Box h="100vh">
-            <AbsoluteCenter fill="brand">
+            <AbsoluteCenter
+                fill="brand"
+                display="flex"
+                flexDir="column"
+                alignItems="center"
+            >
+                <PopcornIcon width="3rem" />
                 <Text fontFamily="Poppins" color="brand">
                     Popcorn Time
                 </Text>
-                <PopcornIcon />
                 <PrimaryButton onClick={createRoom}>
                     Create new room
                 </PrimaryButton>
