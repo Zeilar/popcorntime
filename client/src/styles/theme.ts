@@ -1,9 +1,10 @@
 import "@fontsource/roboto/400.css";
 import "@fontsource/open-sans/600.css";
+import "@fontsource/poppins/600.css";
 import { extendTheme, ThemeConfig } from "@chakra-ui/react";
 
 const colors: Record<string, string> = {
-    brand: "#2F855A",
+    brand: "#ba1a27",
     "brand.light": "#33915f",
     "brand.dark": "#276749",
 };
