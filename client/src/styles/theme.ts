@@ -20,8 +20,8 @@ export const theme = extendTheme({
     styles: {
         global: {
             "::selection": {
-                backgroundColor: "blackAlpha.500",
-                color: colors.brand,
+                backgroundColor: "brand",
+                color: "whiteAlpha.900",
             },
             body: {
                 height: "100vh",
