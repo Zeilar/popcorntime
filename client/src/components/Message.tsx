@@ -50,10 +50,15 @@ export default function Message({ message }: IProps) {
         >
             <Tooltip
                 label={message.socket.username}
-                bgColor={`${message.socket.color}.500`}
+                bgColor="blackAlpha.100"
+                border="1px solid"
+                borderColor={`${message.socket.color}.500`}
+                color={`${message.socket.color}.500`}
                 fontSize="large"
                 openDelay={150}
                 placement="top"
+                fontWeight={600}
+                fontFamily="Poppins"
             >
                 <Box
                     pos="relative"
@@ -72,8 +77,9 @@ export default function Message({ message }: IProps) {
                         display="flex"
                         justifyContent="center"
                         alignItems="center"
-                        fontWeight="600"
                         letterSpacing={2}
+                        fontWeight={600}
+                        fontFamily="Open Sans"
                         bgColor={`${message.socket.color}.600`}
                     >
                         {shortenUsername(message.socket.username)}
