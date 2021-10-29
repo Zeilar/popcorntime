@@ -69,7 +69,7 @@ export default function Chat({ roomId, me }: IProps) {
         return () => {
             socket.off("message:new").off("message:error").off("room:join");
         };
-    }, []);
+    }, [addMessage]);
 
     function sendMessage() {
         if (!input.current) {
