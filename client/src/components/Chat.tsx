@@ -47,7 +47,7 @@ export default function Chat({ roomId, me }: IProps) {
 
         socket.on("message:error", (payload: { id: string; error: string }) => {
             setMessages((messages) =>
-                [...messages].map((message) => {
+                messages.map((message) => {
                     // If message already had en error, do nothing
                     if (message.notSent) {
                         return message;
