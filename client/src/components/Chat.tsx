@@ -26,15 +26,18 @@ export default function Chat({ roomId, me }: IProps) {
     const chatElement = useRef<HTMLDivElement>(null);
     const input = useRef<HTMLTextAreaElement>(null);
 
-    function addMessage(message: IMessage) {
-        setMessages((messages) => {
-            const array = [...messages, message];
-            if (array.length > metaData.MAX_MESSAGES) {
-                array.shift();
-            }
-            return array;
-        });
-    }
+    const addMessage = useCallback(
+        (message: IMessage) => {
+            setMessages((messages) => {
+                const array = [...messages, message];
+                if (array.length > metaData.MAX_MESSAGES) {
+                    array.shift();
+                }
+                return array;
+            });
+        },
+        [metaData.MAX_MESSAGES]
+    );
 
     useEffect(() => {
         socket.on("message:new", (message: IMessage) => {

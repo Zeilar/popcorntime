@@ -8,7 +8,7 @@ import { Box, Grid } from "@chakra-ui/layout";
 import Chat from "./Chat";
 import { validate } from "uuid";
 import { Flex } from "@chakra-ui/react";
-import { PrimaryButton } from "./styles/button";
+import { OutlineButton } from "./styles/button";
 
 interface IParams {
     roomId: string;
@@ -90,6 +90,8 @@ export default function Room({ me }: IProps) {
 
     // TODO: use "light" prop for playlist thumbnails
 
+    // TODO: have some button that shows room info (status, room id, sockets etc)
+
     if (!validate(roomId)) {
         toast.error(
             "Invalid room id. Please click the button to generate one.",
@@ -110,7 +112,7 @@ export default function Room({ me }: IProps) {
                     />
                 </Box>
                 <Box bgColor="whiteAlpha.100">
-                    <PrimaryButton onClick={play}>Play</PrimaryButton>
+                    <OutlineButton onClick={play}>Play</OutlineButton>
                 </Box>
             </Flex>
             <Chat roomId={roomId} sockets={sockets} me={me} />
