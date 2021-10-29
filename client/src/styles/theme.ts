@@ -4,9 +4,9 @@ import "@fontsource/poppins/600.css";
 import { extendTheme, ThemeConfig } from "@chakra-ui/react";
 
 const colors: Record<string, string> = {
-    brand: "#ba1a27",
-    "brand.light": "#33915f",
-    "brand.dark": "#276749",
+    brand: "#9c162c",
+    "brand.light": "#da455e",
+    "brand.dark": "#7d1123",
 };
 
 const config: ThemeConfig = {
@@ -25,7 +25,7 @@ export const theme = extendTheme({
             },
             body: {
                 height: "100vh",
-                backgroundColor: "blackAlpha.900",
+                backgroundColor: "black",
                 overflow: "hidden",
                 "::-webkit-scrollbar-thumb": {
                     backgroundColor: colors.brand,

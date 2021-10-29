@@ -10,7 +10,8 @@ export function PrimaryButton({ children, ...props }: Props) {
     return (
         <Button
             variant="solid"
-            backgroundColor="brand"
+            bgColor="brand"
+            bgImage={`linear-gradient(0deg, ${theme.colors.brand} 0%, ${theme.colors["brand.light"]} 100%);`}
             _hover={{ backgroundColor: "brand.light" }}
             _active={{ backgroundColor: "brand.light" }}
             _focus={{ boxShadow: `0 0 0 3px ${theme.colors["brand.dark"]}` }}
