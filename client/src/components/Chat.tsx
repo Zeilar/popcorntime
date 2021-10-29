@@ -107,7 +107,7 @@ export default function Chat({ roomId, me }: IProps) {
     }
 
     return (
-        <Flex flexDir="column" h="100vh" bgColor="whiteAlpha.100">
+        <Flex flexDir="column" h="100vh" bgColor="whiteAlpha.50">
             <Flex
                 className="custom-scrollbar"
                 flexDir="column"
@@ -120,13 +120,7 @@ export default function Chat({ roomId, me }: IProps) {
                     <Message key={message.id} message={message} />
                 ))}
             </Flex>
-            <Box
-                as="form"
-                onSubmit={sendMessage}
-                mt="auto"
-                p="1rem"
-                bgColor="whiteAlpha.50"
-            >
+            <Box as="form" onSubmit={sendMessage} mt="auto" p="1rem">
                 <Textarea
                     onKeyDown={inputHandler}
                     forwardRef={input}
