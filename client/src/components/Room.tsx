@@ -8,25 +8,19 @@ import { Box, Grid } from "@chakra-ui/layout";
 import Chat from "./Chat";
 import { validate } from "uuid";
 import { Flex } from "@chakra-ui/react";
-import { OutlineButton } from "./styles/button";
+import Button from "./styles/button";
 
 interface IParams {
     roomId: string;
 }
 
-interface IProps {
-    me: ISocket;
-}
-
-export default function Room({ me }: IProps) {
+export default function Room() {
     const { roomId } = useParams<IParams>();
     const [sockets, setSockets] = useState<ISocket[]>([]);
     const [playlist, setPlaylist] = useState<string[]>([]);
     const [playlistInput, setPlaylistInput] = useState("");
     const [isConnected, setIsConnected] = useState(false);
     const player = useRef<YouTube>(null);
-    const internalPlayer: YT.Player | undefined =
-        player.current?.getInternalPlayer();
 
     function play() {
         socket.emit("video:play");
@@ -112,10 +106,10 @@ export default function Room({ me }: IProps) {
                     />
                 </Box>
                 <Box bgColor="whiteAlpha.100">
-                    <OutlineButton onClick={play}>Play</OutlineButton>
+                    <Button.Icon onClick={play}>Play</Button.Icon>
                 </Box>
             </Flex>
-            <Chat roomId={roomId} sockets={sockets} me={me} />
+            <Chat roomId={roomId} sockets={sockets} />
         </Grid>
     );
 }

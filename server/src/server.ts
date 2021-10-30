@@ -9,6 +9,7 @@ import { Room } from "./Room";
 import { IMessage } from "../@types/message";
 import { Socket } from "./Socket";
 import { WS } from "./WS";
+import { Color } from "../@types/color";
 
 const clientPath = join(__dirname, "../../client");
 const { PORT } = process.env;
@@ -36,6 +37,20 @@ io.on("connection", async (socket) => {
     const _socket = await new Socket(socket.id).generate();
     ws.addSocket(_socket);
     socket.emit("connection:success", _socket.dto);
+
+    socket.on("socket:update:color", (color: Color) => {
+        _socket.setColor(color);
+        const room = ws.rooms.get(_socket.roomId ?? "");
+        socket.emit("color:update", color);
+        if (room) {
+            socket
+                .to(room.id)
+                .emit("room:socket:update:color", {
+                    socketId: _socket.id,
+                    color,
+                });
+        }
+    });
 
     socket.on("message:send", ({ roomId, body, id }: IMessage) => {
         const room = ws.rooms.get(roomId ?? "");

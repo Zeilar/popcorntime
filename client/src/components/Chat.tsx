@@ -1,5 +1,12 @@
 import { Box, Flex } from "@chakra-ui/layout";
-import { KeyboardEvent, useCallback, useEffect, useRef, useState } from "react";
+import {
+    KeyboardEvent,
+    useCallback,
+    useContext,
+    useEffect,
+    useRef,
+    useState,
+} from "react";
 import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
 import { IMessage } from "../../@types/message";
@@ -8,14 +15,16 @@ import { ISocket } from "../../@types/socket";
 import { socket } from "./App";
 import Message from "./Message";
 import Textarea from "./styles/Textarea";
+import Icon from "./styles/icon";
+import { MeContext } from "../contexts";
 
 interface IProps {
     roomId: string;
     sockets: ISocket[];
-    me: ISocket;
 }
 
-export default function Chat({ roomId, me }: IProps) {
+export default function Chat({ roomId }: IProps) {
+    const { me } = useContext(MeContext);
     const [isOpen, setIsOpen] = useState(true); // useLocalStorage for initial value
     const [messages, setMessages] = useState<IMessage[]>([]);
     const [metaData, setMetaData] = useState<IMetaData>({
@@ -130,6 +139,9 @@ export default function Chat({ roomId, me }: IProps) {
                     placeholder="Send a message"
                     resize="none"
                 />
+            </Box>
+            <Box>
+                <Icon.Settings />
             </Box>
         </Flex>
     );

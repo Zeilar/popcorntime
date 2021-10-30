@@ -53,4 +53,8 @@ export class Socket {
     private setRandomColor() {
         this.color = colors[Math.floor(Math.random() * colors.length)];
     }
+
+    public setColor(color: Color) {
+        this.color = color;
+    }
 }

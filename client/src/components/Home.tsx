@@ -2,7 +2,7 @@ import { AbsoluteCenter, Box, Text } from "@chakra-ui/layout";
 import { useHistory } from "react-router";
 import { v4 as uuidv4 } from "uuid";
 import { socket } from "./App";
-import { PrimaryButton } from "./styles/button";
+import Button from "./styles/button";
 import { ReactComponent as PopcornIcon } from "../assets/svg/popcorn.svg";
 
 export default function Home() {
@@ -26,9 +26,9 @@ export default function Home() {
                 <Text fontFamily="Poppins" color="brand">
                     Popcorn Time
                 </Text>
-                <PrimaryButton onClick={createRoom}>
+                <Button.Primary onClick={createRoom}>
                     Create new room
-                </PrimaryButton>
+                </Button.Primary>
             </AbsoluteCenter>
         </Box>
     );

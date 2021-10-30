@@ -2,11 +2,11 @@ import { Button, ButtonProps } from "@chakra-ui/button";
 import { ReactNode } from "react";
 import { theme } from "../../../styles/theme";
 
-interface Props extends ButtonProps {
+interface IProps extends ButtonProps {
     children: ReactNode;
 }
 
-export function PrimaryButton({ children, ...props }: Props) {
+export function PrimaryButton({ children, ...props }: IProps) {
     return (
         <Button
             variant="solid"

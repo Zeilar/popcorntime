@@ -1,1 +1,9 @@
-export type Color = string; // "red" | "yellow" etc
+export type Color =
+    | "red"
+    | "orange"
+    | "yellow"
+    | "green"
+    | "teal"
+    | "cyan"
+    | "purple"
+    | "pink";
