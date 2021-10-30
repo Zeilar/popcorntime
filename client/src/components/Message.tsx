@@ -77,7 +77,6 @@ export default function Message({ message }: IProps) {
                         display="flex"
                         justifyContent="center"
                         alignItems="center"
-                        letterSpacing={2}
                         fontWeight={600}
                         fontFamily="Open Sans"
                         bgColor={`${message.socket.color}.600`}
