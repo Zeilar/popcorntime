@@ -50,7 +50,7 @@ export default function Message({ message }: IProps) {
         >
             <Tooltip
                 label={message.socket.username}
-                bgColor="blackAlpha.100"
+                bgColor="black"
                 border="1px solid"
                 borderColor={`${message.socket.color}.500`}
                 color={`${message.socket.color}.500`}
