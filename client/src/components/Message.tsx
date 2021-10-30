@@ -54,9 +54,9 @@ export default function Message({ message }: IProps) {
                 border="1px solid"
                 borderColor={`${message.socket.color}.500`}
                 color={`${message.socket.color}.500`}
-                fontSize="large"
                 openDelay={150}
-                placement="top"
+                placement="left"
+                fontSize="large"
                 fontWeight={600}
                 fontFamily="Poppins"
             >
