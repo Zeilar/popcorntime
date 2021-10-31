@@ -4,8 +4,8 @@ import ReactDOM from "react-dom";
 import { ToastContainer } from "react-toastify";
 import App from "./components/App";
 import { theme } from "./styles/theme";
-import "react-toastify/dist/ReactToastify.min.css";
 import { MeContextProvider } from "./contexts";
+import "react-toastify/dist/ReactToastify.min.css";
 
 ReactDOM.render(
     <React.StrictMode>

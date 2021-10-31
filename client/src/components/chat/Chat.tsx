@@ -9,21 +9,22 @@ import {
 } from "react";
 import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
-import { IMessage } from "../../@types/message";
-import { IMetaData } from "../../@types/room";
-import { ISocket } from "../../@types/socket";
-import { socket } from "./App";
-import Message from "./Message";
-import Textarea from "./styles/Textarea";
-import Icon from "./styles/icon";
-import { MeContext } from "../contexts";
+import { IMessage } from "../../../@types/message";
+import { IMetaData } from "../../../@types/room";
+import { ISocket } from "../../../@types/socket";
+import { socket } from "../App";
+import Message from "../Message";
+import Textarea from "../styles/Textarea";
+import Icon from "../styles/icon";
+import { MeContext } from "../../contexts";
+import { ChatSettings } from "./";
 
 interface IProps {
     roomId: string;
     sockets: ISocket[];
 }
 
-export default function Chat({ roomId }: IProps) {
+export function Chat({ roomId }: IProps) {
     const { me } = useContext(MeContext);
     const [isOpen, setIsOpen] = useState(true); // useLocalStorage for initial value
     const [messages, setMessages] = useState<IMessage[]>([]);
@@ -34,6 +35,7 @@ export default function Chat({ roomId }: IProps) {
     const scrollChat = useRef<boolean>(true);
     const chatElement = useRef<HTMLDivElement>(null);
     const input = useRef<HTMLTextAreaElement>(null);
+    const [settingsOpen, setSettingsOpen] = useState(false);
 
     const addMessage = useCallback(
         (message: IMessage) => {
@@ -140,8 +142,11 @@ export default function Chat({ roomId }: IProps) {
                     resize="none"
                 />
             </Box>
-            <Box>
-                <Icon.Settings />
+            <Box p="0.5rem">
+                <Box pos="relative" w="1rem" h="1rem">
+                    <Icon.Settings />
+                    <ChatSettings />
+                </Box>
             </Box>
         </Flex>
     );

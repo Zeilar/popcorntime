@@ -5,7 +5,7 @@ import { socket } from "./App";
 import YouTube from "react-youtube";
 import { toast } from "react-toastify";
 import { Box, Grid } from "@chakra-ui/layout";
-import Chat from "./Chat";
+import { Chat } from "./chat";
 import { validate } from "uuid";
 import { Flex } from "@chakra-ui/react";
 import Button from "./styles/button";

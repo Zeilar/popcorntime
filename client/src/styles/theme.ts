@@ -7,6 +7,15 @@ const colors: Record<string, string> = {
     brand: "#9c162c",
     "brand.light": "#da455e",
     "brand.dark": "#7d1123",
+    "gray.900": "#141414",
+    "gray.800": "#191919",
+    "gray.700": "#1e1e1e",
+    "gray.600": "#232323",
+    "gray.500": "#282828",
+    "gray.400": "#2d2d2d",
+    "gray.300": "#323232",
+    "gray.200": "#373737",
+    "gray.100": "#3c3c3c",
 };
 
 const config: ThemeConfig = {
