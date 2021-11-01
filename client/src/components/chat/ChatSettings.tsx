@@ -1,20 +1,26 @@
-import { Flex, Grid, Text } from "@chakra-ui/layout";
+import { Flex, FlexProps, Grid, Text } from "@chakra-ui/layout";
 import { Divider } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { colors } from "../../data/colors";
 import Button from "../styles/button";
 
+const MotionBox = motion<FlexProps>(Flex);
+
 export function ChatSettings() {
     return (
-        <Flex
+        <MotionBox
             flexDir="column"
             pos="absolute"
             top="-1rem"
             right={0}
             bgColor="gray.800"
             borderRadius="base"
-            transform="translateY(-100%)"
             p="1rem"
+            transition={{ duration: "0.15" }}
+            animate={{
+                opacity: [0.5, 1],
+                transform: ["translateY(-95%)", "translateY(-100%)"],
+            }}
         >
             <Text size="lg">Color</Text>
             <Divider my="1rem" />
@@ -23,6 +29,6 @@ export function ChatSettings() {
                     <Button.Color key={color} color={color} />
                 ))}
             </Grid>
-        </Flex>
+        </MotionBox>
     );
 }
