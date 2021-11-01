@@ -2,7 +2,7 @@ import { Color } from "../../../../@types/color";
 import { useTheme } from "@emotion/react";
 import { Box, BoxProps } from "@chakra-ui/layout";
 import { MeContext } from "../../../contexts";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { socket } from "../../App";
 
 interface IProps extends BoxProps {
@@ -32,7 +32,7 @@ export function ColorButton({ children, color, ...props }: IProps) {
             _active={{ backgroundColor: `${color}.500` }}
             boxShadow={
                 me.color === color
-                    ? `0 0 0 2px ${theme.colors[color]["400"]}`
+                    ? `0 0 0 2px ${theme.colors[color]["300"]}`
                     : undefined
             }
             {...props}

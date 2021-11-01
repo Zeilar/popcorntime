@@ -18,6 +18,7 @@ import Textarea from "../styles/Textarea";
 import Icon from "../styles/icon";
 import { MeContext } from "../../contexts";
 import { ChatSettings } from "./";
+import { useOnClickOutside } from "../../hooks";
 
 interface IProps {
     roomId: string;
@@ -36,6 +37,9 @@ export function Chat({ roomId }: IProps) {
     const chatElement = useRef<HTMLDivElement>(null);
     const input = useRef<HTMLTextAreaElement>(null);
     const [settingsOpen, setSettingsOpen] = useState(false);
+    const settingsEl = useOnClickOutside<HTMLDivElement>(() =>
+        setSettingsOpen(false)
+    );
 
     const addMessage = useCallback(
         (message: IMessage) => {
@@ -111,6 +115,10 @@ export function Chat({ roomId }: IProps) {
         }
     }
 
+    function toggleSettings() {
+        setSettingsOpen((open) => !open);
+    }
+
     useEffect(() => {
         scrollChat.current = false;
         chatElement.current?.scrollTo({ top: 9999, behavior: "smooth" });
@@ -143,9 +151,9 @@ export function Chat({ roomId }: IProps) {
                 />
             </Box>
             <Box p="0.5rem">
-                <Box pos="relative" w="1rem" h="1rem">
-                    <Icon.Settings />
-                    <ChatSettings />
+                <Box pos="relative" w="1rem" h="1rem" ref={settingsEl}>
+                    <Icon.Settings onClick={toggleSettings} />
+                    {settingsOpen && <ChatSettings />}
                 </Box>
             </Box>
         </Flex>
