@@ -20,7 +20,7 @@ export function ChatSettings() {
             <Divider my="1rem" />
             <Grid gridTemplateColumns="repeat(4, 2rem)" gridGap="0.5rem">
                 {colors.map((color) => (
-                    <Button.Color color={color} />
+                    <Button.Color key={color} color={color} />
                 ))}
             </Grid>
         </Flex>

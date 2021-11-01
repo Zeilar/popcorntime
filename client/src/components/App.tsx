@@ -13,7 +13,7 @@ import { MeContext } from "../contexts";
 export const socket = io(WS_HOST);
 
 export default function App() {
-    const { me, setMe, changeColor } = useContext(MeContext);
+    const { me, setMe } = useContext(MeContext);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 

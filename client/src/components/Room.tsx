@@ -9,6 +9,7 @@ import { Chat } from "./chat";
 import { validate } from "uuid";
 import { Flex } from "@chakra-ui/react";
 import Button from "./styles/button";
+import { Color } from "../../@types/color";
 
 interface IParams {
     roomId: string;
@@ -55,7 +56,22 @@ export default function Room() {
             );
             toast.info(`${socket.username} left.`);
         });
-
+        socket.on(
+            "room:socket:update:color",
+            (payload: { color: Color; socketId: string }) => {
+                setSockets((sockets) =>
+                    sockets.map((socket) => {
+                        if (socket.id !== payload.socketId) {
+                            return socket;
+                        }
+                        return {
+                            ...socket,
+                            color: payload.color,
+                        };
+                    })
+                );
+            }
+        );
         socket.on("video:play", () => {
             internalPlayer?.playVideo();
         });

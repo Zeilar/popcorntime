@@ -43,7 +43,7 @@ io.on("connection", async (socket) => {
         socket.emit("color:update", color);
         const room = ws.rooms.get(_socket.roomId ?? "");
         if (room) {
-            socket.to(room.id).emit("room:socket:update:color", {
+            io.to(room.id).emit("room:socket:update:color", {
                 socketId: _socket.id,
                 color,
             });
