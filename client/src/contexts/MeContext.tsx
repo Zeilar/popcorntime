@@ -1,6 +1,7 @@
-import { createContext, useState, ReactNode } from "react";
+import { createContext, useState, ReactNode, useEffect } from "react";
 import { ISocket } from "../../@types/socket";
 import { Color } from "../../@types/color";
+import { socket } from "../components/App";
 
 interface IContext {
     me: ISocket;
@@ -20,6 +21,15 @@ export function MeContextProvider({ children }: IProps) {
     function changeColor(color: Color) {
         setMe((me) => ({ ...me, color }));
     }
+
+    useEffect(() => {
+        socket.on("color:update", (color: Color) => {
+            changeColor(color);
+        });
+        return () => {
+            socket.off("color:update");
+        };
+    }, []);
 
     const values: IContext = {
         me,

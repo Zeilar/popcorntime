@@ -40,15 +40,13 @@ io.on("connection", async (socket) => {
 
     socket.on("socket:update:color", (color: Color) => {
         _socket.setColor(color);
-        const room = ws.rooms.get(_socket.roomId ?? "");
         socket.emit("color:update", color);
+        const room = ws.rooms.get(_socket.roomId ?? "");
         if (room) {
-            socket
-                .to(room.id)
-                .emit("room:socket:update:color", {
-                    socketId: _socket.id,
-                    color,
-                });
+            socket.to(room.id).emit("room:socket:update:color", {
+                socketId: _socket.id,
+                color,
+            });
         }
     });
 

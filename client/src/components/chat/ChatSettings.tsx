@@ -1,6 +1,5 @@
 import { Flex, Grid, Text } from "@chakra-ui/layout";
 import { Divider } from "@chakra-ui/react";
-import { useState, useEffect } from "react";
 import { colors } from "../../data/colors";
 import Button from "../styles/button";
 
@@ -16,8 +15,8 @@ export function ChatSettings() {
             p="1rem"
         >
             <Text size="lg">Color</Text>
-            <Divider />
-            <Grid gridTemplateColumns="repeat(4, 1fr)">
+            <Divider my="1rem" />
+            <Grid gridTemplateColumns="repeat(4, 2rem)" gridGap="0.5rem">
                 {colors.map((color) => (
                     <Button.Color color={color} />
                 ))}
