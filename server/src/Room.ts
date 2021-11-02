@@ -9,11 +9,8 @@ export class Room {
     public sockets: Socket[] = [];
     public messages: IMessage[] = [];
     public playlist: string[] = ["68ugkg9RePc"]; // YouTube video ids
-    public ref: Set<string> | undefined;
 
-    constructor(public readonly id: string) {
-        this.ref = io.sockets.adapter.rooms.get(id);
-    }
+    constructor(public readonly id: string) {}
 
     public addMessage(message: IMessage) {
         if (this.messages.length >= Room.MAX_MESSAGES) {

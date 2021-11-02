@@ -25,7 +25,7 @@ export class Socket {
     }
 
     public get room() {
-        return ws.rooms.get(this.roomId ?? "");
+        return ws.getRoomBySocketId(this);
     }
 
     public join(room: Room) {

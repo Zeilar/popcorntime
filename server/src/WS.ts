@@ -12,6 +12,10 @@ export class WS {
         this.io = io;
     }
 
+    public getRoomBySocketId(socket: Socket) {
+        return [...this.rooms.values()].find((room) => room.hasSocket(socket));
+    }
+
     public addSocket(socket: Socket) {
         this.sockets.set(socket.id, socket);
     }
