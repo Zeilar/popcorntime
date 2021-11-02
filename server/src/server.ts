@@ -98,6 +98,7 @@ io.on("connection", async (socket) => {
         const room = new Room(roomId);
         ws.addRoom(room);
         _socket.join(room);
+        room.add(_socket);
     });
 
     socket.on("room:join", (roomId: string) => {
@@ -119,6 +120,7 @@ io.on("connection", async (socket) => {
         }
 
         _socket.join(room);
+        room.add(_socket);
 
         // For the user that just joined, so they get the correct username/color etc
         socket.emit("room:join", {
@@ -146,6 +148,7 @@ io.on("connection", async (socket) => {
     socket.on("room:leave", (roomId: string) => {
         const room = ws.rooms.get(roomId);
         if (room) {
+            room.remove(_socket);
             _socket.leave(room);
         }
     });
@@ -154,6 +157,7 @@ io.on("connection", async (socket) => {
         const room = _socket.room;
         // If user was not part of a room when they leave, no need to do anything
         if (room) {
+            room.remove(_socket);
             _socket.leave(room);
         }
     });

@@ -29,11 +29,9 @@ export class Socket {
 
     public join(room: Room) {
         this.ref?.join(room.id);
-        room.add(this);
     }
 
     public leave(room: Room) {
-        room.remove(this);
         this.ref?.to(room.id).emit("room:socket:leave", this.dto);
     }
 
