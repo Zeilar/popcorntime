@@ -7,7 +7,6 @@ import { ISocketDto } from "../@types/socket";
 import { colors } from "../data/colors";
 
 export class Socket {
-    public roomId: string | null;
     public username: string;
     public color: Color;
     public ref: S | undefined;
@@ -31,13 +30,11 @@ export class Socket {
     public join(room: Room) {
         this.ref?.join(room.id);
         room.add(this);
-        this.roomId = room.id;
     }
 
     public leave(room: Room) {
         room.remove(this);
         this.ref?.to(room.id).emit("room:socket:leave", this.dto);
-        this.roomId = null;
     }
 
     public async generate() {
