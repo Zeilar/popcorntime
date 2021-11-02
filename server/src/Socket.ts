@@ -33,6 +33,7 @@ export class Socket {
 
     public leave(room: Room) {
         this.ref?.to(room.id).emit("room:socket:leave", this.dto);
+        this.ref?.leave(room.id);
     }
 
     public async generate() {
