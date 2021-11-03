@@ -17,6 +17,7 @@ export default function Admin() {
             }
         );
         adminSocket.on("room:new", (room: IRoom) => {
+            console.log("room:new", room);
             setRooms((rooms) => [...rooms, room]);
         });
         adminSocket.on("room:delete", (roomId: string) => {
@@ -30,6 +31,40 @@ export default function Admin() {
                 sockets.filter((socket) => socket.id !== socketId)
             );
         });
+        adminSocket.on(
+            "room:join",
+            (payload: { socket: ISocket; roomId: string }) => {
+                setRooms((rooms) =>
+                    rooms.map((room) => {
+                        if (room.id !== payload.roomId) {
+                            return room;
+                        }
+                        return {
+                            ...room,
+                            sockets: [...room.sockets, payload.socket],
+                        };
+                    })
+                );
+            }
+        );
+        adminSocket.on(
+            "room:leave",
+            (payload: { socketId: string; roomId: string }) => {
+                setRooms((rooms) =>
+                    rooms.map((room) => {
+                        if (room.id !== payload.roomId) {
+                            return room;
+                        }
+                        return {
+                            ...room,
+                            sockets: room.sockets.filter(
+                                (socket) => socket.id !== payload.socketId
+                            ),
+                        };
+                    })
+                );
+            }
+        );
         adminSocket.on("connect_error", (error) => {
             toast.error(error.message);
         });
@@ -37,6 +72,33 @@ export default function Admin() {
             adminSocket.removeAllListeners();
         };
     }, []);
+
+    // useEffect(() => {
+    //     adminSocket.on(
+    //         "room:join",
+    //         (payload: { socket: ISocket; roomId: string }) => {
+    //             setRooms((rooms) =>
+    //                 rooms.map((room) => {
+    //                     console.log("room:join", rooms, room, payload.roomId);
+    //                     if (room.id === payload.roomId) {
+    //                         return room;
+    //                     }
+    //                     console.log("return", {
+    //                         ...room,
+    //                         sockets: [...room.sockets, payload.socket],
+    //                     });
+    //                     return {
+    //                         ...room,
+    //                         sockets: [...room.sockets, payload.socket],
+    //                     };
+    //                 })
+    //             );
+    //         }
+    //     );
+    //     return () => {
+    //         adminSocket.removeAllListeners();
+    //     };
+    // }, []);
 
     return (
         <div>
