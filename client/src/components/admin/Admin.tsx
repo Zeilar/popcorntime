@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
-import { IRoom } from "../../@types/room";
-import { ISocket } from "../../@types/socket";
-import { adminSocket } from "./App";
+import { IRoom } from "../../../@types/room";
+import { ISocket } from "../../../@types/socket";
+import { adminSocket } from "../App";
+import Sockets from "./Sockets";
 
 export default function Admin() {
     const [rooms, setRooms] = useState<IRoom[]>([]);
@@ -20,6 +21,9 @@ export default function Admin() {
     }
 
     useEffect(() => {
+        adminSocket.on("connect_error", (error) => {
+            toast.error(error.message);
+        });
         adminSocket.once(
             "connection:success",
             (data: { rooms: IRoom[]; sockets: ISocket[] }) => {
@@ -61,9 +65,6 @@ export default function Admin() {
                 }));
             }
         );
-        adminSocket.on("connect_error", (error) => {
-            toast.error(error.message);
-        });
         return () => {
             adminSocket.removeAllListeners();
         };
@@ -73,7 +74,9 @@ export default function Admin() {
         <div>
             Admin stuff
             <pre>rooms {JSON.stringify(rooms, null, 4)}</pre>
-            <pre>sockets {JSON.stringify(sockets, null, 4)}</pre>
+            <hr />
+            <h1>sockets</h1>
+            <Sockets sockets={sockets} />
         </div>
     );
 }

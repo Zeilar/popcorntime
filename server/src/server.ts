@@ -164,7 +164,34 @@ adminNamespace.on("connection", (socket) => {
         sockets,
     });
 
-    socket.on("room:kick", (payload: { roomId: string; socketId: string }) => {
-        const room = ws.rooms.get(payload.roomId);
+    socket.on("room:kick", (socketId) => {
+        const _socket = ws.sockets.get(socketId);
+
+        if (!_socket) {
+            return socket.emit("error", "That socket does not exist.");
+        }
+
+        const room = _socket.room;
+
+        if (!room) {
+            return socket.emit("error", "That room does not exist.");
+        }
+
+        io.to(_socket.id).emit("room:kick");
+        room.remove(_socket);
+        socket.emit("room:leave", { roomId: room.id, socketId: _socket.id });
+    });
+
+    socket.on("socket:kick", (socketId) => {
+        const _socket = ws.sockets.get(socketId);
+
+        if (!_socket) {
+            return socket.emit("error", "That socket does not exist.");
+        }
+
+        io.to(_socket.id).emit("socket:kick");
+        socket.emit("socket:disconnect", socketId);
+
+        _socket.ref?.disconnect();
     });
 });

@@ -22,7 +22,6 @@ export default function Room() {
     const [playlistInput, setPlaylistInput] = useState("");
     const [isConnected, setIsConnected] = useState(false);
     const player = useRef<YouTube>(null);
-    const { push } = useHistory();
 
     function play() {
         socket.emit("video:play");
@@ -57,6 +56,9 @@ export default function Room() {
             );
             toast.info(`${socket.username} left.`);
         });
+        socket.on("room:kick", () => {
+            toast.info("You were kicked from the room.");
+        });
         socket.on(
             "room:socket:update:color",
             (payload: { color: Color; socketId: string }) => {
@@ -73,10 +75,6 @@ export default function Room() {
                 );
             }
         );
-        socket.on("room:kick", (message: string) => {
-            toast.info(message);
-            push("/");
-        });
         socket.on("video:play", () => {
             internalPlayer?.playVideo();
         });
@@ -88,20 +86,13 @@ export default function Room() {
                 .off("room:join")
                 .off("room:socket:leave")
                 .off("room:socket:join")
-                .off("video:play");
+                .off("video:play")
+                .off("room:kick");
             setSockets([]);
             setPlaylist([]);
             setPlaylistInput("");
         };
     }, [roomId]);
-
-    useEffect(() => {
-        return () => {
-            if (isConnected) {
-                toast.info("Left room.");
-            }
-        };
-    }, [isConnected]);
 
     // TODO: use "light" prop for playlist thumbnails
 

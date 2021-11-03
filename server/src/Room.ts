@@ -60,7 +60,7 @@ export class Room {
             (element) => element.id !== socket.id
         );
         socket.ref?.leave(this.id);
-        socket.ref?.to(this.id).emit("room:socket:leave", this.dto);
+        socket.ref?.to(this.id).emit("room:socket:leave", socket.dto);
         adminNamespace.emit("room:leave", {
             socketId: socket.id,
             roomId: this.id,

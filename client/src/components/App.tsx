@@ -9,7 +9,7 @@ import { toast } from "react-toastify";
 import { Spinner } from "@chakra-ui/spinner";
 import { AbsoluteCenter } from "@chakra-ui/react";
 import { MeContext } from "../contexts";
-import Admin from "./Admin";
+import Admin from "./admin/Admin";
 
 export const socket = io(WS_HOST);
 export const adminSocket = io(`${WS_HOST}/admin`, {
@@ -25,7 +25,6 @@ export default function App() {
         socket.on("error", (error: string) => {
             toast.error(error);
         });
-
         socket.on("connect_failed", (error: any) => {
             console.error(error);
             // TODO: error handling
@@ -46,13 +45,15 @@ export default function App() {
             setError(error);
             setLoading(false);
         });
-
+        socket.on("socket:kick", () => {
+            console.log("socket kick");
+            toast.info("You were kicked from the server.");
+        });
         socket.on("connection:error", (error: string) => {
             toast.error(error);
             setError(error);
             setLoading(false);
         });
-
         socket.on("connection:success", (socket: ISocket) => {
             toast.success(`Welcome ${socket.username}`);
             setMe(socket);
