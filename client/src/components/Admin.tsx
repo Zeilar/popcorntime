@@ -8,6 +8,17 @@ export default function Admin() {
     const [rooms, setRooms] = useState<IRoom[]>([]);
     const [sockets, setSockets] = useState<ISocket[]>([]);
 
+    function modifyRoom(roomId: string, cb: (room: IRoom) => IRoom) {
+        setRooms((rooms) =>
+            rooms.map((room) => {
+                if (room.id !== roomId) {
+                    return room;
+                }
+                return cb(room);
+            })
+        );
+    }
+
     useEffect(() => {
         adminSocket.once(
             "connection:success",
@@ -34,35 +45,21 @@ export default function Admin() {
         adminSocket.on(
             "room:join",
             (payload: { socket: ISocket; roomId: string }) => {
-                setRooms((rooms) =>
-                    rooms.map((room) => {
-                        if (room.id !== payload.roomId) {
-                            return room;
-                        }
-                        return {
-                            ...room,
-                            sockets: [...room.sockets, payload.socket],
-                        };
-                    })
-                );
+                modifyRoom(payload.roomId, (room) => ({
+                    ...room,
+                    sockets: [...room.sockets, payload.socket],
+                }));
             }
         );
         adminSocket.on(
             "room:leave",
             (payload: { socketId: string; roomId: string }) => {
-                setRooms((rooms) =>
-                    rooms.map((room) => {
-                        if (room.id !== payload.roomId) {
-                            return room;
-                        }
-                        return {
-                            ...room,
-                            sockets: room.sockets.filter(
-                                (socket) => socket.id !== payload.socketId
-                            ),
-                        };
-                    })
-                );
+                modifyRoom(payload.roomId, (room) => ({
+                    ...room,
+                    sockets: room.sockets.filter(
+                        (socket) => socket.id !== payload.socketId
+                    ),
+                }));
             }
         );
         adminSocket.on("connect_error", (error) => {
@@ -72,33 +69,6 @@ export default function Admin() {
             adminSocket.removeAllListeners();
         };
     }, []);
-
-    // useEffect(() => {
-    //     adminSocket.on(
-    //         "room:join",
-    //         (payload: { socket: ISocket; roomId: string }) => {
-    //             setRooms((rooms) =>
-    //                 rooms.map((room) => {
-    //                     console.log("room:join", rooms, room, payload.roomId);
-    //                     if (room.id === payload.roomId) {
-    //                         return room;
-    //                     }
-    //                     console.log("return", {
-    //                         ...room,
-    //                         sockets: [...room.sockets, payload.socket],
-    //                     });
-    //                     return {
-    //                         ...room,
-    //                         sockets: [...room.sockets, payload.socket],
-    //                     };
-    //                 })
-    //             );
-    //         }
-    //     );
-    //     return () => {
-    //         adminSocket.removeAllListeners();
-    //     };
-    // }, []);
 
     return (
         <div>
