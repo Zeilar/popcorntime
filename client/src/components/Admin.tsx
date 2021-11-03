@@ -25,6 +25,9 @@ export default function Admin() {
         adminSocket.on("room:new", (room: IRoom) => {
             setRooms((rooms) => [...rooms, room]);
         });
+        adminSocket.on("room:delete", (roomId: string) => {
+            setRooms((rooms) => rooms.filter((room) => room.id !== roomId));
+        });
         adminSocket.on("socket:connect", (socket: ISocket) => {
             setSockets((sockets) => [...sockets, socket]);
         });
