@@ -1,13 +1,8 @@
 import { useState, useEffect } from "react";
+import { toast } from "react-toastify";
 import { IRoom } from "../../@types/room";
 import { ISocket } from "../../@types/socket";
 import { adminSocket } from "./App";
-
-// const socket = io(`${WS_HOST}/admin`);
-
-// setInterval(() => {
-//     console.log(socket);
-// }, 2500);
 
 export default function Admin() {
     const [rooms, setRooms] = useState<IRoom[]>([]);
@@ -17,7 +12,6 @@ export default function Admin() {
         adminSocket.once(
             "connection:success",
             (data: { rooms: IRoom[]; sockets: ISocket[] }) => {
-                console.log("connected", data);
                 setRooms(data.rooms);
                 setSockets(data.sockets);
             }
@@ -35,6 +29,9 @@ export default function Admin() {
             setSockets((sockets) =>
                 sockets.filter((socket) => socket.id !== socketId)
             );
+        });
+        adminSocket.on("connect_error", (error) => {
+            toast.error(error.message);
         });
         return () => {
             adminSocket.removeAllListeners();

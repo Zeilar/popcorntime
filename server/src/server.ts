@@ -12,7 +12,13 @@ import { WS } from "./WS";
 import { Color } from "../@types/color";
 
 const clientPath = join(__dirname, "../../client");
-const { PORT } = process.env;
+const { PORT, ADMIN_PASSWORD, NODE_ENV } = process.env;
+
+if (!PORT || !ADMIN_PASSWORD || !NODE_ENV) {
+    throw new Error(
+        "Missing env variable, please check `.env.example` to see what is required."
+    );
+}
 
 export const app = express();
 
@@ -40,14 +46,6 @@ io.on("connection", async (socket) => {
 
     socket.on("socket:update:color", (color: Color) => {
         _socket.setColor(color);
-        socket.emit("color:update", color);
-        const room = _socket.room;
-        if (room) {
-            io.to(room.id).emit("room:socket:update:color", {
-                socketId: _socket.id,
-                color,
-            });
-        }
     });
 
     socket.on("message:send", ({ roomId, body, id }: IMessage) => {
@@ -81,14 +79,12 @@ io.on("connection", async (socket) => {
             });
         }
 
-        const message: IMessage = {
+        room.sendMessage(_socket, {
             id,
             body,
             socket: _socket.dto,
             date: new Date(),
-        };
-
-        room.sendMessage(socket, message);
+        });
     });
 
     socket.on("room:create", (roomId: string) => {
@@ -97,7 +93,6 @@ io.on("connection", async (socket) => {
         }
         const room = new Room(roomId);
         ws.addRoom(room);
-        _socket.join(room);
         room.add(_socket);
     });
 
@@ -119,21 +114,7 @@ io.on("connection", async (socket) => {
             );
         }
 
-        _socket.join(room);
         room.add(_socket);
-
-        // For the user that just joined, so they get the correct username/color etc
-        socket.emit("room:join", {
-            sockets: room.socketsDto,
-            messages: room.messages,
-            playlist: room.playlist,
-            metaData: {
-                MAX_SOCKETS: Room.MAX_SOCKETS,
-                MAX_MESSAGES: Room.MAX_MESSAGES,
-            },
-        });
-
-        socket.to(room.id).emit("room:socket:join", _socket.dto);
     });
 
     socket.on("video:play", () => {
@@ -149,7 +130,6 @@ io.on("connection", async (socket) => {
         const room = ws.rooms.get(roomId);
         if (room) {
             room.remove(_socket);
-            _socket.leave(room);
         }
         adminNamespace.emit("room:leave", { roomId, socketId: _socket.id });
     });
@@ -159,12 +139,17 @@ io.on("connection", async (socket) => {
         // If user was not part of a room when they leave, no need to do anything
         if (room) {
             room.remove(_socket);
-            _socket.leave(room);
         }
         ws.removeSocket(_socket);
     });
 });
 
+adminNamespace.use((socket, next) => {
+    if (socket.handshake.auth.token !== ADMIN_PASSWORD) {
+        return next(new Error("Incorrect token."));
+    }
+    next();
+});
 adminNamespace.on("connection", (socket) => {
     const rooms: Room[] = [];
     const sockets: Socket[] = [];

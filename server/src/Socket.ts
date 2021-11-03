@@ -1,6 +1,5 @@
-import { Room } from "./Room";
 import { Socket as S } from "socket.io";
-import { adminNamespace, ws } from "./server";
+import { adminNamespace, io, ws } from "./server";
 import { Color } from "../@types/color";
 import generate from "@nwlongnecker/adjective-adjective-animal";
 import { colors } from "../data/colors";
@@ -24,15 +23,6 @@ export class Socket {
         return ws.getRoomBySocketId(this);
     }
 
-    public join(room: Room) {
-        this.ref?.join(room.id);
-    }
-
-    public leave(room: Room) {
-        this.ref?.to(room.id).emit("room:socket:leave", this.dto);
-        this.ref?.leave(room.id);
-    }
-
     public async generate() {
         this.setRandomColor();
         await this.setRandomName();
@@ -50,6 +40,13 @@ export class Socket {
 
     public setColor(color: Color) {
         this.color = color;
+        this.ref?.emit("color:update", color);
+        if (this.room) {
+            io.to(this.room.id).emit("room:socket:update:color", {
+                socketId: this.id,
+                color,
+            });
+        }
         adminNamespace.emit("socket:update:color", color);
     }
 }

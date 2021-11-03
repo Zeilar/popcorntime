@@ -1,7 +1,6 @@
 import { IMessage } from "../@types/message";
 import { adminNamespace, io, ws } from "./server";
 import { Socket } from "./Socket";
-import { Socket as S } from "socket.io";
 
 export class Room {
     public static readonly MAX_SOCKETS = 10;
@@ -36,9 +35,20 @@ export class Room {
 
     public add(socket: Socket) {
         if (this.hasSocket(socket)) {
-            return false;
+            return;
         }
         this.sockets.push(socket);
+        socket.ref?.join(this.id);
+        socket.ref?.emit("room:join", {
+            sockets: this.socketsDto,
+            messages: this.messages,
+            playlist: this.playlist,
+            metaData: {
+                MAX_SOCKETS: Room.MAX_SOCKETS,
+                MAX_MESSAGES: Room.MAX_MESSAGES,
+            },
+        });
+        socket.ref?.to(this.id).emit("room:socket:join", socket.dto);
         adminNamespace.emit("room:join", {
             socket: socket.dto,
             roomId: this.id,
@@ -49,6 +59,8 @@ export class Room {
         this.sockets = this.sockets.filter(
             (element) => element.id !== socket.id
         );
+        socket.ref?.leave(this.id);
+        socket.ref?.to(this.id).emit("room:socket:leave", this.dto);
         adminNamespace.emit("room:leave", {
             socketId: socket.id,
             roomId: this.id,
@@ -58,9 +70,9 @@ export class Room {
         }
     }
 
-    public sendMessage(socket: S, message: IMessage) {
-        socket.to(this.id).emit("message:new", message);
-        adminNamespace.emit("message:new", { roomId: this.id, message });
+    public sendMessage(sender: Socket, message: IMessage) {
         this.addMessage(message);
+        sender.ref?.to(this.id).emit("message:new", message);
+        adminNamespace.emit("message:new", { roomId: this.id, message });
     }
 }
