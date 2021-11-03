@@ -3,7 +3,6 @@ import { Socket as S } from "socket.io";
 import { ws } from "./server";
 import { Color } from "../@types/color";
 import generate from "@nwlongnecker/adjective-adjective-animal";
-import { ISocketDto } from "../@types/socket";
 import { colors } from "../data/colors";
 
 export class Socket {
@@ -15,12 +14,10 @@ export class Socket {
         this.ref = ws.io.sockets.sockets.get(id);
     }
 
-    public get dto(): ISocketDto {
-        return {
-            id: this.id,
-            username: this.username,
-            color: this.color,
-        };
+    public get dto() {
+        const data = { ...this };
+        delete data.ref;
+        return data;
     }
 
     public get room() {

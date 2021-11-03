@@ -19,6 +19,13 @@ export class Room {
         this.messages.push(message);
     }
 
+    public get dto() {
+        return {
+            ...this,
+            sockets: this.socketsDto,
+        };
+    }
+
     public get socketsDto() {
         return this.sockets.map((socket) => socket.dto);
     }

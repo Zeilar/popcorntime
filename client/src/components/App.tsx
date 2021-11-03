@@ -9,8 +9,10 @@ import { toast } from "react-toastify";
 import { Spinner } from "@chakra-ui/spinner";
 import { AbsoluteCenter } from "@chakra-ui/react";
 import { MeContext } from "../contexts";
+import Admin from "./Admin";
 
 export const socket = io(WS_HOST);
+export const adminSocket = io(`${WS_HOST}/admin`);
 
 export default function App() {
     const { me, setMe } = useContext(MeContext);
@@ -81,6 +83,9 @@ export default function App() {
                 </Route>
                 <Route path="/room/:roomId" exact>
                     <Room />
+                </Route>
+                <Route path="/admin" exact>
+                    <Admin />
                 </Route>
                 <Route>404</Route>
             </Switch>

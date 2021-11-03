@@ -33,21 +33,26 @@ export const io = new Server(server, {
 
 export const ws = new WS();
 
+const adminNamespace = io.of("/admin");
+
 io.on("connection", async (socket) => {
     const _socket = await new Socket(socket.id).generate();
     ws.addSocket(_socket);
     socket.emit("connection:success", _socket.dto);
+    adminNamespace.emit("socket:connect", _socket.dto);
 
     socket.on("socket:update:color", (color: Color) => {
         _socket.setColor(color);
         socket.emit("color:update", color);
         const room = _socket.room;
+        const payload = {
+            socketId: _socket.id,
+            color,
+        };
         if (room) {
-            io.to(room.id).emit("room:socket:update:color", {
-                socketId: _socket.id,
-                color,
-            });
+            io.to(room.id).emit("room:socket:update:color", payload);
         }
+        adminNamespace.emit("socket:update:color", payload);
     });
 
     socket.on("message:send", ({ roomId, body, id }: IMessage) => {
@@ -89,6 +94,7 @@ io.on("connection", async (socket) => {
         };
 
         room.sendMessage(socket, message);
+        adminNamespace.emit("message:new", { roomId, message });
     });
 
     socket.on("room:create", (roomId: string) => {
@@ -99,6 +105,7 @@ io.on("connection", async (socket) => {
         ws.addRoom(room);
         _socket.join(room);
         room.add(_socket);
+        adminNamespace.emit("room:new", room.dto);
     });
 
     socket.on("room:join", (roomId: string) => {
@@ -134,6 +141,7 @@ io.on("connection", async (socket) => {
         });
 
         socket.to(room.id).emit("room:socket:join", _socket.dto);
+        adminNamespace.emit("room:join", { roomId, socketId: _socket.id });
     });
 
     socket.on("video:play", () => {
@@ -151,6 +159,7 @@ io.on("connection", async (socket) => {
             room.remove(_socket);
             _socket.leave(room);
         }
+        adminNamespace.emit("room:leave", { roomId, socketId: _socket.id });
     });
 
     socket.on("disconnect", () => {
@@ -160,5 +169,23 @@ io.on("connection", async (socket) => {
             room.remove(_socket);
             _socket.leave(room);
         }
+        ws.removeSocket(_socket);
+        adminNamespace.emit("socket:disconnect", _socket.id);
+    });
+});
+
+adminNamespace.on("connection", (socket) => {
+    console.log(socket.id);
+    const rooms: Room[] = [];
+    const sockets: Socket[] = [];
+    ws.rooms.forEach((room) => {
+        rooms.push(room.dto);
+    });
+    ws.sockets.forEach((socket) => {
+        sockets.push(socket.dto);
+    });
+    socket.emit("connection:success", {
+        rooms,
+        sockets,
     });
 });

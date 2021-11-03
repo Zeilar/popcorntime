@@ -1,9 +1,9 @@
 import { ISocket } from "./socket";
 
 export interface IMessage {
-    socket: ISocket;
-    body: string;
-    created_at: Date;
     id: string;
+    body: string;
+    socket: ISocket;
     notSent?: boolean;
+    created_at: Date;
 }
