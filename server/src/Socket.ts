@@ -20,7 +20,7 @@ export class Socket {
     }
 
     public get room() {
-        return ws.getRoomBySocketId(this);
+        return [...ws.rooms.values()].find((room) => room.hasSocket(this));
     }
 
     public async generate() {

@@ -163,4 +163,8 @@ adminNamespace.on("connection", (socket) => {
         rooms,
         sockets,
     });
+
+    socket.on("room:kick", (payload: { roomId: string; socketId: string }) => {
+        const room = ws.rooms.get(payload.roomId);
+    });
 });

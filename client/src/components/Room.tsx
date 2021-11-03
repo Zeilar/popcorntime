@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Redirect, useParams } from "react-router";
+import { Redirect, useHistory, useParams } from "react-router";
 import { ISocket } from "../../@types/socket";
 import { socket } from "./App";
 import YouTube from "react-youtube";
@@ -22,6 +22,7 @@ export default function Room() {
     const [playlistInput, setPlaylistInput] = useState("");
     const [isConnected, setIsConnected] = useState(false);
     const player = useRef<YouTube>(null);
+    const { push } = useHistory();
 
     function play() {
         socket.emit("video:play");
@@ -72,6 +73,10 @@ export default function Room() {
                 );
             }
         );
+        socket.on("room:kick", (message: string) => {
+            toast.info(message);
+            push("/");
+        });
         socket.on("video:play", () => {
             internalPlayer?.playVideo();
         });

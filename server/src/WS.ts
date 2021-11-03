@@ -12,10 +12,6 @@ export class WS {
         this.io = io;
     }
 
-    public getRoomBySocketId(socket: Socket) {
-        return [...this.rooms.values()].find((room) => room.hasSocket(socket));
-    }
-
     public addSocket(socket: Socket) {
         adminNamespace.emit("socket:connect", socket.dto);
         this.sockets.set(socket.id, socket);
