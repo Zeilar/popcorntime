@@ -92,8 +92,8 @@ io.on("connection", async (socket) => {
             return socket.emit("error", "Invalid room id.");
         }
         const room = new Room(roomId);
-        ws.addRoom(room);
         room.add(_socket);
+        ws.addRoom(room);
     });
 
     socket.on("room:join", (roomId: string) => {

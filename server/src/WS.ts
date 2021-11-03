@@ -27,8 +27,8 @@ export class WS {
     }
 
     public addRoom(room: Room) {
-        adminNamespace.emit("room:new", room.dto);
         this.rooms.set(room.id, room);
+        adminNamespace.emit("room:new", room.dto);
     }
 
     public removeRoom(room: Room) {

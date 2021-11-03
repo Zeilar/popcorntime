@@ -13,7 +13,7 @@ import Admin from "./Admin";
 
 export const socket = io(WS_HOST);
 export const adminSocket = io(`${WS_HOST}/admin`, {
-    auth: { token: "process.env.REACT_APP_ADMIN_PASSWORD" },
+    auth: { token: process.env.REACT_APP_ADMIN_PASSWORD },
 });
 
 export default function App() {
