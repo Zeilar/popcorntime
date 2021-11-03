@@ -28,7 +28,6 @@ export default function Admin() {
             }
         );
         adminSocket.on("room:new", (room: IRoom) => {
-            console.log("room:new", room);
             setRooms((rooms) => [...rooms, room]);
         });
         adminSocket.on("room:delete", (roomId: string) => {
