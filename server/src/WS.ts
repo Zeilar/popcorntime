@@ -13,13 +13,13 @@ export class WS {
     }
 
     public addSocket(socket: Socket) {
-        adminNamespace.emit("socket:connect", socket.dto);
         this.sockets.set(socket.id, socket);
+        adminNamespace.emit("socket:connect", socket.dto);
     }
 
     public removeSocket(socket: Socket) {
-        adminNamespace.emit("socket:disconnect", socket.id);
         this.sockets.delete(socket.id);
+        adminNamespace.emit("socket:disconnect", socket.id);
     }
 
     public addRoom(room: Room) {
