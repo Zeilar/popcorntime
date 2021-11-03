@@ -1,6 +1,6 @@
 import { Room } from "./Room";
 import { Socket as S } from "socket.io";
-import { ws } from "./server";
+import { adminNamespace, ws } from "./server";
 import { Color } from "../@types/color";
 import generate from "@nwlongnecker/adjective-adjective-animal";
 import { colors } from "../data/colors";
@@ -41,13 +41,15 @@ export class Socket {
 
     private async setRandomName() {
         this.username = await generate({ adjectives: 1, format: "title" });
+        adminNamespace.emit("socket:update:name", this.username);
     }
 
     private setRandomColor() {
-        this.color = colors[Math.floor(Math.random() * colors.length)];
+        this.setColor(colors[Math.floor(Math.random() * colors.length)]);
     }
 
     public setColor(color: Color) {
         this.color = color;
+        adminNamespace.emit("socket:update:color", color);
     }
 }

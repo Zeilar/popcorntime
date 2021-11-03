@@ -1,6 +1,6 @@
 import { Server } from "socket.io";
 import { Room } from "./Room";
-import { io } from "./server";
+import { adminNamespace, io } from "./server";
 import { Socket } from "./Socket";
 
 export class WS {
@@ -17,18 +17,22 @@ export class WS {
     }
 
     public addSocket(socket: Socket) {
+        adminNamespace.emit("socket:connect", socket.dto);
         this.sockets.set(socket.id, socket);
     }
 
     public removeSocket(socket: Socket) {
+        adminNamespace.emit("socket:disconnect", socket.id);
         this.sockets.delete(socket.id);
     }
 
     public addRoom(room: Room) {
+        adminNamespace.emit("room:new", room.dto);
         this.rooms.set(room.id, room);
     }
 
     public removeRoom(room: Room) {
+        adminNamespace.emit("room:delete", room.id);
         this.rooms.delete(room.id);
     }
 }

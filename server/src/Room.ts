@@ -1,5 +1,5 @@
 import { IMessage } from "../@types/message";
-import { io, ws } from "./server";
+import { adminNamespace, io, ws } from "./server";
 import { Socket } from "./Socket";
 import { Socket as S } from "socket.io";
 
@@ -39,12 +39,20 @@ export class Room {
             return false;
         }
         this.sockets.push(socket);
+        adminNamespace.emit("room:join", {
+            socket: socket.dto,
+            roomId: this.id,
+        });
     }
 
     public remove(socket: Socket) {
         this.sockets = this.sockets.filter(
             (element) => element.id !== socket.id
         );
+        adminNamespace.emit("room:leave", {
+            socketId: socket.id,
+            roomId: this.id,
+        });
         if (this.sockets.length <= 0) {
             ws.removeRoom(this);
         }
@@ -52,6 +60,7 @@ export class Room {
 
     public sendMessage(socket: S, message: IMessage) {
         socket.to(this.id).emit("message:new", message);
+        adminNamespace.emit("message:new", { roomId: this.id, message });
         this.addMessage(message);
     }
 }
