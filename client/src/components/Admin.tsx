@@ -26,11 +26,9 @@ export default function Admin() {
             setRooms((rooms) => [...rooms, room]);
         });
         adminSocket.on("socket:connect", (socket: ISocket) => {
-            console.log("new socket", socket);
             setSockets((sockets) => [...sockets, socket]);
         });
         adminSocket.on("socket:disconnect", (socketId: string) => {
-            console.log("removed socket", socketId);
             setSockets((sockets) =>
                 sockets.filter((socket) => socket.id !== socketId)
             );
