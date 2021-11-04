@@ -11,8 +11,9 @@ import { AbsoluteCenter } from "@chakra-ui/react";
 import { MeContext } from "../contexts";
 import Admin from "./admin/Admin";
 
-export const socket = io(WS_HOST);
+export const socket = io(WS_HOST, { reconnection: false });
 export const adminSocket = io(`${WS_HOST}/admin`, {
+    reconnection: false,
     auth: { token: process.env.REACT_APP_ADMIN_PASSWORD },
 });
 

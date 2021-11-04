@@ -1,5 +1,6 @@
 import "reflect-metadata";
 import "dotenv/config";
+import "../config/env"; // Runss env check
 import { join } from "path";
 import express from "express";
 import { Server } from "socket.io";
@@ -12,13 +13,7 @@ import { WS } from "./WS";
 import { Color } from "../@types/color";
 
 const clientPath = join(__dirname, "../../client");
-const { PORT, ADMIN_PASSWORD, NODE_ENV } = process.env;
-
-if (!PORT || !ADMIN_PASSWORD || !NODE_ENV) {
-    throw new Error(
-        "Missing env variable, please check `.env.example` to see what is required."
-    );
-}
+const { PORT, ADMIN_PASSWORD } = process.env;
 
 export const app = express();
 
