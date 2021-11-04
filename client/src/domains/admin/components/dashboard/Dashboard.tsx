@@ -4,13 +4,7 @@ import { toast } from "react-toastify";
 import { IRoom } from "../../../common/@types/room";
 import { ISocket } from "../../../common/@types/socket";
 import { adminSocket } from "../../config/socket";
-import {
-    ADD_ROOM,
-    ADD_ROOMS,
-    ADD_SOCKET_TO_ROOM,
-    REMOVE_ROOM,
-    REMOVE_SOCKET_FROM_ROOM,
-} from "../../state/actions/room";
+import * as RoomActions from "../../state/actions/room";
 import { roomReducer } from "../../state/reducers/room";
 import Rooms from "./Rooms";
 import Sockets from "./Sockets";
@@ -21,13 +15,17 @@ export default function Dashboard() {
 
     const removeSocketFromRoom = useCallback(
         (socketId: string, roomId: string) => {
-            dispatchRooms({ type: REMOVE_SOCKET_FROM_ROOM, roomId, socketId });
+            dispatchRooms({
+                type: RoomActions.REMOVE_SOCKET_FROM_ROOM,
+                roomId,
+                socketId,
+            });
         },
         []
     );
 
     const addSocketToRoom = useCallback((socket: ISocket, roomId: string) => {
-        dispatchRooms({ type: ADD_SOCKET_TO_ROOM, socket, roomId });
+        dispatchRooms({ type: RoomActions.ADD_SOCKET_TO_ROOM, socket, roomId });
     }, []);
 
     console.log(rooms);
@@ -42,7 +40,10 @@ export default function Dashboard() {
         adminSocket.once(
             "connection:success",
             (data: { rooms: IRoom[]; sockets: ISocket[] }) => {
-                dispatchRooms({ type: ADD_ROOMS, rooms: data.rooms });
+                dispatchRooms({
+                    type: RoomActions.ADD_ROOMS,
+                    rooms: data.rooms,
+                });
                 setSockets(data.sockets);
             }
         );
@@ -54,10 +55,10 @@ export default function Dashboard() {
             }
         );
         adminSocket.on("room:new", (room: IRoom) => {
-            dispatchRooms({ type: ADD_ROOM, room });
+            dispatchRooms({ type: RoomActions.ADD_ROOM, room });
         });
         adminSocket.on("room:delete", (roomId: string) => {
-            dispatchRooms({ type: REMOVE_ROOM, roomId });
+            dispatchRooms({ type: RoomActions.REMOVE_ROOM, roomId });
         });
         adminSocket.on("socket:connect", (socket: ISocket) => {
             setSockets((sockets) => [...sockets, socket]);
