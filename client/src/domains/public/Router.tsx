@@ -1,4 +1,4 @@
-import { MeContext, MeContextProvider } from "./contexts";
+import { MeContext } from "./contexts";
 import { Route, Switch } from "react-router";
 import Home from "./components/Home";
 import Room from "./components/Room";

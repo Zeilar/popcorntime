@@ -1,5 +1,5 @@
 import { IMessage } from "./message";
-import { ISocket } from "../../domains/common/@types/socket";
+import { ISocket } from "../../../domains/common/@types/socket";
 
 export interface IMetaData {
     MAX_MESSAGES: number;
@@ -11,4 +11,5 @@ export interface IRoom {
     sockets: ISocket[];
     messages: IMessage[];
     playlist: string[];
+    created_at: Date;
 }

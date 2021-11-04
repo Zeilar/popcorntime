@@ -1,4 +1,4 @@
-import { ISocket } from "../../domains/common/@types/socket";
+import { ISocket } from "../../../domains/common/@types/socket";
 
 export interface IMessage {
     id: string;

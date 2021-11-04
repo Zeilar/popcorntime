@@ -1,5 +1,5 @@
 import { IMessage } from "../@types/message";
-import { adminNamespace, io, ws } from "./server";
+import { adminNamespace, ws } from "./server";
 import { Socket } from "./Socket";
 
 export class Room {
@@ -8,8 +8,11 @@ export class Room {
     public sockets: Socket[] = [];
     public messages: IMessage[] = [];
     public playlist: string[] = ["68ugkg9RePc"]; // YouTube video ids
+    public created_at: Date;
 
-    constructor(public readonly id: string) {}
+    constructor(public readonly id: string) {
+        this.created_at = new Date();
+    }
 
     public addMessage(message: IMessage) {
         if (this.messages.length >= Room.MAX_MESSAGES) {

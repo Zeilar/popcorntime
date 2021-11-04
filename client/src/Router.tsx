@@ -1,19 +1,16 @@
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import AdminRouter from "../domains/admin/Router";
-import { MeContextProvider } from "../domains/public/contexts";
-import PublicRouter from "../domains/public/Router";
+import Admin from "./domains/admin/App";
+import Public from "./domains/public/App";
 
 export default function Router() {
     return (
         <BrowserRouter>
             <Switch>
                 <Route path="/admin">
-                    <AdminRouter />
+                    <Admin />
                 </Route>
                 <Route path="/">
-                    <MeContextProvider>
-                        <PublicRouter />
-                    </MeContextProvider>
+                    <Public />
                 </Route>
                 <Route>404</Route>
             </Switch>
