@@ -169,7 +169,7 @@ adminNamespace.on("connection", (socket) => {
         const room = _socket.room;
 
         if (!room) {
-            return socket.emit("error", "That room does not exist.");
+            return socket.emit("error", "Socket does not belong to a room.");
         }
 
         io.to(_socket.id).emit("room:kick");

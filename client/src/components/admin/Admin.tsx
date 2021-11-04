@@ -21,6 +21,9 @@ export default function Admin() {
     }
 
     useEffect(() => {
+        adminSocket.on("error", (message: string) => {
+            toast.error(message);
+        });
         adminSocket.on("connect_error", (error) => {
             toast.error(error.message);
         });
