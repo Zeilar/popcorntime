@@ -22,6 +22,7 @@ export default function Room() {
     const [playlistInput, setPlaylistInput] = useState("");
     const [isConnected, setIsConnected] = useState(false);
     const player = useRef<YouTube>(null);
+    const { push } = useHistory();
 
     function play() {
         socket.emit("video:play");
@@ -58,6 +59,7 @@ export default function Room() {
         });
         socket.on("room:kick", () => {
             toast.info("You were kicked from the room.");
+            push("/");
         });
         socket.on(
             "room:socket:update:color",
@@ -91,7 +93,7 @@ export default function Room() {
             setPlaylist([]);
             setPlaylistInput("");
         };
-    }, [roomId]);
+    }, [roomId, push]);
 
     // TODO: socket.emit("room:leave", roomId); when you press leave, not in unmount, to prevent "undefined" left bug
 
