@@ -1,12 +1,7 @@
 import { IRoom } from "../../../common/@types/room";
 import * as Actions from "../actions/room";
 
-interface IAction {
-    type: string;
-    [key: string]: any;
-}
-
-export function roomReducer(state: IRoom[], action: IAction): IRoom[] {
+export function roomReducer(state: IRoom[], action: any): IRoom[] {
     switch (action.type) {
         case Actions.ADD_ROOMS:
             return [...state, ...action.rooms];

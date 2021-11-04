@@ -1,17 +1,23 @@
-import { useState, useEffect, useCallback, useReducer } from "react";
+import {
+    useState,
+    useEffect,
+    useCallback,
+    useReducer,
+    useContext,
+} from "react";
 import { Route, Switch } from "react-router";
 import { toast } from "react-toastify";
 import { IRoom } from "../../../common/@types/room";
 import { ISocket } from "../../../common/@types/socket";
 import { adminSocket } from "../../config/socket";
+import { RoomContext } from "../../contexts";
 import * as RoomActions from "../../state/actions/room";
-import { roomReducer } from "../../state/reducers/room";
 import Rooms from "./Rooms";
 import Sockets from "./Sockets";
 
 export default function Dashboard() {
     const [sockets, setSockets] = useState<ISocket[]>([]);
-    const [rooms, dispatchRooms] = useReducer(roomReducer, []);
+    const { rooms, dispatchRooms } = useContext(RoomContext);
 
     const removeSocketFromRoom = useCallback(
         (socketId: string, roomId: string) => {
