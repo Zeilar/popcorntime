@@ -79,9 +79,8 @@ export default function Room() {
             internalPlayer?.playVideo();
         });
 
-        // Just to be safe
+        // Just to be safe, roomId should in theory never change but you never know
         return () => {
-            socket.emit("room:leave", roomId);
             socket
                 .off("room:join")
                 .off("room:socket:leave")
@@ -93,6 +92,8 @@ export default function Room() {
             setPlaylistInput("");
         };
     }, [roomId]);
+
+    // TODO: socket.emit("room:leave", roomId); when you press leave, not in unmount, to prevent "undefined" left bug
 
     // TODO: use "light" prop for playlist thumbnails
 
