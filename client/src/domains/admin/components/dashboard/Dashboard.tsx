@@ -27,14 +27,19 @@ export default function Dashboard() {
                 socketId,
             });
         },
-        []
+        [dispatchRooms]
     );
 
-    const addSocketToRoom = useCallback((socket: ISocket, roomId: string) => {
-        dispatchRooms({ type: RoomActions.ADD_SOCKET_TO_ROOM, socket, roomId });
-    }, []);
-
-    console.log(rooms);
+    const addSocketToRoom = useCallback(
+        (socket: ISocket, roomId: string) => {
+            dispatchRooms({
+                type: RoomActions.ADD_SOCKET_TO_ROOM,
+                socket,
+                roomId,
+            });
+        },
+        [dispatchRooms]
+    );
 
     useEffect(() => {
         adminSocket.on("error", (message: string) => {
@@ -89,7 +94,7 @@ export default function Dashboard() {
         return () => {
             adminSocket.removeAllListeners();
         };
-    }, [removeSocketFromRoom, addSocketToRoom]);
+    }, [removeSocketFromRoom, addSocketToRoom, dispatchRooms]);
 
     return (
         <div>
