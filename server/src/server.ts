@@ -48,7 +48,7 @@ io.on("connection", async (socket) => {
 
         if (!room) {
             return socket.emit("message:error", {
-                error: "That room does not exist.",
+                error: "You must join a room to do that.",
                 id,
             });
         }
@@ -105,7 +105,7 @@ io.on("connection", async (socket) => {
         if (room.sockets.length >= Room.MAX_SOCKETS) {
             return socket.emit(
                 "error",
-                "This room is full. Try again at a later time, or create a new one."
+                "The room is full. Try again at a later time, or create a new one."
             );
         }
 
