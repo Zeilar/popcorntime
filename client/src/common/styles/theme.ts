@@ -3,19 +3,26 @@ import "@fontsource/open-sans/600.css";
 import "@fontsource/poppins/600.css";
 import { extendTheme, ThemeConfig } from "@chakra-ui/react";
 
-const colors: Record<string, string> = {
-    brand: "#9c162c",
-    "brand.light": "#da455e",
-    "brand.dark": "#7d1123",
-    "gray.900": "#141414",
-    "gray.800": "#191919",
-    "gray.700": "#1e1e1e",
-    "gray.600": "#232323",
-    "gray.500": "#282828",
-    "gray.400": "#2d2d2d",
-    "gray.300": "#323232",
-    "gray.200": "#373737",
-    "gray.100": "#3c3c3c",
+const colors = {
+    brand: {
+        default: "#9c162c",
+        light: "#da455e",
+        dark: "#7d1123",
+    },
+    gradient: {
+        brand: "linear-gradient(45deg, #7d1123 0%, #da455e 100%)",
+    },
+    gray: {
+        "900": "#141414",
+        "800": "#191919",
+        "700": "#1e1e1e",
+        "600": "#232323",
+        "500": "#282828",
+        "400": "#2d2d2d",
+        "300": "#323232",
+        "200": "#373737",
+        "100": "#3c3c3c",
+    },
 };
 
 const config: ThemeConfig = {
@@ -23,9 +30,23 @@ const config: ThemeConfig = {
     useSystemColorMode: false,
 };
 
+const fonts = {
+    heading: "Open Sans",
+    body: "Roboto",
+};
+
+const shadows = {
+    sm: "0 0 3px 0 rgba(0, 0, 0, 0.1)",
+    md: "0 0 5px 0 rgba(0, 0, 0, 0.25)",
+    lg: "0 0 8px 0 rgba(0, 0, 0, 0.5)",
+    xl: "0 0 12px 0 rgba(0, 0, 0, 0.75)",
+};
+
 export const theme = extendTheme({
     config,
     colors,
+    shadows,
+    fonts,
     styles: {
         global: {
             "::selection": {
@@ -61,15 +82,5 @@ export const theme = extendTheme({
                 borderRadius: 100,
             },
         },
-    },
-    shadows: {
-        sm: "0 0 3px 0 rgba(0, 0, 0, 0.1)",
-        md: "0 0 5px 0 rgba(0, 0, 0, 0.25)",
-        lg: "0 0 8px 0 rgba(0, 0, 0, 0.5)",
-        xl: "0 0 12px 0 rgba(0, 0, 0, 0.75)",
-    },
-    fonts: {
-        heading: "Open Sans",
-        body: "Roboto",
     },
 });

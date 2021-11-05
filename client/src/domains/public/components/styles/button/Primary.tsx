@@ -1,12 +1,13 @@
 import { Button, ButtonProps } from "@chakra-ui/button";
+import { useTheme } from "@chakra-ui/react";
 import { ReactNode } from "react";
-import { theme } from "../../../../../common/styles/theme";
 
 interface IProps extends ButtonProps {
     children: ReactNode;
 }
 
 export function PrimaryButton({ children, ...props }: IProps) {
+    const theme = useTheme();
     return (
         <Button
             variant="solid"

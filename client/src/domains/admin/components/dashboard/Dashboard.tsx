@@ -1,11 +1,14 @@
-import { useState, useEffect, useCallback, useContext } from "react";
+import { Flex } from "@chakra-ui/layout";
+import { useState, useEffect, useContext } from "react";
 import { Route, Switch } from "react-router";
+import { NavLink } from "react-router-dom";
 import { toast } from "react-toastify";
 import { IRoom } from "../../../common/@types/room";
 import { ISocket } from "../../../common/@types/socket";
 import { adminSocket } from "../../config/socket";
 import { RoomContext } from "../../contexts";
 import * as RoomActions from "../../state/actions/room";
+import DashboardItem from "./DashboardItem";
 import Rooms from "./Rooms";
 import Sockets from "./Sockets";
 
@@ -78,8 +81,12 @@ export default function Dashboard() {
     }, [dispatchRooms]);
 
     return (
-        <div>
-            Admin stuff
+        <Flex>
+            <Flex flexDir="column" width="20rem" bgColor="gray.900">
+                <DashboardItem icon="mdiAccountGroupOutline" to="/admin/rooms">
+                    Rooms
+                </DashboardItem>
+            </Flex>
             <Switch>
                 <Route path="/admin" exact>
                     Main
@@ -92,6 +99,6 @@ export default function Dashboard() {
                 </Route>
                 <Route>404</Route>
             </Switch>
-        </div>
+        </Flex>
     );
 }

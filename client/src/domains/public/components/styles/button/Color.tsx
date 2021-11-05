@@ -1,16 +1,15 @@
 import { Color } from "../../../../../common/@types/color";
-import { useTheme } from "@emotion/react";
 import { Box, BoxProps } from "@chakra-ui/layout";
 import { MeContext } from "../../../contexts";
 import { useContext } from "react";
 import { socket } from "../../../config/socket";
+import theme from "@chakra-ui/theme";
 
 interface IProps extends BoxProps {
     color: Color;
 }
 
 export function ColorButton({ children, color, ...props }: IProps) {
-    const theme: any = useTheme();
     const { me } = useContext(MeContext);
 
     function clickHandler() {
