@@ -1,10 +1,4 @@
-import {
-    useState,
-    useEffect,
-    useCallback,
-    useReducer,
-    useContext,
-} from "react";
+import { useState, useEffect, useCallback, useContext } from "react";
 import { Route, Switch } from "react-router";
 import { toast } from "react-toastify";
 import { IRoom } from "../../../common/@types/room";
@@ -18,28 +12,6 @@ import Sockets from "./Sockets";
 export default function Dashboard() {
     const [sockets, setSockets] = useState<ISocket[]>([]);
     const { rooms, dispatchRooms } = useContext(RoomContext);
-
-    const removeSocketFromRoom = useCallback(
-        (socketId: string, roomId: string) => {
-            dispatchRooms({
-                type: RoomActions.REMOVE_SOCKET_FROM_ROOM,
-                roomId,
-                socketId,
-            });
-        },
-        [dispatchRooms]
-    );
-
-    const addSocketToRoom = useCallback(
-        (socket: ISocket, roomId: string) => {
-            dispatchRooms({
-                type: RoomActions.ADD_SOCKET_TO_ROOM,
-                socket,
-                roomId,
-            });
-        },
-        [dispatchRooms]
-    );
 
     useEffect(() => {
         adminSocket.on("error", (message: string) => {
@@ -61,7 +33,10 @@ export default function Dashboard() {
         adminSocket.on(
             "room:kick",
             (payload: { roomId: string; socketId: string }) => {
-                removeSocketFromRoom(payload.socketId, payload.roomId);
+                dispatchRooms({
+                    type: RoomActions.REMOVE_SOCKET_FROM_ROOM,
+                    ...payload,
+                });
                 toast.info("Removed socket.");
             }
         );
@@ -82,19 +57,25 @@ export default function Dashboard() {
         adminSocket.on(
             "room:join",
             (payload: { socket: ISocket; roomId: string }) => {
-                addSocketToRoom(payload.socket, payload.roomId);
+                dispatchRooms({
+                    type: RoomActions.ADD_SOCKET_TO_ROOM,
+                    ...payload,
+                });
             }
         );
         adminSocket.on(
             "room:leave",
             (payload: { socketId: string; roomId: string }) => {
-                removeSocketFromRoom(payload.socketId, payload.roomId);
+                dispatchRooms({
+                    type: RoomActions.REMOVE_SOCKET_FROM_ROOM,
+                    ...payload,
+                });
             }
         );
         return () => {
             adminSocket.removeAllListeners();
         };
-    }, [removeSocketFromRoom, addSocketToRoom, dispatchRooms]);
+    }, [dispatchRooms]);
 
     return (
         <div>
