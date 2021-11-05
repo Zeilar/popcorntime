@@ -1,6 +1,3 @@
-import "@fontsource/roboto/400.css";
-import "@fontsource/open-sans/600.css";
-import "@fontsource/poppins/600.css";
 import { extendTheme, ThemeConfig } from "@chakra-ui/react";
 
 const colors = {
@@ -42,7 +39,7 @@ const shadows = {
     xl: "0 0 12px 0 rgba(0, 0, 0, 0.75)",
 };
 
-export const theme = extendTheme({
+export default extendTheme({
     config,
     colors,
     shadows,
@@ -50,7 +47,7 @@ export const theme = extendTheme({
     styles: {
         global: {
             "::selection": {
-                backgroundColor: "brand",
+                backgroundColor: colors.brand.default,
                 color: "whiteAlpha.900",
             },
             body: {
@@ -58,7 +55,7 @@ export const theme = extendTheme({
                 backgroundColor: "black",
                 overflow: "hidden",
                 "::-webkit-scrollbar-thumb": {
-                    backgroundColor: colors.brand,
+                    backgroundColor: colors.brand.default,
                     backgroundClip: "padding-box",
                     border: "4px solid transparent",
                     borderRadius: 100,
@@ -76,7 +73,7 @@ export const theme = extendTheme({
                 height: "0.5rem",
             },
             ".custom-scrollbar::-webkit-scrollbar-thumb": {
-                backgroundColor: colors.brand,
+                backgroundColor: colors.brand.default,
                 backgroundClip: "padding-box",
                 border: "4px solid transparent",
                 borderRadius: 100,

@@ -2,9 +2,9 @@ import { ChakraProvider } from "@chakra-ui/react";
 import React from "react";
 import ReactDOM from "react-dom";
 import { ToastContainer } from "react-toastify";
-import App from "./App";
-import { theme } from "./common/styles/theme";
-import "react-toastify/dist/ReactToastify.min.css";
+import App from "./boot/App";
+import theme from "./common/styles/theme";
+import "./boot";
 
 ReactDOM.render(
     <React.StrictMode>
