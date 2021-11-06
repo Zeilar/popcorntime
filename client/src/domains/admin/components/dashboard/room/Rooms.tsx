@@ -9,12 +9,12 @@ interface IProps {
 export default function Rooms({ rooms }: IProps) {
     return (
         <Grid
-            gridTemplateColumns="repeat(5, 1fr)"
+            gridTemplateColumns="repeat(6, 1fr)"
             gridGap="0.5rem"
             p="0.5rem"
+            overflowY="auto"
             flexGrow={1}
             alignContent="start"
-            alignItems="start"
         >
             {rooms.map((room) => (
                 <Room room={room} key={room.id} />

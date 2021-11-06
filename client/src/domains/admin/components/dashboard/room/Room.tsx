@@ -43,6 +43,7 @@ export default function Room({ room }: IProps) {
                 gridGap="0.5rem"
                 p="0.5rem"
                 gridTemplateColumns="repeat(1, 1fr)"
+                mt="auto"
             >
                 {room.sockets.map((socket) => (
                     <Text
