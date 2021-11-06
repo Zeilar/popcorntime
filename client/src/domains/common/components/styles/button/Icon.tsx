@@ -9,7 +9,6 @@ export function IconButton({ children, ...props }: IProps) {
     return (
         <Flex
             as="button"
-            bgGradient={`linear(to-r, brand.dark, brand.light)`}
             w="2rem"
             h="2rem"
             rounded="base"

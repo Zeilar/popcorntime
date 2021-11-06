@@ -206,4 +206,11 @@ adminNamespace.on("connection", (socket) => {
 
         ws.deleteRoom(room);
     });
+
+    socket.on("room:delete:all", () => {
+        ws.rooms.forEach((room) => {
+            ws.deleteRoom(room);
+        });
+        socket.emit("room:delete:all");
+    });
 });

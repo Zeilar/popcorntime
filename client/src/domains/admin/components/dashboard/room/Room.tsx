@@ -1,4 +1,4 @@
-import { CloseIcon, DeleteIcon } from "@chakra-ui/icons";
+import { CloseIcon, DeleteIcon, InfoOutlineIcon } from "@chakra-ui/icons";
 import { AbsoluteCenter, Box, Flex, Grid, Text } from "@chakra-ui/layout";
 import { Tooltip } from "@chakra-ui/tooltip";
 import { adminSocket } from "domains/admin/config/socket";
@@ -37,8 +37,21 @@ export default function Room({ room }: IProps) {
                 top="0.5rem"
                 title="Delete room"
                 onClick={destroy}
+                bgColor="red.700"
+                _active={{ bgColor: "red.600" }}
             >
                 <DeleteIcon />
+            </Button.Icon>
+            <Button.Icon
+                pos="absolute"
+                right="0.5rem"
+                top="3rem"
+                title="Info"
+                onClick={destroy}
+                bgColor="gray.500"
+                _active={{ bgColor: "gray.300" }}
+            >
+                <InfoOutlineIcon />
             </Button.Icon>
             <Box
                 stroke="brand.default"
@@ -77,6 +90,8 @@ export default function Room({ room }: IProps) {
                         bgGradient={`linear(to-r, ${socket.color}.700, ${socket.color}.900)`}
                         align="center"
                         key={socket.id}
+                        rounded="base"
+                        p="0.5rem"
                     >
                         <Tooltip
                             label={socket.username}
@@ -87,8 +102,6 @@ export default function Room({ room }: IProps) {
                             fontSize="large"
                         >
                             <Text
-                                p="0.5rem"
-                                rounded="base"
                                 fontWeight={600}
                                 whiteSpace="nowrap"
                                 overflow="hidden"

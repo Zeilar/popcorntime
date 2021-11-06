@@ -1,4 +1,4 @@
-import { IRoom } from "../../../common/@types/room";
+import { IRoom } from "domains/common/@types/room";
 import * as Actions from "../actions/room";
 
 export function roomReducer(state: IRoom[], action: any): IRoom[] {
