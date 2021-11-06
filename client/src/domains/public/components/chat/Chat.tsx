@@ -9,7 +9,6 @@ import {
 } from "react";
 import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
-import { IMetaData } from "../../../common/@types/room";
 import { IMessage } from "../../../common/@types/message";
 import { ISocket } from "../../../common/@types/socket";
 import Message from "../Message";
@@ -29,10 +28,6 @@ export function Chat({ roomId }: IProps) {
     const { me } = useContext(MeContext);
     const [isOpen, setIsOpen] = useState(true); // useLocalStorage for initial value
     const [messages, setMessages] = useState<IMessage[]>([]);
-    const [metaData, setMetaData] = useState<IMetaData>({
-        MAX_MESSAGES: 30,
-        MAX_SOCKETS: 10,
-    });
     const scrollChat = useRef<boolean>(true);
     const chatElement = useRef<HTMLDivElement>(null);
     const input = useRef<HTMLTextAreaElement>(null);
@@ -41,17 +36,19 @@ export function Chat({ roomId }: IProps) {
         setSettingsOpen(false)
     );
 
+    const { REACT_APP_ROOM_MAX_MESSAGES } = process.env;
+
     const addMessage = useCallback(
         (message: IMessage) => {
             setMessages((messages) => {
                 const array = [...messages, message];
-                if (array.length > metaData.MAX_MESSAGES) {
+                if (array.length > parseInt(REACT_APP_ROOM_MAX_MESSAGES)) {
                     array.shift();
                 }
                 return array;
             });
         },
-        [metaData.MAX_MESSAGES]
+        [REACT_APP_ROOM_MAX_MESSAGES]
     );
 
     useEffect(() => {
@@ -76,13 +73,9 @@ export function Chat({ roomId }: IProps) {
             toast.error(payload.error);
         });
 
-        socket.once(
-            "room:join",
-            (payload: { messages: IMessage[]; metaData: IMetaData }) => {
-                setMetaData(payload.metaData);
-                setMessages(payload.messages);
-            }
-        );
+        socket.once("room:join", (payload: { messages: IMessage[] }) => {
+            setMessages(payload.messages);
+        });
 
         return () => {
             socket.off("message:new").off("message:error").off("room:join");

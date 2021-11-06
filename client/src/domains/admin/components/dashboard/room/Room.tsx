@@ -1,11 +1,16 @@
 import { AbsoluteCenter, Box, Flex, Grid, Text } from "@chakra-ui/layout";
+import { Tooltip } from "@chakra-ui/tooltip";
 import { IRoom } from "domains/common/@types/room";
 
 interface IProps {
     room: IRoom;
 }
 
+const { REACT_APP_ROOM_MAX_SOCKETS } = process.env;
+
 export default function Room({ room }: IProps) {
+    const placeholderAmount =
+        parseInt(REACT_APP_ROOM_MAX_SOCKETS) - room.sockets.length;
     return (
         <Flex
             bgColor="gray.800"
@@ -22,7 +27,7 @@ export default function Room({ room }: IProps) {
             >
                 <AbsoluteCenter>
                     <Text fontSize="large" fontWeight={600}>
-                        {room.sockets.length} / 10
+                        {`${room.sockets.length} / ${REACT_APP_ROOM_MAX_SOCKETS}`}
                     </Text>
                 </AbsoluteCenter>
                 <svg
@@ -43,20 +48,42 @@ export default function Room({ room }: IProps) {
                 gridGap="0.5rem"
                 p="0.5rem"
                 gridTemplateColumns="repeat(1, 1fr)"
-                mt="auto"
+                gridTemplateRows="repeat(10, 1fr)"
             >
                 {room.sockets.map((socket) => (
-                    <Text
-                        bgGradient={`linear(to-r, ${socket.color}.700, ${socket.color}.800)`}
-                        p="0.5rem"
-                        bgColor={`${socket.color}.700`}
-                        rounded="base"
-                        fontWeight={600}
-                        key={socket.id}
+                    <Tooltip
+                        label={socket.username}
+                        placement="top"
+                        openDelay={150}
+                        bgGradient={`linear(to-r, ${socket.color}.800, ${socket.color}.900)`}
+                        color="inherit"
+                        fontSize="large"
                     >
-                        {socket.username}
-                    </Text>
+                        <Text
+                            bgGradient={`linear(to-r, ${socket.color}.800, ${socket.color}.900)`}
+                            p="0.5rem"
+                            bgColor={`${socket.color}.700`}
+                            rounded="base"
+                            fontWeight={600}
+                            whiteSpace="nowrap"
+                            overflow="hidden"
+                            textOverflow="ellipsis"
+                            key={socket.id}
+                        >
+                            {socket.username}
+                        </Text>
+                    </Tooltip>
                 ))}
+                {Array(placeholderAmount)
+                    .fill(null)
+                    .map((_, i) => (
+                        <Box
+                            rounded="base"
+                            p="0.5rem"
+                            bgColor="gray.900"
+                            key={i}
+                        />
+                    ))}
             </Grid>
         </Flex>
     );

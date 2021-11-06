@@ -2,9 +2,11 @@ import { IMessage } from "../@types/message";
 import { adminNamespace, ws } from "./server";
 import { Socket } from "./Socket";
 
+const { ROOM_MAX_SOCKETS, ROOM_MAX_MESSAGES } = process.env;
+
 export class Room {
-    public static readonly MAX_SOCKETS = 10;
-    public static readonly MAX_MESSAGES = 30;
+    public static readonly MAX_SOCKETS = parseInt(ROOM_MAX_SOCKETS);
+    public static readonly MAX_MESSAGES = parseInt(ROOM_MAX_MESSAGES);
     public sockets: Socket[] = [];
     public messages: IMessage[] = [];
     public playlist: string[] = ["68ugkg9RePc"]; // YouTube video ids
@@ -46,10 +48,6 @@ export class Room {
             sockets: this.socketsDto,
             messages: this.messages,
             playlist: this.playlist,
-            metaData: {
-                MAX_SOCKETS: Room.MAX_SOCKETS,
-                MAX_MESSAGES: Room.MAX_MESSAGES,
-            },
         });
         socket.ref?.to(this.id).emit("room:socket:join", socket.dto);
         adminNamespace.emit("room:join", {

@@ -37,6 +37,8 @@ export default function Message({ message }: IProps) {
               }
             : {};
 
+    const { color } = message.socket;
+
     return (
         <MotionBox
             {...notSentStyling}
@@ -46,19 +48,17 @@ export default function Message({ message }: IProps) {
             p="0.5rem"
             mt={1}
             _first={{ marginTop: 0 }}
-            bgColor={`${message.socket.color}.900`}
+            bgGradient={`linear(to-r, ${color}.800, ${color}.900)`}
         >
             <Tooltip
+                bgGradient={`linear(to-r, ${color}.800, ${color}.900)`}
                 label={message.socket.username}
-                bgColor="black"
-                border="1px solid"
-                borderColor={`${message.socket.color}.500`}
-                color={`${message.socket.color}.500`}
                 openDelay={150}
                 placement="left"
                 fontSize="large"
                 fontWeight={600}
-                fontFamily="Poppins"
+                color="inherit"
+                mr="0.25rem"
             >
                 <Box
                     pos="relative"
@@ -79,7 +79,7 @@ export default function Message({ message }: IProps) {
                         alignItems="center"
                         fontWeight={600}
                         fontFamily="Open Sans"
-                        bgColor={`${message.socket.color}.600`}
+                        bgColor={`${color}.600`}
                     >
                         {shortenUsername(message.socket.username)}
                     </AbsoluteCenter>
