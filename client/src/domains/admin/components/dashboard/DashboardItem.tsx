@@ -23,7 +23,8 @@ export default function DashboardItem({ to, children, icon }: IProps) {
             as={NavLink}
             to={to}
             transition="background-color 0.05s"
-            _active={{ bgColor: theme.colors.gray["500"] }}
+            _hover={{ bgColor: "gray.500" }}
+            _active={{ bgColor: theme.colors.gray["300"] }}
             _activeLink={{ bgColor: theme.colors.gray["100"] }}
             p="0.5rem"
             borderRadius="base"
