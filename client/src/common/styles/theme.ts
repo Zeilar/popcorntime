@@ -46,6 +46,15 @@ const components = {
             fontSize: "large",
         },
     },
+    Button: {
+        baseStyle: {
+            transitionDuration: "0.1s",
+            rounded: "base",
+            _focus: {
+                boxShadow: "none",
+            },
+        },
+    },
 };
 
 export default extendTheme({
