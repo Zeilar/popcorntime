@@ -39,11 +39,21 @@ const shadows = {
     xl: "0 0 12px 0 rgba(0, 0, 0, 0.75)",
 };
 
+const components = {
+    Tooltip: {
+        baseStyle: {
+            color: "inherit",
+            fontSize: "large",
+        },
+    },
+};
+
 export default extendTheme({
     config,
     colors,
     shadows,
     fonts,
+    components,
     styles: {
         global: {
             "::selection": {

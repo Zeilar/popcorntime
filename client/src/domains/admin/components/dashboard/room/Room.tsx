@@ -1,6 +1,9 @@
+import { CloseIcon } from "@chakra-ui/icons";
 import { AbsoluteCenter, Box, Flex, Grid, Text } from "@chakra-ui/layout";
 import { Tooltip } from "@chakra-ui/tooltip";
+import { adminSocket } from "domains/admin/config/socket";
 import { IRoom } from "domains/common/@types/room";
+import { ISocket } from "domains/common/@types/socket";
 
 interface IProps {
     room: IRoom;
@@ -11,6 +14,11 @@ const { REACT_APP_ROOM_MAX_SOCKETS } = process.env;
 export default function Room({ room }: IProps) {
     const placeholderAmount =
         parseInt(REACT_APP_ROOM_MAX_SOCKETS) - room.sockets.length;
+
+    function kick(socketId: string) {
+        adminSocket.emit("room:kick", socketId);
+    }
+
     return (
         <Flex
             bgColor="gray.800"
@@ -51,28 +59,45 @@ export default function Room({ room }: IProps) {
                 gridTemplateRows="repeat(10, 1fr)"
             >
                 {room.sockets.map((socket) => (
-                    <Tooltip
-                        label={socket.username}
-                        placement="top"
-                        openDelay={150}
-                        bgGradient={`linear(to-r, ${socket.color}.800, ${socket.color}.900)`}
-                        color="inherit"
-                        fontSize="large"
+                    <Flex
+                        bgGradient={`linear(to-r, ${socket.color}.700, ${socket.color}.900)`}
+                        align="center"
                         key={socket.id}
                     >
-                        <Text
-                            bgGradient={`linear(to-r, ${socket.color}.800, ${socket.color}.900)`}
-                            p="0.5rem"
-                            bgColor={`${socket.color}.700`}
-                            rounded="base"
-                            fontWeight={600}
-                            whiteSpace="nowrap"
-                            overflow="hidden"
-                            textOverflow="ellipsis"
+                        <Tooltip
+                            label={socket.username}
+                            placement="top"
+                            openDelay={150}
+                            bgGradient={`linear(to-r, ${socket.color}.700, ${socket.color}.900)`}
+                            color="inherit"
+                            fontSize="large"
                         >
-                            {socket.username}
-                        </Text>
-                    </Tooltip>
+                            <Text
+                                p="0.5rem"
+                                rounded="base"
+                                fontWeight={600}
+                                whiteSpace="nowrap"
+                                overflow="hidden"
+                                textOverflow="ellipsis"
+                            >
+                                {socket.username}
+                            </Text>
+                        </Tooltip>
+                        <Tooltip label="Kick" placement="top">
+                            <Flex
+                                ml="auto"
+                                as="button"
+                                w="2rem"
+                                h="2rem"
+                                onClick={() => kick(socket.id)}
+                                pos="relative"
+                                justifyContent="center"
+                                alignItems="center"
+                            >
+                                <CloseIcon maxW="100%" maxH="100%" />
+                            </Flex>
+                        </Tooltip>
+                    </Flex>
                 ))}
                 {Array(placeholderAmount)
                     .fill(null)

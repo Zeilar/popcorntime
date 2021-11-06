@@ -9,7 +9,7 @@ interface IProps {
 export default function Rooms({ rooms }: IProps) {
     return (
         <Grid
-            gridTemplateColumns="repeat(6, 1fr)"
+            gridTemplateColumns="repeat(4, minmax(20rem, 1fr))"
             gridGap="0.5rem"
             p="0.5rem"
             overflowY="auto"
