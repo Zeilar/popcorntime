@@ -81,7 +81,7 @@ export default function Dashboard() {
 
     return (
         <Grid bgColor="gray.900" flexGrow={1} gridTemplateColumns="25rem 1fr">
-            <Flex flexDir="column" width="25rem" bgColor="gray.700" p="0.5rem">
+            <Flex flexDir="column" bgColor="gray.700" p="0.5rem" boxShadow="md">
                 <DashboardItem icon="mdiAccountGroupOutline" to="/admin/rooms">
                     Rooms
                 </DashboardItem>
