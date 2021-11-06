@@ -1,4 +1,4 @@
-import { Box, Flex } from "@chakra-ui/layout";
+import { Flex } from "@chakra-ui/layout";
 import { ReactNode } from "react";
 import { NavLink } from "react-router-dom";
 import { Icon } from "@chakra-ui/icons";
@@ -15,16 +15,27 @@ interface IProps {
 export default function DashboardItem({ to, children, icon }: IProps) {
     const theme = useTheme();
     return (
-        <Flex textAlign="center">
-            <Box
-                w="100%"
-                as={NavLink}
-                to={to}
-                sx={{ "&.active": { bgColor: theme.colors.gray["600"] } }}
-            >
-                {children}
-            </Box>
-            <Icon as={MdiIcon} path={MdiIcons[icon]} w="1rem" h="1rem" />
+        <Flex
+            alignItems="center"
+            userSelect="none"
+            mb="0.25rem"
+            w="100%"
+            as={NavLink}
+            to={to}
+            transition="background-color 0.05s"
+            _active={{ bgColor: theme.colors.gray["500"] }}
+            _activeLink={{ bgColor: theme.colors.gray["100"] }}
+            p="0.5rem"
+            borderRadius="base"
+        >
+            <Icon
+                as={MdiIcon}
+                path={MdiIcons[icon]}
+                mx="0.5rem"
+                w="1rem"
+                h="1rem"
+            />
+            {children}
         </Flex>
     );
 }

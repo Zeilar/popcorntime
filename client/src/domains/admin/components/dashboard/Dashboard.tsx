@@ -1,7 +1,6 @@
 import { Flex } from "@chakra-ui/layout";
 import { useState, useEffect, useContext } from "react";
 import { Route, Switch } from "react-router";
-import { NavLink } from "react-router-dom";
 import { toast } from "react-toastify";
 import { IRoom } from "../../../common/@types/room";
 import { ISocket } from "../../../common/@types/socket";
@@ -9,7 +8,7 @@ import { adminSocket } from "../../config/socket";
 import { RoomContext } from "../../contexts";
 import * as RoomActions from "../../state/actions/room";
 import DashboardItem from "./DashboardItem";
-import Rooms from "./Rooms";
+import Rooms from "./room/Rooms";
 import Sockets from "./Sockets";
 
 export default function Dashboard() {
@@ -81,10 +80,13 @@ export default function Dashboard() {
     }, [dispatchRooms]);
 
     return (
-        <Flex>
-            <Flex flexDir="column" width="20rem" bgColor="gray.900">
+        <Flex bgColor="gray.900" flexGrow={1}>
+            <Flex flexDir="column" width="25rem" bgColor="gray.700" p="0.5rem">
                 <DashboardItem icon="mdiAccountGroupOutline" to="/admin/rooms">
                     Rooms
+                </DashboardItem>
+                <DashboardItem icon="mdiPowerSocket" to="/admin/sockets">
+                    Sockets
                 </DashboardItem>
             </Flex>
             <Switch>
@@ -92,7 +94,7 @@ export default function Dashboard() {
                     Main
                 </Route>
                 <Route path="/admin/rooms" exact>
-                    <Rooms rooms={rooms} />;
+                    <Rooms rooms={rooms} />
                 </Route>
                 <Route path="/admin/sockets" exact>
                     <Sockets sockets={sockets} />

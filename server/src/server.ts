@@ -48,7 +48,7 @@ io.on("connection", async (socket) => {
 
         if (!room) {
             return socket.emit("message:error", {
-                error: "You must join a room to do that.",
+                error: "You must be in a room to do that.",
                 id,
             });
         }
@@ -86,6 +86,12 @@ io.on("connection", async (socket) => {
         if (!validate(roomId)) {
             return socket.emit("error", "Invalid room id.");
         }
+        if ([...ws.rooms].length > 20) {
+            return socket.emit(
+                "error",
+                "There are too many rooms already, please try again later."
+            );
+        }
         const room = new Room(roomId);
         ws.addRoom(room);
         room.add(_socket);
@@ -115,7 +121,7 @@ io.on("connection", async (socket) => {
     socket.on("video:play", () => {
         const room = _socket.room;
         if (!room) {
-            return socket.emit("error", "You must join a room to do that.");
+            return socket.emit("error", "You must be in a room to do that.");
         }
         // Make it so the sender gets this at the same time as the others to sync them better.
         io.to(room.id).emit("video:play");

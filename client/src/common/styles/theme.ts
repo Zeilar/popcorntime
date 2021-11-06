@@ -29,7 +29,7 @@ const config: ThemeConfig = {
 
 const fonts = {
     heading: "Open Sans",
-    body: "Roboto",
+    body: "Open Sans",
 };
 
 const shadows = {
