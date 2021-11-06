@@ -62,7 +62,7 @@ export function Room() {
             push("/");
         });
         socket.on("room:delete", () => {
-            toast.info("The room has been deleted.");
+            toast.info("The room was deleted.");
             push("/");
         });
         socket.on(
