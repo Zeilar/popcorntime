@@ -1,4 +1,5 @@
 import { useDisclosure } from "@chakra-ui/hooks";
+import { DeleteIcon } from "@chakra-ui/icons";
 import { Flex, Grid } from "@chakra-ui/layout";
 import { adminSocket } from "domains/admin/config/socket";
 import { IRoom } from "domains/common/@types/room";
@@ -40,6 +41,7 @@ export default function Rooms({ rooms }: IProps) {
             />
             <Flex bgColor="gray.800" p="0.5rem" mb="0.5rem">
                 <Button.Primary ml="auto" onClick={onOpen}>
+                    <DeleteIcon mr="0.5rem" />
                     Destroy all
                 </Button.Primary>
             </Flex>
