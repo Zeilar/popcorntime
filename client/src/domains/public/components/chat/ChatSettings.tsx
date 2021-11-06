@@ -1,8 +1,8 @@
 import { Flex, FlexProps, Grid, Text } from "@chakra-ui/layout";
 import { Divider } from "@chakra-ui/react";
+import { colors } from "data/colors";
+import Button from "domains/common/components/styles/button";
 import { motion } from "framer-motion";
-import { colors } from "../../../../data/colors";
-import Button from "../styles/button";
 
 const MotionBox = motion<FlexProps>(Flex);
 

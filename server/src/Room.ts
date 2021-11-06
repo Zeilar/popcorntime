@@ -70,7 +70,7 @@ export class Room {
             roomId: this.id,
         });
         if (this.sockets.length <= 0) {
-            ws.removeRoom(this);
+            ws.deleteRoom(this);
         }
     }
 

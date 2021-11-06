@@ -17,7 +17,7 @@ export class WS {
         adminNamespace.emit("socket:connect", socket.dto);
     }
 
-    public removeSocket(socket: Socket) {
+    public deleteSocket(socket: Socket) {
         this.sockets.delete(socket.id);
         adminNamespace.emit("socket:disconnect", socket.id);
     }
@@ -27,7 +27,8 @@ export class WS {
         adminNamespace.emit("room:new", room.dto);
     }
 
-    public removeRoom(room: Room) {
+    public deleteRoom(room: Room) {
+        this.io.to(room.id).emit("room:delete");
         adminNamespace.emit("room:delete", room.id);
         this.rooms.delete(room.id);
     }

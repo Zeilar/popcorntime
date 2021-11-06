@@ -7,9 +7,9 @@ import { Box, Grid } from "@chakra-ui/layout";
 import { Chat } from "../components/chat";
 import { validate } from "uuid";
 import { Flex } from "@chakra-ui/react";
-import Button from "../components/styles/button";
-import { Color } from "../../../common/@types/color";
+import { Color } from "common/@types/color";
 import { socket } from "../config/socket";
+import Button from "domains/common/components/styles/button";
 
 interface IParams {
     roomId: string;
@@ -61,6 +61,10 @@ export function Room() {
             toast.info("You were kicked from the room.");
             push("/");
         });
+        socket.on("room:delete", () => {
+            toast.info("The room has been deleted.");
+            push("/");
+        });
         socket.on(
             "room:socket:update:color",
             (payload: { color: Color; socketId: string }) => {
@@ -88,7 +92,8 @@ export function Room() {
                 .off("room:socket:leave")
                 .off("room:socket:join")
                 .off("video:play")
-                .off("room:kick");
+                .off("room:kick")
+                .off("room:delete");
             setSockets([]);
             setPlaylist([]);
             setPlaylistInput("");

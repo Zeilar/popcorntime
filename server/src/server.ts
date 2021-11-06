@@ -142,7 +142,7 @@ io.on("connection", async (socket) => {
         if (room) {
             room.remove(_socket);
         }
-        ws.removeSocket(_socket);
+        ws.deleteSocket(_socket);
     });
 });
 
@@ -195,5 +195,15 @@ adminNamespace.on("connection", (socket) => {
         socket.emit("socket:disconnect", socketId);
 
         _socket.ref?.disconnect();
+    });
+
+    socket.on("room:delete", (roomId: string) => {
+        const room = ws.rooms.get(roomId);
+
+        if (!room) {
+            return socket.emit("error", "That room does not exist.");
+        }
+
+        ws.deleteRoom(room);
     });
 });

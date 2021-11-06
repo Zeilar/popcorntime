@@ -1,7 +1,7 @@
 import { AbsoluteCenter, Box, Text } from "@chakra-ui/layout";
-import Button from "../components/styles/button";
 import { ReactComponent as PopcornIcon } from "../assets/svg/popcorn.svg";
 import { Link } from "react-router-dom";
+import Button from "domains/common/components/styles/button";
 
 export function Home() {
     return (

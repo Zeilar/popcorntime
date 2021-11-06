@@ -1,9 +1,9 @@
-import { CloseIcon } from "@chakra-ui/icons";
+import { CloseIcon, DeleteIcon } from "@chakra-ui/icons";
 import { AbsoluteCenter, Box, Flex, Grid, Text } from "@chakra-ui/layout";
 import { Tooltip } from "@chakra-ui/tooltip";
 import { adminSocket } from "domains/admin/config/socket";
 import { IRoom } from "domains/common/@types/room";
-import { ISocket } from "domains/common/@types/socket";
+import Button from "domains/common/components/styles/button";
 
 interface IProps {
     room: IRoom;
@@ -19,13 +19,27 @@ export default function Room({ room }: IProps) {
         adminSocket.emit("room:kick", socketId);
     }
 
+    function destroy() {
+        adminSocket.emit("room:delete", room.id);
+    }
+
     return (
         <Flex
             bgColor="gray.800"
             rounded="base"
             flexDir="column"
             alignItems="center"
+            pos="relative"
         >
+            <Button.Icon
+                pos="absolute"
+                right="0.5rem"
+                top="0.5rem"
+                title="Delete room"
+                onClick={destroy}
+            >
+                <DeleteIcon />
+            </Button.Icon>
             <Box
                 stroke="brand.default"
                 pos="relative"

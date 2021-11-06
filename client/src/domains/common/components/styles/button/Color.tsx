@@ -1,9 +1,9 @@
-import { Color } from "../../../../../common/@types/color";
+import { Color } from "common/@types/color";
 import { Box, BoxProps } from "@chakra-ui/layout";
-import { MeContext } from "../../../contexts";
 import { useContext } from "react";
-import { socket } from "../../../config/socket";
 import theme from "@chakra-ui/theme";
+import { socket } from "domains/public/config/socket";
+import { MeContext } from "domains/public/contexts";
 
 interface IProps extends BoxProps {
     color: Color;
