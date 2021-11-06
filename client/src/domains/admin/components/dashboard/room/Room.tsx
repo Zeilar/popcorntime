@@ -58,6 +58,7 @@ export default function Room({ room }: IProps) {
                         bgGradient={`linear(to-r, ${socket.color}.800, ${socket.color}.900)`}
                         color="inherit"
                         fontSize="large"
+                        key={socket.id}
                     >
                         <Text
                             bgGradient={`linear(to-r, ${socket.color}.800, ${socket.color}.900)`}
@@ -68,7 +69,6 @@ export default function Room({ room }: IProps) {
                             whiteSpace="nowrap"
                             overflow="hidden"
                             textOverflow="ellipsis"
-                            key={socket.id}
                         >
                             {socket.username}
                         </Text>

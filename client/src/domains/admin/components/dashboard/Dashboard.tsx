@@ -1,4 +1,4 @@
-import { Flex } from "@chakra-ui/layout";
+import { Flex, Grid } from "@chakra-ui/layout";
 import { useState, useEffect, useContext } from "react";
 import { Route, Switch } from "react-router";
 import { toast } from "react-toastify";
@@ -80,7 +80,7 @@ export default function Dashboard() {
     }, [dispatchRooms]);
 
     return (
-        <Flex bgColor="gray.900" flexGrow={1}>
+        <Grid bgColor="gray.900" flexGrow={1} gridTemplateColumns="25rem 1fr">
             <Flex flexDir="column" width="25rem" bgColor="gray.700" p="0.5rem">
                 <DashboardItem icon="mdiAccountGroupOutline" to="/admin/rooms">
                     Rooms
@@ -101,6 +101,6 @@ export default function Dashboard() {
                 </Route>
                 <Route>404</Route>
             </Switch>
-        </Flex>
+        </Grid>
     );
 }

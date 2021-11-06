@@ -13,7 +13,6 @@ export default function Rooms({ rooms }: IProps) {
             gridGap="0.5rem"
             p="0.5rem"
             overflowY="auto"
-            flexGrow={1}
             alignContent="start"
         >
             {rooms.map((room) => (
