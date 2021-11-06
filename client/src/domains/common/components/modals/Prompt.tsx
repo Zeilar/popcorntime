@@ -24,7 +24,7 @@ export function Prompt({ isOpen, onClose, body, header, onSubmit }: IProps) {
                 <ModalHeader>{header}</ModalHeader>
                 <ModalBody>{body}</ModalBody>
                 <ModalFooter>
-                    <Button.Primary mr="1rem" onClick={onSubmit}>
+                    <Button.Primary mr="0.5rem" onClick={onSubmit}>
                         Ok
                     </Button.Primary>
                     <Button.Ghost onClick={onClose}>Cancel</Button.Ghost>
