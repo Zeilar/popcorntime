@@ -41,10 +41,10 @@ export function Room() {
         socket.once(
             "room:join",
             (payload: { sockets: ISocket[]; playlist: string[] }) => {
-                toast.success("Joined room.");
                 setSockets(payload.sockets);
                 setPlaylist(payload.playlist);
                 setIsConnected(true);
+                toast.success("Joined room.");
             }
         );
         socket.on("room:socket:join", (socket: ISocket) => {
