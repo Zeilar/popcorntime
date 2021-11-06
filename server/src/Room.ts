@@ -25,7 +25,10 @@ export class Room {
 
     public get dto() {
         return {
-            ...this,
+            id: this.id,
+            playlist: this.playlist,
+            messages: this.messages,
+            created_at: this.created_at,
             sockets: this.socketsDto,
         };
     }

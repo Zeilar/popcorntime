@@ -16,9 +16,12 @@ export class Socket {
     }
 
     public get dto() {
-        const data = { ...this };
-        delete data.ref;
-        return data;
+        return {
+            id: this.id,
+            username: this.username,
+            color: this.color,
+            created_at: this.created_at,
+        };
     }
 
     public get room() {

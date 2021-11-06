@@ -11,6 +11,8 @@ import { IMessage } from "../@types/message";
 import { Socket } from "./Socket";
 import { WS } from "./WS";
 import { Color } from "../@types/color";
+import { IRoomDto } from "../@types/room";
+import { ISocketDto } from "../@types/socket";
 
 const clientPath = join(__dirname, "../../client");
 const { PORT, ADMIN_PASSWORD } = process.env;
@@ -152,8 +154,8 @@ adminNamespace.use((socket, next) => {
     next();
 });
 adminNamespace.on("connection", (socket) => {
-    const rooms: Room[] = [];
-    const sockets: Socket[] = [];
+    const rooms: IRoomDto[] = [];
+    const sockets: ISocketDto[] = [];
     ws.rooms.forEach((room) => {
         rooms.push(room.dto);
     });
