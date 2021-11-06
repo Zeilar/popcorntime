@@ -1,19 +1,9 @@
 import { AbsoluteCenter, Box, Text } from "@chakra-ui/layout";
-import { useHistory } from "react-router";
-import { v4 as uuidv4 } from "uuid";
-import Button from "./styles/button";
+import Button from "../components/styles/button";
 import { ReactComponent as PopcornIcon } from "../assets/svg/popcorn.svg";
-import { socket } from "../config/socket";
+import { Link } from "react-router-dom";
 
-export default function Home() {
-    const { push } = useHistory();
-
-    function createRoom() {
-        const id = uuidv4();
-        socket.emit("room:create", id);
-        push(`/room/${id}`);
-    }
-
+export function Home() {
     return (
         <Box h="100vh">
             <AbsoluteCenter
@@ -26,8 +16,8 @@ export default function Home() {
                 <Text fontFamily="Poppins" color="brand">
                     Popcorn Time
                 </Text>
-                <Button.Primary onClick={createRoom}>
-                    Create new room
+                <Button.Primary>
+                    <Link to="/room/new">Create new room</Link>
                 </Button.Primary>
             </AbsoluteCenter>
         </Box>

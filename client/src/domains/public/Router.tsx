@@ -1,13 +1,12 @@
 import { MeContext } from "./contexts";
 import { Route, Switch } from "react-router";
-import Home from "./components/Home";
-import Room from "./components/Room";
 import { socket } from "./config/socket";
 import { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { AbsoluteCenter } from "@chakra-ui/layout";
 import { Spinner } from "@chakra-ui/spinner";
 import { ISocket } from "../common/@types/socket";
+import * as Pages from "./pages";
 
 export default function Router() {
     const { me, setMe } = useContext(MeContext);
@@ -66,18 +65,21 @@ export default function Router() {
     if (!me || loading) {
         return (
             <AbsoluteCenter>
-                <Spinner color="brand" size="xl" />
+                <Spinner color="brand.default" size="xl" />
             </AbsoluteCenter>
         );
     }
 
     return (
         <Switch>
+            <Route path="/room/new" exact>
+                <Pages.CreateRoom />
+            </Route>
             <Route path="/" exact>
-                <Home />
+                <Pages.Home />
             </Route>
             <Route path="/room/:roomId" exact>
-                <Room />
+                <Pages.Room />
             </Route>
             <Route>404</Route>
         </Switch>

@@ -4,10 +4,10 @@ import { ISocket } from "../../common/@types/socket";
 import YouTube from "react-youtube";
 import { toast } from "react-toastify";
 import { Box, Grid } from "@chakra-ui/layout";
-import { Chat } from "./chat";
+import { Chat } from "../components/chat";
 import { validate } from "uuid";
 import { Flex } from "@chakra-ui/react";
-import Button from "./styles/button";
+import Button from "../components/styles/button";
 import { Color } from "../../../common/@types/color";
 import { socket } from "../config/socket";
 
@@ -15,7 +15,7 @@ interface IParams {
     roomId: string;
 }
 
-export default function Room() {
+export function Room() {
     const { roomId } = useParams<IParams>();
     const [sockets, setSockets] = useState<ISocket[]>([]);
     const [playlist, setPlaylist] = useState<string[]>([]);
