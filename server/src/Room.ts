@@ -1,4 +1,5 @@
 import { IMessage } from "../@types/message";
+import { IRoomDto } from "../@types/room";
 import { adminNamespace, ws } from "./server";
 import { Socket } from "./Socket";
 
@@ -23,7 +24,7 @@ export class Room {
         this.messages.push(message);
     }
 
-    public get dto() {
+    public get dto(): IRoomDto {
         return {
             id: this.id,
             playlist: this.playlist,

@@ -3,6 +3,7 @@ import { adminNamespace, io, ws } from "./server";
 import { Color } from "../@types/color";
 import generate from "@nwlongnecker/adjective-adjective-animal";
 import { colors } from "../data/colors";
+import { ISocketDto } from "../@types/socket";
 
 export class Socket {
     public username: string;
@@ -15,7 +16,7 @@ export class Socket {
         this.created_at = new Date();
     }
 
-    public get dto() {
+    public get dto(): ISocketDto {
         return {
             id: this.id,
             username: this.username,
