@@ -39,7 +39,7 @@ export default function Dashboard() {
                     type: RoomActions.REMOVE_SOCKET_FROM_ROOM,
                     ...payload,
                 });
-                toast.info("Removed socket.");
+                toast.success("Removed socket.");
             }
         );
         adminSocket.on("room:new", (room: IRoom) => {

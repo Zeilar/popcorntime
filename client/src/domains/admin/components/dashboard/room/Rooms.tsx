@@ -22,7 +22,7 @@ export default function Rooms({ rooms }: IProps) {
 
     useEffect(() => {
         adminSocket.on("room:delete:all", () => {
-            toast.info("Destroyed all rooms.");
+            toast.success("Destroyed all rooms.");
             onClose();
         });
         return () => {
