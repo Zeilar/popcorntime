@@ -1,5 +1,4 @@
 import "reflect-metadata";
-import "dotenv/config";
 import "../config/env"; // Runss env check
 import { join } from "path";
 import express from "express";

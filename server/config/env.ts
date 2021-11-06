@@ -1,3 +1,5 @@
+import "dotenv/config";
+
 /**
  * Run this check as soon as the app starts to make sure all the necessary env variables are in place.
  */
