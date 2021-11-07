@@ -66,15 +66,15 @@ export default extendTheme({
     styles: {
         global: {
             "::selection": {
-                backgroundColor: colors.brand.default,
-                color: "whiteAlpha.900",
+                backgroundColor: "brand.default",
+                color: "inherit",
             },
             body: {
                 height: "100vh",
                 backgroundColor: "black",
                 overflow: "hidden",
                 "::-webkit-scrollbar-thumb": {
-                    backgroundColor: colors.brand.default,
+                    backgroundColor: "brand.default",
                     backgroundClip: "padding-box",
                     border: "4px solid transparent",
                     borderRadius: 100,
@@ -91,7 +91,7 @@ export default extendTheme({
                 width: "1rem",
             },
             ".custom-scrollbar::-webkit-scrollbar-thumb": {
-                backgroundColor: colors.brand.default,
+                backgroundColor: "brand.default",
                 borderRadius: 100,
             },
             ".scrollbar-inset::-webkit-scrollbar-thumb": {

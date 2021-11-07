@@ -106,6 +106,7 @@ export default function Room({ room }: IProps) {
                         bgGradient={`linear(to-r, ${socket.color}.700, ${socket.color}.900)`}
                         align="center"
                         key={socket.id}
+                        overflow="hidden"
                         rounded="base"
                         p="0.5rem"
                     >
@@ -122,11 +123,16 @@ export default function Room({ room }: IProps) {
                                 whiteSpace="nowrap"
                                 overflow="hidden"
                                 textOverflow="ellipsis"
+                                mr="0.5rem"
                             >
                                 {socket.username}
                             </Text>
                         </Tooltip>
-                        <Button.Icon ml="auto" onClick={() => kick(socket.id)}>
+                        <Button.Icon
+                            ml="auto"
+                            onClick={() => kick(socket.id)}
+                            flexShrink={0}
+                        >
                             <CloseIcon maxW="100%" maxH="100%" />
                         </Button.Icon>
                     </Flex>
