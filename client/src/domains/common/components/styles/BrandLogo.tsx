@@ -20,7 +20,7 @@ export default function BrandLogo() {
             >
                 <Text
                     p="0.25rem"
-                    minW="16rem"
+                    minW="17rem"
                     rounded="base"
                     fontSize="1.5rem"
                     fontFamily="Poppins"
@@ -29,7 +29,7 @@ export default function BrandLogo() {
                 </Text>
                 <Icon
                     pos="absolute"
-                    right={0}
+                    right="0.5rem"
                     bottom="-1.25rem"
                     w="6rem"
                     h="6rem"
