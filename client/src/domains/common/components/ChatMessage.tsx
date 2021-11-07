@@ -58,13 +58,13 @@ export default function ChatMessage({ message }: IProps) {
                 fontSize="large"
                 fontWeight={600}
                 color="inherit"
-                mr="0.25rem"
+                mr="0.5rem"
             >
                 <Box
                     pos="relative"
                     w="2.5rem"
                     h="2.5rem"
-                    mr="0.5rem"
+                    mr="1rem"
                     alignSelf="flex-start"
                     flexShrink={0}
                 >
