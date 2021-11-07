@@ -2,6 +2,6 @@
 
 clear
 
-cd "$(realpath ../server)"
+cd "$(realpath server)"
 
-npm start
+npm start & cd ../client; npm start

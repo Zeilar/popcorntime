@@ -1,6 +1,6 @@
 import Icon from "@chakra-ui/icon";
 import { Flex, Text } from "@chakra-ui/layout";
-import { ReactComponent as PopcornIcon } from "domains/common/svg/popcorn.svg";
+import { ReactComponent as PopcornIcon } from "domains/common/assets/svg/popcorn.svg";
 
 export default function BrandLogo() {
     return (

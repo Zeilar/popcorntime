@@ -1,5 +1,5 @@
 import { AbsoluteCenter, Box, Text } from "@chakra-ui/layout";
-import { ReactComponent as PopcornIcon } from "../assets/svg/popcorn.svg";
+import { ReactComponent as PopcornIcon } from "domains/common/assets/svg/popcorn.svg";
 import { Link } from "react-router-dom";
 import Button from "domains/common/components/styles/button";
 
