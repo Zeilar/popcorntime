@@ -197,7 +197,7 @@ adminNamespace.on("connection", (socket) => {
         _socket.ref?.disconnect();
     });
 
-    socket.on("room:delete", (roomId: string) => {
+    socket.on("room:destroy", (roomId: string) => {
         const room = ws.rooms.get(roomId);
 
         if (!room) {
@@ -207,10 +207,10 @@ adminNamespace.on("connection", (socket) => {
         ws.deleteRoom(room);
     });
 
-    socket.on("room:delete:all", () => {
+    socket.on("room:destroy:all", () => {
         ws.rooms.forEach((room) => {
             ws.deleteRoom(room);
         });
-        socket.emit("room:delete:all");
+        socket.emit("room:destroy:all");
     });
 });

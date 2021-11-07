@@ -17,16 +17,16 @@ export default function Rooms({ rooms }: IProps) {
     const { isOpen, onOpen, onClose } = useDisclosure();
 
     function destroyAll() {
-        adminSocket.emit("room:delete:all");
+        adminSocket.emit("room:destroy:all");
     }
 
     useEffect(() => {
-        adminSocket.on("room:delete:all", () => {
+        adminSocket.on("room:destroy:all", () => {
             toast.success("Destroyed all rooms.");
             onClose();
         });
         return () => {
-            adminSocket.off("room:delete:all");
+            adminSocket.off("room:destroy:all");
         };
     }, [onClose]);
 

@@ -28,8 +28,8 @@ export class WS {
     }
 
     public deleteRoom(room: Room) {
-        this.io.to(room.id).emit("room:delete");
-        adminNamespace.emit("room:delete", room.id);
+        this.io.to(room.id).emit("room:destroy");
+        adminNamespace.emit("room:destroy", room.id);
         this.rooms.delete(room.id);
     }
 }

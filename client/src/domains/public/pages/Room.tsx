@@ -61,7 +61,7 @@ export function Room() {
             toast.info("You were kicked from the room.");
             push("/");
         });
-        socket.on("room:delete", () => {
+        socket.on("room:destroy", () => {
             toast.info("The room was deleted.");
             push("/");
         });
@@ -93,7 +93,7 @@ export function Room() {
                 .off("room:socket:join")
                 .off("video:play")
                 .off("room:kick")
-                .off("room:delete");
+                .off("room:destroy");
             setSockets([]);
             setPlaylist([]);
             setPlaylistInput("");

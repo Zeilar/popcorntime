@@ -48,7 +48,7 @@ export default function Dashboard() {
         adminSocket.on("room:new", (room: IRoom) => {
             dispatchRooms({ type: RoomActions.ADD_ROOM, room });
         });
-        adminSocket.on("room:delete", (roomId: string) => {
+        adminSocket.on("room:destroy", (roomId: string) => {
             dispatchRooms({ type: RoomActions.REMOVE_ROOM, roomId });
         });
         adminSocket.on("socket:connect", (socket: ISocket) => {

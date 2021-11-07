@@ -26,7 +26,7 @@ export default function Room({ room }: IProps) {
     }
 
     function destroy() {
-        adminSocket.emit("room:delete", room.id);
+        adminSocket.emit("room:destroy", room.id);
     }
 
     return (
@@ -43,7 +43,7 @@ export default function Room({ room }: IProps) {
                 room={room}
             />
             <Prompt
-                header="Delete room"
+                header="Destroy room"
                 body="Are you sure? This cannot be undone!"
                 isOpen={promptDisclosure.isOpen}
                 onClose={promptDisclosure.onClose}
@@ -53,7 +53,7 @@ export default function Room({ room }: IProps) {
                 pos="absolute"
                 right="0.5rem"
                 top="0.5rem"
-                title="Delete room"
+                title="Destroy room"
                 onClick={promptDisclosure.onOpen}
                 color="red.600"
             >
