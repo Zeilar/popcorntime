@@ -1,7 +1,7 @@
-import { AbsoluteCenter, Box, Text } from "@chakra-ui/layout";
-import { ReactComponent as PopcornIcon } from "domains/common/assets/svg/popcorn.svg";
-import { Link } from "react-router-dom";
+import { AbsoluteCenter, Box } from "@chakra-ui/layout";
+import BrandLogo from "domains/common/components/styles/BrandLogo";
 import Button from "domains/common/components/styles/button";
+import { Link } from "react-router-dom";
 
 export function Home() {
     return (
@@ -12,10 +12,7 @@ export function Home() {
                 flexDir="column"
                 alignItems="center"
             >
-                <PopcornIcon width="3rem" />
-                <Text fontFamily="Poppins" color="brand">
-                    PopcornTime
-                </Text>
+                <BrandLogo />
                 <Button.Primary>
                     <Link to="/room/new">Create new room</Link>
                 </Button.Primary>
