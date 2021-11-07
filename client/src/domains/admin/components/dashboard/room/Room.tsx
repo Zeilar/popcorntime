@@ -82,6 +82,7 @@ export default function Room({ room }: IProps) {
             </Box>
             <Grid
                 w="100%"
+                h="100%"
                 gridGap="0.5rem"
                 p="0.5rem"
                 gridTemplateColumns="repeat(1, 1fr)"
