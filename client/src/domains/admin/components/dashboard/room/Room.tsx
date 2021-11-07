@@ -110,24 +110,15 @@ export default function Room({ room }: IProps) {
                         rounded="base"
                         p="0.5rem"
                     >
-                        <Tooltip
-                            label={socket.username}
-                            placement="top"
-                            openDelay={150}
-                            bgGradient={`linear(to-r, ${socket.color}.700, ${socket.color}.900)`}
-                            color="inherit"
-                            fontSize="large"
+                        <Text
+                            fontWeight={600}
+                            whiteSpace="nowrap"
+                            overflow="hidden"
+                            textOverflow="ellipsis"
+                            mr="0.5rem"
                         >
-                            <Text
-                                fontWeight={600}
-                                whiteSpace="nowrap"
-                                overflow="hidden"
-                                textOverflow="ellipsis"
-                                mr="0.5rem"
-                            >
-                                {socket.username}
-                            </Text>
-                        </Tooltip>
+                            {socket.username}
+                        </Text>
                         <Button.Icon
                             ml="auto"
                             onClick={() => kick(socket.id)}
