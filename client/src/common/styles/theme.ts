@@ -98,6 +98,24 @@ export default extendTheme({
                 backgroundClip: "padding-box",
                 border: "4px solid transparent",
             },
+            h1: {
+                fontSize: "5xl",
+            },
+            h2: {
+                fontSize: "3xl",
+            },
+            h3: {
+                fontSize: "2xl",
+            },
+            h4: {
+                fontSize: "xl",
+            },
+            h5: {
+                fontSize: "lg",
+            },
+            h6: {
+                fontSize: "md",
+            },
         },
     },
 });

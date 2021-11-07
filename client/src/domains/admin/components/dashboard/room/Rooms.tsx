@@ -1,6 +1,6 @@
 import { useDisclosure } from "@chakra-ui/hooks";
 import { DeleteIcon } from "@chakra-ui/icons";
-import { Flex, Grid } from "@chakra-ui/layout";
+import { Flex, Grid, Text } from "@chakra-ui/layout";
 import { adminSocket } from "domains/admin/config/socket";
 import { IRoom } from "domains/common/@types/room";
 import { Prompt } from "domains/common/components/modals";
@@ -56,16 +56,22 @@ export default function Rooms({ rooms }: IProps) {
                     Destroy all
                 </Button.Primary>
             </Flex>
-            <Grid
-                gridTemplateColumns="repeat(4, 1fr)"
-                gridGap="0.5rem"
-                alignContent="start"
-                p="1rem"
-            >
-                {rooms.map((room) => (
-                    <Room room={room} key={room.id} />
-                ))}
-            </Grid>
+            {rooms.length > 0 ? (
+                <Grid
+                    gridTemplateColumns="repeat(4, 1fr)"
+                    gridGap="0.5rem"
+                    alignContent="start"
+                    p="1rem"
+                >
+                    {rooms.map((room) => (
+                        <Room room={room} key={room.id} />
+                    ))}
+                </Grid>
+            ) : (
+                <Text p="1rem" as="h2">
+                    No rooms were found.
+                </Text>
+            )}
         </Flex>
     );
 }
