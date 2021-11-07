@@ -4,6 +4,7 @@ import { AbsoluteCenter, Box, Flex, Grid, Text } from "@chakra-ui/layout";
 import { Tooltip } from "@chakra-ui/tooltip";
 import { adminSocket } from "domains/admin/config/socket";
 import { IRoom } from "domains/common/@types/room";
+import { Prompt } from "domains/common/components/modals";
 import Button from "domains/common/components/styles/button";
 import InfoModal from "./InfoModal";
 
@@ -14,7 +15,8 @@ interface IProps {
 const { REACT_APP_ROOM_MAX_SOCKETS } = process.env;
 
 export default function Room({ room }: IProps) {
-    const { isOpen, onOpen, onClose } = useDisclosure();
+    const promptDisclosure = useDisclosure();
+    const infoDisclosure = useDisclosure();
 
     const placeholderAmount =
         parseInt(REACT_APP_ROOM_MAX_SOCKETS) - room.sockets.length;
@@ -35,13 +37,24 @@ export default function Room({ room }: IProps) {
             alignItems="center"
             pos="relative"
         >
-            <InfoModal isOpen={isOpen} onClose={onClose} room={room} />
+            <InfoModal
+                isOpen={infoDisclosure.isOpen}
+                onClose={infoDisclosure.onClose}
+                room={room}
+            />
+            <Prompt
+                header="Delete room"
+                body="Are you sure? This cannot be undone!"
+                isOpen={promptDisclosure.isOpen}
+                onClose={promptDisclosure.onClose}
+                onSubmit={destroy}
+            />
             <Button.Icon
                 pos="absolute"
                 right="0.5rem"
                 top="0.5rem"
                 title="Delete room"
-                onClick={destroy}
+                onClick={promptDisclosure.onOpen}
                 color="red.600"
             >
                 <DeleteIcon />
@@ -51,7 +64,7 @@ export default function Room({ room }: IProps) {
                 right="0.5rem"
                 top="3rem"
                 title="Info"
-                onClick={onOpen}
+                onClick={infoDisclosure.onOpen}
             >
                 <InfoOutlineIcon />
             </Button.Icon>
