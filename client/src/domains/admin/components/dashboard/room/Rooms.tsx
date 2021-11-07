@@ -31,7 +31,11 @@ export default function Rooms({ rooms }: IProps) {
     }, [onClose]);
 
     return (
-        <Flex flexDir="column">
+        <Flex
+            className="custom-scrollbar scrollbar-inset"
+            flexDir="column"
+            overflowY="auto"
+        >
             <Prompt
                 onSubmit={destroyAll}
                 onClose={onClose}
@@ -39,7 +43,14 @@ export default function Rooms({ rooms }: IProps) {
                 header="Destroy all rooms"
                 body="Are you sure? This cannot be reversed!"
             />
-            <Flex bgColor="gray.700" p="0.5rem" boxShadow="md">
+            <Flex
+                bgColor="gray.700"
+                p="0.5rem"
+                boxShadow="md"
+                pos="sticky"
+                zIndex={50}
+                top={0}
+            >
                 <Button.Primary ml="auto" onClick={onOpen}>
                     <DeleteIcon mr="0.5rem" />
                     Destroy all
@@ -48,7 +59,6 @@ export default function Rooms({ rooms }: IProps) {
             <Grid
                 gridTemplateColumns="repeat(4, 1fr)"
                 gridGap="0.5rem"
-                overflowY="auto"
                 alignContent="start"
                 p="1rem"
             >

@@ -94,6 +94,10 @@ export default extendTheme({
                 backgroundColor: colors.brand.default,
                 borderRadius: 100,
             },
+            ".scrollbar-inset": {
+                backgroundClip: "padding-box",
+                border: "4px solid transparent",
+            },
         },
     },
 });
