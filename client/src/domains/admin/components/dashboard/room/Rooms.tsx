@@ -50,7 +50,7 @@ export default function Rooms({ rooms }: IProps) {
                 gridGap="0.5rem"
                 overflowY="auto"
                 alignContent="start"
-                p="0.5rem"
+                p="1rem"
             >
                 {rooms.map((room) => (
                     <Room room={room} key={room.id} />
