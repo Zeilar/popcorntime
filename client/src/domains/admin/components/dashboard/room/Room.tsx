@@ -102,31 +102,40 @@ export default function Room({ room }: IProps) {
                 gridTemplateRows="repeat(10, 1fr)"
             >
                 {room.sockets.map((socket) => (
-                    <Flex
+                    <Tooltip
+                        label={socket.username}
+                        placement="top"
+                        openDelay={150}
                         bgGradient={`linear(to-r, ${socket.color}.700, ${socket.color}.900)`}
-                        align="center"
+                        color="inherit"
+                        fontSize="large"
                         key={socket.id}
-                        overflow="hidden"
-                        rounded="base"
-                        p="0.5rem"
                     >
-                        <Text
-                            fontWeight={600}
-                            whiteSpace="nowrap"
+                        <Flex
+                            bgGradient={`linear(to-r, ${socket.color}.700, ${socket.color}.900)`}
+                            align="center"
                             overflow="hidden"
-                            textOverflow="ellipsis"
-                            mr="0.5rem"
+                            rounded="base"
+                            p="0.5rem"
                         >
-                            {socket.username}
-                        </Text>
-                        <Button.Icon
-                            ml="auto"
-                            onClick={() => kick(socket.id)}
-                            flexShrink={0}
-                        >
-                            <CloseIcon maxW="100%" maxH="100%" />
-                        </Button.Icon>
-                    </Flex>
+                            <Text
+                                fontWeight={600}
+                                whiteSpace="nowrap"
+                                overflow="hidden"
+                                textOverflow="ellipsis"
+                                mr="0.5rem"
+                            >
+                                {socket.username}
+                            </Text>
+                            <Button.Icon
+                                ml="auto"
+                                onClick={() => kick(socket.id)}
+                                flexShrink={0}
+                            >
+                                <CloseIcon maxW="100%" maxH="100%" />
+                            </Button.Icon>
+                        </Flex>
+                    </Tooltip>
                 ))}
                 {Array(placeholderAmount)
                     .fill(null)
