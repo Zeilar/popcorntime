@@ -1,22 +1,25 @@
-import { Flex, FlexProps } from "@chakra-ui/layout";
+import { ButtonProps } from "@chakra-ui/button";
 import { ReactNode } from "react";
+import Button from ".";
 
-interface IProps extends FlexProps {
+interface IProps extends ButtonProps {
     children: ReactNode;
 }
 
 export function IconButton({ children, ...props }: IProps) {
     return (
-        <Flex
-            as="button"
+        <Button.Ghost
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            minW="auto"
+            p={0}
             w="2rem"
             h="2rem"
             rounded="base"
-            justify="center"
-            align="center"
             {...props}
         >
             {children}
-        </Flex>
+        </Button.Ghost>
     );
 }

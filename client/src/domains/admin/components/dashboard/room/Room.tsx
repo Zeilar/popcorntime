@@ -42,8 +42,7 @@ export default function Room({ room }: IProps) {
                 top="0.5rem"
                 title="Delete room"
                 onClick={destroy}
-                bgColor="red.700"
-                _active={{ bgColor: "red.600" }}
+                color="red.600"
             >
                 <DeleteIcon />
             </Button.Icon>
@@ -53,8 +52,6 @@ export default function Room({ room }: IProps) {
                 top="3rem"
                 title="Info"
                 onClick={onOpen}
-                bgColor="gray.300"
-                _active={{ bgColor: "gray.100" }}
             >
                 <InfoOutlineIcon />
             </Button.Icon>
@@ -115,18 +112,9 @@ export default function Room({ room }: IProps) {
                                 {socket.username}
                             </Text>
                         </Tooltip>
-                        <Flex
-                            ml="auto"
-                            as="button"
-                            w="2rem"
-                            h="2rem"
-                            onClick={() => kick(socket.id)}
-                            pos="relative"
-                            justifyContent="center"
-                            alignItems="center"
-                        >
+                        <Button.Icon ml="auto" onClick={() => kick(socket.id)}>
                             <CloseIcon maxW="100%" maxH="100%" />
-                        </Flex>
+                        </Button.Icon>
                     </Flex>
                 ))}
                 {Array(placeholderAmount)

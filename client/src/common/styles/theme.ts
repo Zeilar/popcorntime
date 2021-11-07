@@ -88,13 +88,13 @@ export default extendTheme({
                 userSelect: "none",
             },
             "::-webkit-scrollbar": {
-                width: "0.5rem",
+                width: "1rem",
             },
             ".custom-scrollbar::-webkit-scrollbar-thumb": {
                 backgroundColor: colors.brand.default,
                 borderRadius: 100,
             },
-            ".scrollbar-inset": {
+            ".scrollbar-inset::-webkit-scrollbar-thumb": {
                 backgroundClip: "padding-box",
                 border: "4px solid transparent",
             },
