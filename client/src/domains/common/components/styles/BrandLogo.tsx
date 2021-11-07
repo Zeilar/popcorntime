@@ -20,7 +20,7 @@ export default function BrandLogo() {
             >
                 <Text
                     p="0.25rem"
-                    minW="15rem"
+                    minW="16rem"
                     rounded="base"
                     fontSize="1.5rem"
                     fontFamily="Poppins"
@@ -29,10 +29,10 @@ export default function BrandLogo() {
                 </Text>
                 <Icon
                     pos="absolute"
-                    right="-1.35rem"
-                    bottom="-2.15rem"
-                    w="8rem"
-                    h="8rem"
+                    right={0}
+                    bottom="-1.25rem"
+                    w="6rem"
+                    h="6rem"
                     as={PopcornIcon}
                 />
             </Flex>
