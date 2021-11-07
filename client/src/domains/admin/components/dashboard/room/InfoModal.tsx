@@ -1,4 +1,4 @@
-import { Box, Grid } from "@chakra-ui/layout";
+import { Box, Flex, Grid } from "@chakra-ui/layout";
 import {
     Modal,
     ModalBody,
@@ -55,25 +55,33 @@ export default function InfoModal({ isOpen, onClose, room }: IProps) {
                                 Playlist
                             </Tab.Button>
                         </Grid>
-                        {openTab === "details" && (
-                            <Grid gridGap="1rem">
-                                <Style.Detail label="id" value={room.id} />
-                                <Style.Detail
-                                    label="created at"
-                                    value={new Date(
-                                        room.created_at
-                                    ).toLocaleString()}
-                                />
-                            </Grid>
-                        )}
-                        {openTab === "messages" &&
-                            room.messages.map((message) => (
-                                <ChatMessage
-                                    message={message}
-                                    key={message.id}
-                                />
-                            ))}
-                        {openTab === "playlist" && "Playlist here"}
+                        <Flex
+                            className="custom-scrollbar"
+                            flexDir="column"
+                            maxH="60vh"
+                            overflowY="auto"
+                            pr="0.5rem"
+                        >
+                            {openTab === "details" && (
+                                <Grid gridGap="1rem">
+                                    <Style.Detail label="id" value={room.id} />
+                                    <Style.Detail
+                                        label="created at"
+                                        value={new Date(
+                                            room.created_at
+                                        ).toLocaleString()}
+                                    />
+                                </Grid>
+                            )}
+                            {openTab === "messages" &&
+                                room.messages.map((message) => (
+                                    <ChatMessage
+                                        message={message}
+                                        key={message.id}
+                                    />
+                                ))}
+                            {openTab === "playlist" && "Playlist here"}
+                        </Flex>
                     </Box>
                 </ModalBody>
             </ModalContent>
