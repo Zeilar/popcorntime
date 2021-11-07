@@ -1,0 +1,17 @@
+import { Flex, Text } from "@chakra-ui/layout";
+
+interface IDetailProps {
+    label: string;
+    value: string | number | Date;
+}
+
+export function Detail({ label, value }: IDetailProps) {
+    return (
+        <Flex flexDir="column">
+            <Text textTransform="uppercase" color="GrayText">
+                {label}
+            </Text>
+            <Text>{value}</Text>
+        </Flex>
+    );
+}

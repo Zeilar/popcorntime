@@ -1,9 +1,11 @@
+import { useDisclosure } from "@chakra-ui/hooks";
 import { CloseIcon, DeleteIcon, InfoOutlineIcon } from "@chakra-ui/icons";
 import { AbsoluteCenter, Box, Flex, Grid, Text } from "@chakra-ui/layout";
 import { Tooltip } from "@chakra-ui/tooltip";
 import { adminSocket } from "domains/admin/config/socket";
 import { IRoom } from "domains/common/@types/room";
 import Button from "domains/common/components/styles/button";
+import InfoModal from "./InfoModal";
 
 interface IProps {
     room: IRoom;
@@ -12,6 +14,8 @@ interface IProps {
 const { REACT_APP_ROOM_MAX_SOCKETS } = process.env;
 
 export default function Room({ room }: IProps) {
+    const { isOpen, onOpen, onClose } = useDisclosure();
+
     const placeholderAmount =
         parseInt(REACT_APP_ROOM_MAX_SOCKETS) - room.sockets.length;
 
@@ -25,12 +29,13 @@ export default function Room({ room }: IProps) {
 
     return (
         <Flex
-            bgColor="gray.800"
+            bgColor="gray.700"
             rounded="base"
             flexDir="column"
             alignItems="center"
             pos="relative"
         >
+            <InfoModal isOpen={isOpen} onClose={onClose} room={room} />
             <Button.Icon
                 pos="absolute"
                 right="0.5rem"
@@ -47,9 +52,9 @@ export default function Room({ room }: IProps) {
                 right="0.5rem"
                 top="3rem"
                 title="Info"
-                onClick={destroy}
-                bgColor="gray.500"
-                _active={{ bgColor: "gray.300" }}
+                onClick={onOpen}
+                bgColor="gray.300"
+                _active={{ bgColor: "gray.100" }}
             >
                 <InfoOutlineIcon />
             </Button.Icon>
@@ -79,6 +84,7 @@ export default function Room({ room }: IProps) {
                 </svg>
             </Box>
             <Grid
+                w="100%"
                 gridGap="0.5rem"
                 p="0.5rem"
                 gridTemplateColumns="repeat(1, 1fr)"
@@ -109,20 +115,18 @@ export default function Room({ room }: IProps) {
                                 {socket.username}
                             </Text>
                         </Tooltip>
-                        <Tooltip label="Kick" placement="top">
-                            <Flex
-                                ml="auto"
-                                as="button"
-                                w="2rem"
-                                h="2rem"
-                                onClick={() => kick(socket.id)}
-                                pos="relative"
-                                justifyContent="center"
-                                alignItems="center"
-                            >
-                                <CloseIcon maxW="100%" maxH="100%" />
-                            </Flex>
-                        </Tooltip>
+                        <Flex
+                            ml="auto"
+                            as="button"
+                            w="2rem"
+                            h="2rem"
+                            onClick={() => kick(socket.id)}
+                            pos="relative"
+                            justifyContent="center"
+                            alignItems="center"
+                        >
+                            <CloseIcon maxW="100%" maxH="100%" />
+                        </Flex>
                     </Flex>
                 ))}
                 {Array(placeholderAmount)
@@ -131,7 +135,7 @@ export default function Room({ room }: IProps) {
                         <Box
                             rounded="base"
                             p="0.5rem"
-                            bgColor="gray.900"
+                            bgColor="blackAlpha.300"
                             key={i}
                         />
                     ))}

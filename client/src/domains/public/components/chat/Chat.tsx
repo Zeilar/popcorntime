@@ -9,15 +9,15 @@ import {
 } from "react";
 import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
-import { IMessage } from "../../../common/@types/message";
-import { ISocket } from "../../../common/@types/socket";
-import Message from "../Message";
+import { IMessage } from "domains/common/@types/message";
+import { ISocket } from "domains/common/@types/socket";
+import Message from "domains/common/components/ChatMessage";
 import Textarea from "../styles/Textarea";
 import Icon from "../styles/icon";
 import { MeContext } from "../../contexts";
 import { ChatSettings } from ".";
-import { useOnClickOutside } from "../../../../common/hooks";
 import { socket } from "../../config/socket";
+import { useOnClickOutside } from "common/hooks";
 
 interface IProps {
     roomId: string;

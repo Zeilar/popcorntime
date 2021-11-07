@@ -1,21 +1,21 @@
 import { AbsoluteCenter, Box, Flex, FlexProps, Text } from "@chakra-ui/layout";
 import { Tooltip } from "@chakra-ui/react";
 import { motion } from "framer-motion";
-import { IMessage } from "../../common/@types/message";
-import { socket } from "../config/socket";
+import { IMessage } from "../@types/message";
+import { socket } from "../../public/config/socket";
 
 interface IProps {
     message: IMessage;
 }
 
-function shortenUsername(username: string) {
+function abbreviateUsername(username: string) {
     const [adjective, name] = username.split(" ");
     return `${adjective[0]}${name[0]}`;
 }
 
 const MotionBox = motion<FlexProps>(Flex);
 
-export default function Message({ message }: IProps) {
+export default function ChatMessage({ message }: IProps) {
     // Using Chakra FlexProps type for some reason won't work
     const notSentStyling: any = message.notSent
         ? {
@@ -81,7 +81,7 @@ export default function Message({ message }: IProps) {
                         fontFamily="Open Sans"
                         bgColor={`${color}.600`}
                     >
-                        {shortenUsername(message.socket.username)}
+                        {abbreviateUsername(message.socket.username)}
                     </AbsoluteCenter>
                 </Box>
             </Tooltip>
