@@ -79,7 +79,6 @@ export default function Room({ room }: IProps) {
                 </svg>
             </Box>
             <Grid
-                w="100%"
                 gridGap="0.5rem"
                 p="0.5rem"
                 gridTemplateColumns="repeat(1, 1fr)"

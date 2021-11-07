@@ -31,7 +31,7 @@ export default function Rooms({ rooms }: IProps) {
     }, [onClose]);
 
     return (
-        <Flex flexDir="column" p="0.5rem">
+        <Flex flexDir="column">
             <Prompt
                 onSubmit={destroyAll}
                 onClose={onClose}
@@ -39,17 +39,18 @@ export default function Rooms({ rooms }: IProps) {
                 header="Destroy all rooms"
                 body="Are you sure? This cannot be reversed!"
             />
-            <Flex bgColor="gray.800" p="0.5rem" mb="0.5rem">
+            <Flex bgColor="gray.700" p="0.5rem" boxShadow="md">
                 <Button.Primary ml="auto" onClick={onOpen}>
                     <DeleteIcon mr="0.5rem" />
                     Destroy all
                 </Button.Primary>
             </Flex>
             <Grid
-                gridTemplateColumns="repeat(4, minmax(20rem, 1fr))"
+                gridTemplateColumns="repeat(4, 1fr)"
                 gridGap="0.5rem"
                 overflowY="auto"
                 alignContent="start"
+                p="0.5rem"
             >
                 {rooms.map((room) => (
                     <Room room={room} key={room.id} />
