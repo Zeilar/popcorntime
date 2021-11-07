@@ -24,7 +24,7 @@ export default function BrandLogo() {
                 <Icon
                     pos="absolute"
                     right="-1rem"
-                    bottom={0}
+                    bottom="-2.15rem"
                     w="8rem"
                     h="8rem"
                     as={PopcornIcon}
