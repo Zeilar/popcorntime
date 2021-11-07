@@ -16,16 +16,17 @@ export default function BrandLogo() {
                 bgColor="brand.default"
                 align="center"
                 rounded="base"
+                px="0.5rem"
             >
                 <Text p="0.25rem" minW="15rem" rounded="base" fontSize="1.5rem">
                     PopcornTime
                 </Text>
                 <Icon
                     pos="absolute"
-                    right="-0.5rem"
+                    right="-1rem"
                     bottom={0}
-                    w="6rem"
-                    h="6rem"
+                    w="8rem"
+                    h="8rem"
                     as={PopcornIcon}
                 />
             </Flex>
