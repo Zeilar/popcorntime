@@ -80,7 +80,7 @@ export default function Dashboard() {
     }, [dispatchRooms]);
 
     return (
-        <Grid bgColor="gray.900" flexGrow={1} gridTemplateColumns="25rem 1fr">
+        <Grid bgColor="gray.800" flexGrow={1} gridTemplateColumns="25rem 1fr">
             <Flex
                 flexDir="column"
                 bgColor="gray.700"
