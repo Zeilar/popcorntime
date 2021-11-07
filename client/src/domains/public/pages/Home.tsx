@@ -14,7 +14,7 @@ export function Home() {
             >
                 <PopcornIcon width="3rem" />
                 <Text fontFamily="Poppins" color="brand">
-                    Popcorn Time
+                    PopcornTime
                 </Text>
                 <Button.Primary>
                     <Link to="/room/new">Create new room</Link>

@@ -1,10 +1,12 @@
-import { Flex, Grid } from "@chakra-ui/layout";
+import { Box, Flex, Grid } from "@chakra-ui/layout";
 import { IMessage } from "domains/common/@types/message";
+import BrandLogo from "domains/common/components/styles/BrandLogo";
 import { useState, useEffect, useContext } from "react";
 import { Route, Switch } from "react-router";
+import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import { IRoom } from "../../../common/@types/room";
-import { ISocket } from "../../../common/@types/socket";
+import { IRoom } from "domains/common/@types/room";
+import { ISocket } from "domains/common/@types/socket";
 import { adminSocket } from "../../config/socket";
 import { RoomContext } from "../../contexts";
 import * as RoomActions from "../../state/actions/room";
@@ -98,6 +100,11 @@ export default function Dashboard() {
                 boxShadow="md"
                 zIndex={100}
             >
+                <Box w="fit-content" m="1rem auto 2rem">
+                    <Link to="/">
+                        <BrandLogo />
+                    </Link>
+                </Box>
                 <DashboardItem icon="mdiAccountGroupOutline" to="/admin/rooms">
                     Rooms
                 </DashboardItem>

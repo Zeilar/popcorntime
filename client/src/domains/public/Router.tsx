@@ -5,12 +5,10 @@ import { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { AbsoluteCenter } from "@chakra-ui/layout";
 import { Spinner } from "@chakra-ui/spinner";
-import { ISocket } from "../common/@types/socket";
 import * as Pages from "./pages";
 
 export default function Router() {
     const { me, setMe } = useContext(MeContext);
-    const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
@@ -21,21 +19,18 @@ export default function Router() {
             console.error(error);
             // TODO: error handling
             toast.error("Something went wrong.");
-            setLoading(false);
         });
         socket.on("connect_error", (error: any) => {
             console.error(error);
             // TODO: error handling
             toast.error("Something went wrong.");
             setError(error);
-            setLoading(false);
         });
         socket.on("disconnect", (error: string) => {
             console.error(error);
             // TODO: error handling
             toast.error("Something went wrong.");
             setError(error);
-            setLoading(false);
         });
         socket.on("socket:kick", () => {
             console.log("socket kick");
@@ -44,13 +39,6 @@ export default function Router() {
         socket.on("connection:error", (error: string) => {
             toast.error(error);
             setError(error);
-            setLoading(false);
-        });
-        socket.on("connection:success", (socket: ISocket) => {
-            toast.success(`Welcome ${socket.username}`);
-            setMe(socket);
-            setLoading(false);
-            setError(null);
         });
 
         return () => {
@@ -62,7 +50,7 @@ export default function Router() {
         return <h1>Oh dear {JSON.stringify(error)}</h1>;
     }
 
-    if (!me || loading) {
+    if (!me) {
         return (
             <AbsoluteCenter>
                 <Spinner color="brand.default" size="xl" />

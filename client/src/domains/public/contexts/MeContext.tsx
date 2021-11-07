@@ -2,6 +2,7 @@ import { createContext, useState, ReactNode, useEffect } from "react";
 import { ISocket } from "../../common/@types/socket";
 import { Color } from "../../../common/@types/color";
 import { socket } from "../config/socket";
+import { toast } from "react-toastify";
 
 interface IContext {
     me: ISocket;
@@ -23,11 +24,15 @@ export function MeContextProvider({ children }: IProps) {
     }
 
     useEffect(() => {
+        socket.once("connection:success", (socket: ISocket) => {
+            setMe(socket);
+            toast.success(`Welcome ${socket.username}`);
+        });
         socket.on("color:update", (color: Color) => {
             changeColor(color);
         });
         return () => {
-            socket.off("color:update");
+            socket.off("color:update").off("connection:success");
         };
     }, []);
 
