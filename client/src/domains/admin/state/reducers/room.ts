@@ -1,6 +1,8 @@
 import { IRoom } from "domains/common/@types/room";
 import * as Actions from "../actions/room";
 
+const { REACT_APP_ROOM_MAX_MESSAGES } = process.env;
+
 export function roomReducer(state: IRoom[], action: any): IRoom[] {
     switch (action.type) {
         case Actions.ADD_ROOMS:
@@ -29,6 +31,20 @@ export function roomReducer(state: IRoom[], action: any): IRoom[] {
                     sockets: room.sockets.filter(
                         (socket) => socket.id !== action.socketId
                     ),
+                };
+            });
+        case Actions.ADD_MESSAGE:
+            return state.map((room) => {
+                if (room.id !== action.roomId) {
+                    return room;
+                }
+                const messages = [...room.messages, action.message];
+                if (messages.length > parseInt(REACT_APP_ROOM_MAX_MESSAGES)) {
+                    messages.shift();
+                }
+                return {
+                    ...room,
+                    messages,
                 };
             });
         default:

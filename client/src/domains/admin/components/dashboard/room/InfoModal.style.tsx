@@ -2,7 +2,7 @@ import { Flex, Text } from "@chakra-ui/layout";
 
 interface IDetailProps {
     label: string;
-    value: string | number | Date;
+    value: JSX.Element | string;
 }
 
 export function Detail({ label, value }: IDetailProps) {

@@ -1,4 +1,5 @@
 import { Flex, Grid } from "@chakra-ui/layout";
+import { IMessage } from "domains/common/@types/message";
 import { useState, useEffect, useContext } from "react";
 import { Route, Switch } from "react-router";
 import { toast } from "react-toastify";
@@ -56,6 +57,15 @@ export default function Dashboard() {
                 sockets.filter((socket) => socket.id !== socketId)
             );
         });
+        adminSocket.on(
+            "message:new",
+            (payload: { roomId: string; message: IMessage }) => {
+                dispatchRooms({
+                    type: RoomActions.ADD_MESSAGE,
+                    ...payload,
+                });
+            }
+        );
         adminSocket.on(
             "room:join",
             (payload: { socket: ISocket; roomId: string }) => {
