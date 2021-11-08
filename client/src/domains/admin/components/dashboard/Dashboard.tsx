@@ -7,16 +7,19 @@ import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { IRoom } from "domains/common/@types/room";
 import { ISocket } from "domains/common/@types/socket";
-import { adminSocket } from "../../config/socket";
 import { RoomContext } from "../../contexts";
 import * as RoomActions from "../../state/actions/room";
 import DashboardItem from "./DashboardItem";
 import Rooms from "./room/Rooms";
 import Sockets from "./Sockets";
+import { SocketContext } from "domains/common/contexts";
 
 export default function Dashboard() {
     const [sockets, setSockets] = useState<ISocket[]>([]);
     const { rooms, dispatchRooms } = useContext(RoomContext);
+    const socketContext = useContext(SocketContext);
+
+    const adminSocket = socketContext.adminSocket.current;
 
     useEffect(() => {
         adminSocket.on("error", (message: string) => {
@@ -89,7 +92,7 @@ export default function Dashboard() {
         return () => {
             adminSocket.removeAllListeners();
         };
-    }, [dispatchRooms]);
+    }, [dispatchRooms, adminSocket]);
 
     return (
         <Grid bgColor="gray.800" flexGrow={1} gridTemplateColumns="25rem 1fr">

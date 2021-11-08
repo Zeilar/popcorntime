@@ -12,7 +12,7 @@ interface IProps {
     isOpen: boolean;
     onClose(): void;
     onSubmit(): void;
-    body: string;
+    body: JSX.Element | string;
     header: string;
 }
 

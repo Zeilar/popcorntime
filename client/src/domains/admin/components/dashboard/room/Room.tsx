@@ -1,7 +1,6 @@
 import { useDisclosure } from "@chakra-ui/hooks";
 import { CloseIcon, DeleteIcon, InfoOutlineIcon } from "@chakra-ui/icons";
 import { AbsoluteCenter, Box, Flex, Grid, Text } from "@chakra-ui/layout";
-import { Tooltip } from "@chakra-ui/tooltip";
 import { adminSocket } from "domains/admin/config/socket";
 import { IRoom } from "domains/common/@types/room";
 import { Prompt } from "domains/common/components/modals";
