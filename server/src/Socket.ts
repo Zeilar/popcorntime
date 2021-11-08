@@ -1,7 +1,6 @@
 import { Socket as S } from "socket.io";
 import { adminNamespace, io, ws } from "./server";
 import { Color } from "../@types/color";
-import generate from "@nwlongnecker/adjective-adjective-animal";
 import { colors } from "../data/colors";
 import { ISocketDto } from "../@types/socket";
 import { uniqueNamesGenerator } from "unique-names-generator";

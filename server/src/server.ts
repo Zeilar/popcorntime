@@ -94,7 +94,6 @@ io.on("connection", (socket) => {
             );
         }
         const room = new Room(roomId);
-        console.log(room.name);
         ws.addRoom(room);
         room.add(_socket);
     });
