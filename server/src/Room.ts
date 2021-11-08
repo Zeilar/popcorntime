@@ -31,6 +31,7 @@ export class Room {
     public get dto(): IRoomDto {
         return {
             id: this.id,
+            name: this.name,
             playlist: this.playlist,
             messages: this.messages,
             created_at: this.created_at,

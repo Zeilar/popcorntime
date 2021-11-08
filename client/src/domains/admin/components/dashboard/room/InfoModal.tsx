@@ -66,6 +66,10 @@ export default function InfoModal({ isOpen, onClose, room }: IProps) {
                                 <Grid gridGap="1rem">
                                     <Style.Detail label="id" value={room.id} />
                                     <Style.Detail
+                                        label="name"
+                                        value={room.name}
+                                    />
+                                    <Style.Detail
                                         label="created at"
                                         value={new Date(
                                             room.created_at
