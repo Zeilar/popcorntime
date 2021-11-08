@@ -35,8 +35,8 @@ export const io = new Server(server, {
 export const adminNamespace = io.of("/admin");
 export const ws = new WS();
 
-io.on("connection", async (socket) => {
-    const _socket = await new Socket(socket.id).generate();
+io.on("connection", (socket) => {
+    const _socket = new Socket(socket.id);
     ws.addSocket(_socket);
     socket.emit("connection:success", _socket.dto);
 
@@ -94,6 +94,7 @@ io.on("connection", async (socket) => {
             );
         }
         const room = new Room(roomId);
+        console.log(room.name);
         ws.addRoom(room);
         room.add(_socket);
     });

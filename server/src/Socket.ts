@@ -4,6 +4,8 @@ import { Color } from "../@types/color";
 import generate from "@nwlongnecker/adjective-adjective-animal";
 import { colors } from "../data/colors";
 import { ISocketDto } from "../@types/socket";
+import { uniqueNamesGenerator } from "unique-names-generator";
+import { nameConfig } from "../config/uniqueNamesGenerator";
 
 export class Socket {
     public username: string;
@@ -14,6 +16,7 @@ export class Socket {
     constructor(public readonly id: string) {
         this.ref = ws.io.sockets.sockets.get(id);
         this.created_at = new Date();
+        this.generate();
     }
 
     public get dto(): ISocketDto {
@@ -29,14 +32,13 @@ export class Socket {
         return [...ws.rooms.values()].find((room) => room.hasSocket(this));
     }
 
-    public async generate() {
+    public generate() {
         this.setRandomColor();
-        await this.setRandomName();
-        return this;
+        this.setRandomName();
     }
 
     private async setRandomName() {
-        this.username = await generate({ adjectives: 1, format: "title" });
+        this.username = uniqueNamesGenerator(nameConfig);
         adminNamespace.emit("socket:update:name", this.username);
     }
 

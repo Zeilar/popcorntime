@@ -2,6 +2,8 @@ import { IMessage } from "../@types/message";
 import { IRoomDto } from "../@types/room";
 import { adminNamespace, ws } from "./server";
 import { Socket } from "./Socket";
+import { uniqueNamesGenerator } from "unique-names-generator";
+import { nameConfig } from "../config/uniqueNamesGenerator";
 
 const { ROOM_MAX_SOCKETS, ROOM_MAX_MESSAGES } = process.env;
 
@@ -12,9 +14,11 @@ export class Room {
     public messages: IMessage[] = [];
     public playlist: string[] = ["68ugkg9RePc"]; // YouTube video ids
     public created_at: Date;
+    public name: string;
 
     constructor(public readonly id: string) {
         this.created_at = new Date();
+        this.name = uniqueNamesGenerator(nameConfig);
     }
 
     public addMessage(message: IMessage) {
