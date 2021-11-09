@@ -18,8 +18,8 @@ export default function Router() {
 
     useEffect(() => {
         const _adminSocket = adminSocket.current;
-        _adminSocket.on("connection:success", () => {
-            console.log("connected");
+        _adminSocket.on("connect", () => {
+            console.log("CONNECTED");
             setAuthenticated(true);
         });
         return () => {

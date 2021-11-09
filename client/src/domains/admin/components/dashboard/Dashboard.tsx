@@ -22,6 +22,7 @@ export default function Dashboard() {
     const adminSocket = socketContext.adminSocket.current;
 
     useEffect(() => {
+        adminSocket.emit("data:get");
         adminSocket.on("error", (message: string) => {
             toast.error(message);
         });
@@ -29,8 +30,9 @@ export default function Dashboard() {
             toast.error(error.message);
         });
         adminSocket.once(
-            "connection:success",
+            "data:get",
             (data: { rooms: IRoom[]; sockets: ISocket[] }) => {
+                console.log("got data", data);
                 dispatchRooms({
                     type: RoomActions.ADD_ROOMS,
                     rooms: data.rooms,

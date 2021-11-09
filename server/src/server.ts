@@ -152,7 +152,8 @@ adminNamespace.use((socket, next) => {
     }
     next();
 });
-adminNamespace.on("connection", (socket) => {
+
+function getAllData() {
     const rooms: IRoomDto[] = [];
     const sockets: ISocketDto[] = [];
     ws.rooms.forEach((room) => {
@@ -161,9 +162,12 @@ adminNamespace.on("connection", (socket) => {
     ws.sockets.forEach((socket) => {
         sockets.push(socket.dto);
     });
-    socket.emit("connection:success", {
-        rooms,
-        sockets,
+    return { rooms, sockets };
+}
+
+adminNamespace.on("connection", (socket) => {
+    socket.once("data:get", () => {
+        socket.emit("data:get", getAllData());
     });
 
     socket.on("room:kick", (socketId) => {
