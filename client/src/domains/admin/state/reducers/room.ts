@@ -4,6 +4,15 @@ import * as Actions from "../actions/room";
 const { REACT_APP_ROOM_MAX_MESSAGES } = process.env;
 
 export function roomReducer(state: IRoom[], action: any): IRoom[] {
+    function editRoom(roomId: string, cb: (room: IRoom) => IRoom) {
+        return state.map((room) => {
+            if (room.id !== roomId) {
+                return room;
+            }
+            return cb(room);
+        });
+    }
+
     switch (action.type) {
         case Actions.ADD_ROOMS:
             return [...state, ...action.rooms];
@@ -12,10 +21,7 @@ export function roomReducer(state: IRoom[], action: any): IRoom[] {
         case Actions.REMOVE_ROOM:
             return state.filter((room) => room.id !== action.roomId);
         case Actions.ADD_SOCKET_TO_ROOM:
-            return state.map((room) => {
-                if (room.id !== action.roomId) {
-                    return room;
-                }
+            return editRoom(action.roomId, (room) => {
                 return {
                     ...room,
                     sockets: [...room.sockets, action.socket],
