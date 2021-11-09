@@ -1,11 +1,14 @@
-import { ISocket } from "../../../common/@types/socket";
-import { adminSocket } from "../../config/socket";
+import { ISocket } from "domains/common/@types/socket";
+import { WebsocketContext } from "domains/common/contexts";
+import { useContext } from "react";
 
 interface IProps {
     socket: ISocket;
 }
 
 export default function Socket({ socket }: IProps) {
+    const { adminSocket } = useContext(WebsocketContext);
+
     function kickFromServer() {
         adminSocket.emit("socket:kick", socket.id);
     }

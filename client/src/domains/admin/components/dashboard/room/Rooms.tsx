@@ -1,11 +1,11 @@
 import { useDisclosure } from "@chakra-ui/hooks";
 import { DeleteIcon } from "@chakra-ui/icons";
 import { Flex, Grid, Text } from "@chakra-ui/layout";
-import { adminSocket } from "domains/admin/config/socket";
 import { IRoom } from "domains/common/@types/room";
 import { Prompt } from "domains/common/components/modals";
 import Button from "domains/common/components/styles/button";
-import { useEffect } from "react";
+import { WebsocketContext } from "domains/common/contexts";
+import { useContext, useEffect } from "react";
 import { toast } from "react-toastify";
 import Room from "./Room";
 
@@ -14,6 +14,7 @@ interface IProps {
 }
 
 export default function Rooms({ rooms }: IProps) {
+    const { adminSocket } = useContext(WebsocketContext);
     const { isOpen, onOpen, onClose } = useDisclosure();
 
     function destroyAll() {

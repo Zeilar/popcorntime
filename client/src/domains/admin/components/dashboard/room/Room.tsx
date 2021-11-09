@@ -1,10 +1,11 @@
 import { useDisclosure } from "@chakra-ui/hooks";
 import { CloseIcon, DeleteIcon, InfoOutlineIcon } from "@chakra-ui/icons";
 import { AbsoluteCenter, Box, Flex, Grid, Text } from "@chakra-ui/layout";
-import { adminSocket } from "domains/admin/config/socket";
 import { IRoom } from "domains/common/@types/room";
 import { Prompt } from "domains/common/components/modals";
 import Button from "domains/common/components/styles/button";
+import { WebsocketContext } from "domains/common/contexts";
+import { useContext } from "react";
 import InfoModal from "./InfoModal";
 
 interface IProps {
@@ -17,6 +18,7 @@ export default function Room({ room }: IProps) {
     const promptDisclosure = useDisclosure();
     const infoDisclosure = useDisclosure();
     const maxSockets = parseInt(REACT_APP_ROOM_MAX_SOCKETS);
+    const { adminSocket } = useContext(WebsocketContext);
 
     const placeholderAmount = maxSockets - room.sockets.length;
 
