@@ -17,12 +17,11 @@ export default function Router() {
     }
 
     useEffect(() => {
-        const _adminSocket = adminSocket.current;
-        _adminSocket.on("connect", () => {
+        adminSocket.on("connect", () => {
             setAuthenticated(true);
         });
         return () => {
-            _adminSocket.off("connect");
+            adminSocket.off("connect");
         };
     }, [adminSocket]);
 

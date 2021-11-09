@@ -16,8 +16,8 @@ import Textarea from "../styles/Textarea";
 import Icon from "../styles/icon";
 import { MeContext } from "../../contexts";
 import { ChatSettings } from ".";
-import { socket } from "../../config/socket";
 import { useOnClickOutside } from "common/hooks";
+import { SocketContext } from "domains/common/contexts";
 
 interface IProps {
     roomId: string;
@@ -32,6 +32,7 @@ export function Chat({ roomId }: IProps) {
     const chatElement = useRef<HTMLDivElement>(null);
     const input = useRef<HTMLTextAreaElement>(null);
     const [settingsOpen, setSettingsOpen] = useState(false);
+    const { publicSocket } = useContext(SocketContext);
     const settingsEl = useOnClickOutside<HTMLDivElement>(() =>
         setSettingsOpen(false)
     );
@@ -52,33 +53,39 @@ export function Chat({ roomId }: IProps) {
     );
 
     useEffect(() => {
-        socket.on("message:new", (message: IMessage) => {
+        publicSocket.on("message:new", (message: IMessage) => {
             scrollChat.current = true;
             addMessage(message);
         });
 
-        socket.on("message:error", (payload: { id: string; error: string }) => {
-            setMessages((messages) =>
-                messages.map((message) => {
-                    // If message already had en error, do nothing
-                    if (message.notSent) {
-                        return message;
-                    }
-                    return {
-                        ...message,
-                        notSent: message.id === payload.id,
-                    };
-                })
-            );
-            toast.error(payload.error);
-        });
+        publicSocket.on(
+            "message:error",
+            (payload: { id: string; error: string }) => {
+                setMessages((messages) =>
+                    messages.map((message) => {
+                        // If message already had en error, do nothing
+                        if (message.notSent) {
+                            return message;
+                        }
+                        return {
+                            ...message,
+                            notSent: message.id === payload.id,
+                        };
+                    })
+                );
+                toast.error(payload.error);
+            }
+        );
 
-        socket.once("room:join", (payload: { messages: IMessage[] }) => {
+        publicSocket.once("room:join", (payload: { messages: IMessage[] }) => {
             setMessages(payload.messages);
         });
 
         return () => {
-            socket.off("message:new").off("message:error").off("room:join");
+            publicSocket
+                .off("message:new")
+                .off("message:error")
+                .off("room:join");
         };
     }, [addMessage]);
 
@@ -98,7 +105,7 @@ export function Chat({ roomId }: IProps) {
             socket: me,
         };
         addMessage(message);
-        socket.emit("message:send", { roomId, body, id: message.id });
+        publicSocket.emit("message:send", { roomId, body, id: message.id });
     }
 
     function inputHandler(e: KeyboardEvent) {

@@ -1,10 +1,13 @@
+import { SocketContextProvider } from "domains/common/contexts";
 import { MeContextProvider } from "./contexts";
 import Router from "./Router";
 
 export default function Public() {
     return (
-        <MeContextProvider>
-            <Router />
-        </MeContextProvider>
+        <SocketContextProvider>
+            <MeContextProvider>
+                <Router />
+            </MeContextProvider>
+        </SocketContextProvider>
     );
 }

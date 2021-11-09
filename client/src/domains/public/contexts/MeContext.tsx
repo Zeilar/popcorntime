@@ -1,8 +1,14 @@
-import { createContext, useState, ReactNode, useEffect } from "react";
+import {
+    createContext,
+    useState,
+    ReactNode,
+    useEffect,
+    useContext,
+} from "react";
 import { ISocket } from "../../common/@types/socket";
 import { Color } from "../../../common/@types/color";
-import { socket } from "../config/socket";
 import { toast } from "react-toastify";
+import { SocketContext } from "domains/common/contexts";
 
 interface IContext {
     me: ISocket;
@@ -18,23 +24,24 @@ export const MeContext = createContext({} as IContext);
 
 export function MeContextProvider({ children }: IProps) {
     const [me, setMe] = useState<ISocket>({} as ISocket);
+    const { publicSocket } = useContext(SocketContext);
 
     function changeColor(color: Color) {
         setMe((me) => ({ ...me, color }));
     }
 
     useEffect(() => {
-        socket.once("connection:success", (socket: ISocket) => {
+        publicSocket.once("connection:success", (socket: ISocket) => {
             setMe(socket);
             toast.success(`Welcome ${socket.username}`);
         });
-        socket.on("color:update", (color: Color) => {
+        publicSocket.on("color:update", (color: Color) => {
             changeColor(color);
         });
         return () => {
-            socket.off("color:update").off("connection:success");
+            publicSocket.off("color:update").off("connection:success");
         };
-    }, []);
+    }, [publicSocket]);
 
     const values: IContext = {
         me,

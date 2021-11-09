@@ -1,8 +1,9 @@
 import { AbsoluteCenter, Box, Flex, FlexProps, Text } from "@chakra-ui/layout";
 import { Tooltip } from "@chakra-ui/react";
 import { motion } from "framer-motion";
+import { useContext } from "react";
 import { IMessage } from "../@types/message";
-import { socket } from "../../public/config/socket";
+import { SocketContext } from "../contexts";
 
 interface IProps {
     message: IMessage;
@@ -16,6 +17,8 @@ function abbreviateUsername(username: string) {
 const MotionBox = motion<FlexProps>(Flex);
 
 export default function ChatMessage({ message }: IProps) {
+    const { publicSocket } = useContext(SocketContext);
+
     // Using Chakra FlexProps type for some reason won't work
     const notSentStyling: any = message.notSent
         ? {
@@ -26,7 +29,7 @@ export default function ChatMessage({ message }: IProps) {
 
     // Don't animate user's own messages
     const animationStyling =
-        message.socket.id !== socket.id
+        message.socket.id !== publicSocket.id
             ? {
                   animate: {
                       opacity: [0.75, 1],

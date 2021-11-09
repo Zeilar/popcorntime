@@ -17,9 +17,7 @@ import { SocketContext } from "domains/common/contexts";
 export default function Dashboard() {
     const [sockets, setSockets] = useState<ISocket[]>([]);
     const { rooms, dispatchRooms } = useContext(RoomContext);
-    const socketContext = useContext(SocketContext);
-
-    const adminSocket = socketContext.adminSocket.current;
+    const { adminSocket } = useContext(SocketContext);
 
     useEffect(() => {
         adminSocket.emit("data:get");
@@ -32,7 +30,6 @@ export default function Dashboard() {
         adminSocket.once(
             "data:get",
             (data: { rooms: IRoom[]; sockets: ISocket[] }) => {
-                console.log("got data", data);
                 dispatchRooms({
                     type: RoomActions.ADD_ROOMS,
                     rooms: data.rooms,

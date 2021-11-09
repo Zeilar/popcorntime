@@ -1,12 +1,10 @@
-import { createContext, ReactNode, useEffect, useRef } from "react";
+import { createContext, ReactNode, useEffect } from "react";
 import { Socket, io } from "socket.io-client";
 import { WS_HOST } from "../config/host";
 
-type SocketRef = React.MutableRefObject<Socket>;
-
 interface IContext {
-    publicSocket: SocketRef;
-    adminSocket: SocketRef;
+    publicSocket: Socket;
+    adminSocket: Socket;
     adminLogin: (password: string) => void;
 }
 
@@ -14,26 +12,24 @@ interface IProps {
     children: ReactNode;
 }
 
+const publicSocket = io(WS_HOST);
+const adminSocket = io(`${WS_HOST}/admin`);
+
 export const SocketContext = createContext({} as IContext);
 
 export function SocketContextProvider({ children }: IProps) {
-    const publicSocket = useRef(io(WS_HOST));
-    const adminSocket = useRef(io(`${WS_HOST}/admin`));
-
     useEffect(() => {
-        const _publicSocket = publicSocket.current;
-        const _adminSocket = adminSocket.current;
         return () => {
             // This should never happen realistically, but if it does, disconnect the user.
-            _publicSocket.disconnect();
-            _adminSocket.disconnect();
+            publicSocket.disconnect();
+            adminSocket.disconnect();
         };
     }, []);
 
     function adminLogin(password: string) {
-        adminSocket.current.auth = {};
-        adminSocket.current.auth.token = password;
-        adminSocket.current.connect();
+        adminSocket.auth = {};
+        adminSocket.auth.token = password;
+        adminSocket.connect();
     }
 
     const values: IContext = {

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { Redirect, useHistory, useParams } from "react-router";
 import { ISocket } from "../../common/@types/socket";
 import YouTube from "react-youtube";
@@ -8,8 +8,8 @@ import { Chat } from "../components/chat";
 import { validate } from "uuid";
 import { Flex } from "@chakra-ui/react";
 import { Color } from "common/@types/color";
-import { socket } from "../config/socket";
 import Button from "domains/common/components/styles/button";
+import { SocketContext } from "domains/common/contexts";
 
 interface IParams {
     roomId: string;
@@ -21,11 +21,12 @@ export function Room() {
     const [playlist, setPlaylist] = useState<string[]>([]);
     const [playlistInput, setPlaylistInput] = useState("");
     const [isConnected, setIsConnected] = useState(false);
+    const { publicSocket } = useContext(SocketContext);
     const player = useRef<YouTube>(null);
     const { push } = useHistory();
 
     function play() {
-        socket.emit("video:play");
+        publicSocket.emit("video:play");
     }
 
     useEffect(() => {
@@ -37,8 +38,8 @@ export function Room() {
         const internalPlayer: YT.Player | undefined =
             player.current?.getInternalPlayer();
 
-        socket.emit("room:join", roomId);
-        socket.once(
+        publicSocket.emit("room:join", roomId);
+        publicSocket.once(
             "room:join",
             (payload: { sockets: ISocket[]; playlist: string[] }) => {
                 setSockets(payload.sockets);
@@ -47,25 +48,25 @@ export function Room() {
                 toast.success("Joined room.");
             }
         );
-        socket.on("room:socket:join", (socket: ISocket) => {
+        publicSocket.on("room:socket:join", (socket: ISocket) => {
             setSockets((sockets) => [...sockets, socket]);
             toast.info(`${socket.username} joined.`);
         });
-        socket.on("room:socket:leave", (socket: ISocket) => {
+        publicSocket.on("room:socket:leave", (socket: ISocket) => {
             setSockets((sockets) =>
                 sockets.filter((element) => element.id !== socket.id)
             );
             toast.info(`${socket.username} left.`);
         });
-        socket.on("room:kick", () => {
+        publicSocket.on("room:kick", () => {
             toast.info("You were kicked from the room.");
             push("/");
         });
-        socket.on("room:destroy", () => {
+        publicSocket.on("room:destroy", () => {
             toast.info("The room was deleted.");
             push("/");
         });
-        socket.on(
+        publicSocket.on(
             "room:socket:update:color",
             (payload: { color: Color; socketId: string }) => {
                 setSockets((sockets) =>
@@ -81,13 +82,13 @@ export function Room() {
                 );
             }
         );
-        socket.on("video:play", () => {
+        publicSocket.on("video:play", () => {
             internalPlayer?.playVideo();
         });
 
         // Just to be safe, roomId should in theory never change but you never know
         return () => {
-            socket
+            publicSocket
                 .off("room:join")
                 .off("room:socket:leave")
                 .off("room:socket:join")
@@ -98,7 +99,7 @@ export function Room() {
             setPlaylist([]);
             setPlaylistInput("");
         };
-    }, [roomId, push]);
+    }, [roomId, push, publicSocket]);
 
     // TODO: socket.emit("room:leave", roomId); when you press leave, not in unmount, to prevent "undefined" left bug
 
