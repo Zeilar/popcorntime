@@ -59,6 +59,7 @@ export default function Room({ room }: IProps) {
                     p="0.25rem"
                     rounded="base"
                     bgColor="brand.default"
+                    userSelect="none"
                 >
                     FULL
                 </Text>
