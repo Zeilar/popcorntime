@@ -50,6 +50,19 @@ export default function Room({ room }: IProps) {
                 onClose={promptDisclosure.onClose}
                 onSubmit={destroy}
             />
+            {isFull && (
+                <Text
+                    textTransform="uppercase"
+                    pos="absolute"
+                    left="0.5rem"
+                    top="0.5rem"
+                    p="0.25rem"
+                    rounded="base"
+                    bgColor="brand.default"
+                >
+                    FULL
+                </Text>
+            )}
             <Button.Icon
                 pos="absolute"
                 right="0.5rem"
