@@ -166,7 +166,7 @@ function getAllData() {
 }
 
 adminNamespace.on("connection", (socket) => {
-    socket.once("data:get", () => {
+    socket.on("data:get", () => {
         socket.emit("data:get", getAllData());
     });
 

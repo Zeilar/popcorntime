@@ -1,12 +1,16 @@
 import { ButtonProps } from "@chakra-ui/button";
 import { ReactNode } from "react";
-import Button from ".";
+import * as MdiIcons from "@mdi/js";
+import MdiIcon from "@mdi/react";
+import Button from "./";
+import Icon from "@chakra-ui/icon";
 
 interface IProps extends ButtonProps {
-    children: ReactNode;
+    children?: ReactNode;
+    icon?: keyof typeof MdiIcons;
 }
 
-export function IconButton({ children, ...props }: IProps) {
+export function IconButton({ children, icon, ...props }: IProps) {
     return (
         <Button.Ghost
             display="flex"
@@ -19,6 +23,7 @@ export function IconButton({ children, ...props }: IProps) {
             rounded="base"
             {...props}
         >
+            {icon && <Icon as={MdiIcon} path={MdiIcons[icon]} />}
             {children}
         </Button.Ghost>
     );

@@ -15,6 +15,7 @@ import Rooms from "./room/Rooms";
 import Sockets from "./Sockets";
 import { WebsocketContext } from "domains/common/contexts";
 import { Color } from "common/@types/color";
+import Button from "domains/common/components/styles/button";
 
 export default function Dashboard() {
     const { rooms, dispatchRooms } = useContext(RoomContext);
@@ -29,7 +30,7 @@ export default function Dashboard() {
         adminSocket.on("connect_error", (error) => {
             toast.error(error.message);
         });
-        adminSocket.once(
+        adminSocket.on(
             "data:get",
             (data: { rooms: IRoom[]; sockets: ISocket[] }) => {
                 dispatchRooms({
@@ -125,6 +126,10 @@ export default function Dashboard() {
                 <DashboardItem icon="mdiPowerSocket" to="/admin/sockets">
                     Sockets
                 </DashboardItem>
+                <Button.Icon
+                    icon="mdiRefresh"
+                    onClick={() => adminSocket.emit("data:get")}
+                />
             </Flex>
             <Switch>
                 <Route path="/admin" exact>
