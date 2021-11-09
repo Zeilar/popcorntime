@@ -23,7 +23,9 @@ export function IconButton({ children, icon, ...props }: IProps) {
             rounded="base"
             {...props}
         >
-            {icon && <Icon as={MdiIcon} path={MdiIcons[icon]} />}
+            {icon && (
+                <Icon w="80%" h="80%" as={MdiIcon} path={MdiIcons[icon]} />
+            )}
             {children}
         </Button.Ghost>
     );
