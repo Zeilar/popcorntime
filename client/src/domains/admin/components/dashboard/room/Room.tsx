@@ -16,9 +16,9 @@ const { REACT_APP_ROOM_MAX_SOCKETS } = process.env;
 export default function Room({ room }: IProps) {
     const promptDisclosure = useDisclosure();
     const infoDisclosure = useDisclosure();
+    const maxSockets = parseInt(REACT_APP_ROOM_MAX_SOCKETS);
 
-    const placeholderAmount =
-        parseInt(REACT_APP_ROOM_MAX_SOCKETS) - room.sockets.length;
+    const placeholderAmount = maxSockets - room.sockets.length;
 
     function kick(socketId: string) {
         adminSocket.emit("room:kick", socketId);
@@ -27,6 +27,8 @@ export default function Room({ room }: IProps) {
     function destroy() {
         adminSocket.emit("room:destroy", room.id);
     }
+
+    const isFull = room.sockets.length >= maxSockets;
 
     return (
         <Flex
@@ -75,7 +77,12 @@ export default function Room({ room }: IProps) {
                 p="0.5rem"
             >
                 <AbsoluteCenter>
-                    <Text fontSize="large" fontWeight={600}>
+                    <Text
+                        fontSize="large"
+                        fontWeight={600}
+                        color={isFull ? "brand.default" : undefined}
+                        userSelect="none"
+                    >
                         {`${room.sockets.length} / ${REACT_APP_ROOM_MAX_SOCKETS}`}
                     </Text>
                 </AbsoluteCenter>
