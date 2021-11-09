@@ -87,7 +87,7 @@ export function Chat({ roomId }: IProps) {
                 .off("message:error")
                 .off("room:join");
         };
-    }, [addMessage]);
+    }, [addMessage, publicSocket]);
 
     function sendMessage() {
         if (!input.current) {
