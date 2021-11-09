@@ -13,9 +13,9 @@ export function Home() {
                 alignItems="center"
             >
                 <BrandLogo />
-                <Button.Primary>
-                    <Link to="/room/new">Create new room</Link>
-                </Button.Primary>
+                <Link to="/room/new">
+                    <Button.Primary>Create new room</Button.Primary>
+                </Link>
             </AbsoluteCenter>
         </Box>
     );
