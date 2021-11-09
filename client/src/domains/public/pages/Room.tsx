@@ -1,6 +1,6 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { Redirect, useHistory, useParams } from "react-router";
-import { ISocket } from "../../common/@types/socket";
+import { ISocket } from "domains/common/@types/socket";
 import YouTube from "react-youtube";
 import { toast } from "react-toastify";
 import { Box, Grid } from "@chakra-ui/layout";

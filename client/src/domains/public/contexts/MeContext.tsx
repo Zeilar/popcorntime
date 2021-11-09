@@ -39,7 +39,10 @@ export function MeContextProvider({ children }: IProps) {
             changeColor(color);
         });
         return () => {
-            publicSocket.off("color:update").off("connection:success");
+            publicSocket
+                .off("color:update")
+                .off("connection:success")
+                .off("connection:success");
         };
     }, [publicSocket]);
 
