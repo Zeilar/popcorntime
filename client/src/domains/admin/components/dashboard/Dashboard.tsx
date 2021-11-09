@@ -31,7 +31,7 @@ export default function Dashboard() {
             "data:get",
             (data: { rooms: IRoom[]; sockets: ISocket[] }) => {
                 dispatchRooms({
-                    type: RoomActions.ADD_ROOMS,
+                    type: RoomActions.SET_ROOMS,
                     rooms: data.rooms,
                 });
                 setSockets(data.sockets);

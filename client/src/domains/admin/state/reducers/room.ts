@@ -14,6 +14,8 @@ export function roomReducer(state: IRoom[], action: any): IRoom[] {
     }
 
     switch (action.type) {
+        case Actions.SET_ROOMS:
+            return action.rooms;
         case Actions.ADD_ROOMS:
             return [...state, ...action.rooms];
         case Actions.ADD_ROOM:
@@ -21,29 +23,19 @@ export function roomReducer(state: IRoom[], action: any): IRoom[] {
         case Actions.REMOVE_ROOM:
             return state.filter((room) => room.id !== action.roomId);
         case Actions.ADD_SOCKET_TO_ROOM:
-            return editRoom(action.roomId, (room) => {
-                return {
-                    ...room,
-                    sockets: [...room.sockets, action.socket],
-                };
-            });
+            return editRoom(action.roomId, (room) => ({
+                ...room,
+                sockets: [...room.sockets, action.socket],
+            }));
         case Actions.REMOVE_SOCKET_FROM_ROOM:
-            return state.map((room) => {
-                if (room.id !== action.roomId) {
-                    return room;
-                }
-                return {
-                    ...room,
-                    sockets: room.sockets.filter(
-                        (socket) => socket.id !== action.socketId
-                    ),
-                };
-            });
+            return editRoom(action.roomId, (room) => ({
+                ...room,
+                sockets: room.sockets.filter(
+                    (socket) => socket.id !== action.socketId
+                ),
+            }));
         case Actions.ADD_MESSAGE:
-            return state.map((room) => {
-                if (room.id !== action.roomId) {
-                    return room;
-                }
+            return editRoom(action.roomId, (room) => {
                 const messages = [...room.messages, action.message];
                 if (messages.length > parseInt(REACT_APP_ROOM_MAX_MESSAGES)) {
                     messages.shift();
