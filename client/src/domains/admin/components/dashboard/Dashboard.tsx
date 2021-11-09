@@ -1,7 +1,7 @@
 import { Box, Flex, Grid } from "@chakra-ui/layout";
 import { IMessage } from "domains/common/@types/message";
 import BrandLogo from "domains/common/components/styles/BrandLogo";
-import { useState, useEffect, useContext } from "react";
+import { useEffect, useContext } from "react";
 import { Route, Switch } from "react-router";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -99,7 +99,7 @@ export default function Dashboard() {
         return () => {
             adminSocket.removeAllListeners();
         };
-    }, [dispatchRooms, adminSocket]);
+    }, [dispatchRooms, dispatchSockets, adminSocket]);
 
     return (
         <Grid bgColor="gray.800" flexGrow={1} gridTemplateColumns="25rem 1fr">
