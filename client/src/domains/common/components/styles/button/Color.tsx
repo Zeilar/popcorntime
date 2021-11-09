@@ -3,7 +3,7 @@ import { Box, BoxProps } from "@chakra-ui/layout";
 import { useContext } from "react";
 import theme from "@chakra-ui/theme";
 import { MeContext } from "domains/public/contexts";
-import { SocketContext } from "domains/common/contexts";
+import { WebsocketContext } from "domains/common/contexts";
 
 interface IProps extends BoxProps {
     color: Color;
@@ -11,7 +11,7 @@ interface IProps extends BoxProps {
 
 export function ColorButton({ children, color, ...props }: IProps) {
     const { me } = useContext(MeContext);
-    const { publicSocket } = useContext(SocketContext);
+    const { publicSocket } = useContext(WebsocketContext);
 
     function clickHandler() {
         publicSocket.emit("socket:update:color", color);

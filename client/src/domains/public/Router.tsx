@@ -5,12 +5,12 @@ import { toast } from "react-toastify";
 import { AbsoluteCenter } from "@chakra-ui/layout";
 import { Spinner } from "@chakra-ui/spinner";
 import * as Pages from "./pages";
-import { SocketContext } from "domains/common/contexts";
+import { WebsocketContext } from "domains/common/contexts";
 
 export default function Router() {
     const { me, setMe } = useContext(MeContext);
     const [error, setError] = useState<string | null>(null);
-    const { publicSocket } = useContext(SocketContext);
+    const { publicSocket } = useContext(WebsocketContext);
 
     useEffect(() => {
         publicSocket.on("error", (error: string) => {

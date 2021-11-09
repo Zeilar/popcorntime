@@ -15,9 +15,9 @@ interface IProps {
 const publicSocket = io(WS_HOST);
 const adminSocket = io(`${WS_HOST}/admin`);
 
-export const SocketContext = createContext({} as IContext);
+export const WebsocketContext = createContext({} as IContext);
 
-export function SocketContextProvider({ children }: IProps) {
+export function WebsocketContextProvider({ children }: IProps) {
     useEffect(() => {
         return () => {
             // This should never happen realistically, but if it does, disconnect the user.
@@ -39,8 +39,8 @@ export function SocketContextProvider({ children }: IProps) {
     };
 
     return (
-        <SocketContext.Provider value={values}>
+        <WebsocketContext.Provider value={values}>
             {children}
-        </SocketContext.Provider>
+        </WebsocketContext.Provider>
     );
 }

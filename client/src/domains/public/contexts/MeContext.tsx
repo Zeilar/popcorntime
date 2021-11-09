@@ -8,7 +8,7 @@ import {
 import { ISocket } from "../../common/@types/socket";
 import { Color } from "../../../common/@types/color";
 import { toast } from "react-toastify";
-import { SocketContext } from "domains/common/contexts";
+import { WebsocketContext } from "domains/common/contexts";
 
 interface IContext {
     me: ISocket;
@@ -24,7 +24,7 @@ export const MeContext = createContext({} as IContext);
 
 export function MeContextProvider({ children }: IProps) {
     const [me, setMe] = useState<ISocket>({} as ISocket);
-    const { publicSocket } = useContext(SocketContext);
+    const { publicSocket } = useContext(WebsocketContext);
 
     function changeColor(color: Color) {
         setMe((me) => ({ ...me, color }));

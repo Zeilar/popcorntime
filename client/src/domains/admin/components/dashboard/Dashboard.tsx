@@ -7,17 +7,18 @@ import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { IRoom } from "domains/common/@types/room";
 import { ISocket } from "domains/common/@types/socket";
-import { RoomContext } from "../../contexts";
+import { RoomContext, SocketContext } from "../../contexts";
 import * as RoomActions from "../../state/actions/room";
+import * as SocketActions from "../../state/actions/socket";
 import DashboardItem from "./DashboardItem";
 import Rooms from "./room/Rooms";
 import Sockets from "./Sockets";
-import { SocketContext } from "domains/common/contexts";
+import { WebsocketContext } from "domains/common/contexts";
 
 export default function Dashboard() {
-    const [sockets, setSockets] = useState<ISocket[]>([]);
     const { rooms, dispatchRooms } = useContext(RoomContext);
-    const { adminSocket } = useContext(SocketContext);
+    const { sockets, dispatchSockets } = useContext(SocketContext);
+    const { adminSocket } = useContext(WebsocketContext);
 
     useEffect(() => {
         adminSocket.emit("data:get");
@@ -34,7 +35,10 @@ export default function Dashboard() {
                     type: RoomActions.SET_ROOMS,
                     rooms: data.rooms,
                 });
-                setSockets(data.sockets);
+                dispatchSockets({
+                    type: SocketActions.SET_SOCKETS,
+                    sockets: data.sockets,
+                });
             }
         );
         adminSocket.on(
@@ -54,12 +58,16 @@ export default function Dashboard() {
             dispatchRooms({ type: RoomActions.REMOVE_ROOM, roomId });
         });
         adminSocket.on("socket:connect", (socket: ISocket) => {
-            setSockets((sockets) => [...sockets, socket]);
+            dispatchSockets({
+                type: SocketActions.ADD_SOCKET,
+                socket,
+            });
         });
         adminSocket.on("socket:disconnect", (socketId: string) => {
-            setSockets((sockets) =>
-                sockets.filter((socket) => socket.id !== socketId)
-            );
+            dispatchSockets({
+                type: SocketActions.REMOVE_SOCKET,
+                socketId,
+            });
         });
         adminSocket.on(
             "message:new",

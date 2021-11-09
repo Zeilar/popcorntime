@@ -17,7 +17,7 @@ import Icon from "../styles/icon";
 import { MeContext } from "../../contexts";
 import { ChatSettings } from ".";
 import { useOnClickOutside } from "common/hooks";
-import { SocketContext } from "domains/common/contexts";
+import { WebsocketContext } from "domains/common/contexts";
 
 interface IProps {
     roomId: string;
@@ -32,7 +32,7 @@ export function Chat({ roomId }: IProps) {
     const chatElement = useRef<HTMLDivElement>(null);
     const input = useRef<HTMLTextAreaElement>(null);
     const [settingsOpen, setSettingsOpen] = useState(false);
-    const { publicSocket } = useContext(SocketContext);
+    const { publicSocket } = useContext(WebsocketContext);
     const settingsEl = useOnClickOutside<HTMLDivElement>(() =>
         setSettingsOpen(false)
     );

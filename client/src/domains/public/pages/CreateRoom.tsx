@@ -1,10 +1,10 @@
-import { SocketContext } from "domains/common/contexts";
+import { WebsocketContext } from "domains/common/contexts";
 import { useContext, useEffect, useRef } from "react";
 import { Redirect } from "react-router";
 import { v4 as uuidv4 } from "uuid";
 
 export function CreateRoom() {
-    const { publicSocket } = useContext(SocketContext);
+    const { publicSocket } = useContext(WebsocketContext);
     const id = useRef(uuidv4()).current;
     useEffect(() => {
         publicSocket.emit("room:create", id);

@@ -9,7 +9,7 @@ import { validate } from "uuid";
 import { Flex } from "@chakra-ui/react";
 import { Color } from "common/@types/color";
 import Button from "domains/common/components/styles/button";
-import { SocketContext } from "domains/common/contexts";
+import { WebsocketContext } from "domains/common/contexts";
 
 interface IParams {
     roomId: string;
@@ -21,7 +21,7 @@ export function Room() {
     const [playlist, setPlaylist] = useState<string[]>([]);
     const [playlistInput, setPlaylistInput] = useState("");
     const [isConnected, setIsConnected] = useState(false);
-    const { publicSocket } = useContext(SocketContext);
+    const { publicSocket } = useContext(WebsocketContext);
     const player = useRef<YouTube>(null);
     const { push } = useHistory();
 
