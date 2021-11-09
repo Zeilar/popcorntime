@@ -25,13 +25,13 @@ export function roomReducer(state: IRoom[], action: any): IRoom[] {
         case Actions.ADD_SOCKET_TO_ROOM:
             return editRoom(action.roomId, (room) => ({
                 ...room,
-                sockets: [...room.sockets, action.socket],
+                sockets: [...room.sockets, action.socketId],
             }));
         case Actions.REMOVE_SOCKET_FROM_ROOM:
             return editRoom(action.roomId, (room) => ({
                 ...room,
                 sockets: room.sockets.filter(
-                    (socket) => socket.id !== action.socketId
+                    (socketId) => socketId !== action.socketId
                 ),
             }));
         case Actions.ADD_MESSAGE:

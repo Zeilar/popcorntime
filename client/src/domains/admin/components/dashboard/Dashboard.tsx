@@ -14,6 +14,7 @@ import DashboardItem from "./DashboardItem";
 import Rooms from "./room/Rooms";
 import Sockets from "./Sockets";
 import { WebsocketContext } from "domains/common/contexts";
+import { Color } from "common/@types/color";
 
 export default function Dashboard() {
     const { rooms, dispatchRooms } = useContext(RoomContext);
@@ -57,6 +58,9 @@ export default function Dashboard() {
         adminSocket.on("room:destroy", (roomId: string) => {
             dispatchRooms({ type: RoomActions.REMOVE_ROOM, roomId });
         });
+        adminSocket.on("socket:update:color", (color: Color) => {
+            //
+        });
         adminSocket.on("socket:connect", (socket: ISocket) => {
             dispatchSockets({
                 type: SocketActions.ADD_SOCKET,
@@ -80,7 +84,7 @@ export default function Dashboard() {
         );
         adminSocket.on(
             "room:join",
-            (payload: { socket: ISocket; roomId: string }) => {
+            (payload: { socketId: string; roomId: string }) => {
                 dispatchRooms({
                     type: RoomActions.ADD_SOCKET_TO_ROOM,
                     ...payload,

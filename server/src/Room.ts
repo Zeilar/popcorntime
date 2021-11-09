@@ -40,7 +40,7 @@ export class Room {
     }
 
     public get socketsDto() {
-        return this.sockets.map((socket) => socket.dto);
+        return this.sockets.map((socket) => socket.id);
     }
 
     public hasSocket(socket: Socket) {
@@ -60,7 +60,7 @@ export class Room {
         });
         socket.ref?.to(this.id).emit("room:socket:join", socket.dto);
         adminNamespace.emit("room:join", {
-            socket: socket.dto,
+            socketId: socket.id,
             roomId: this.id,
         });
     }

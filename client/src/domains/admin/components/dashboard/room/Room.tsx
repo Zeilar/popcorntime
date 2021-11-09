@@ -1,6 +1,7 @@
 import { useDisclosure } from "@chakra-ui/hooks";
 import { CloseIcon, DeleteIcon, InfoOutlineIcon } from "@chakra-ui/icons";
 import { AbsoluteCenter, Box, Flex, Grid, Text } from "@chakra-ui/layout";
+import { SocketContext } from "domains/admin/contexts";
 import { IRoom } from "domains/common/@types/room";
 import { Prompt } from "domains/common/components/modals";
 import Button from "domains/common/components/styles/button";
@@ -19,6 +20,11 @@ export default function Room({ room }: IProps) {
     const infoDisclosure = useDisclosure();
     const maxSockets = parseInt(REACT_APP_ROOM_MAX_SOCKETS);
     const { adminSocket } = useContext(WebsocketContext);
+    const socketContext = useContext(SocketContext);
+
+    const sockets = socketContext.sockets.filter((socket) =>
+        room.sockets.includes(socket.id)
+    );
 
     const placeholderAmount = maxSockets - room.sockets.length;
 
@@ -123,7 +129,7 @@ export default function Room({ room }: IProps) {
                 gridTemplateColumns="repeat(1, 1fr)"
                 gridTemplateRows="repeat(10, 1fr)"
             >
-                {room.sockets.map((socket) => (
+                {sockets.map((socket) => (
                     <Flex
                         bgGradient={`linear(to-r, ${socket.color}.700, ${socket.color}.900)`}
                         align="center"
