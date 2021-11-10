@@ -56,11 +56,10 @@ export default function InfoModal({ isOpen, onClose, room }: IProps) {
                             </Tab.Button>
                         </Grid>
                         <Flex
-                            className="custom-scrollbar"
+                            className="custom-scrollbar scrollbar-inset"
                             flexDir="column"
                             maxH="60vh"
                             overflowY="auto"
-                            pr="0.5rem"
                         >
                             {openTab === "details" && (
                                 <Grid gridGap="1rem">
