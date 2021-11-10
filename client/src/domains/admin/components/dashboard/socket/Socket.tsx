@@ -1,4 +1,5 @@
 import { useDisclosure } from "@chakra-ui/hooks";
+import { DeleteIcon } from "@chakra-ui/icons";
 import { Flex, Text } from "@chakra-ui/layout";
 import { Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/menu";
 import { ISocket } from "domains/common/@types/socket";
@@ -54,12 +55,7 @@ export default function Socket({ socket }: IProps) {
                 </MenuButton>
                 <MenuList>
                     <MenuItem
-                        icon={
-                            <MdiIcon
-                                icon="mdiTrashCanOutline"
-                                color="red.600"
-                            />
-                        }
+                        icon={<DeleteIcon color="red.600" />}
                         onClick={prompt.onOpen}
                     >
                         Destroy
