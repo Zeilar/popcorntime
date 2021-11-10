@@ -16,6 +16,7 @@ import Sockets from "./socket/Sockets";
 import { WebsocketContext } from "domains/common/contexts";
 import { Color } from "common/@types/color";
 import Button from "domains/common/components/styles/button";
+import SocketAvatar from "domains/common/components/styles/SocketAvatar";
 
 export default function Dashboard() {
     const { dispatchRooms } = useContext(RoomContext);
@@ -128,20 +129,13 @@ export default function Dashboard() {
                     </Link>
                 </Box>
                 {me && (
-                    <Text
-                        as={Flex}
-                        m="1rem auto"
-                        alignItems="center"
-                        justifyContent="center"
-                        p="0.5rem"
-                        borderRadius="100%"
+                    <SocketAvatar
+                        socket={me}
+                        m="1rem auto 3rem"
                         fontSize="3xl"
                         w="5rem"
                         h="5rem"
-                        bgGradient={`linear(to-r, ${me.color}.700, ${me.color}.900)`}
-                    >
-                        {abbreviateUsername(me.username)}
-                    </Text>
+                    />
                 )}
                 <DashboardItem icon="mdiAccountGroupOutline" to="/admin/rooms">
                     Rooms
