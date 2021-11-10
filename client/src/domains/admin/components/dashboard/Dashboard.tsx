@@ -1,4 +1,4 @@
-import { Box, Flex, Grid } from "@chakra-ui/layout";
+import { Box, Flex, Grid, Text } from "@chakra-ui/layout";
 import { IMessage } from "domains/common/@types/message";
 import BrandLogo from "domains/common/components/styles/BrandLogo";
 import { useEffect, useContext } from "react";
@@ -19,8 +19,8 @@ import Button from "domains/common/components/styles/button";
 
 export default function Dashboard() {
     const { dispatchRooms } = useContext(RoomContext);
-    const { dispatchSockets } = useContext(SocketContext);
-    const { adminSocket } = useContext(WebsocketContext);
+    const { dispatchSockets, sockets } = useContext(SocketContext);
+    const { adminSocket, publicSocket } = useContext(WebsocketContext);
 
     useEffect(() => {
         adminSocket.emit("data:get");
@@ -106,6 +106,13 @@ export default function Dashboard() {
         };
     }, [dispatchRooms, dispatchSockets, adminSocket]);
 
+    function abbreviateUsername(username: string) {
+        const [adjective, name] = username.split(" ");
+        return `${adjective[0]}${name[0]}`;
+    }
+
+    const me = sockets.find((socket) => socket.id === publicSocket.id);
+
     return (
         <Grid bgColor="gray.800" flexGrow={1} gridTemplateColumns="25rem 1fr">
             <Flex
@@ -115,11 +122,27 @@ export default function Dashboard() {
                 boxShadow="md"
                 zIndex={100}
             >
-                <Box w="fit-content" m="1rem auto 2rem">
+                <Box w="fit-content" m="1rem auto">
                     <Link to="/">
                         <BrandLogo />
                     </Link>
                 </Box>
+                {me && (
+                    <Text
+                        as={Flex}
+                        m="1rem auto"
+                        alignItems="center"
+                        justifyContent="center"
+                        p="0.5rem"
+                        borderRadius="100%"
+                        fontSize="3xl"
+                        w="5rem"
+                        h="5rem"
+                        bgGradient={`linear(to-r, ${me.color}.700, ${me.color}.900)`}
+                    >
+                        {abbreviateUsername(me.username)}
+                    </Text>
+                )}
                 <DashboardItem icon="mdiAccountGroupOutline" to="/admin/rooms">
                     Rooms
                 </DashboardItem>
