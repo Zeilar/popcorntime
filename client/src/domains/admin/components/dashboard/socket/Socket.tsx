@@ -3,7 +3,6 @@ import { DeleteIcon } from "@chakra-ui/icons";
 import { Flex, Text } from "@chakra-ui/layout";
 import { Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/menu";
 import { ISocket } from "domains/common/@types/socket";
-import MdiIcon from "domains/common/components/MdiIcon";
 import { Prompt } from "domains/common/components/modals";
 import Button from "domains/common/components/styles/button";
 import { WebsocketContext } from "domains/common/contexts";
@@ -15,7 +14,8 @@ interface IProps {
 
 export default function Socket({ socket }: IProps) {
     const { adminSocket } = useContext(WebsocketContext);
-    const prompt = useDisclosure();
+    const destroyPrompt = useDisclosure();
+    const kickPrompt = useDisclosure();
 
     function destroy() {
         adminSocket.emit("socket:destroy", socket.id);
@@ -36,9 +36,16 @@ export default function Socket({ socket }: IProps) {
             <Prompt
                 header="Destroy socket"
                 body="Are you sure? This cannot be undone!"
-                isOpen={prompt.isOpen}
-                onClose={prompt.onClose}
+                isOpen={destroyPrompt.isOpen}
+                onClose={destroyPrompt.onClose}
                 onSubmit={destroy}
+            />
+            <Prompt
+                header="Kick socket from room"
+                body="Are you sure?"
+                isOpen={kickPrompt.isOpen}
+                onClose={kickPrompt.onClose}
+                onSubmit={kickFromRoom}
             />
             <Text
                 overflow="hidden"
@@ -51,14 +58,24 @@ export default function Socket({ socket }: IProps) {
             </Text>
             <Menu>
                 <MenuButton pointerEvents="none">
-                    <Button.Icon icon="mdiDotsVertical" pointerEvents="all" />
+                    <Button.Icon
+                        as="div"
+                        icon="mdiDotsVertical"
+                        pointerEvents="all"
+                    />
                 </MenuButton>
                 <MenuList>
                     <MenuItem
-                        icon={<DeleteIcon color="red.600" />}
-                        onClick={prompt.onOpen}
+                        icon={<DeleteIcon color="danger" />}
+                        onClick={destroyPrompt.onOpen}
                     >
                         Destroy
+                    </MenuItem>
+                    <MenuItem
+                        icon={<DeleteIcon color="danger" />}
+                        onClick={kickPrompt.onOpen}
+                    >
+                        Kick from room
                     </MenuItem>
                 </MenuList>
             </Menu>

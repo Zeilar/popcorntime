@@ -6,9 +6,6 @@ const colors = {
         light: "#da455e",
         dark: "#7d1123",
     },
-    gradient: {
-        brand: "linear-gradient(45deg, #7d1123 0%, #da455e 100%)",
-    },
     gray: {
         "900": "#141414",
         "800": "#191919",
@@ -20,6 +17,11 @@ const colors = {
         "200": "#373737",
         "100": "#3c3c3c",
     },
+    danger: "var(--chakra-colors-red-600)",
+};
+
+const bgGradients = {
+    brand: "linear(to-r, brand.dark, brand.light)",
 };
 
 const config: ThemeConfig = {
@@ -61,6 +63,7 @@ export default extendTheme({
     config,
     colors,
     shadows,
+    bgGradients,
     fonts,
     components,
     styles: {

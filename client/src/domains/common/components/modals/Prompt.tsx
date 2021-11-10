@@ -17,6 +17,10 @@ interface IProps {
 }
 
 export function Prompt({ isOpen, onClose, body, header, onSubmit }: IProps) {
+    function submit() {
+        onClose();
+        onSubmit();
+    }
     return (
         <Modal blockScrollOnMount isOpen={isOpen} onClose={onClose}>
             <ModalOverlay />
@@ -24,7 +28,7 @@ export function Prompt({ isOpen, onClose, body, header, onSubmit }: IProps) {
                 <ModalHeader>{header}</ModalHeader>
                 <ModalBody>{body}</ModalBody>
                 <ModalFooter mt="1rem">
-                    <Button.Primary mr="0.5rem" onClick={onSubmit}>
+                    <Button.Primary mr="0.5rem" onClick={submit}>
                         Ok
                     </Button.Primary>
                     <Button.Ghost onClick={onClose}>Cancel</Button.Ghost>

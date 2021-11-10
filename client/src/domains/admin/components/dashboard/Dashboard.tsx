@@ -43,16 +43,6 @@ export default function Dashboard() {
                 });
             }
         );
-        adminSocket.on(
-            "room:kick",
-            (payload: { roomId: string; socketId: string }) => {
-                dispatchRooms({
-                    type: RoomActions.REMOVE_SOCKET_FROM_ROOM,
-                    ...payload,
-                });
-                toast.success("Removed socket.");
-            }
-        );
         adminSocket.on("room:new", (room: IRoom) => {
             dispatchRooms({ type: RoomActions.ADD_ROOM, room });
         });
@@ -90,6 +80,16 @@ export default function Dashboard() {
                     type: RoomActions.ADD_SOCKET_TO_ROOM,
                     ...payload,
                 });
+            }
+        );
+        adminSocket.on(
+            "room:kick",
+            (payload: { roomId: string; socketId: string }) => {
+                dispatchRooms({
+                    type: RoomActions.REMOVE_SOCKET_FROM_ROOM,
+                    ...payload,
+                });
+                toast.success("Kicked socket from room.");
             }
         );
         adminSocket.on(
