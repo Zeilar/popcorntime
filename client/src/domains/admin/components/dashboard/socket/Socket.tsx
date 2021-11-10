@@ -1,7 +1,8 @@
 import { useDisclosure } from "@chakra-ui/hooks";
-import { DeleteIcon } from "@chakra-ui/icons";
+import { DeleteIcon, NotAllowedIcon } from "@chakra-ui/icons";
 import { Flex, Text } from "@chakra-ui/layout";
 import { Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/menu";
+import { RoomContext } from "domains/admin/contexts";
 import { ISocket } from "domains/common/@types/socket";
 import { Prompt } from "domains/common/components/modals";
 import Button from "domains/common/components/styles/button";
@@ -14,8 +15,20 @@ interface IProps {
 
 export default function Socket({ socket }: IProps) {
     const { adminSocket } = useContext(WebsocketContext);
+    const { rooms } = useContext(RoomContext);
     const destroyPrompt = useDisclosure();
     const kickPrompt = useDisclosure();
+
+    const hasRoom = rooms.some((room) => room.sockets.includes(socket.id));
+
+    const noRoomMenuItemProps: any = !hasRoom
+        ? {
+              opacity: 0.25,
+              pointerEvents: "none",
+          }
+        : {
+              onClick: kickPrompt.onOpen,
+          };
 
     function destroy() {
         adminSocket.emit("socket:destroy", socket.id);
@@ -72,8 +85,8 @@ export default function Socket({ socket }: IProps) {
                         Destroy
                     </MenuItem>
                     <MenuItem
-                        icon={<DeleteIcon color="danger" />}
-                        onClick={kickPrompt.onOpen}
+                        icon={<NotAllowedIcon color="danger" />}
+                        {...noRoomMenuItemProps}
                     >
                         Kick from room
                     </MenuItem>
