@@ -12,14 +12,14 @@ import * as RoomActions from "../../state/actions/room";
 import * as SocketActions from "../../state/actions/socket";
 import DashboardItem from "./DashboardItem";
 import Rooms from "./room/Rooms";
-import Sockets from "./Sockets";
+import Sockets from "./socket/Sockets";
 import { WebsocketContext } from "domains/common/contexts";
 import { Color } from "common/@types/color";
 import Button from "domains/common/components/styles/button";
 
 export default function Dashboard() {
-    const { rooms, dispatchRooms } = useContext(RoomContext);
-    const { sockets, dispatchSockets } = useContext(SocketContext);
+    const { dispatchRooms } = useContext(RoomContext);
+    const { dispatchSockets } = useContext(SocketContext);
     const { adminSocket } = useContext(WebsocketContext);
 
     useEffect(() => {
@@ -136,10 +136,10 @@ export default function Dashboard() {
                     Main
                 </Route>
                 <Route path="/admin/rooms" exact>
-                    <Rooms rooms={rooms} />
+                    <Rooms />
                 </Route>
                 <Route path="/admin/sockets" exact>
-                    <Sockets sockets={sockets} />
+                    <Sockets />
                 </Route>
                 <Route>404</Route>
             </Switch>

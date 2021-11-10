@@ -1,30 +1,30 @@
 import { useDisclosure } from "@chakra-ui/hooks";
 import { DeleteIcon } from "@chakra-ui/icons";
 import { Flex, Grid, Text } from "@chakra-ui/layout";
-import { RoomContext } from "domains/admin/contexts";
+import { SocketContext } from "domains/admin/contexts";
 import { Prompt } from "domains/common/components/modals";
 import Button from "domains/common/components/styles/button";
 import { WebsocketContext } from "domains/common/contexts";
 import { useContext, useEffect } from "react";
 import { toast } from "react-toastify";
-import Room from "./Room";
+import Socket from "./Socket";
 
-export default function Rooms() {
+export default function Sockets() {
+    const { sockets } = useContext(SocketContext);
     const { adminSocket } = useContext(WebsocketContext);
     const prompt = useDisclosure();
-    const { rooms } = useContext(RoomContext);
 
     function destroyAll() {
-        adminSocket.emit("room:destroy:all");
+        adminSocket.emit("socket:destroy:all");
     }
 
     useEffect(() => {
-        adminSocket.on("room:destroy:all", () => {
-            toast.success("Destroyed all rooms.");
+        adminSocket.on("socket:destroy:all", () => {
+            toast.success("Destroyed all sockets.");
             prompt.onClose();
         });
         return () => {
-            adminSocket.off("room:destroy:all");
+            adminSocket.off("socket:destroy:all");
         };
     }, [adminSocket, prompt]);
 
@@ -38,7 +38,7 @@ export default function Rooms() {
                 onSubmit={destroyAll}
                 onClose={prompt.onClose}
                 isOpen={prompt.isOpen}
-                header="Destroy all rooms"
+                header="Destroy all sockets"
                 body="Are you sure? This cannot be reversed!"
             />
             <Flex
@@ -54,20 +54,20 @@ export default function Rooms() {
                     Destroy all
                 </Button.Primary>
             </Flex>
-            {rooms.length > 0 ? (
+            {sockets.length > 0 ? (
                 <Grid
                     gridTemplateColumns="repeat(4, 1fr)"
                     gridGap="0.5rem"
                     alignContent="start"
                     p="1rem"
                 >
-                    {rooms.map((room) => (
-                        <Room room={room} key={room.id} />
+                    {sockets.map((socket) => (
+                        <Socket socket={socket} key={socket.id} />
                     ))}
                 </Grid>
             ) : (
                 <Text p="1rem" as="h2">
-                    No rooms were found.
+                    No sockets were found.
                 </Text>
             )}
         </Flex>

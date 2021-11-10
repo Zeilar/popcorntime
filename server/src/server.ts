@@ -188,14 +188,14 @@ adminNamespace.on("connection", (socket) => {
         socket.emit("room:leave", { roomId: room.id, socketId: _socket.id });
     });
 
-    socket.on("socket:kick", (socketId) => {
+    socket.on("socket:destroy", (socketId) => {
         const _socket = ws.sockets.get(socketId);
 
         if (!_socket) {
             return socket.emit("error", "That socket does not exist.");
         }
 
-        io.to(_socket.id).emit("socket:kick");
+        io.to(_socket.id).emit("socket:destroy");
         socket.emit("socket:disconnect", socketId);
 
         _socket.ref?.disconnect();
@@ -216,5 +216,12 @@ adminNamespace.on("connection", (socket) => {
             ws.deleteRoom(room);
         });
         socket.emit("room:destroy:all");
+    });
+
+    socket.on("socket:destroy:all", () => {
+        ws.sockets.forEach((socket) => {
+            ws.deleteSocket(socket);
+        });
+        socket.emit("socket:destroy:all");
     });
 });

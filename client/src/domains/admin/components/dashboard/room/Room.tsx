@@ -139,7 +139,6 @@ export default function Room({ room }: IProps) {
                         p="0.5rem"
                     >
                         <Text
-                            fontWeight={600}
                             whiteSpace="nowrap"
                             overflow="hidden"
                             textOverflow="ellipsis"
