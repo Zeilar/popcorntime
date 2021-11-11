@@ -7,4 +7,5 @@ export interface IMessage {
     id: string;
     socket: ISocketDto;
     date: Date;
+    automatic?: boolean;
 }

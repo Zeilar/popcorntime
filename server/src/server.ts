@@ -50,6 +50,7 @@ io.on("connection", (socket) => {
                 id: uuidv4(),
                 socket: _socket.dto,
                 roomId: room.id,
+                automatic: true,
             });
         }
     });

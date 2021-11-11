@@ -50,7 +50,9 @@ export default function ChatMessage({ message }: IProps) {
             bgGradient={`linear(to-r, ${color}.800, ${color}.900)`}
         >
             <SocketAvatar mr="1rem" socket={message.socket} />
-            <Text>{message.body}</Text>
+            <Text fontStyle={message.automatic ? "italic" : "normal"}>
+                {message.body}
+            </Text>
         </MotionBox>
     );
 }

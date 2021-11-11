@@ -6,4 +6,5 @@ export interface IMessage {
     socket: ISocket;
     notSent?: boolean;
     created_at: Date;
+    automatic?: boolean;
 }
