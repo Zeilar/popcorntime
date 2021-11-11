@@ -1,5 +1,4 @@
-import { AbsoluteCenter, Box, Flex, FlexProps, Text } from "@chakra-ui/layout";
-import { Tooltip } from "@chakra-ui/react";
+import { Flex, FlexProps, Text } from "@chakra-ui/layout";
 import { motion } from "framer-motion";
 import { useContext } from "react";
 import { IMessage } from "../@types/message";
