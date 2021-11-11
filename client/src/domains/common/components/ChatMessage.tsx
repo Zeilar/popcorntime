@@ -35,23 +35,31 @@ export default function ChatMessage({ message }: IProps) {
               }
             : {};
 
-    const { color } = message.socket;
+    const textAutomaticStyling: any = message.automatic
+        ? {
+              fontStyle: "italic",
+              color: `${message.socket.color}.600`,
+              userSelect: "none",
+          }
+        : {};
 
     return (
         <MotionBox
-            {...notSentStyling}
-            {...animationStyling}
             borderRadius={4}
             alignItems="center"
             p="0.5rem"
             mt={1}
             _first={{ marginTop: 0 }}
-            bgGradient={`linear(to-r, ${color}.800, ${color}.900)`}
+            bgGradient={
+                message.automatic
+                    ? "none"
+                    : `linear(to-r, ${message.socket.color}.800, ${message.socket.color}.900)`
+            }
+            {...notSentStyling}
+            {...animationStyling}
         >
             <SocketAvatar mr="1rem" socket={message.socket} />
-            <Text fontStyle={message.automatic ? "italic" : "normal"}>
-                {message.body}
-            </Text>
+            <Text {...textAutomaticStyling}>{message.body}</Text>
         </MotionBox>
     );
 }
