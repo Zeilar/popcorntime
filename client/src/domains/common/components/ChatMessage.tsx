@@ -38,8 +38,8 @@ export default function ChatMessage({ message }: IProps) {
     const textAutomaticStyling: any = message.automatic
         ? {
               fontStyle: "italic",
-              color: `${message.socket.color}.600`,
               userSelect: "none",
+              color: "GrayText",
           }
         : {};
 
