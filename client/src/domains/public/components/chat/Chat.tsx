@@ -131,10 +131,9 @@ export function Chat({ roomId }: IProps) {
     return (
         <Flex flexDir="column" h="100vh" bgColor="whiteAlpha.50">
             <Flex
-                className="custom-scrollbar"
+                className="custom-scrollbar scrollbar-inset"
                 flexDir="column"
                 overflowY="auto"
-                overflowX="hidden"
                 p="0.5rem"
                 ref={chatElement}
             >
