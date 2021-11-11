@@ -1,6 +1,6 @@
 import { IMessage } from "../@types/message";
 import { IRoomDto } from "../@types/room";
-import { adminNamespace, ws } from "./server";
+import { adminNamespace, io, ws } from "./server";
 import { Socket } from "./Socket";
 import { uniqueNamesGenerator } from "unique-names-generator";
 import { nameConfig } from "../config/uniqueNamesGenerator";
@@ -16,7 +16,7 @@ export class Room {
     public created_at: Date;
     public name: string;
 
-    constructor(public readonly id: string) {
+    public constructor(public readonly id: string) {
         this.created_at = new Date();
         this.name = uniqueNamesGenerator(nameConfig);
     }
@@ -83,6 +83,12 @@ export class Room {
     public sendMessage(sender: Socket, message: IMessage) {
         this.addMessage(message);
         sender.ref?.to(this.id).emit("message:new", message);
+        adminNamespace.emit("message:new", { roomId: this.id, message });
+    }
+
+    public sendMessageToAll(message: IMessage) {
+        this.addMessage(message);
+        io.to(this.id).emit("message:new", message);
         adminNamespace.emit("message:new", { roomId: this.id, message });
     }
 }

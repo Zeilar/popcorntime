@@ -17,6 +17,7 @@ import { WebsocketContext } from "domains/common/contexts";
 import { Color } from "common/@types/color";
 import Button from "domains/common/components/styles/button";
 import SocketAvatar from "domains/common/components/styles/SocketAvatar";
+import { Tooltip } from "@chakra-ui/react";
 
 export default function Dashboard() {
     const { dispatchRooms } = useContext(RoomContext);
@@ -147,10 +148,14 @@ export default function Dashboard() {
                     Sockets
                 </DashboardItem>
                 <Divider my="1rem" />
-                <Button.Icon
-                    icon="mdiRefresh"
-                    onClick={() => adminSocket.emit("data:get")}
-                />
+                <Tooltip label="Refresh data" placement="top">
+                    <Box w="fit-content">
+                        <Button.Icon
+                            icon="mdiRefresh"
+                            onClick={() => adminSocket.emit("data:get")}
+                        />
+                    </Box>
+                </Tooltip>
             </Flex>
             <Switch>
                 <Route path="/admin" exact>

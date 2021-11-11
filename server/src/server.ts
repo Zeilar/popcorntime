@@ -4,7 +4,7 @@ import { join } from "path";
 import express from "express";
 import { Server } from "socket.io";
 import cors from "cors";
-import { validate } from "uuid"; // uuid has no default export
+import { validate, v4 as uuidv4 } from "uuid"; // uuid has no default export
 import { Room } from "./Room";
 import { IMessage } from "../@types/message";
 import { Socket } from "./Socket";
@@ -42,6 +42,16 @@ io.on("connection", (socket) => {
 
     socket.on("socket:update:color", (color: Color) => {
         _socket.setColor(color);
+        const room = _socket.room;
+        if (room) {
+            room.sendMessageToAll({
+                body: `Changed their color to ${color}`,
+                date: new Date(),
+                id: uuidv4(),
+                socket: _socket.dto,
+                roomId: room.id,
+            });
+        }
     });
 
     socket.on("message:send", ({ roomId, body, id }: IMessage) => {

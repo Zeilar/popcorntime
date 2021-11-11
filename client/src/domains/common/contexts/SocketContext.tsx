@@ -12,8 +12,8 @@ interface IProps {
     children: ReactNode;
 }
 
-const publicSocket = io(WS_HOST);
-const adminSocket = io(`${WS_HOST}/admin`);
+const publicSocket = io(WS_HOST, { reconnection: false });
+const adminSocket = io(`${WS_HOST}/admin`, { reconnection: false });
 
 export const WebsocketContext = createContext({} as IContext);
 
