@@ -129,13 +129,16 @@ export default function Dashboard() {
                     </Link>
                 </Box>
                 {me && (
-                    <SocketAvatar
+                    <Box
+                        bgGradient={`linear(to-r, ${me.color}.700, ${me.color}.900)`}
                         socket={me}
+                        rounded="base"
                         m="1rem auto 3rem"
-                        fontSize="3xl"
-                        w="5rem"
-                        h="5rem"
-                    />
+                        fontSize="xl"
+                        p="1rem 2rem"
+                    >
+                        {me.username}
+                    </Box>
                 )}
                 <DashboardItem icon="mdiAccountGroupOutline" to="/admin/rooms">
                     Rooms
