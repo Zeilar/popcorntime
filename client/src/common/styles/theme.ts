@@ -91,7 +91,7 @@ export default extendTheme({
                 userSelect: "none",
             },
             "::-webkit-scrollbar": {
-                width: "1rem",
+                width: "1.2rem",
             },
             ".custom-scrollbar::-webkit-scrollbar-thumb": {
                 backgroundColor: "brand.default",
