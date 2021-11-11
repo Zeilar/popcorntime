@@ -1,4 +1,4 @@
-import { Box, Divider, Flex, Grid, Text } from "@chakra-ui/layout";
+import { Box, Divider, Flex, Grid } from "@chakra-ui/layout";
 import { IMessage } from "domains/common/@types/message";
 import BrandLogo from "domains/common/components/styles/BrandLogo";
 import { useEffect, useContext } from "react";
@@ -16,7 +16,6 @@ import Sockets from "./socket/Sockets";
 import { WebsocketContext } from "domains/common/contexts";
 import { Color } from "common/@types/color";
 import Button from "domains/common/components/styles/button";
-import SocketAvatar from "domains/common/components/styles/SocketAvatar";
 import { Tooltip } from "@chakra-ui/react";
 
 export default function Dashboard() {
