@@ -1,4 +1,4 @@
-import { Box, Flex, Grid, Text } from "@chakra-ui/layout";
+import { Box, Divider, Flex, Grid, Text } from "@chakra-ui/layout";
 import { IMessage } from "domains/common/@types/message";
 import BrandLogo from "domains/common/components/styles/BrandLogo";
 import { useEffect, useContext } from "react";
@@ -107,15 +107,15 @@ export default function Dashboard() {
         };
     }, [dispatchRooms, dispatchSockets, adminSocket]);
 
-    function abbreviateUsername(username: string) {
-        const [adjective, name] = username.split(" ");
-        return `${adjective[0]}${name[0]}`;
-    }
-
     const me = sockets.find((socket) => socket.id === publicSocket.id);
 
     return (
-        <Grid bgColor="gray.800" flexGrow={1} gridTemplateColumns="25rem 1fr">
+        <Grid
+            bgColor="gray.800"
+            flexGrow={1}
+            gridTemplateColumns="25rem 1fr"
+            pb="1rem"
+        >
             <Flex
                 flexDir="column"
                 bgColor="gray.700"
@@ -146,6 +146,7 @@ export default function Dashboard() {
                 <DashboardItem icon="mdiPowerSocket" to="/admin/sockets">
                     Sockets
                 </DashboardItem>
+                <Divider my="1rem" />
                 <Button.Icon
                     icon="mdiRefresh"
                     onClick={() => adminSocket.emit("data:get")}
