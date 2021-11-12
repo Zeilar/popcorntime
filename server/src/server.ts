@@ -13,6 +13,7 @@ import { Color } from "../@types/color";
 import { IRoomDto } from "../@types/room";
 import { ISocketDto } from "../@types/socket";
 import Message from "./Message";
+import Logger from "./Logger";
 
 const clientPath = join(__dirname, "../../client");
 const { PORT, ADMIN_PASSWORD } = process.env;
@@ -27,7 +28,7 @@ app.get("/*", (req, res) => {
 });
 
 const server = app.listen(PORT, () => {
-    console.log(`Listening on port ${PORT}`);
+    Logger.info("blabla");
 });
 
 export const io = new Server(server, {
@@ -35,6 +36,11 @@ export const io = new Server(server, {
 });
 export const adminNamespace = io.of("/admin");
 export const ws = new WS();
+
+process.on("uncaughtException", (error) => {
+    Logger.error(error.stack ?? error.message);
+    process.exit(1);
+});
 
 io.on("connection", (socket) => {
     const _socket = new Socket(socket.id);
