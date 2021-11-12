@@ -28,7 +28,7 @@ app.get("/*", (req, res) => {
 });
 
 const server = app.listen(PORT, () => {
-    Logger.info("blabla");
+    Logger.info(`Running on port ${PORT}`);
 });
 
 export const io = new Server(server, {
