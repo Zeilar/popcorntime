@@ -1,17 +1,15 @@
 import "reflect-metadata";
-import "../config/env"; // Runss env check
+import "../config/env"; // Runs env check
 import { join } from "path";
 import express from "express";
 import { Server } from "socket.io";
 import cors from "cors";
-import { validate, v4 as uuidv4 } from "uuid"; // uuid has no default export
+import { validate } from "uuid"; // uuid has no default export
 import { Room } from "./Room";
 import { IMessage } from "../@types/message";
 import { Socket } from "./Socket";
 import { WS } from "./WS";
 import { Color } from "../@types/color";
-import { IRoomDto } from "../@types/room";
-import { ISocketDto } from "../@types/socket";
 import Message from "./Message";
 import Logger from "./Logger";
 
