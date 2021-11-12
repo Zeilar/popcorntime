@@ -13,10 +13,11 @@ export class Socket {
     public created_at: Date;
 
     constructor(public readonly id: string) {
-        this.ref = ws.io.sockets.sockets.get(id)!;
-        if (!this.ref) {
-            throw new Error("Failed retrieving socket ref.");
+        const socket = ws.io.sockets.sockets.get(id);
+        if (!socket) {
+            throw new Error(`Failed retrieving socket ref with id ${id}`);
         }
+        this.ref = socket;
         this.created_at = new Date();
         this.generate();
     }
