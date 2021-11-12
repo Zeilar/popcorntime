@@ -14,7 +14,7 @@ export class Socket {
 
     constructor(public readonly id: string) {
         this.ref = ws.io.sockets.sockets.get(id)!;
-        if (this.ref) {
+        if (!this.ref) {
             throw new Error("Failed retrieving socket ref.");
         }
         this.created_at = new Date();
