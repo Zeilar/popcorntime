@@ -12,6 +12,7 @@ import { WS } from "./WS";
 import { Color } from "../@types/color";
 import { IRoomDto } from "../@types/room";
 import { ISocketDto } from "../@types/socket";
+import Message from "./Message";
 
 const clientPath = join(__dirname, "../../client");
 const { PORT, ADMIN_PASSWORD } = process.env;
@@ -44,19 +45,19 @@ io.on("connection", (socket) => {
         _socket.setColor(color);
         const room = _socket.room;
         if (room) {
-            room.sendMessageToAll({
-                body: `Changed their color to ${color}`,
-                date: new Date(),
-                id: uuidv4(),
-                socket: _socket.dto,
-                roomId: room.id,
-                automatic: true,
-            });
+            room.sendMessageToAll(
+                new Message({
+                    body: `Changed their color to ${color}`,
+                    socket: _socket.dto,
+                    roomId: room.id,
+                    serverMessage: true,
+                })
+            );
         }
     });
 
     socket.on("message:send", ({ roomId, body, id }: IMessage) => {
-        const room = ws.rooms.get(roomId ?? "");
+        const room = ws.rooms.get(roomId);
 
         if (!room) {
             return socket.emit("message:error", {
@@ -86,12 +87,15 @@ io.on("connection", (socket) => {
             });
         }
 
-        room.sendMessage(_socket, {
-            id,
-            body,
-            socket: _socket.dto,
-            date: new Date(),
-        });
+        room.sendMessage(
+            _socket,
+            new Message({
+                id,
+                body,
+                socket: _socket.dto,
+                roomId: room.id,
+            })
+        );
     });
 
     socket.on("room:create", (roomId: string) => {

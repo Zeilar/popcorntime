@@ -35,7 +35,7 @@ export default function ChatMessage({ message }: IProps) {
               }
             : {};
 
-    const textAutomaticStyling: any = message.automatic
+    const textAutomaticStyling: any = message.serverMessage
         ? {
               fontStyle: "italic",
               userSelect: "none",
@@ -51,7 +51,7 @@ export default function ChatMessage({ message }: IProps) {
             mt={1}
             _first={{ marginTop: 0 }}
             bgGradient={
-                message.automatic
+                message.serverMessage
                     ? "none"
                     : `linear(to-r, ${message.socket.color}.800, ${message.socket.color}.900)`
             }

@@ -2,10 +2,10 @@ import { Socket } from "../src/Socket";
 import { ISocketDto } from "./socket";
 
 export interface IMessage {
-    roomId?: string;
+    roomId: string;
     body: string;
     id: string;
     socket: ISocketDto;
-    date: Date;
-    automatic?: boolean;
+    created_at: Date;
+    serverMessage?: boolean;
 }
