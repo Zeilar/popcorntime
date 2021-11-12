@@ -4,6 +4,7 @@ import { adminNamespace, io, ws } from "./server";
 import { Socket } from "./Socket";
 import { uniqueNamesGenerator } from "unique-names-generator";
 import { nameConfig } from "../config/uniqueNamesGenerator";
+import { v4 as uuidv4 } from "uuid";
 
 const { ROOM_MAX_SOCKETS, ROOM_MAX_MESSAGES } = process.env;
 
@@ -51,6 +52,12 @@ export class Room {
         if (this.hasSocket(socket)) {
             return;
         }
+        this.sendMessageToAll(
+            this.automaticMessage({
+                socket,
+                body: `${socket.username} has joined the room`,
+            })
+        );
         this.sockets.push(socket);
         socket.ref?.join(this.id);
         socket.ref?.emit("room:join", {
@@ -65,6 +72,17 @@ export class Room {
         });
     }
 
+    public automaticMessage(args: { socket: Socket; body: string }): IMessage {
+        return {
+            date: new Date(),
+            id: uuidv4(),
+            roomId: this.id,
+            automatic: true,
+            socket: args.socket.dto,
+            body: args.body,
+        };
+    }
+
     public remove(socket: Socket) {
         this.sockets = this.sockets.filter(
             (element) => element.id !== socket.id
@@ -75,6 +93,12 @@ export class Room {
             socketId: socket.id,
             roomId: this.id,
         });
+        this.sendMessageToAll(
+            this.automaticMessage({
+                socket,
+                body: `${socket.username} has left the room`,
+            })
+        );
         if (this.sockets.length <= 0) {
             ws.deleteRoom(this);
         }

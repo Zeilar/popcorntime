@@ -50,13 +50,11 @@ export function Room() {
         );
         publicSocket.on("room:socket:join", (socket: ISocket) => {
             setSockets((sockets) => [...sockets, socket]);
-            toast.info(`${socket.username} joined.`);
         });
         publicSocket.on("room:socket:leave", (socket: ISocket) => {
             setSockets((sockets) =>
                 sockets.filter((element) => element.id !== socket.id)
             );
-            toast.info(`${socket.username} left.`);
         });
         publicSocket.on("room:kick", () => {
             toast.info("You were kicked from the room.");

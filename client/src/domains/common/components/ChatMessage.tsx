@@ -58,7 +58,12 @@ export default function ChatMessage({ message }: IProps) {
             {...notSentStyling}
             {...animationStyling}
         >
-            <SocketAvatar mr="1rem" socket={message.socket} />
+            <SocketAvatar
+                mr="1rem"
+                socket={message.socket}
+                w="2.5rem"
+                h="2.5rem"
+            />
             <Text {...textAutomaticStyling}>{message.body}</Text>
         </MotionBox>
     );
