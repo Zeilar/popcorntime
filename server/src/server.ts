@@ -56,6 +56,7 @@ io.on("connection", (socket) => {
         }
     });
 
+    // Sender includes id so that they can create a message on their client immediately, and gray it out if something went wrong
     socket.on("message:send", ({ roomId, body, id }: IMessage) => {
         const room = ws.rooms.get(roomId);
 

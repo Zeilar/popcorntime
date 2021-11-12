@@ -51,12 +51,6 @@ export class Room {
         if (this.hasSocket(socket)) {
             return;
         }
-        this.sendMessageToAll(
-            this.automaticMessage({
-                socket,
-                body: `${socket.username} has joined the room`,
-            })
-        );
         this.sockets.push(socket);
         socket.ref?.join(this.id);
         socket.ref?.emit("room:join", {
@@ -65,13 +59,19 @@ export class Room {
             playlist: this.playlist,
         });
         socket.ref?.to(this.id).emit("room:socket:join", socket.dto);
+        this.sendMessageToAll(
+            this.serverMessage({
+                socket,
+                body: `${socket.username} has joined the room`,
+            })
+        );
         adminNamespace.emit("room:join", {
             socketId: socket.id,
             roomId: this.id,
         });
     }
 
-    public automaticMessage(args: { socket: Socket; body: string }) {
+    public serverMessage(args: { socket: Socket; body: string }) {
         return new Message({
             roomId: this.id,
             serverMessage: true,
@@ -86,16 +86,16 @@ export class Room {
         );
         socket.ref?.leave(this.id);
         socket.ref?.to(this.id).emit("room:socket:leave", socket.dto);
-        adminNamespace.emit("room:leave", {
-            socketId: socket.id,
-            roomId: this.id,
-        });
         this.sendMessageToAll(
-            this.automaticMessage({
+            this.serverMessage({
                 socket,
                 body: `${socket.username} has left the room`,
             })
         );
+        adminNamespace.emit("room:leave", {
+            socketId: socket.id,
+            roomId: this.id,
+        });
         if (this.sockets.length <= 0) {
             ws.deleteRoom(this);
         }
