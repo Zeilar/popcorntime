@@ -52,13 +52,13 @@ export class Room {
             return;
         }
         this.sockets.push(socket);
-        socket.ref?.join(this.id);
-        socket.ref?.emit("room:join", {
+        socket.ref.join(this.id);
+        socket.ref.emit("room:join", {
             sockets: this.socketsDto,
             messages: this.messages,
             playlist: this.playlist,
         });
-        socket.ref?.to(this.id).emit("room:socket:join", socket.dto);
+        socket.ref.to(this.id).emit("room:socket:join", socket.dto);
         this.sendMessageToAll(
             this.serverMessage({
                 socket,
@@ -84,8 +84,8 @@ export class Room {
         this.sockets = this.sockets.filter(
             (element) => element.id !== socket.id
         );
-        socket.ref?.leave(this.id);
-        socket.ref?.to(this.id).emit("room:socket:leave", socket.dto);
+        socket.ref.leave(this.id);
+        socket.ref.to(this.id).emit("room:socket:leave", socket.dto);
         this.sendMessageToAll(
             this.serverMessage({
                 socket,
@@ -103,7 +103,7 @@ export class Room {
 
     public sendMessage(sender: Socket, message: Message) {
         this.addMessage(message);
-        sender.ref?.to(this.id).emit("message:new", message);
+        sender.ref.to(this.id).emit("message:new", message);
         adminNamespace.emit("message:new", { roomId: this.id, message });
     }
 

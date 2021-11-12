@@ -9,11 +9,11 @@ import { nameConfig } from "../config/uniqueNamesGenerator";
 export class Socket {
     public username: string;
     public color: Color;
-    public ref: S | undefined;
+    public ref: S;
     public created_at: Date;
 
     constructor(public readonly id: string) {
-        this.ref = ws.io.sockets.sockets.get(id);
+        this.ref = ws.io.sockets.sockets.get(id)!;
         this.created_at = new Date();
         this.generate();
     }
