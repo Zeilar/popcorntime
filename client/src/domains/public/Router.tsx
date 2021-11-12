@@ -34,7 +34,6 @@ export default function Router() {
             setError(error);
         });
         publicSocket.on("socket:kick", () => {
-            console.log("socket kick");
             toast.info("You were kicked from the server.");
         });
         publicSocket.on("connection:error", (error: string) => {
