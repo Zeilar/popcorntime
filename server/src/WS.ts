@@ -1,4 +1,6 @@
 import { Server } from "socket.io";
+import { IRoomDto } from "../@types/room";
+import { ISocketDto } from "../@types/socket";
 import { Room } from "./Room";
 import { adminNamespace, io } from "./server";
 import { Socket } from "./Socket";
@@ -10,6 +12,18 @@ export class WS {
 
     constructor() {
         this.io = io;
+    }
+
+    public getAllData() {
+        const rooms: IRoomDto[] = [];
+        const sockets: ISocketDto[] = [];
+        this.rooms.forEach((room) => {
+            rooms.push(room.dto);
+        });
+        this.sockets.forEach((socket) => {
+            sockets.push(socket.dto);
+        });
+        return { rooms, sockets };
     }
 
     public addSocket(socket: Socket) {

@@ -175,21 +175,9 @@ adminNamespace.use((socket, next) => {
     next();
 });
 
-function getAllData() {
-    const rooms: IRoomDto[] = [];
-    const sockets: ISocketDto[] = [];
-    ws.rooms.forEach((room) => {
-        rooms.push(room.dto);
-    });
-    ws.sockets.forEach((socket) => {
-        sockets.push(socket.dto);
-    });
-    return { rooms, sockets };
-}
-
 adminNamespace.on("connection", (socket) => {
     socket.on("data:get", () => {
-        socket.emit("data:get", getAllData());
+        socket.emit("data:get", ws.getAllData());
     });
 
     socket.on("room:kick", (socketId) => {
@@ -221,7 +209,7 @@ adminNamespace.on("connection", (socket) => {
         io.to(_socket.id).emit("socket:destroy");
         socket.emit("socket:disconnect", socketId);
 
-        _socket.ref?.disconnect();
+        _socket.ref.disconnect();
     });
 
     socket.on("room:destroy", (roomId: string) => {
