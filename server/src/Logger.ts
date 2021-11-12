@@ -4,6 +4,11 @@ const { combine, timestamp, printf } = format;
 
 type Level = "info" | "warning" | "error" | "debug";
 
+process.on("uncaughtException", (error) => {
+    Logger.error(error.stack ?? error.message);
+    process.exit(1);
+});
+
 const customFormat = combine(
     format.colorize(),
     timestamp({ format: "HH:mm:ss" }),

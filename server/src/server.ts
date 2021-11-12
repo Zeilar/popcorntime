@@ -1,5 +1,6 @@
 import "reflect-metadata";
-import "../config/env"; // Runs env check
+import Logger from "./Logger"; // Load this ASAP to get good logs and error handling registered
+import env from "../config/env";
 import { join } from "path";
 import express from "express";
 import { Server } from "socket.io";
@@ -11,10 +12,9 @@ import { Socket } from "./Socket";
 import { WS } from "./WS";
 import { Color } from "../@types/color";
 import Message from "./Message";
-import Logger from "./Logger";
 
 const clientPath = join(__dirname, "../../client");
-const { PORT, ADMIN_PASSWORD } = process.env;
+const { PORT, ADMIN_PASSWORD } = env;
 
 export const app = express();
 
@@ -34,11 +34,6 @@ export const io = new Server(server, {
 });
 export const adminNamespace = io.of("/admin");
 export const ws = new WS();
-
-process.on("uncaughtException", (error) => {
-    Logger.error(error.stack ?? error.message);
-    process.exit(1);
-});
 
 io.on("connection", (socket) => {
     const _socket = new Socket(socket.id);
