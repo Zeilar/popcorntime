@@ -94,8 +94,11 @@ export default function InfoModal({ isOpen, onClose, room }: IProps) {
                             )}
                             {openTab === "messages" && (
                                 <>
-                                    <Text>Show server messages</Text>
+                                    <Text mb="0.5rem">
+                                        Show server messages
+                                    </Text>
                                     <Switch
+                                        mb="1rem"
                                         w="fit-content"
                                         defaultChecked={showServerMessages}
                                         checked={showServerMessages}
