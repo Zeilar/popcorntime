@@ -7,7 +7,7 @@ interface IProps extends ButtonProps {
 
 export function UnstyledButton({ children, ...props }: IProps) {
     return (
-        <Button variant="unstyled" {...props}>
+        <Button {...props} variant="unstyled">
             {children}
         </Button>
     );

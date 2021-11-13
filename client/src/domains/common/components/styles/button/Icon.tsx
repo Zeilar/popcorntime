@@ -20,7 +20,6 @@ export function IconButton({ children, icon, ...props }: IProps) {
             p={0}
             w="2rem"
             h="2rem"
-            rounded="base"
             {...props}
         >
             {icon && (

@@ -7,7 +7,7 @@ interface IProps extends ButtonProps {
 
 export function GhostButton({ children, ...props }: IProps) {
     return (
-        <Button variant="ghost" {...props}>
+        <Button {...props} variant="ghost">
             {children}
         </Button>
     );
