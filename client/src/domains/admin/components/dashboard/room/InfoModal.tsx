@@ -1,4 +1,4 @@
-import { Box, Flex, Grid } from "@chakra-ui/layout";
+import { Box, Flex, Grid, Text } from "@chakra-ui/layout";
 import {
     Modal,
     ModalBody,
@@ -43,13 +43,13 @@ export default function InfoModal({ isOpen, onClose, room }: IProps) {
             <ModalOverlay />
             <ModalContent>
                 <ModalHeader>Room info</ModalHeader>
-                <ModalBody>
-                    <Box pb="0.75rem">
+                <ModalBody p="1rem">
+                    <Box>
                         <Grid
                             gridTemplateColumns="repeat(3, 1fr)"
-                            mb="1rem"
                             borderBottom="1px solid"
                             borderColor="gray.100"
+                            mx="1rem"
                         >
                             <Tab.Button
                                 active={openTab === "details"}
@@ -75,6 +75,7 @@ export default function InfoModal({ isOpen, onClose, room }: IProps) {
                             flexDir="column"
                             maxH="60vh"
                             overflowY="auto"
+                            p="1rem"
                         >
                             {openTab === "details" && (
                                 <Grid gridGap="1rem">
@@ -93,7 +94,9 @@ export default function InfoModal({ isOpen, onClose, room }: IProps) {
                             )}
                             {openTab === "messages" && (
                                 <>
+                                    <Text>Show server messages</Text>
                                     <Switch
+                                        w="fit-content"
                                         defaultChecked={showServerMessages}
                                         checked={showServerMessages}
                                         onChange={e =>
@@ -102,12 +105,19 @@ export default function InfoModal({ isOpen, onClose, room }: IProps) {
                                             )
                                         }
                                     />
-                                    {messages.map(message => (
-                                        <ChatMessage
-                                            message={message}
-                                            key={message.id}
-                                        />
-                                    ))}
+                                    <Flex
+                                        className="custom-scrollbar scrollbar-inset"
+                                        flexDir="column"
+                                        overflowY="auto"
+                                        mt="0.5rem"
+                                    >
+                                        {messages.map(message => (
+                                            <ChatMessage
+                                                message={message}
+                                                key={message.id}
+                                            />
+                                        ))}
+                                    </Flex>
                                 </>
                             )}
                             {openTab === "playlist" && "Playlist here"}
