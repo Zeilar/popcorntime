@@ -6,6 +6,7 @@ import {
     ModalHeader,
     ModalOverlay,
 } from "@chakra-ui/modal";
+import { Switch } from "@chakra-ui/switch";
 import { IRoom } from "domains/common/@types/room";
 import ChatMessage from "domains/common/components/ChatMessage";
 import Tab from "domains/common/components/styles/tab";
@@ -22,6 +23,11 @@ type TabState = "details" | "messages" | "playlist";
 
 export default function InfoModal({ isOpen, onClose, room }: IProps) {
     const [openTab, setOpenTab] = useState<TabState>("details");
+    const [showServerMessages, setShowServerMessages] = useState(false); // useLocalStorage
+
+    const messages = showServerMessages
+        ? room.messages
+        : room.messages.filter((message) => !message.serverMessage);
 
     return (
         <Modal blockScrollOnMount isOpen={isOpen} onClose={onClose} size="2xl">
@@ -76,13 +82,25 @@ export default function InfoModal({ isOpen, onClose, room }: IProps) {
                                     />
                                 </Grid>
                             )}
-                            {openTab === "messages" &&
-                                room.messages.map((message) => (
-                                    <ChatMessage
-                                        message={message}
-                                        key={message.id}
+                            {openTab === "messages" && (
+                                <>
+                                    <Switch
+                                        defaultChecked={showServerMessages}
+                                        checked={showServerMessages}
+                                        onChange={(e) =>
+                                            setShowServerMessages(
+                                                e.target.checked
+                                            )
+                                        }
                                     />
-                                ))}
+                                    {messages.map((message) => (
+                                        <ChatMessage
+                                            message={message}
+                                            key={message.id}
+                                        />
+                                    ))}
+                                </>
+                            )}
                             {openTab === "playlist" && "Playlist here"}
                         </Flex>
                     </Box>
