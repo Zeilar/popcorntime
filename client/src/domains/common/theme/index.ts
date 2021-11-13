@@ -5,6 +5,14 @@ import { config } from "./config";
 import { fonts } from "./fonts";
 import { shadows } from "./shadows";
 
+console.log({
+    config,
+    colors,
+    shadows,
+    fonts,
+    components,
+});
+
 export default extendTheme({
     config,
     colors,

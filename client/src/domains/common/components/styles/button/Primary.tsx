@@ -7,13 +7,7 @@ interface IProps extends ButtonProps {
 
 export function PrimaryButton({ children, ...props }: IProps) {
     return (
-        <Button
-            variant="solid"
-            bgColor="brand.default"
-            _hover={{ backgroundColor: "brand.default" }}
-            _active={{ backgroundColor: "brand.dark" }}
-            {...props}
-        >
+        <Button {...props} variant="primary">
             {children}
         </Button>
     );
