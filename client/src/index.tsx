@@ -3,7 +3,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { ToastContainer } from "react-toastify";
 import App from "./boot/App";
-import theme from "./common/styles/theme";
+import theme from "./domains/common/theme";
 import "./boot";
 
 ReactDOM.render(
