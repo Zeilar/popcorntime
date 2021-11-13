@@ -22,7 +22,7 @@ export default function Room({ room }: IProps) {
     const { adminSocket } = useContext(WebsocketContext);
     const socketContext = useContext(SocketContext);
 
-    const sockets = socketContext.sockets.filter((socket) =>
+    const sockets = socketContext.sockets.filter(socket =>
         room.sockets.includes(socket.id)
     );
 
@@ -129,7 +129,7 @@ export default function Room({ room }: IProps) {
                 gridTemplateColumns="repeat(1, 1fr)"
                 gridTemplateRows="repeat(10, 1fr)"
             >
-                {sockets.map((socket) => (
+                {sockets.map(socket => (
                     <Flex
                         bgGradient={`linear(to-r, ${socket.color}.700, ${socket.color}.900)`}
                         align="center"

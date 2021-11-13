@@ -27,7 +27,7 @@ export function MeContextProvider({ children }: IProps) {
     const { publicSocket } = useContext(WebsocketContext);
 
     function changeColor(color: Color) {
-        setMe((me) => ({ ...me, color }));
+        setMe(me => ({ ...me, color }));
     }
 
     useEffect(() => {

@@ -36,7 +36,7 @@ export default function Router() {
                         <Input
                             variant="flushed"
                             value={password}
-                            onChange={(e) => setPassword(e.target.value)}
+                            onChange={e => setPassword(e.target.value)}
                         />
                     </Box>
                 }

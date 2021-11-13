@@ -19,7 +19,7 @@ const variables = {
 };
 const notFound: string[] = [];
 
-Object.entries(variables).forEach((variable) => {
+Object.entries(variables).forEach(variable => {
     const [key, value] = variable;
     if (value === undefined) {
         notFound.push(key);

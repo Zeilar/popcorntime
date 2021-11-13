@@ -19,7 +19,7 @@ export default function Socket({ socket }: IProps) {
     const destroyPrompt = useDisclosure();
     const kickPrompt = useDisclosure();
 
-    const hasRoom = rooms.some((room) => room.sockets.includes(socket.id));
+    const hasRoom = rooms.some(room => room.sockets.includes(socket.id));
 
     const noRoomMenuItemProps: any = !hasRoom
         ? {

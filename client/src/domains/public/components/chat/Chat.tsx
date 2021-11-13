@@ -16,7 +16,7 @@ import Textarea from "../styles/Textarea";
 import Icon from "../styles/icon";
 import { MeContext } from "../../contexts";
 import { ChatSettings } from ".";
-import { useOnClickOutside } from "common/hooks";
+import { useOnClickOutside } from "domains/common/hooks";
 import { WebsocketContext } from "domains/common/contexts";
 
 interface IProps {
@@ -41,7 +41,7 @@ export function Chat({ roomId }: IProps) {
 
     const addMessage = useCallback(
         (message: IMessage) => {
-            setMessages((messages) => {
+            setMessages(messages => {
                 const array = [...messages, message];
                 if (array.length > parseInt(REACT_APP_ROOM_MAX_MESSAGES)) {
                     array.shift();
@@ -61,8 +61,8 @@ export function Chat({ roomId }: IProps) {
         publicSocket.on(
             "message:error",
             (payload: { id: string; error: string }) => {
-                setMessages((messages) =>
-                    messages.map((message) => {
+                setMessages(messages =>
+                    messages.map(message => {
                         // If message already had en error, do nothing
                         if (message.notSent) {
                             return message;
@@ -116,7 +116,7 @@ export function Chat({ roomId }: IProps) {
     }
 
     function toggleSettings() {
-        setSettingsOpen((open) => !open);
+        setSettingsOpen(open => !open);
     }
 
     useEffect(() => {
@@ -137,7 +137,7 @@ export function Chat({ roomId }: IProps) {
                 p="0.5rem"
                 ref={chatElement}
             >
-                {messages.map((message) => (
+                {messages.map(message => (
                     <Message key={message.id} message={message} />
                 ))}
             </Flex>

@@ -28,7 +28,7 @@ export default function Dashboard() {
         adminSocket.on("error", (message: string) => {
             toast.error(message);
         });
-        adminSocket.on("connect_error", (error) => {
+        adminSocket.on("connect_error", error => {
             toast.error(error.message);
         });
         adminSocket.on(
@@ -107,7 +107,7 @@ export default function Dashboard() {
         };
     }, [dispatchRooms, dispatchSockets, adminSocket]);
 
-    const me = sockets.find((socket) => socket.id === publicSocket.id);
+    const me = sockets.find(socket => socket.id === publicSocket.id);
 
     return (
         <Grid

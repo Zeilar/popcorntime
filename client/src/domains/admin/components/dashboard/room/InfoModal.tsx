@@ -27,7 +27,7 @@ export default function InfoModal({ isOpen, onClose, room }: IProps) {
 
     const messages = showServerMessages
         ? room.messages
-        : room.messages.filter((message) => !message.serverMessage);
+        : room.messages.filter(message => !message.serverMessage);
 
     return (
         <Modal blockScrollOnMount isOpen={isOpen} onClose={onClose} size="2xl">
@@ -87,13 +87,13 @@ export default function InfoModal({ isOpen, onClose, room }: IProps) {
                                     <Switch
                                         defaultChecked={showServerMessages}
                                         checked={showServerMessages}
-                                        onChange={(e) =>
+                                        onChange={e =>
                                             setShowServerMessages(
                                                 e.target.checked
                                             )
                                         }
                                     />
-                                    {messages.map((message) => (
+                                    {messages.map(message => (
                                         <ChatMessage
                                             message={message}
                                             key={message.id}

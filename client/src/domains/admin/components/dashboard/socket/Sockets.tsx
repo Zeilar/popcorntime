@@ -61,7 +61,7 @@ export default function Sockets() {
                     alignContent="start"
                     p="1rem"
                 >
-                    {sockets.map((socket) => (
+                    {sockets.map(socket => (
                         <Socket socket={socket} key={socket.id} />
                     ))}
                 </Grid>

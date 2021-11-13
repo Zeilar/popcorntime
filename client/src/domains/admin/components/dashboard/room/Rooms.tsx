@@ -61,7 +61,7 @@ export default function Rooms() {
                     alignContent="start"
                     p="1rem"
                 >
-                    {rooms.map((room) => (
+                    {rooms.map(room => (
                         <Room room={room} key={room.id} />
                     ))}
                 </Grid>

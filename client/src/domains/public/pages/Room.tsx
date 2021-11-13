@@ -49,11 +49,11 @@ export function Room() {
             }
         );
         publicSocket.on("room:socket:join", (socket: ISocket) => {
-            setSockets((sockets) => [...sockets, socket]);
+            setSockets(sockets => [...sockets, socket]);
         });
         publicSocket.on("room:socket:leave", (socket: ISocket) => {
-            setSockets((sockets) =>
-                sockets.filter((element) => element.id !== socket.id)
+            setSockets(sockets =>
+                sockets.filter(element => element.id !== socket.id)
             );
         });
         publicSocket.on("room:kick", () => {
@@ -67,8 +67,8 @@ export function Room() {
         publicSocket.on(
             "room:socket:update:color",
             (payload: { color: Color; socketId: string }) => {
-                setSockets((sockets) =>
-                    sockets.map((socket) => {
+                setSockets(sockets =>
+                    sockets.map(socket => {
                         if (socket.id !== payload.socketId) {
                             return socket;
                         }
