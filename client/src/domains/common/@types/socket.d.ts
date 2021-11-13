@@ -1,4 +1,4 @@
-import { Color } from "../../../common/@types/color";
+import { Color } from "./color";
 
 export interface ISocket {
     id: string;

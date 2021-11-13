@@ -1,4 +1,4 @@
-import { Color } from "common/@types/color";
+import { Color } from "domains/common/@types/color";
 import { Box, BoxProps } from "@chakra-ui/layout";
 import { useContext } from "react";
 import theme from "@chakra-ui/theme";

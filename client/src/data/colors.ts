@@ -1,4 +1,4 @@
-import { Color } from "../common/@types/color";
+import { Color } from "../domains/common/@types/color";
 
 export const colors: Color[] = [
     "red",

@@ -14,7 +14,7 @@ import DashboardItem from "./DashboardItem";
 import Rooms from "./room/Rooms";
 import Sockets from "./socket/Sockets";
 import { WebsocketContext } from "domains/common/contexts";
-import { Color } from "common/@types/color";
+import { Color } from "domains/common/@types/color";
 import Button from "domains/common/components/styles/button";
 import { Tooltip } from "@chakra-ui/react";
 

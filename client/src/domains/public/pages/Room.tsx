@@ -7,7 +7,7 @@ import { Box, Grid } from "@chakra-ui/layout";
 import { Chat } from "../components/chat";
 import { validate } from "uuid";
 import { Flex } from "@chakra-ui/react";
-import { Color } from "common/@types/color";
+import { Color } from "domains/common/@types/color";
 import Button from "domains/common/components/styles/button";
 import { WebsocketContext } from "domains/common/contexts";
 
