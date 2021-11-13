@@ -1,7 +1,7 @@
 import { Box, Divider, Flex, Grid } from "@chakra-ui/layout";
 import { IMessage } from "domains/common/@types/message";
 import BrandLogo from "domains/common/components/styles/BrandLogo";
-import { useEffect, useContext } from "react";
+import { useEffect, useContext, useState } from "react";
 import { Route, Switch } from "react-router";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -17,11 +17,14 @@ import { WebsocketContext } from "domains/common/contexts";
 import { Color } from "domains/common/@types/color";
 import Button from "domains/common/components/styles/button";
 import { Tooltip } from "@chakra-ui/react";
+import { Spinner } from "@chakra-ui/spinner";
+import PageSpinner from "domains/common/components/styles/PageSpinner";
 
 export default function Dashboard() {
     const { dispatchRooms } = useContext(RoomContext);
     const { dispatchSockets, sockets } = useContext(SocketContext);
     const { adminSocket, publicSocket } = useContext(WebsocketContext);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         adminSocket.emit("data:get");
@@ -42,6 +45,7 @@ export default function Dashboard() {
                     type: SocketActions.SET_SOCKETS,
                     sockets: data.sockets,
                 });
+                setIsLoading(false);
             }
         );
         adminSocket.on("room:new", (room: IRoom) => {
@@ -116,6 +120,7 @@ export default function Dashboard() {
             gridTemplateColumns="25rem 1fr"
             pb="1rem"
         >
+            {isLoading && <PageSpinner />}
             <Flex
                 flexDir="column"
                 bgColor="gray.700"
@@ -156,18 +161,20 @@ export default function Dashboard() {
                     </Box>
                 </Tooltip>
             </Flex>
-            <Switch>
-                <Route path="/admin" exact>
-                    Main
-                </Route>
-                <Route path="/admin/rooms" exact>
-                    <Rooms />
-                </Route>
-                <Route path="/admin/sockets" exact>
-                    <Sockets />
-                </Route>
-                <Route>404</Route>
-            </Switch>
+            {!isLoading && (
+                <Switch>
+                    <Route path="/admin" exact>
+                        Main
+                    </Route>
+                    <Route path="/admin/rooms" exact>
+                        <Rooms />
+                    </Route>
+                    <Route path="/admin/sockets" exact>
+                        <Sockets />
+                    </Route>
+                    <Route>404</Route>
+                </Switch>
+            )}
         </Grid>
     );
 }
