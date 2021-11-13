@@ -17,7 +17,6 @@ import { WebsocketContext } from "domains/common/contexts";
 import { Color } from "domains/common/@types/color";
 import Button from "domains/common/components/styles/button";
 import { Tooltip } from "@chakra-ui/react";
-import { Spinner } from "@chakra-ui/spinner";
 import PageSpinner from "domains/common/components/styles/PageSpinner";
 
 export default function Dashboard() {

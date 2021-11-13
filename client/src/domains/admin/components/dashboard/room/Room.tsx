@@ -1,5 +1,5 @@
 import { useDisclosure } from "@chakra-ui/hooks";
-import { CloseIcon, DeleteIcon, InfoOutlineIcon } from "@chakra-ui/icons";
+import { DeleteIcon, InfoOutlineIcon } from "@chakra-ui/icons";
 import { AbsoluteCenter, Box, Flex, Grid, Text } from "@chakra-ui/layout";
 import { SocketContext } from "domains/admin/contexts";
 import { IRoom } from "domains/common/@types/room";
@@ -8,6 +8,7 @@ import Button from "domains/common/components/styles/button";
 import { WebsocketContext } from "domains/common/contexts";
 import { useContext } from "react";
 import InfoModal from "./InfoModal";
+import Socket from "./Socket";
 
 interface IProps {
     room: IRoom;
@@ -27,10 +28,6 @@ export default function Room({ room }: IProps) {
     );
 
     const placeholderAmount = maxSockets - room.sockets.length;
-
-    function kick(socketId: string) {
-        adminSocket.emit("room:kick", socketId);
-    }
 
     function destroy() {
         adminSocket.emit("room:destroy", room.id);
@@ -130,30 +127,7 @@ export default function Room({ room }: IProps) {
                 gridTemplateRows="repeat(10, 1fr)"
             >
                 {sockets.map(socket => (
-                    <Flex
-                        bgGradient={`linear(to-r, ${socket.color}.700, ${socket.color}.900)`}
-                        align="center"
-                        overflow="hidden"
-                        rounded="base"
-                        key={socket.id}
-                        p="0.5rem"
-                    >
-                        <Text
-                            whiteSpace="nowrap"
-                            overflow="hidden"
-                            textOverflow="ellipsis"
-                            mr="0.5rem"
-                        >
-                            {socket.username}
-                        </Text>
-                        <Button.Icon
-                            ml="auto"
-                            onClick={() => kick(socket.id)}
-                            flexShrink={0}
-                        >
-                            <CloseIcon maxW="100%" maxH="100%" />
-                        </Button.Icon>
-                    </Flex>
+                    <Socket socket={socket} key={socket.id} />
                 ))}
                 {Array(placeholderAmount)
                     .fill(null)

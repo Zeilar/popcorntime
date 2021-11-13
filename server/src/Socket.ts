@@ -1,7 +1,6 @@
 import { Socket as S } from "socket.io";
 import { adminNamespace, io, ws } from "./server";
 import { Color } from "../@types/color";
-import { colors } from "../data/colors";
 import { ISocketDto } from "../@types/socket";
 import { uniqueNamesGenerator } from "unique-names-generator";
 import { nameConfig } from "../config/uniqueNamesGenerator";
@@ -18,8 +17,8 @@ export class Socket {
             throw new Error(`Failed retrieving socket ref with id ${id}`);
         }
         this.ref = socket;
-        this.created_at = new Date();
         this.generate();
+        this.created_at = new Date();
     }
 
     public get dto(): ISocketDto {
