@@ -1,20 +1,39 @@
 import { Server } from "socket.io";
+import { Color } from "../@types/color";
 import { IRoomDto } from "../@types/room";
 import { ISocketDto } from "../@types/socket";
 import { Room } from "./Room";
 import { adminNamespace, io } from "./server";
 import { Socket } from "./Socket";
 
+const pickedColors: Record<Color, number> = {
+    cyan: 0,
+    green: 0,
+    orange: 0,
+    pink: 0,
+    purple: 0,
+    yellow: 0,
+    teal: 0,
+    red: 0,
+};
+
 export class WS {
     public sockets: Map<string, Socket> = new Map();
     public rooms: Map<string, Room> = new Map();
     public io: Server;
+    public readonly pickedColors = pickedColors;
 
     constructor() {
         this.io = io;
     }
 
-    public getAllData() {
+    public get leastPickedColors() {
+        const min = Math.min(...Object.values(this.pickedColors));
+        const keys = Object.keys(this.pickedColors) as Color[]; // Since Object.keys() returns string[] this assertion is needed
+        return keys.filter(color => this.pickedColors[color] === min);
+    }
+
+    public get allData() {
         const rooms: IRoomDto[] = [];
         const sockets: ISocketDto[] = [];
         this.rooms.forEach(room => {
@@ -28,11 +47,13 @@ export class WS {
 
     public addSocket(socket: Socket) {
         this.sockets.set(socket.id, socket);
+        this.pickedColors[socket.color] += 1;
         adminNamespace.emit("socket:connect", socket.dto);
     }
 
     public deleteSocket(socket: Socket) {
         this.sockets.delete(socket.id);
+        this.pickedColors[socket.color] -= 1;
         adminNamespace.emit("socket:disconnect", socket.id);
     }
 

@@ -23,11 +23,12 @@ export default function SocketAvatar({ socket, ...props }: IProps) {
                 as={Flex}
                 alignItems="center"
                 justifyContent="center"
+                alignSelf="flex-start"
                 letterSpacing={1}
                 userSelect="none"
                 rounded="base"
                 p="0.5rem"
-                bgColor={`${socket.color}.700`}
+                bgColor={`${socket.color}.600`}
                 {...props}
             >
                 {abbreviateUsername(socket.username)}

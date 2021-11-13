@@ -46,6 +46,7 @@ export class Socket {
     }
 
     private setRandomColor() {
+        const colors = ws.leastPickedColors;
         this.setColor(colors[Math.floor(Math.random() * colors.length)]);
     }
 

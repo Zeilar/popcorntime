@@ -170,7 +170,7 @@ adminNamespace.use((socket, next) => {
 
 adminNamespace.on("connection", socket => {
     socket.on("data:get", () => {
-        socket.emit("data:get", ws.getAllData());
+        socket.emit("data:get", ws.allData);
     });
 
     socket.on("room:kick", socketId => {
