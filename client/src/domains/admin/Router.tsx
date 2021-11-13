@@ -8,7 +8,6 @@ import Dashboard from "./components/dashboard/Dashboard";
 
 export default function Router() {
     const { adminLogin, adminSocket } = useContext(WebsocketContext);
-    console.log(adminSocket.connected);
     const [authenticated, setAuthenticated] = useState(adminSocket.connected);
     const loginDisclosure = useDisclosure();
     const [password, setPassword] = useState("");
