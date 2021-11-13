@@ -14,24 +14,38 @@ interface IProps {
     onSubmit(): void;
     body: JSX.Element | string;
     header: string;
+    noCancel?: boolean;
 }
 
-export function Prompt({ isOpen, onClose, body, header, onSubmit }: IProps) {
+export function Prompt(props: IProps) {
+    const noCancelStyling = props.noCancel
+        ? {
+              w: "100%",
+          }
+        : {
+              mr: "0.5rem",
+          };
+
     function submit() {
-        onClose();
-        onSubmit();
+        props.onClose();
+        props.onSubmit();
     }
+
     return (
-        <Modal blockScrollOnMount isOpen={isOpen} onClose={onClose}>
+        <Modal blockScrollOnMount isOpen={props.isOpen} onClose={props.onClose}>
             <ModalOverlay />
             <ModalContent>
-                <ModalHeader>{header}</ModalHeader>
-                <ModalBody>{body}</ModalBody>
+                <ModalHeader>{props.header}</ModalHeader>
+                <ModalBody>{props.body}</ModalBody>
                 <ModalFooter mt="1rem">
-                    <Button.Primary mr="0.5rem" onClick={submit}>
+                    <Button.Primary {...noCancelStyling} onClick={submit}>
                         Ok
                     </Button.Primary>
-                    <Button.Ghost onClick={onClose}>Cancel</Button.Ghost>
+                    {!props.noCancel && (
+                        <Button.Ghost onClick={props.onClose}>
+                            Cancel
+                        </Button.Ghost>
+                    )}
                 </ModalFooter>
             </ModalContent>
         </Modal>
