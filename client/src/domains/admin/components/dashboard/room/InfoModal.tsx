@@ -10,7 +10,8 @@ import { Switch } from "@chakra-ui/switch";
 import { IRoom } from "domains/common/@types/room";
 import ChatMessage from "domains/common/components/ChatMessage";
 import Tab from "domains/common/components/styles/tab";
-import { useState } from "react";
+import { useLocalStorage } from "domains/common/hooks";
+import { useEffect, useState } from "react";
 import * as Style from "./InfoModal.style";
 
 interface IProps {
@@ -22,12 +23,20 @@ interface IProps {
 type TabState = "details" | "messages" | "playlist";
 
 export default function InfoModal({ isOpen, onClose, room }: IProps) {
+    const [showServerMessagesDefault, setShowServerMessagesDefault] =
+        useLocalStorage<boolean>("showServerMessages");
     const [openTab, setOpenTab] = useState<TabState>("details");
-    const [showServerMessages, setShowServerMessages] = useState(false); // useLocalStorage
+    const [showServerMessages, setShowServerMessages] = useState(
+        showServerMessagesDefault ?? false
+    );
 
     const messages = showServerMessages
         ? room.messages
         : room.messages.filter(message => !message.serverMessage);
+
+    useEffect(() => {
+        setShowServerMessagesDefault(showServerMessages);
+    }, [showServerMessages, setShowServerMessagesDefault]);
 
     return (
         <Modal blockScrollOnMount isOpen={isOpen} onClose={onClose} size="2xl">
