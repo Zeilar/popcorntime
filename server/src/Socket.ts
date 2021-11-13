@@ -32,7 +32,7 @@ export class Socket {
     }
 
     public get room() {
-        return [...ws.rooms.values()].find((room) => room.hasSocket(this));
+        return [...ws.rooms.values()].find(room => room.hasSocket(this));
     }
 
     public generate() {

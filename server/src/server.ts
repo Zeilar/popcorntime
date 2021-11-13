@@ -5,7 +5,7 @@ import { join } from "path";
 import express from "express";
 import { Server } from "socket.io";
 import cors from "cors";
-import { validate } from "uuid"; // uuid has no default export
+import { validate } from "uuid";
 import { Room } from "./Room";
 import { IMessage } from "../@types/message";
 import { Socket } from "./Socket";
@@ -35,7 +35,7 @@ export const io = new Server(server, {
 export const adminNamespace = io.of("/admin");
 export const ws = new WS();
 
-io.on("connection", (socket) => {
+io.on("connection", socket => {
     const _socket = new Socket(socket.id);
     ws.addSocket(_socket);
     socket.emit("connection:success", _socket.dto);
@@ -168,12 +168,12 @@ adminNamespace.use((socket, next) => {
     next();
 });
 
-adminNamespace.on("connection", (socket) => {
+adminNamespace.on("connection", socket => {
     socket.on("data:get", () => {
         socket.emit("data:get", ws.getAllData());
     });
 
-    socket.on("room:kick", (socketId) => {
+    socket.on("room:kick", socketId => {
         const _socket = ws.sockets.get(socketId);
 
         if (!_socket) {
@@ -192,7 +192,7 @@ adminNamespace.on("connection", (socket) => {
         adminNamespace.emit("room:kick");
     });
 
-    socket.on("socket:destroy", (socketId) => {
+    socket.on("socket:destroy", socketId => {
         const _socket = ws.sockets.get(socketId);
 
         if (!_socket) {
@@ -216,14 +216,14 @@ adminNamespace.on("connection", (socket) => {
     });
 
     socket.on("room:destroy:all", () => {
-        ws.rooms.forEach((room) => {
+        ws.rooms.forEach(room => {
             ws.deleteRoom(room);
         });
         socket.emit("room:destroy:all");
     });
 
     socket.on("socket:destroy:all", () => {
-        ws.sockets.forEach((socket) => {
+        ws.sockets.forEach(socket => {
             ws.deleteSocket(socket);
         });
         socket.emit("socket:destroy:all");

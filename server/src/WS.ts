@@ -17,10 +17,10 @@ export class WS {
     public getAllData() {
         const rooms: IRoomDto[] = [];
         const sockets: ISocketDto[] = [];
-        this.rooms.forEach((room) => {
+        this.rooms.forEach(room => {
             rooms.push(room.dto);
         });
-        this.sockets.forEach((socket) => {
+        this.sockets.forEach(socket => {
             sockets.push(socket.dto);
         });
         return { rooms, sockets };

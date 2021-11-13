@@ -41,11 +41,11 @@ export class Room {
     }
 
     public get socketsDto() {
-        return this.sockets.map((socket) => socket.id);
+        return this.sockets.map(socket => socket.id);
     }
 
     public hasSocket(socket: Socket) {
-        return this.sockets.some((element) => element.id === socket.id);
+        return this.sockets.some(element => element.id === socket.id);
     }
 
     public add(socket: Socket) {
@@ -82,9 +82,7 @@ export class Room {
     }
 
     public remove(socket: Socket) {
-        this.sockets = this.sockets.filter(
-            (element) => element.id !== socket.id
-        );
+        this.sockets = this.sockets.filter(element => element.id !== socket.id);
         socket.ref.leave(this.id);
         socket.ref.to(this.id).emit("room:socket:leave", socket.dto);
         this.sendMessageToAll(
