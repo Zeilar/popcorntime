@@ -13,7 +13,7 @@ export function ChatSettings() {
             pos="absolute"
             top="-1rem"
             right={0}
-            bgColor="gray.800"
+            bgColor="gray.900"
             borderRadius="base"
             p="1rem"
             transition={{ duration: "0.15" }}
@@ -25,7 +25,7 @@ export function ChatSettings() {
             <Text size="lg">Color</Text>
             <Divider my="1rem" />
             <Grid gridTemplateColumns="repeat(4, 2rem)" gridGap="0.5rem">
-                {colors.map((color) => (
+                {colors.map(color => (
                     <Button.Color key={color} color={color} />
                 ))}
             </Grid>

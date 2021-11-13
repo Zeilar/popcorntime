@@ -29,6 +29,10 @@ export function Room() {
         publicSocket.emit("video:play");
     }
 
+    function pause() {
+        publicSocket.emit("video:pause");
+    }
+
     useEffect(() => {
         if (!validate(roomId)) {
             // No need to toast here, the redirect further down takes care of that, this is just to stop unnecessary code from running
@@ -114,9 +118,18 @@ export function Room() {
     }
 
     return (
-        <Grid w="100%" gridTemplateColumns="75% 25%">
+        <Grid
+            w="100%"
+            gridTemplateColumns="75% 1fr"
+            bgColor="gray.900"
+            gridGap="1rem"
+        >
             <Flex flexDir="column">
-                <Box flexGrow={1} sx={{ ".youtube": { height: "100%" } }}>
+                <Box
+                    flexGrow={1}
+                    sx={{ ".youtube": { height: "100%" } }}
+                    m="1rem"
+                >
                     <YouTube
                         opts={{ width: "100%", height: "100%" }}
                         ref={player}
@@ -124,9 +137,10 @@ export function Room() {
                         videoId={playlist[0]}
                     />
                 </Box>
-                <Box bgColor="whiteAlpha.100">
-                    <Button.Icon onClick={play}>Play</Button.Icon>
-                </Box>
+                <Flex justify="center" align="center">
+                    <Button.Icon onClick={play} icon="mdiPlay" />
+                    <Button.Icon onClick={pause} icon="mdiPause" />
+                </Flex>
             </Flex>
             <Chat roomId={roomId} sockets={sockets} />
         </Grid>
