@@ -111,12 +111,16 @@ export default function InfoModal({ isOpen, onClose, room }: IProps) {
                                         overflowY="auto"
                                         mt="0.5rem"
                                     >
-                                        {messages.map(message => (
-                                            <ChatMessage
-                                                message={message}
-                                                key={message.id}
-                                            />
-                                        ))}
+                                        {messages.length > 0 ? (
+                                            messages.map(message => (
+                                                <ChatMessage
+                                                    message={message}
+                                                    key={message.id}
+                                                />
+                                            ))
+                                        ) : (
+                                            <Text>No messages were found.</Text>
+                                        )}
                                     </Flex>
                                 </>
                             )}
