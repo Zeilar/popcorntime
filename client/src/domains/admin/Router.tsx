@@ -7,9 +7,10 @@ import { useContext, useEffect, useState } from "react";
 import Dashboard from "./components/dashboard/Dashboard";
 
 export default function Router() {
-    const [authenticated, setAuthenticated] = useState(false);
-    const loginDisclosure = useDisclosure();
     const { adminLogin, adminSocket } = useContext(WebsocketContext);
+    console.log(adminSocket.connected);
+    const [authenticated, setAuthenticated] = useState(adminSocket.connected);
+    const loginDisclosure = useDisclosure();
     const [password, setPassword] = useState("");
 
     function attemptLogin() {

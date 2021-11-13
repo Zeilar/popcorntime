@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useEffect } from "react";
+import { createContext, ReactNode } from "react";
 import { Socket, io } from "socket.io-client";
 import { WS_HOST } from "../config/host";
 
@@ -18,14 +18,6 @@ const adminSocket = io(`${WS_HOST}/admin`, { reconnection: false });
 export const WebsocketContext = createContext({} as IContext);
 
 export function WebsocketContextProvider({ children }: IProps) {
-    useEffect(() => {
-        return () => {
-            // This should never happen realistically, but if it does, disconnect the user.
-            publicSocket.disconnect();
-            adminSocket.disconnect();
-        };
-    }, []);
-
     function adminLogin(password: string) {
         adminSocket.auth = {};
         adminSocket.auth.token = password;
