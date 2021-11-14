@@ -193,7 +193,6 @@ adminNamespace.on("connection", socket => {
 
         io.to(_socket.id).emit("room:kick");
         room.remove(_socket);
-        socket.emit("room:leave", { roomId: room.id, socketId: _socket.id });
         adminNamespace.emit("room:kick");
     });
 
