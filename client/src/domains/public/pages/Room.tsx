@@ -86,9 +86,6 @@ export function Room() {
             }
         );
 
-        const internalPlayer: YT.Player | undefined =
-            player.current?.getInternalPlayer();
-
         if (!internalPlayer) {
             return;
         }
