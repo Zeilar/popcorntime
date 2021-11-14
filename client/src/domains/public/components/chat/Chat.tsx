@@ -1,4 +1,4 @@
-import { Box, Flex } from "@chakra-ui/layout";
+import { Box, Divider, Flex } from "@chakra-ui/layout";
 import {
     KeyboardEvent,
     useCallback,
@@ -18,6 +18,7 @@ import { MeContext } from "../../contexts";
 import { ChatSettings } from ".";
 import { useOnClickOutside } from "domains/common/hooks";
 import { WebsocketContext } from "domains/common/contexts";
+import Button from "domains/common/components/styles/button";
 
 interface IProps {
     roomId: string;
@@ -130,6 +131,16 @@ export function Chat({ roomId }: IProps) {
 
     return (
         <Flex flexDir="column" h="100vh" bgColor="gray.800">
+            <Flex align="center" p="0.5rem">
+                <Button.Icon
+                    tooltip="Close chat"
+                    ml="auto"
+                    icon={
+                        isOpen ? "mdiArrowCollapseRight" : "mdiArrowExpandLeft"
+                    }
+                />
+            </Flex>
+            <Divider mb="1rem" />
             <Flex
                 className="custom-scrollbar scrollbar-inset"
                 flexDir="column"
