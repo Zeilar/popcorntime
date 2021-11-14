@@ -58,7 +58,6 @@ export class Room {
             sockets: this.socketsDto,
             messages: this.messages,
             playlist: this.playlist,
-            roomId: this.id,
         });
         socket.ref.to(this.id).emit("room:socket:join", socket.dto);
         this.sendMessageToAll(
