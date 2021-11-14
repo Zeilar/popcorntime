@@ -50,6 +50,7 @@ export default function ChatMessage({ message }: IProps) {
             p="0.5rem"
             mt={1}
             _first={{ marginTop: 0 }}
+            bgColor={message.serverMessage ? "gray.600" : undefined}
             bgGradient={
                 message.serverMessage
                     ? "none"

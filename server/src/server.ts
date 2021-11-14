@@ -143,7 +143,7 @@ io.on("connection", socket => {
             return socket.emit("error", "You must be in a room to do that.");
         }
         // Make it so the sender gets this at the same time as the others to sync them better.
-        io.to(room.id).emit("video:play");
+        socket.to(room.id).emit("video:play");
     });
 
     socket.on("video:pause", () => {
@@ -152,7 +152,7 @@ io.on("connection", socket => {
             return socket.emit("error", "You must be in a room to do that.");
         }
         // Make it so the sender gets this at the same time as the others to sync them better.
-        io.to(room.id).emit("video:pause");
+        socket.to(room.id).emit("video:pause");
     });
 
     socket.on("room:leave", () => {

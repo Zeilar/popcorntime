@@ -25,11 +25,16 @@ export function Room() {
     const player = useRef<YouTube>(null);
     const { push } = useHistory();
 
+    const internalPlayer: YT.Player | undefined =
+        player.current?.getInternalPlayer();
+
     function play() {
+        internalPlayer?.playVideo();
         publicSocket.emit("video:play");
     }
 
     function pause() {
+        internalPlayer?.pauseVideo();
         publicSocket.emit("video:pause");
     }
 
@@ -61,7 +66,7 @@ export function Room() {
             push("/");
         });
         publicSocket.on("room:destroy", () => {
-            toast.info("The room was deleted.");
+            toast.info("The room has been shut down.");
             push("/");
         });
         publicSocket.on(
