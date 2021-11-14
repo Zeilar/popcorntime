@@ -38,11 +38,11 @@ export function MeContextProvider({ children }: IProps) {
                 toast.success(`Welcome ${payload.socket.username}`);
             }
         );
-        publicSocket.on("color:update", (color: Color) => {
+        publicSocket.on("socket:update:color", (color: Color) => {
             changeColor(color);
         });
         return () => {
-            publicSocket.off("color:update").off("connection:success");
+            publicSocket.off("socket:update:color").off("connection:success");
         };
     }, [publicSocket]);
 

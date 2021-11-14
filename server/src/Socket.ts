@@ -51,7 +51,7 @@ export class Socket {
 
     public setColor(color: Color) {
         this.color = color;
-        this.ref?.emit("color:update", color);
+        this.ref.emit("socket:update:color", color);
         if (this.room) {
             io.to(this.room.id).emit("room:socket:update:color", {
                 socketId: this.id,
