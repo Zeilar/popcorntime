@@ -38,7 +38,10 @@ export const ws = new WS();
 io.on("connection", socket => {
     const _socket = new Socket(socket.id);
     ws.addSocket(_socket);
-    socket.emit("connection:success", _socket.dto);
+    socket.emit("connection:success", {
+        socket: _socket.dto,
+        roomId: _socket.room?.id,
+    });
 
     socket.on("socket:update:color", (color: Color) => {
         _socket.setColor(color);
@@ -143,17 +146,19 @@ io.on("connection", socket => {
         io.to(room.id).emit("video:play");
     });
 
-    socket.on("room:leave", (roomId: string) => {
-        const room = ws.rooms.get(roomId);
+    socket.on("room:leave", () => {
+        const room = _socket.room;
         if (room) {
             room.remove(_socket);
+            adminNamespace.emit("room:leave", {
+                roomId: room?.id,
+                socketId: _socket.id,
+            });
         }
-        adminNamespace.emit("room:leave", { roomId, socketId: _socket.id });
     });
 
     socket.on("disconnect", () => {
         const room = _socket.room;
-        // If user was not part of a room when they leave, no need to do anything
         if (room) {
             room.remove(_socket);
         }

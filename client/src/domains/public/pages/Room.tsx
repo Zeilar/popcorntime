@@ -102,7 +102,11 @@ export function Room() {
         };
     }, [roomId, push, publicSocket]);
 
-    // TODO: socket.emit("room:leave", roomId); when you press leave, not in unmount, to prevent "undefined" left bug
+    useEffect(() => {
+        return () => {
+            publicSocket.emit("room:leave");
+        };
+    }, [publicSocket]);
 
     // TODO: use "light" prop for playlist thumbnails
 

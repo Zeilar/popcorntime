@@ -40,10 +40,6 @@ export default function Router() {
             toast.error(error);
             setError(error);
         });
-
-        return () => {
-            publicSocket.removeAllListeners();
-        };
     }, [setMe, publicSocket]);
 
     if (error) {
