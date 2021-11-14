@@ -14,7 +14,6 @@ interface IContext {
     me: ISocket;
     setMe: React.Dispatch<React.SetStateAction<ISocket>>;
     changeColor(color: Color): void;
-    roomId: string | null;
 }
 
 interface IProps {
@@ -25,14 +24,11 @@ export const MeContext = createContext({} as IContext);
 
 export function MeContextProvider({ children }: IProps) {
     const [me, setMe] = useState<ISocket>({} as ISocket);
-    const [roomId, setRoomId] = useState<string | null>(null);
     const { publicSocket } = useContext(WebsocketContext);
 
     function changeColor(color: Color) {
         setMe(me => ({ ...me, color }));
     }
-
-    console.log({ roomId });
 
     useEffect(() => {
         publicSocket.once(
@@ -42,9 +38,6 @@ export function MeContextProvider({ children }: IProps) {
                 toast.success(`Welcome ${payload.socket.username}`);
             }
         );
-        publicSocket.on("room:join", (payload: { roomId: string }) => {
-            setRoomId(payload.roomId);
-        });
         publicSocket.on("color:update", (color: Color) => {
             changeColor(color);
         });
@@ -60,7 +53,6 @@ export function MeContextProvider({ children }: IProps) {
         me,
         setMe,
         changeColor,
-        roomId,
     };
 
     return <MeContext.Provider value={values}>{children}</MeContext.Provider>;

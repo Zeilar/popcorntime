@@ -85,7 +85,7 @@ export class Room {
     public remove(socket: Socket) {
         this.sockets = this.sockets.filter(element => element.id !== socket.id);
         socket.ref.leave(this.id);
-        socket.ref.emit("room:leave", this.id);
+        socket.ref.emit("room:leave");
         socket.ref.to(this.id).emit("room:socket:leave", socket.dto);
         this.sendMessageToAll(
             this.serverMessage({
