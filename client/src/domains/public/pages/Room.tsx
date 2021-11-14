@@ -3,7 +3,7 @@ import { Redirect, useHistory, useParams } from "react-router";
 import { ISocket } from "domains/common/@types/socket";
 import YouTube from "react-youtube";
 import { toast } from "react-toastify";
-import { Box, Grid } from "@chakra-ui/layout";
+import { Box } from "@chakra-ui/layout";
 import { Chat } from "../components/chat";
 import { validate } from "uuid";
 import { Flex } from "@chakra-ui/react";
@@ -49,7 +49,6 @@ export function Room() {
                 setSockets(payload.sockets);
                 setPlaylist(payload.playlist);
                 setIsConnected(true);
-                toast.success("Joined room.");
             }
         );
         publicSocket.on("room:socket:join", (socket: ISocket) => {
@@ -118,13 +117,8 @@ export function Room() {
     }
 
     return (
-        <Grid
-            w="100%"
-            gridTemplateColumns="75% 1fr"
-            bgColor="gray.900"
-            gridGap="1rem"
-        >
-            <Flex flexDir="column">
+        <Flex w="100%" bgColor="gray.900">
+            <Flex flexDir="column" flexGrow={1}>
                 <Box
                     flexGrow={1}
                     sx={{ ".youtube": { height: "100%" } }}
@@ -143,6 +137,6 @@ export function Room() {
                 </Flex>
             </Flex>
             <Chat roomId={roomId} sockets={sockets} />
-        </Grid>
+        </Flex>
     );
 }

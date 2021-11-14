@@ -15,8 +15,8 @@ import Message from "domains/common/components/ChatMessage";
 import Textarea from "../styles/Textarea";
 import Icon from "../styles/icon";
 import { MeContext } from "../../contexts";
-import { ChatSettings } from ".";
-import { useOnClickOutside } from "domains/common/hooks";
+import { ChatSettings } from "./";
+import { useLocalStorage, useOnClickOutside } from "domains/common/hooks";
 import { WebsocketContext } from "domains/common/contexts";
 import Button from "domains/common/components/styles/button";
 
@@ -26,19 +26,24 @@ interface IProps {
 }
 
 export function Chat({ roomId }: IProps) {
+    const [showChat, setShowChat] = useLocalStorage<boolean>("showChat");
     const { me } = useContext(MeContext);
-    const [isOpen, setIsOpen] = useState(true); // useLocalStorage for initial value
+    const [isOpen, setIsOpen] = useState(showChat);
     const [messages, setMessages] = useState<IMessage[]>([]);
     const scrollChat = useRef<boolean>(true);
     const chatElement = useRef<HTMLDivElement>(null);
     const input = useRef<HTMLTextAreaElement>(null);
     const [settingsOpen, setSettingsOpen] = useState(false);
     const { publicSocket } = useContext(WebsocketContext);
-    const settingsEl = useOnClickOutside<HTMLDivElement>(() =>
-        setSettingsOpen(false)
-    );
+    const settingsEl = useOnClickOutside<HTMLDivElement>(() => {
+        setSettingsOpen(false);
+    });
 
     const { REACT_APP_ROOM_MAX_MESSAGES } = process.env;
+
+    useEffect(() => {
+        setShowChat(isOpen);
+    }, [isOpen, setShowChat]);
 
     const addMessage = useCallback(
         (message: IMessage) => {
@@ -52,6 +57,10 @@ export function Chat({ roomId }: IProps) {
         },
         [REACT_APP_ROOM_MAX_MESSAGES]
     );
+
+    function toggle() {
+        setIsOpen(isOpen => !isOpen);
+    }
 
     useEffect(() => {
         publicSocket.on("message:new", (message: IMessage) => {
@@ -125,47 +134,60 @@ export function Chat({ roomId }: IProps) {
         chatElement.current?.scrollTo({ top: 9999, behavior: "smooth" });
     }, [messages]);
 
-    if (!isOpen) {
-        return null;
-    }
-
     return (
-        <Flex flexDir="column" h="100vh" bgColor="gray.800">
+        <Flex
+            flexDir="column"
+            h="100vh"
+            bgColor="gray.800"
+            w={isOpen ? "25rem" : "3.5rem"}
+        >
             <Flex align="center" p="0.5rem">
-                <Button.Icon
-                    tooltip="Close chat"
-                    ml="auto"
-                    icon={
-                        isOpen ? "mdiArrowCollapseRight" : "mdiArrowExpandLeft"
-                    }
-                />
+                {isOpen ? (
+                    <Button.Icon
+                        onClick={toggle}
+                        tooltip="Close chat"
+                        ml="auto"
+                        icon="mdiArrowCollapseRight"
+                    />
+                ) : (
+                    <Button.Icon
+                        onClick={toggle}
+                        tooltip="Open chat"
+                        ml="auto"
+                        icon="mdiArrowExpandLeft"
+                    />
+                )}
             </Flex>
-            <Divider mb="1rem" />
-            <Flex
-                className="custom-scrollbar scrollbar-inset"
-                flexDir="column"
-                overflowY="auto"
-                p="0.5rem"
-                ref={chatElement}
-            >
-                {messages.map(message => (
-                    <Message key={message.id} message={message} />
-                ))}
-            </Flex>
-            <Box as="form" onSubmit={sendMessage} mt="auto" p="1rem">
-                <Textarea
-                    onKeyDown={inputHandler}
-                    forwardRef={input}
-                    placeholder="Send a message"
-                    resize="none"
-                />
-            </Box>
-            <Box p="0.5rem">
-                <Box pos="relative" w="1rem" h="1rem" ref={settingsEl}>
-                    <Icon.Settings onClick={toggleSettings} />
-                    {settingsOpen && <ChatSettings />}
-                </Box>
-            </Box>
+            <Divider />
+            {isOpen && (
+                <>
+                    <Flex
+                        className="custom-scrollbar scrollbar-inset"
+                        flexDir="column"
+                        overflowY="auto"
+                        p="0.5rem"
+                        ref={chatElement}
+                    >
+                        {messages.map(message => (
+                            <Message key={message.id} message={message} />
+                        ))}
+                    </Flex>
+                    <Box as="form" onSubmit={sendMessage} mt="auto" p="1rem">
+                        <Textarea
+                            onKeyDown={inputHandler}
+                            forwardRef={input}
+                            placeholder="Send a message"
+                            resize="none"
+                        />
+                    </Box>
+                    <Box p="0.5rem">
+                        <Box pos="relative" w="1rem" h="1rem" ref={settingsEl}>
+                            <Icon.Settings onClick={toggleSettings} />
+                            {settingsOpen && <ChatSettings />}
+                        </Box>
+                    </Box>
+                </>
+            )}
         </Flex>
     );
 }

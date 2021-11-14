@@ -28,7 +28,8 @@ export function useOnClickOutside<T extends HTMLElement>(
         function clickHandler(e: MouseEvent): void {
             try {
                 if (!element) {
-                    throw new Error("Ref must be assigned to an element.");
+                    console.warn("Ref is not assigned to an element.");
+                    return;
                 }
                 if (memoArgs?.condition === false) {
                     return;
