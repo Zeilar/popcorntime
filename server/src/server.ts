@@ -146,6 +146,15 @@ io.on("connection", socket => {
         io.to(room.id).emit("video:play");
     });
 
+    socket.on("video:pause", () => {
+        const room = _socket.room;
+        if (!room) {
+            return socket.emit("error", "You must be in a room to do that.");
+        }
+        // Make it so the sender gets this at the same time as the others to sync them better.
+        io.to(room.id).emit("video:pause");
+    });
+
     socket.on("room:leave", () => {
         const room = _socket.room;
         if (room) {

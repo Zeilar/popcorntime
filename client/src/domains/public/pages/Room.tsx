@@ -39,9 +39,6 @@ export function Room() {
             return;
         }
 
-        const internalPlayer: YT.Player | undefined =
-            player.current?.getInternalPlayer();
-
         publicSocket.emit("room:join", roomId);
         publicSocket.once(
             "room:join",
@@ -83,8 +80,19 @@ export function Room() {
                 );
             }
         );
+
+        const internalPlayer: YT.Player | undefined =
+            player.current?.getInternalPlayer();
+
+        if (!internalPlayer) {
+            return;
+        }
+
         publicSocket.on("video:play", () => {
-            internalPlayer?.playVideo();
+            internalPlayer.playVideo();
+        });
+        publicSocket.on("video:pause", () => {
+            internalPlayer.pauseVideo();
         });
 
         // Just to be safe, roomId should in theory never change but you never know
@@ -98,7 +106,6 @@ export function Room() {
                 .off("room:destroy");
             setSockets([]);
             setPlaylist([]);
-            setPlaylistInput("");
         };
     }, [roomId, push, publicSocket]);
 
