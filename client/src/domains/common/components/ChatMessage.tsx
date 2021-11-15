@@ -36,7 +36,6 @@ export default function ChatMessage({ message }: IProps) {
 
     return (
         <Motion
-            borderRadius={4}
             alignItems="center"
             p="0.5rem"
             mt={1}
