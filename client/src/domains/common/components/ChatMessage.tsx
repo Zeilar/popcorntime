@@ -8,7 +8,7 @@ interface IProps {
     message: IMessage;
 }
 
-const MotionBox = motion<FlexProps>(Flex);
+const Motion = motion<FlexProps>(Flex);
 
 export default function ChatMessage({ message }: IProps) {
     const { publicSocket } = useContext(WebsocketContext);
@@ -35,7 +35,7 @@ export default function ChatMessage({ message }: IProps) {
             : {};
 
     return (
-        <MotionBox
+        <Motion
             borderRadius={4}
             alignItems="center"
             p="0.5rem"
@@ -57,6 +57,6 @@ export default function ChatMessage({ message }: IProps) {
                 </Text>
                 {message.body}
             </Text>
-        </MotionBox>
+        </Motion>
     );
 }
