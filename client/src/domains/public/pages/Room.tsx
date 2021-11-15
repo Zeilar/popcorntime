@@ -115,7 +115,10 @@ export function Room() {
             push("/");
         });
         return () => {
-            publicSocket.off("room:kick").off("room:destroy");
+            publicSocket
+                .off("room:kick")
+                .off("room:destroy")
+                .off("room:connection:error");
         };
     }, [publicSocket, push]);
 
