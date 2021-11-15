@@ -26,7 +26,8 @@ export default function DashboardItem({ to, children, icon }: IProps) {
             _hover={{ bgColor: "gray.500" }}
             _active={{ bgColor: theme.colors.gray["300"] }}
             _activeLink={{ bgColor: theme.colors.brand["default"] }}
-            p="0.5rem"
+            p="0.75rem"
+            fontSize="xl"
             borderRadius="base"
         >
             <Icon

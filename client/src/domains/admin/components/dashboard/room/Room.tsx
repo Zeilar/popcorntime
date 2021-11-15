@@ -1,6 +1,7 @@
 import { useDisclosure } from "@chakra-ui/hooks";
 import { DeleteIcon, InfoOutlineIcon } from "@chakra-ui/icons";
 import { AbsoluteCenter, Box, Flex, Grid, Text } from "@chakra-ui/layout";
+import { Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/menu";
 import { SocketContext } from "domains/admin/contexts";
 import { IRoom } from "domains/common/@types/room";
 import { Prompt } from "domains/common/components/modals";
@@ -17,7 +18,7 @@ interface IProps {
 const { REACT_APP_ROOM_MAX_SOCKETS } = process.env;
 
 export default function Room({ room }: IProps) {
-    const promptDisclosure = useDisclosure();
+    const destroyPrompt = useDisclosure();
     const infoDisclosure = useDisclosure();
     const maxSockets = parseInt(REACT_APP_ROOM_MAX_SOCKETS);
     const { adminSocket } = useContext(WebsocketContext);
@@ -43,6 +44,28 @@ export default function Room({ room }: IProps) {
             alignItems="center"
             pos="relative"
         >
+            <Menu>
+                <MenuButton
+                    pointerEvents="none"
+                    pos="absolute"
+                    right="0.5rem"
+                    top="0.5rem"
+                >
+                    <Button.Icon
+                        as="div"
+                        icon="mdiDotsVertical"
+                        pointerEvents="all"
+                    />
+                </MenuButton>
+                <MenuList>
+                    <MenuItem
+                        icon={<DeleteIcon color="danger" />}
+                        onClick={destroyPrompt.onOpen}
+                    >
+                        Destroy
+                    </MenuItem>
+                </MenuList>
+            </Menu>
             <InfoModal
                 isOpen={infoDisclosure.isOpen}
                 onClose={infoDisclosure.onClose}
@@ -51,8 +74,8 @@ export default function Room({ room }: IProps) {
             <Prompt
                 header="Destroy room"
                 body="Are you sure? This cannot be undone!"
-                isOpen={promptDisclosure.isOpen}
-                onClose={promptDisclosure.onClose}
+                isOpen={destroyPrompt.isOpen}
+                onClose={destroyPrompt.onClose}
                 onSubmit={destroy}
             />
             {isFull && (
@@ -72,16 +95,6 @@ export default function Room({ room }: IProps) {
             <Button.Icon
                 pos="absolute"
                 right="0.5rem"
-                top="0.5rem"
-                title="Destroy room"
-                onClick={promptDisclosure.onOpen}
-                color="red.600"
-            >
-                <DeleteIcon />
-            </Button.Icon>
-            <Button.Icon
-                pos="absolute"
-                right="0.5rem"
                 top="3rem"
                 title="Info"
                 onClick={infoDisclosure.onOpen}
@@ -93,7 +106,7 @@ export default function Room({ room }: IProps) {
                 pos="relative"
                 w="10rem"
                 h="10rem"
-                p="0.5rem"
+                p="1rem"
             >
                 <AbsoluteCenter>
                     <Text
