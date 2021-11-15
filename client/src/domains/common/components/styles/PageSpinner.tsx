@@ -1,4 +1,5 @@
 import { Flex } from "@chakra-ui/layout";
+import { AbsoluteCenter, Text } from "@chakra-ui/react";
 import { Spinner } from "@chakra-ui/spinner";
 
 export default function PageSpinner() {
@@ -13,7 +14,12 @@ export default function PageSpinner() {
             left={0}
             top={0}
         >
-            <Spinner color="brand.default" size="xl" m="auto" zIndex={100000} />
+            <AbsoluteCenter as={Flex} alignItems="center" flexDir="column">
+                <Spinner color="brand.default" size="xl" zIndex={1000} />
+                <Text textAlign="center" mt="1rem">
+                    Connecting...
+                </Text>
+            </AbsoluteCenter>
         </Flex>
     );
 }
