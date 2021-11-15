@@ -46,6 +46,7 @@ export default function Socket({ socket }: IProps) {
                 {socket.username}
             </Text>
             <Button.Icon
+                tooltip="Remove"
                 ml="auto"
                 onClick={() => kick(socket.id)}
                 flexShrink={0}

@@ -96,8 +96,8 @@ export default function Room({ room }: IProps) {
                 pos="absolute"
                 right="0.5rem"
                 top="3rem"
-                title="Info"
                 onClick={infoDisclosure.onOpen}
+                tooltip="Details"
             >
                 <InfoOutlineIcon />
             </Button.Icon>
