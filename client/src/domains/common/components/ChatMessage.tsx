@@ -39,7 +39,6 @@ export default function ChatMessage({ message }: IProps) {
         ? {
               fontStyle: "italic",
               userSelect: "none",
-              color: "GrayText",
           }
         : {};
 
@@ -49,13 +48,9 @@ export default function ChatMessage({ message }: IProps) {
             alignItems="center"
             p="0.5rem"
             mt={1}
+            _odd={{ bgColor: "gray.500" }}
+            bgColor="gray.700"
             _first={{ marginTop: 0 }}
-            bgColor={message.serverMessage ? "gray.600" : undefined}
-            bgGradient={
-                message.serverMessage
-                    ? "none"
-                    : `linear(to-r, ${message.socket.color}.800, ${message.socket.color}.900)`
-            }
             {...notSentStyling}
             {...animationStyling}
         >
