@@ -118,13 +118,16 @@ io.on("connection", socket => {
 
     socket.on("room:join", (roomId: string) => {
         if (!validate(roomId)) {
-            return socket.emit("error", "Invalid room id.");
+            return socket.emit("room:connection:error", "Invalid room id.");
         }
 
         const room = ws.rooms.get(roomId);
 
         if (!room) {
-            return socket.emit("error", "That room does not exist.");
+            return socket.emit(
+                "room:connection:error",
+                "That room does not exist."
+            );
         }
 
         if (room.sockets.length >= Room.MAX_SOCKETS) {

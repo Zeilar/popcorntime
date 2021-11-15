@@ -10,6 +10,7 @@ import { Flex } from "@chakra-ui/react";
 import { Color } from "domains/common/@types/color";
 import Button from "domains/common/components/styles/button";
 import { WebsocketContext } from "domains/common/contexts";
+import PageSpinner from "domains/common/components/styles/PageSpinner";
 
 interface IParams {
     roomId: string;
@@ -39,11 +40,6 @@ export function Room() {
     }
 
     useEffect(() => {
-        if (!validate(roomId)) {
-            // No need to toast here, the redirect further down takes care of that, this is just to stop unnecessary code from running
-            return;
-        }
-
         publicSocket.emit("room:join", roomId);
         publicSocket.once(
             "room:join",
@@ -53,6 +49,12 @@ export function Room() {
                 setIsConnected(true);
             }
         );
+        return () => {
+            publicSocket.off("room:join");
+        };
+    }, [publicSocket, roomId]);
+
+    useEffect(() => {
         publicSocket.on("room:socket:join", (socket: ISocket) => {
             setSockets(sockets => [...sockets, socket]);
         });
@@ -60,14 +62,6 @@ export function Room() {
             setSockets(sockets =>
                 sockets.filter(element => element.id !== socket.id)
             );
-        });
-        publicSocket.on("room:kick", () => {
-            toast.info("You were kicked from the room.");
-            push("/");
-        });
-        publicSocket.on("room:destroy", () => {
-            toast.info("The room has been shut down.");
-            push("/");
         });
         publicSocket.on(
             "room:socket:update:color",
@@ -96,18 +90,38 @@ export function Room() {
         publicSocket.on("video:pause", () => {
             internalPlayer.pauseVideo();
         });
-    }, [roomId, push, publicSocket, internalPlayer]);
+
+        return () => {
+            publicSocket
+                .off("video:play")
+                .off("video:pause")
+                .off("room:socket:join")
+                .off("room:socket:leave")
+                .off("room:socket:update:color");
+        };
+    }, [publicSocket, internalPlayer]);
+
+    useEffect(() => {
+        publicSocket.on("room:kick", () => {
+            toast.info("You were kicked from the room.");
+            push("/");
+        });
+        publicSocket.on("room:destroy", () => {
+            toast.info("The room has been shut down.");
+            push("/");
+        });
+        publicSocket.on("room:connection:error", (message: string) => {
+            toast.error(message);
+            push("/");
+        });
+        return () => {
+            publicSocket.off("room:kick").off("room:destroy");
+        };
+    }, [publicSocket, push]);
 
     useEffect(() => {
         return () => {
             publicSocket.emit("room:leave");
-            publicSocket
-                .off("room:join")
-                .off("room:socket:leave")
-                .off("room:socket:join")
-                .off("video:play")
-                .off("room:kick")
-                .off("room:destroy");
         };
     }, [publicSocket]);
 
@@ -125,6 +139,7 @@ export function Room() {
 
     return (
         <Flex w="100%" bgColor="gray.900">
+            {!isConnected && <PageSpinner />}
             <Flex flexDir="column" flexGrow={1}>
                 <Box
                     flexGrow={1}
