@@ -26,7 +26,7 @@ interface IProps {
 }
 
 export function Chat({ roomId }: IProps) {
-    const [showChat, setShowChat] = useLocalStorage<boolean>("showChat");
+    const [showChat, setShowChat] = useLocalStorage<boolean>("showChat", true);
     const { me } = useContext(MeContext);
     const [isOpen, setIsOpen] = useState(showChat);
     const [messages, setMessages] = useState<IMessage[]>([]);
