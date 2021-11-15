@@ -43,9 +43,6 @@ export default function ChatMessage({ message }: IProps) {
             _odd={{ bgColor: "gray.500" }}
             bgColor="gray.700"
             _first={{ marginTop: 0 }}
-            borderLeft="4px solid"
-            borderColor={`${message.socket.color}.600`}
-            borderLeftRadius={0}
             {...notSentStyling}
             {...animationStyling}
         >
