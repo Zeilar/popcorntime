@@ -13,7 +13,9 @@ interface IProps extends ButtonProps {
 
 export function IconButton({ children, icon, tooltip, ...props }: IProps) {
     const Wrapper = tooltip ? Tooltip : Fragment;
-    const tooltipProps = tooltip ? { label: tooltip } : {};
+    const tooltipProps: any = tooltip
+        ? { label: tooltip, placement: "top" }
+        : {};
     return (
         <Wrapper {...tooltipProps}>
             <Button
