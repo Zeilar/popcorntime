@@ -42,6 +42,10 @@ export default function ChatMessage({ message }: IProps) {
           }
         : {};
 
+    const body = message.serverMessage
+        ? `${message.socket.username} ${message.body}`
+        : message.body;
+
     return (
         <MotionBox
             borderRadius={4}
@@ -51,16 +55,20 @@ export default function ChatMessage({ message }: IProps) {
             _odd={{ bgColor: "gray.500" }}
             bgColor="gray.700"
             _first={{ marginTop: 0 }}
+            borderLeft="4px solid"
+            borderColor={`${message.socket.color}.600`}
+            borderLeftRadius={0}
             {...notSentStyling}
             {...animationStyling}
         >
-            <SocketAvatar
-                mr="1rem"
-                socket={message.socket}
-                w="2.5rem"
-                h="2.5rem"
-            />
-            <Text {...textAutomaticStyling}>{message.body}</Text>
+            <Text {...textAutomaticStyling}>
+                <Text as="span" color={`${message.socket.color}.600`}>
+                    {message.serverMessage
+                        ? `${message.socket.username} `
+                        : `${message.socket.username}: `}
+                </Text>
+                {message.body}
+            </Text>
         </MotionBox>
     );
 }
