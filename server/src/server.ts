@@ -49,7 +49,7 @@ io.on("connection", socket => {
         if (room) {
             room.sendMessageToAll(
                 new Message({
-                    body: `Changed their color to ${color}`,
+                    body: `changed their color to ${color}`,
                     socket: _socket.dto,
                     roomId: room.id,
                     serverMessage: true,

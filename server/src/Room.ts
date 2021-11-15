@@ -63,7 +63,7 @@ export class Room {
         this.sendMessageToAll(
             this.serverMessage({
                 socket,
-                body: `${socket.username} has joined the room`,
+                body: "has joined the room",
             })
         );
         adminNamespace.emit("room:join", {
@@ -89,7 +89,7 @@ export class Room {
         this.sendMessageToAll(
             this.serverMessage({
                 socket,
-                body: `${socket.username} has left the room`,
+                body: "has left the room",
             })
         );
         adminNamespace.emit("room:leave", {
