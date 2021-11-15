@@ -56,7 +56,7 @@ export default function Rooms() {
             </Flex>
             {rooms.length > 0 ? (
                 <Grid
-                    gridTemplateColumns="repeat(5, 1fr)"
+                    gridTemplateColumns="repeat(6, 1fr)"
                     gridGap="0.5rem"
                     alignContent="start"
                     p="1rem"
