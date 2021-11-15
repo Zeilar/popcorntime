@@ -96,9 +96,11 @@ export function Room() {
         publicSocket.on("video:pause", () => {
             internalPlayer.pauseVideo();
         });
+    }, [roomId, push, publicSocket, internalPlayer]);
 
-        // Just to be safe, roomId should in theory never change but you never know
+    useEffect(() => {
         return () => {
+            publicSocket.emit("room:leave");
             publicSocket
                 .off("room:join")
                 .off("room:socket:leave")
@@ -106,14 +108,6 @@ export function Room() {
                 .off("video:play")
                 .off("room:kick")
                 .off("room:destroy");
-            setSockets([]);
-            setPlaylist([]);
-        };
-    }, [roomId, push, publicSocket]);
-
-    useEffect(() => {
-        return () => {
-            publicSocket.emit("room:leave");
         };
     }, [publicSocket]);
 
