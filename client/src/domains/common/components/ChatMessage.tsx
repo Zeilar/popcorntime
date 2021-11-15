@@ -3,7 +3,6 @@ import { motion } from "framer-motion";
 import { useContext } from "react";
 import { IMessage } from "../@types/message";
 import { WebsocketContext } from "../contexts";
-import SocketAvatar from "./styles/SocketAvatar";
 
 interface IProps {
     message: IMessage;
@@ -35,17 +34,6 @@ export default function ChatMessage({ message }: IProps) {
               }
             : {};
 
-    const textAutomaticStyling: any = message.serverMessage
-        ? {
-              fontStyle: "italic",
-              userSelect: "none",
-          }
-        : {};
-
-    const body = message.serverMessage
-        ? `${message.socket.username} ${message.body}`
-        : message.body;
-
     return (
         <MotionBox
             borderRadius={4}
@@ -61,7 +49,7 @@ export default function ChatMessage({ message }: IProps) {
             {...notSentStyling}
             {...animationStyling}
         >
-            <Text {...textAutomaticStyling}>
+            <Text fontStyle={message.serverMessage ? "italic" : undefined}>
                 <Text as="span" color={`${message.socket.color}.600`}>
                     {message.serverMessage
                         ? `${message.socket.username} `
