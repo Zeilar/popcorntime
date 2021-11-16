@@ -11,6 +11,7 @@ import { Color } from "domains/common/@types/color";
 import Button from "domains/common/components/styles/button";
 import { WebsocketContext } from "domains/common/contexts";
 import PageSpinner from "domains/common/components/styles/PageSpinner";
+import { AnimatePresence } from "framer-motion";
 
 interface IParams {
     roomId: string;
@@ -142,7 +143,7 @@ export function Room() {
 
     return (
         <Flex w="100%" bgColor="gray.900">
-            {!isConnected && <PageSpinner />}
+            <AnimatePresence>{!isConnected && <PageSpinner />}</AnimatePresence>
             <Flex flexDir="column" flexGrow={1}>
                 <Box
                     flexGrow={1}

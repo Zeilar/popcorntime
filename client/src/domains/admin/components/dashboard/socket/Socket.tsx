@@ -45,7 +45,7 @@ export default function Socket({ socket }: IProps) {
         <Motion
             bgGradient={`linear(to-r, ${socket.color}.700, ${socket.color}.900)`}
             align="center"
-            p="0.5rem"
+            p="0.5rem 1rem"
             rounded="base"
             overflow="hidden"
             exit={{ opacity: 0 }}
