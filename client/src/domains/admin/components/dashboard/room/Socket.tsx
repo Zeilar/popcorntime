@@ -33,7 +33,7 @@ export default function Socket({ socket }: IProps) {
             overflow="hidden"
             rounded="base"
             key={socket.id}
-            p="0.5rem 1rem"
+            p="0.5rem"
             {...isLoadingStyles}
         >
             <Text
@@ -46,7 +46,6 @@ export default function Socket({ socket }: IProps) {
                 {socket.username}
             </Text>
             <Button.Icon
-                tooltip="Remove"
                 ml="auto"
                 onClick={() => kick(socket.id)}
                 flexShrink={0}

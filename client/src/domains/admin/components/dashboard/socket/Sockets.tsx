@@ -5,6 +5,7 @@ import { SocketContext } from "domains/admin/contexts";
 import { Prompt } from "domains/common/components/modals";
 import Button from "domains/common/components/styles/button";
 import { WebsocketContext } from "domains/common/contexts";
+import { AnimatePresence } from "framer-motion";
 import { useContext, useEffect } from "react";
 import { toast } from "react-toastify";
 import Socket from "./Socket";
@@ -61,9 +62,11 @@ export default function Sockets() {
                     alignContent="start"
                     p="1rem"
                 >
-                    {sockets.map(socket => (
-                        <Socket socket={socket} key={socket.id} />
-                    ))}
+                    <AnimatePresence>
+                        {sockets.map(socket => (
+                            <Socket socket={socket} key={socket.id} />
+                        ))}
+                    </AnimatePresence>
                 </Grid>
             ) : (
                 <Text p="1rem" as="h2">
