@@ -1,4 +1,4 @@
-import { Flex } from "@chakra-ui/layout";
+import { Flex, FlexProps } from "@chakra-ui/layout";
 import { AbsoluteCenter, Text } from "@chakra-ui/react";
 import { Spinner } from "@chakra-ui/spinner";
 import { motion } from "framer-motion";
@@ -26,6 +26,6 @@ export default function PageSpinner() {
                     Connecting...
                 </Text>
             </AbsoluteCenter>
-        </Flex>
+        </Motion>
     );
 }
