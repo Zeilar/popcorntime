@@ -1,12 +1,20 @@
 import { useDisclosure } from "@chakra-ui/hooks";
 import { DeleteIcon, InfoOutlineIcon } from "@chakra-ui/icons";
-import { AbsoluteCenter, Box, Flex, Grid, Text } from "@chakra-ui/layout";
+import {
+    AbsoluteCenter,
+    Box,
+    Flex,
+    FlexProps,
+    Grid,
+    Text,
+} from "@chakra-ui/layout";
 import { Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/menu";
 import { SocketContext } from "domains/admin/contexts";
 import { IRoom } from "domains/common/@types/room";
 import { Prompt } from "domains/common/components/modals";
 import Button from "domains/common/components/styles/button";
 import { WebsocketContext } from "domains/common/contexts";
+import { motion } from "framer-motion";
 import { useContext } from "react";
 import InfoModal from "./InfoModal";
 import Socket from "./Socket";
@@ -24,9 +32,9 @@ export default function Room({ room }: IProps) {
     const { adminSocket } = useContext(WebsocketContext);
     const socketContext = useContext(SocketContext);
 
-    const sockets = socketContext.sockets.filter(socket =>
-        room.sockets.includes(socket.id)
-    );
+    const sockets = socketContext.getSocketsInRoom(room);
+
+    const Motion = motion<FlexProps>(Flex);
 
     const placeholderAmount = maxSockets - room.sockets.length;
 
@@ -37,12 +45,13 @@ export default function Room({ room }: IProps) {
     const isFull = room.sockets.length >= maxSockets;
 
     return (
-        <Flex
+        <Motion
             bgColor="gray.700"
             rounded="base"
             flexDir="column"
             alignItems="center"
             pos="relative"
+            exit={{ opacity: 0 }}
         >
             <Menu>
                 <MenuButton
@@ -153,6 +162,6 @@ export default function Room({ room }: IProps) {
                         />
                     ))}
             </Grid>
-        </Flex>
+        </Motion>
     );
 }

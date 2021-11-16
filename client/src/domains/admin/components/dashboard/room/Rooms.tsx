@@ -5,6 +5,7 @@ import { RoomContext } from "domains/admin/contexts";
 import { Prompt } from "domains/common/components/modals";
 import Button from "domains/common/components/styles/button";
 import { WebsocketContext } from "domains/common/contexts";
+import { AnimatePresence } from "framer-motion";
 import { useContext, useEffect } from "react";
 import { toast } from "react-toastify";
 import Room from "./Room";
@@ -61,9 +62,11 @@ export default function Rooms() {
                     alignContent="start"
                     p="1rem"
                 >
-                    {rooms.map(room => (
-                        <Room room={room} key={room.id} />
-                    ))}
+                    <AnimatePresence>
+                        {rooms.map(room => (
+                            <Room room={room} key={room.id} />
+                        ))}
+                    </AnimatePresence>
                 </Grid>
             ) : (
                 <Text p="1rem" as="h2">
