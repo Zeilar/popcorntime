@@ -22,6 +22,7 @@ export function Room() {
     const [sockets, setSockets] = useState<ISocket[]>([]);
     const [playlist, setPlaylist] = useState<string[]>([]);
     const [playlistInput, setPlaylistInput] = useState("");
+    const [playerState, setPlayerState] = useState<YT.PlayerState>(-1);
     const [isConnected, setIsConnected] = useState(false);
     const { publicSocket } = useContext(WebsocketContext);
     const player = useRef<YouTube>(null);
@@ -31,13 +32,42 @@ export function Room() {
         player.current?.getInternalPlayer();
 
     function play() {
-        internalPlayer?.playVideo();
+        if (!internalPlayer) {
+            return;
+        }
+        internalPlayer.playVideo();
         publicSocket.emit("video:play");
     }
 
     function pause() {
-        internalPlayer?.pauseVideo();
+        if (!internalPlayer) {
+            return;
+        }
+        internalPlayer.pauseVideo();
         publicSocket.emit("video:pause");
+    }
+
+    async function skipBackward() {
+        if (!internalPlayer) {
+            return;
+        }
+        await internalPlayer.getPlayerState<true>();
+        internalPlayer.seekTo(
+            (await internalPlayer.getCurrentTime<true>()) - 15,
+            true
+        );
+        publicSocket.emit("video:skip:backward");
+    }
+
+    async function skipForward() {
+        if (!internalPlayer) {
+            return;
+        }
+        internalPlayer.seekTo(
+            (await internalPlayer.getCurrentTime<true>()) + 15,
+            true
+        );
+        publicSocket.emit("video:skip:forawrd");
     }
 
     useEffect(() => {
@@ -81,24 +111,43 @@ export function Room() {
             }
         );
 
+        return () => {
+            publicSocket
+                .off("room:socket:join")
+                .off("room:socket:leave")
+                .off("room:socket:update:color");
+        };
+    }, [publicSocket, internalPlayer]);
+
+    useEffect(() => {
         if (!internalPlayer) {
             return;
         }
 
-        publicSocket.on("video:play", () => {
+        publicSocket.on("video:play", async () => {
             internalPlayer.playVideo();
         });
-        publicSocket.on("video:pause", () => {
+        publicSocket.on("video:pause", async () => {
             internalPlayer.pauseVideo();
         });
-
+        publicSocket.on("video:skip:forward", async () => {
+            internalPlayer.seekTo(
+                (await internalPlayer.getCurrentTime<true>()) + 15,
+                true
+            );
+        });
+        publicSocket.on("video:skip:backward", async () => {
+            internalPlayer.seekTo(
+                (await internalPlayer.getCurrentTime<true>()) - 15,
+                true
+            );
+        });
         return () => {
             publicSocket
                 .off("video:play")
                 .off("video:pause")
-                .off("room:socket:join")
-                .off("room:socket:leave")
-                .off("room:socket:update:color");
+                .off("video:skip:backward")
+                .off("video:skip:forward");
         };
     }, [publicSocket, internalPlayer]);
 
@@ -107,11 +156,11 @@ export function Room() {
             toast.info("You were kicked from the room.");
             push("/");
         });
-        publicSocket.on("room:destroy", () => {
+        publicSocket.once("room:destroy", () => {
             toast.info("The room has been shut down.");
             push("/");
         });
-        publicSocket.on("room:connection:error", (message: string) => {
+        publicSocket.once("room:connection:error", (message: string) => {
             toast.error(message);
             push("/");
         });
@@ -129,7 +178,18 @@ export function Room() {
         };
     }, [publicSocket]);
 
-    // TODO: use "light" prop for playlist thumbnails
+    useEffect(() => {
+        if (!internalPlayer) {
+            return;
+        }
+        function onStateChange(e: YT.PlayerEvent) {
+            setPlayerState(e.target.getPlayerState());
+        }
+        internalPlayer.addEventListener("onStateChange", onStateChange);
+        return () => {
+            internalPlayer.removeEventListener("onStateChange", onStateChange);
+        };
+    }, [internalPlayer]);
 
     // TODO: have some button that shows room info (status, room id, sockets etc)
 
@@ -158,8 +218,29 @@ export function Room() {
                     />
                 </Box>
                 <Flex justify="center" align="center">
-                    <Button.Icon onClick={play} icon="mdiPlay" />
-                    <Button.Icon onClick={pause} icon="mdiPause" />
+                    <Button.Icon
+                        tooltip="Skip backward 15 seconds"
+                        icon="mdiSkipBackward"
+                        onClick={skipBackward}
+                    />
+                    {playerState === 1 ? (
+                        <Button.Icon
+                            tooltip="Pause"
+                            onClick={pause}
+                            icon="mdiPause"
+                        />
+                    ) : (
+                        <Button.Icon
+                            tooltip="Play"
+                            onClick={play}
+                            icon="mdiPlay"
+                        />
+                    )}
+                    <Button.Icon
+                        tooltip="Skip forward 15 seconds"
+                        icon="mdiSkipForward"
+                        onClick={skipForward}
+                    />
                 </Flex>
             </Flex>
             <Chat roomId={roomId} sockets={sockets} />

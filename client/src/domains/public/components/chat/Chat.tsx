@@ -172,7 +172,8 @@ export function Chat({ roomId }: IProps) {
                             <Message key={message.id} message={message} />
                         ))}
                     </Flex>
-                    <Box as="form" onSubmit={sendMessage} mt="auto" p="1rem">
+                    <Divider mt="auto" />
+                    <Box as="form" onSubmit={sendMessage} p="1rem">
                         <Textarea
                             onKeyDown={inputHandler}
                             forwardRef={input}

@@ -1,5 +1,8 @@
 declare namespace YT {
     interface Player {
-        getPlayerState(): Promise<PlayerState>;
+        // @ts-ignore
+        getPlayerState<TPromise extends true>(): Promise<PlayerState>;
+        // @ts-expect-error
+        getCurrentTime<TPromise extends true>(): Promise<number>;
     }
 }
