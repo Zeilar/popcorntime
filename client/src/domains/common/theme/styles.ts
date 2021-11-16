@@ -51,5 +51,13 @@ export const styles = {
         h6: {
             fontSize: "md",
         },
+        ".chakra-switch__track": {
+            "&[data-checked]": {
+                background: "var(--chakra-colors-brand-default) !important",
+            },
+            "&[data-focus]": {
+                boxShadow: "none !important",
+            },
+        },
     },
 };

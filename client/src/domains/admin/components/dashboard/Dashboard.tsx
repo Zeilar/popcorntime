@@ -18,6 +18,7 @@ import { Color } from "domains/common/@types/color";
 import Button from "domains/common/components/styles/button";
 import { Tooltip } from "@chakra-ui/react";
 import PageSpinner from "domains/common/components/styles/PageSpinner";
+import { AnimatePresence } from "framer-motion";
 
 export default function Dashboard() {
     const { dispatchRooms } = useContext(RoomContext);
@@ -119,7 +120,7 @@ export default function Dashboard() {
             gridTemplateColumns="25rem 1fr"
             pb="1rem"
         >
-            {isLoading && <PageSpinner />}
+            <AnimatePresence>{isLoading && <PageSpinner />}</AnimatePresence>
             <Flex
                 flexDir="column"
                 bgColor="gray.700"
