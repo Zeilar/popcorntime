@@ -50,9 +50,8 @@ export default function Socket({ socket }: IProps) {
                 onClick={() => kick(socket.id)}
                 flexShrink={0}
                 pointerEvents={isLoading ? "none" : undefined}
-            >
-                <CloseIcon maxW="100%" maxH="100%" />
-            </Button.Icon>
+                chakra={CloseIcon}
+            />
         </Flex>
     );
 }

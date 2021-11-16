@@ -220,25 +220,25 @@ export function Room() {
                 <Flex justify="center" align="center">
                     <Button.Icon
                         tooltip="Skip backward 15 seconds"
-                        icon="mdiSkipBackward"
+                        mdi="mdiSkipBackward"
                         onClick={skipBackward}
                     />
                     {playerState === 1 ? (
                         <Button.Icon
                             tooltip="Pause"
                             onClick={pause}
-                            icon="mdiPause"
+                            mdi="mdiPause"
                         />
                     ) : (
                         <Button.Icon
                             tooltip="Play"
                             onClick={play}
-                            icon="mdiPlay"
+                            mdi="mdiPlay"
                         />
                     )}
                     <Button.Icon
                         tooltip="Skip forward 15 seconds"
-                        icon="mdiSkipForward"
+                        mdi="mdiSkipForward"
                         onClick={skipForward}
                     />
                 </Flex>

@@ -77,7 +77,7 @@ export default function Socket({ socket }: IProps) {
                 <MenuButton pointerEvents="none">
                     <Button.Icon
                         as="div"
-                        icon="mdiDotsVertical"
+                        mdi="mdiDotsVertical"
                         pointerEvents="all"
                     />
                 </MenuButton>

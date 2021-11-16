@@ -13,7 +13,6 @@ import { IMessage } from "domains/common/@types/message";
 import { ISocket } from "domains/common/@types/socket";
 import Message from "domains/common/components/ChatMessage";
 import Textarea from "../styles/Textarea";
-import Icon from "../styles/icon";
 import { MeContext } from "../../contexts";
 import { ChatSettings } from "./";
 import { useLocalStorage, useOnClickOutside } from "domains/common/hooks";
@@ -147,14 +146,14 @@ export function Chat({ roomId }: IProps) {
                         onClick={toggle}
                         tooltip="Close chat"
                         ml="auto"
-                        icon="mdiArrowCollapseRight"
+                        mdi="mdiArrowCollapseRight"
                     />
                 ) : (
                     <Button.Icon
                         onClick={toggle}
                         tooltip="Open chat"
                         ml="auto"
-                        icon="mdiArrowExpandLeft"
+                        mdi="mdiArrowExpandLeft"
                     />
                 )}
             </Flex>
@@ -183,7 +182,10 @@ export function Chat({ roomId }: IProps) {
                     </Box>
                     <Box p="0.5rem">
                         <Box pos="relative" w="1rem" h="1rem" ref={settingsEl}>
-                            <Icon.Settings onClick={toggleSettings} />
+                            <Button.Icon
+                                mdi="mdiCog"
+                                onClick={toggleSettings}
+                            />
                             {settingsOpen && <ChatSettings />}
                         </Box>
                     </Box>

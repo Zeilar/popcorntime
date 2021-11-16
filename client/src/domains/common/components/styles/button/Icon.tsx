@@ -4,14 +4,23 @@ import * as MdiIcons from "@mdi/js";
 import MdiIcon from "@mdi/react";
 import Icon from "@chakra-ui/icon";
 import { Tooltip } from "@chakra-ui/tooltip";
+import { IconProps } from "@chakra-ui/icons";
+import { ComponentWithAs } from "@chakra-ui/react";
 
 interface IProps extends ButtonProps {
     children?: ReactNode;
-    icon?: keyof typeof MdiIcons;
+    mdi?: keyof typeof MdiIcons;
+    chakra?: ComponentWithAs<"svg", IconProps>;
     tooltip?: string;
 }
 
-export function IconButton({ children, icon, tooltip, ...props }: IProps) {
+export function IconButton({
+    children,
+    mdi,
+    chakra,
+    tooltip,
+    ...props
+}: IProps) {
     const Wrapper = tooltip ? Tooltip : Fragment;
     const tooltipProps: any = tooltip
         ? { label: tooltip, placement: "top", hasArrow: true }
@@ -25,18 +34,16 @@ export function IconButton({ children, icon, tooltip, ...props }: IProps) {
                 variant="ghost"
                 minW="auto"
                 p={0}
-                w="2.5rem"
-                h="2.5rem"
+                w="2rem"
+                h="2rem"
                 {...props}
             >
-                {icon && (
-                    <Icon
-                        w="1.5rem"
-                        h="1.5rem"
-                        as={MdiIcon}
-                        path={MdiIcons[icon]}
-                    />
-                )}
+                <Icon
+                    maxW="1.5rem"
+                    maxH="1.5rem"
+                    as={mdi ? MdiIcon : chakra}
+                    path={mdi ? MdiIcons[mdi] : undefined}
+                />
                 {children}
             </Button>
         </Wrapper>

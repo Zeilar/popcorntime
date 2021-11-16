@@ -155,7 +155,7 @@ export default function Dashboard() {
                 <Tooltip label="Refresh data" placement="top">
                     <Box w="fit-content">
                         <Button.Icon
-                            icon="mdiRefresh"
+                            mdi="mdiRefresh"
                             onClick={() => adminSocket.emit("data:get")}
                         />
                     </Box>

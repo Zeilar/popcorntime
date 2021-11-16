@@ -62,7 +62,7 @@ export default function Room({ room }: IProps) {
                 >
                     <Button.Icon
                         as="div"
-                        icon="mdiDotsVertical"
+                        mdi="mdiDotsVertical"
                         pointerEvents="all"
                     />
                 </MenuButton>
@@ -107,9 +107,8 @@ export default function Room({ room }: IProps) {
                 top="3rem"
                 onClick={infoDisclosure.onOpen}
                 tooltip="Details"
-            >
-                <InfoOutlineIcon />
-            </Button.Icon>
+                chakra={InfoOutlineIcon}
+            />
             <Box
                 stroke="brand.default"
                 pos="relative"
