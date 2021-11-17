@@ -38,10 +38,8 @@ export default function ChatMessage({ message }: IProps) {
         <Motion
             alignItems="center"
             p="0.5rem"
-            mt={1}
             _odd={{ bgColor: "gray.500" }}
             bgColor="gray.700"
-            _first={{ marginTop: 0 }}
             {...notSentStyling}
             {...animationStyling}
         >

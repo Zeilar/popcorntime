@@ -43,6 +43,7 @@ export default function Playlist({ roomId, playlist }: IProps) {
                     />
                 </Box>
             </Flex>
+            <Divider />
             <Flex gridGap="0.5rem" p="0.5rem" overflowX="auto">
                 {playlist.map(video => (
                     <Box w="10rem">

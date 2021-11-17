@@ -140,6 +140,13 @@ io.on("connection", socket => {
         room.add(_socket);
     });
 
+    socket.on(
+        "room:playlist:add",
+        (payload: { roomId: string; videoId: string }) => {
+            //
+        }
+    );
+
     socket.on("video:play", () => {
         const room = _socket.room;
         if (!room) {

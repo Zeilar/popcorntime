@@ -154,12 +154,7 @@ export function Chat({ roomId }: IProps) {
             <Divider />
             {isOpen && (
                 <>
-                    <Flex
-                        flexDir="column"
-                        overflowY="auto"
-                        p="0.5rem"
-                        ref={chatElement}
-                    >
+                    <Flex flexDir="column" overflowY="auto" ref={chatElement}>
                         {filteredMessages.map(message => (
                             <Message key={message.id} message={message} />
                         ))}
