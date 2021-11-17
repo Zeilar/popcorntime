@@ -14,13 +14,7 @@ interface IProps extends ButtonProps {
     tooltip?: string;
 }
 
-export function IconButton({
-    children,
-    mdi,
-    chakra,
-    tooltip,
-    ...props
-}: IProps) {
+export function IconButton({ children, mdi, tooltip, ...props }: IProps) {
     const Wrapper = tooltip ? Tooltip : Fragment;
     const tooltipProps: any = tooltip
         ? { label: tooltip, placement: "top", hasArrow: true }
@@ -38,12 +32,15 @@ export function IconButton({
                 h="2rem"
                 {...props}
             >
-                <Icon
-                    maxW="1.5rem"
-                    maxH="1.5rem"
-                    as={mdi ? MdiIcon : chakra}
-                    path={mdi ? MdiIcons[mdi] : undefined}
-                />
+                {mdi && (
+                    <Icon
+                        w="1.5rem"
+                        h="1.5rem"
+                        maxW="75%"
+                        as={MdiIcon}
+                        path={MdiIcons[mdi]}
+                    />
+                )}
                 {children}
             </Button>
         </Wrapper>

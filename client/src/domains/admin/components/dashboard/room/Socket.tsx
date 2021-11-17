@@ -1,4 +1,3 @@
-import { CloseIcon } from "@chakra-ui/icons";
 import { Flex, FlexProps, Text } from "@chakra-ui/layout";
 import { ISocket } from "domains/common/@types/socket";
 import Button from "domains/common/components/styles/button";
@@ -50,7 +49,7 @@ export default function Socket({ socket }: IProps) {
                 onClick={() => kick(socket.id)}
                 flexShrink={0}
                 pointerEvents={isLoading ? "none" : undefined}
-                chakra={CloseIcon}
+                mdi="mdiClose"
             />
         </Flex>
     );

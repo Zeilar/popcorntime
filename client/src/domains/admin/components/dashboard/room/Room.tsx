@@ -1,5 +1,5 @@
 import { useDisclosure } from "@chakra-ui/hooks";
-import { DeleteIcon, InfoOutlineIcon } from "@chakra-ui/icons";
+import { DeleteIcon } from "@chakra-ui/icons";
 import {
     AbsoluteCenter,
     Box,
@@ -107,7 +107,7 @@ export default function Room({ room }: IProps) {
                 top="3rem"
                 onClick={infoDisclosure.onOpen}
                 tooltip="Details"
-                chakra={InfoOutlineIcon}
+                mdi="mdiInformationOutline"
             />
             <Box
                 stroke="brand.default"

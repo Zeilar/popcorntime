@@ -16,7 +16,6 @@ import Sockets from "./socket/Sockets";
 import { WebsocketContext } from "domains/common/contexts";
 import { Color } from "domains/common/@types/color";
 import Button from "domains/common/components/styles/button";
-import { Tooltip } from "@chakra-ui/react";
 import PageSpinner from "domains/common/components/styles/PageSpinner";
 import { AnimatePresence } from "framer-motion";
 
@@ -152,14 +151,11 @@ export default function Dashboard() {
                     Sockets
                 </DashboardItem>
                 <Divider my="1rem" />
-                <Tooltip label="Refresh data" placement="top">
-                    <Box w="fit-content">
-                        <Button.Icon
-                            mdi="mdiRefresh"
-                            onClick={() => adminSocket.emit("data:get")}
-                        />
-                    </Box>
-                </Tooltip>
+                <Button.Icon
+                    tooltip="Refresh data"
+                    mdi="mdiRefresh"
+                    onClick={() => adminSocket.emit("data:get")}
+                />
             </Flex>
             {!isLoading && (
                 <Switch>
