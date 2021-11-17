@@ -3,7 +3,7 @@ import { useLocalStorage } from "domains/common/hooks";
 
 interface IContext {
     showServerMessages: boolean | null;
-    setShowServerMessages: React.Dispatch<React.SetStateAction<boolean | null>>;
+    setShowServerMessages: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 interface IProps {

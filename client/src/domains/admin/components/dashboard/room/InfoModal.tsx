@@ -24,7 +24,7 @@ type TabState = "details" | "messages" | "playlist";
 
 export default function InfoModal({ isOpen, onClose, room }: IProps) {
     const [showServerMessagesDefault, setShowServerMessagesDefault] =
-        useLocalStorage<boolean>("showServerMessages:admin");
+        useLocalStorage<boolean>("showServerMessages:admin", true);
     const [openTab, setOpenTab] = useState<TabState>("details");
     const [showServerMessages, setShowServerMessages] = useState(
         showServerMessagesDefault ?? false
