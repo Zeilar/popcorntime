@@ -35,7 +35,6 @@ export function MeContextProvider({ children }: IProps) {
             "connection:success",
             (payload: { socket: ISocket; roomId: string | null }) => {
                 setMe(payload.socket);
-                toast.success(`Welcome ${payload.socket.username}`);
             }
         );
         publicSocket.on("socket:update:color", (color: Color) => {
