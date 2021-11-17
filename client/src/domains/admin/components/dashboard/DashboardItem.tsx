@@ -4,7 +4,6 @@ import { NavLink } from "react-router-dom";
 import { Icon } from "@chakra-ui/icons";
 import { Icon as MdiIcon } from "@mdi/react";
 import * as MdiIcons from "@mdi/js";
-import { useTheme } from "@chakra-ui/react";
 
 interface IProps {
     to: string;
@@ -13,7 +12,6 @@ interface IProps {
 }
 
 export default function DashboardItem({ to, children, icon }: IProps) {
-    const theme = useTheme();
     return (
         <Flex
             alignItems="center"
@@ -24,9 +22,9 @@ export default function DashboardItem({ to, children, icon }: IProps) {
             to={to}
             transition="background-color 0.05s"
             _hover={{ bgColor: "gray.500" }}
-            _active={{ bgColor: theme.colors.gray["300"] }}
+            _active={{ bgColor: "gray.300" }}
             _activeLink={{
-                bgColor: theme.colors.brand.default,
+                bgColor: "brand.default",
             }}
             p="0.75rem"
             fontSize="xl"
