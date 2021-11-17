@@ -99,7 +99,6 @@ export default function InfoModal({ isOpen, onClose, room }: IProps) {
                                     </Text>
                                     <Switch
                                         mb="1rem"
-                                        w="fit-content"
                                         defaultChecked={showServerMessages}
                                         checked={showServerMessages}
                                         onChange={e =>

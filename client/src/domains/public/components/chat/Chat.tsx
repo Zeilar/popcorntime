@@ -183,6 +183,7 @@ export function Chat({ roomId }: IProps) {
                     <Box p="0.5rem">
                         <Box pos="relative" w="1rem" h="1rem" ref={settingsEl}>
                             <Button.Icon
+                                tooltip="Settings"
                                 mdi="mdiCog"
                                 onClick={toggleSettings}
                             />

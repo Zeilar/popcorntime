@@ -7,7 +7,6 @@ import {
 } from "react";
 import { ISocket } from "../../common/@types/socket";
 import { Color } from "../../common/@types/color";
-import { toast } from "react-toastify";
 import { WebsocketContext } from "domains/common/contexts";
 
 interface IContext {

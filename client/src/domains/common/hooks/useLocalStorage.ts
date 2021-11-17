@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 
 export function useLocalStorage<T>(key: string, initial?: T) {
     const [data, setData] = useState<T | null>(() => {
-        if (initial !== undefined) {
+        const data = localStorage.getItem(key);
+        if (data === null && initial !== undefined) {
             return initial;
         }
-        const data = localStorage.getItem(key);
         return typeof data === "string" ? (JSON.parse(data) as T) : null;
     });
 
