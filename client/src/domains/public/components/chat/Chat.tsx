@@ -13,12 +13,11 @@ import { IMessage } from "domains/common/@types/message";
 import { ISocket } from "domains/common/@types/socket";
 import Message from "domains/common/components/ChatMessage";
 import Textarea from "../styles/Textarea";
-import { MeContext } from "../../contexts";
+import { MeContext, ChatContext } from "domains/public/contexts";
 import { ChatSettings } from "./";
 import { useLocalStorage, useOnClickOutside } from "domains/common/hooks";
 import { WebsocketContext } from "domains/common/contexts";
 import Button from "domains/common/components/styles/button";
-import { ChatContext } from "domains/public/contexts/ChatContext";
 
 interface IProps {
     roomId: string;
