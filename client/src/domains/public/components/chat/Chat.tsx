@@ -147,10 +147,27 @@ export function Chat({ roomId }: IProps) {
         <Flex
             flexDir="column"
             h="100vh"
-            w={isOpen ? "25rem" : "3.5rem"}
+            w={isOpen ? "25rem" : "3rem"}
             borderLeft="1px solid"
             borderColor="inherit"
         >
+            <Flex align="center" p="0.5rem">
+                {isOpen ? (
+                    <Button.Icon
+                        onClick={toggle}
+                        tooltip="Close chat"
+                        ml="auto"
+                        mdi="mdiArrowCollapseRight"
+                    />
+                ) : (
+                    <Button.Icon
+                        onClick={toggle}
+                        tooltip="Open chat"
+                        ml="auto"
+                        mdi="mdiArrowExpandLeft"
+                    />
+                )}
+            </Flex>
             <Divider />
             {isOpen && (
                 <>
