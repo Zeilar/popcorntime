@@ -128,8 +128,6 @@ export function Room() {
         };
     }, [publicSocket, internalPlayer, dispatchSockets]);
 
-    console.log({ sockets });
-
     useEffect(() => {
         if (!internalPlayer) {
             return;
