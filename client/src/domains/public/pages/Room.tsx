@@ -3,7 +3,7 @@ import { Redirect, useHistory, useParams } from "react-router";
 import { ISocket } from "domains/common/@types/socket";
 import YouTube from "react-youtube";
 import { toast } from "react-toastify";
-import { Box } from "@chakra-ui/layout";
+import { Box, Divider } from "@chakra-ui/layout";
 import { Chat } from "../components/chat";
 import { validate } from "uuid";
 import { Flex } from "@chakra-ui/react";
@@ -217,7 +217,14 @@ export function Room() {
                         videoId={playlist[0]}
                     />
                 </Box>
-                <Flex justify="center" align="center">
+                <Divider />
+                <Flex
+                    justify="center"
+                    align="center"
+                    bgColor="gray.800"
+                    py="1rem"
+                    sx={{ gap: "0.5rem" }}
+                >
                     <Button.Icon
                         tooltip="Skip backward 15 seconds"
                         mdi="mdiSkipBackward"

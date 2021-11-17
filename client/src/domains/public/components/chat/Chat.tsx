@@ -189,7 +189,11 @@ export function Chat({ roomId }: IProps) {
                         />
                     </Box>
                     <Box px="1rem" pb="1rem">
-                        <Box pos="relative" ref={settingsEl}>
+                        <Box
+                            pos="relative"
+                            ref={settingsEl}
+                            display="inline-flex"
+                        >
                             <Button.Icon
                                 tooltip="Settings"
                                 mdi="mdiCog"
