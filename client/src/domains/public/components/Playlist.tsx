@@ -1,13 +1,14 @@
 import { Img } from "@chakra-ui/image";
 import { Input } from "@chakra-ui/input";
-import { Box, Divider, Flex, Text } from "@chakra-ui/layout";
+import { Box, Divider, Flex } from "@chakra-ui/layout";
 import { WebsocketContext } from "domains/common/contexts";
 import { useContext, useState } from "react";
 import { toast } from "react-toastify";
+import { IVideo } from "../@types/video";
 
 interface IProps {
     roomId: string;
-    playlist: string[];
+    playlist: IVideo[];
 }
 
 export default function Playlist({ roomId, playlist }: IProps) {
@@ -47,9 +48,9 @@ export default function Playlist({ roomId, playlist }: IProps) {
             <Divider />
             <Flex gridGap="0.5rem" p="0.5rem" overflowX="auto">
                 {playlist.map(video => (
-                    <Box w="10rem">
+                    <Box w="10rem" key={video.videoId}>
                         <Img
-                            src={`https://img.youtube.com/vi/${video}/0.jpg`}
+                            src={`https://img.youtube.com/vi/${video.videoId}/0.jpg`}
                         />
                     </Box>
                 ))}

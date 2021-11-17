@@ -13,7 +13,7 @@ import { IMessage } from "domains/common/@types/message";
 import { ISocket } from "domains/common/@types/socket";
 import Message from "domains/common/components/ChatMessage";
 import Textarea from "../styles/Textarea";
-import { MeContext, ChatContext } from "domains/public/contexts";
+import { MeContext, RoomContext } from "domains/public/contexts";
 import { ChatSettings } from "./";
 import { useLocalStorage, useOnClickOutside } from "domains/common/hooks";
 import { WebsocketContext } from "domains/common/contexts";
@@ -27,7 +27,7 @@ interface IProps {
 
 export function Chat({ roomId }: IProps) {
     const [showChat, setShowChat] = useLocalStorage<boolean>("showChat", true);
-    const { showServerMessages } = useContext(ChatContext);
+    const { showServerMessages } = useContext(RoomContext);
     const { me } = useContext(MeContext);
     const [isOpen, setIsOpen] = useState(showChat);
     const [messages, setMessages] = useState<IMessage[]>([]);
@@ -73,16 +73,14 @@ export function Chat({ roomId }: IProps) {
             "message:error",
             (payload: IErrorPayload & { id: string }) => {
                 setMessages(messages =>
-                    messages.map(message => {
-                        // If message already had en error, do nothing
-                        if (message.notSent) {
-                            return message;
-                        }
-                        return {
-                            ...message,
-                            notSent: message.id === payload.id,
-                        };
-                    })
+                    messages.map(message =>
+                        message.notSent
+                            ? message
+                            : {
+                                  ...message,
+                                  notSent: message.id === payload.id,
+                              }
+                    )
                 );
                 toast.error(`${payload.message} ${payload.reason}`);
             }

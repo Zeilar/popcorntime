@@ -2,7 +2,7 @@ import { Flex, FlexProps, Text } from "@chakra-ui/layout";
 import { Divider, Switch } from "@chakra-ui/react";
 import { colors } from "data/colors";
 import Button from "domains/common/components/styles/button";
-import { ChatContext } from "domains/public/contexts/ChatContext";
+import { RoomContext } from "domains/public/contexts/RoomContext";
 import { motion } from "framer-motion";
 import { useContext } from "react";
 
@@ -10,7 +10,7 @@ const MotionBox = motion<FlexProps>(Flex);
 
 export function ChatSettings() {
     const { showServerMessages, setShowServerMessages } =
-        useContext(ChatContext);
+        useContext(RoomContext);
     return (
         <MotionBox
             flexDir="column"

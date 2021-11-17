@@ -1,2 +1,2 @@
 export * from "./MeContext";
-export * from "./ChatContext";
+export * from "./RoomContext";

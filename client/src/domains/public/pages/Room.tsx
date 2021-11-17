@@ -5,16 +5,17 @@ import YouTube from "react-youtube";
 import { toast } from "react-toastify";
 import { Box, Divider } from "@chakra-ui/layout";
 import { Chat } from "../components/chat";
-import { validate } from "uuid";
+import { v4 as uuidv4, validate } from "uuid";
 import { Flex } from "@chakra-ui/react";
 import { Color } from "domains/common/@types/color";
 import Button from "domains/common/components/styles/button";
 import { WebsocketContext } from "domains/common/contexts";
 import PageSpinner from "domains/common/components/styles/PageSpinner";
 import { AnimatePresence } from "framer-motion";
-import { Img } from "@chakra-ui/image";
 import Playlist from "../components/Playlist";
 import { IErrorPayload } from "domains/common/@types/listener";
+import { RoomContext } from "../contexts";
+import * as Actions from "../state/actions/room";
 
 interface IParams {
     roomId: string;
@@ -22,14 +23,13 @@ interface IParams {
 
 export function Room() {
     const { roomId } = useParams<IParams>();
-    const [sockets, setSockets] = useState<ISocket[]>([]);
-    const [playlist, setPlaylist] = useState<string[]>([]);
-    const [playlistInput, setPlaylistInput] = useState("");
     const [playerState, setPlayerState] = useState<YT.PlayerState>(-1);
     const [isConnected, setIsConnected] = useState(false);
     const { publicSocket } = useContext(WebsocketContext);
     const player = useRef<YouTube>(null);
     const { push } = useHistory();
+    const { playlist, dispatchPlaylist, sockets, dispatchSockets } =
+        useContext(RoomContext);
 
     const internalPlayer: YT.Player | undefined =
         player.current?.getInternalPlayer();
@@ -78,39 +78,45 @@ export function Room() {
         publicSocket.once(
             "room:join",
             (payload: { sockets: ISocket[]; playlist: string[] }) => {
-                setSockets(payload.sockets);
-                setPlaylist(payload.playlist);
+                dispatchSockets({
+                    type: Actions.SET_SOCKETS,
+                    sockets: payload.sockets,
+                });
+                dispatchPlaylist({
+                    type: Actions.SET_PLAYLIST,
+                    playlist: payload.playlist.map(video => ({
+                        id: uuidv4(),
+                        videoId: video,
+                    })),
+                });
                 setIsConnected(true);
             }
         );
         return () => {
             publicSocket.off("room:join");
         };
-    }, [publicSocket, roomId]);
+    }, [publicSocket, roomId, dispatchPlaylist, dispatchSockets]);
 
     useEffect(() => {
         publicSocket.on("room:socket:join", (socket: ISocket) => {
-            setSockets(sockets => [...sockets, socket]);
+            dispatchSockets({
+                type: Actions.ADD_SOCKET,
+                socketId: socket.id,
+            });
         });
         publicSocket.on("room:socket:leave", (socket: ISocket) => {
-            setSockets(sockets =>
-                sockets.filter(element => element.id !== socket.id)
-            );
+            dispatchSockets({
+                type: Actions.REMOVE_SOCKET,
+                socketId: socket.id,
+            });
         });
         publicSocket.on(
             "room:socket:update:color",
             (payload: { color: Color; socketId: string }) => {
-                setSockets(sockets =>
-                    sockets.map(socket => {
-                        if (socket.id !== payload.socketId) {
-                            return socket;
-                        }
-                        return {
-                            ...socket,
-                            color: payload.color,
-                        };
-                    })
-                );
+                dispatchSockets({
+                    type: Actions.EDIT_SOCKET_COLOR,
+                    ...payload,
+                });
             }
         );
 
@@ -120,7 +126,9 @@ export function Room() {
                 .off("room:socket:leave")
                 .off("room:socket:update:color");
         };
-    }, [publicSocket, internalPlayer]);
+    }, [publicSocket, internalPlayer, dispatchSockets]);
+
+    console.log({ sockets });
 
     useEffect(() => {
         if (!internalPlayer) {
@@ -217,7 +225,7 @@ export function Room() {
                         opts={{ width: "100%", height: "100%" }}
                         ref={player}
                         containerClassName="youtube"
-                        videoId={playlist[0]}
+                        videoId={playlist[0]?.videoId}
                     />
                 </Box>
                 <Divider />

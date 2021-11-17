@@ -6,7 +6,7 @@ import { AbsoluteCenter } from "@chakra-ui/layout";
 import { Spinner } from "@chakra-ui/spinner";
 import * as Pages from "./pages";
 import { WebsocketContext } from "domains/common/contexts";
-import { ChatContextProvider } from "./contexts/ChatContext";
+import { RoomContextProvider } from "./contexts/RoomContext";
 import { IErrorPayload } from "domains/common/@types/listener";
 
 export default function Router() {
@@ -65,9 +65,9 @@ export default function Router() {
                 <Pages.Home />
             </Route>
             <Route path="/room/:roomId" exact>
-                <ChatContextProvider>
+                <RoomContextProvider>
                     <Pages.Room />
-                </ChatContextProvider>
+                </RoomContextProvider>
             </Route>
             <Route>404</Route>
         </Switch>
