@@ -18,6 +18,7 @@ import { ChatSettings } from "./";
 import { useLocalStorage, useOnClickOutside } from "domains/common/hooks";
 import { WebsocketContext } from "domains/common/contexts";
 import Button from "domains/common/components/styles/button";
+import { ChatContext } from "domains/public/contexts/ChatContext";
 
 interface IProps {
     roomId: string;
@@ -26,6 +27,7 @@ interface IProps {
 
 export function Chat({ roomId }: IProps) {
     const [showChat, setShowChat] = useLocalStorage<boolean>("showChat", true);
+    const { showServerMessages } = useContext(ChatContext);
     const { me } = useContext(MeContext);
     const [isOpen, setIsOpen] = useState(showChat);
     const [messages, setMessages] = useState<IMessage[]>([]);
@@ -133,6 +135,12 @@ export function Chat({ roomId }: IProps) {
         chatElement.current?.scrollTo({ top: 9999, behavior: "smooth" });
     }, [messages]);
 
+    console.log({ showServerMessages });
+
+    const filteredMessages = showServerMessages
+        ? messages
+        : messages.filter(message => !message.serverMessage);
+
     return (
         <Flex
             flexDir="column"
@@ -167,7 +175,7 @@ export function Chat({ roomId }: IProps) {
                         p="0.5rem"
                         ref={chatElement}
                     >
-                        {messages.map(message => (
+                        {filteredMessages.map(message => (
                             <Message key={message.id} message={message} />
                         ))}
                     </Flex>
