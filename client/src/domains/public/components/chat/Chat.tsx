@@ -191,8 +191,8 @@ export function Chat({ roomId }: IProps) {
                                     mdi="mdiCog"
                                     onClick={toggleSettings}
                                 />
+                                {settingsOpen && <ChatSettings />}
                             </Box>
-                            {settingsOpen && <ChatSettings />}
                             <Button.Icon
                                 tooltip="Send"
                                 ml="auto"
