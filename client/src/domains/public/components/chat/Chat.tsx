@@ -133,9 +133,7 @@ export function Chat({ roomId }: IProps) {
     useEffect(() => {
         scrollChat.current = false;
         chatElement.current?.scrollTo({ top: 9999, behavior: "smooth" });
-    }, [messages]);
-
-    console.log({ showServerMessages });
+    }, [messages, showServerMessages]);
 
     const filteredMessages = showServerMessages
         ? messages
