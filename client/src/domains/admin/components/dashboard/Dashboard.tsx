@@ -18,6 +18,7 @@ import { Color } from "domains/common/@types/color";
 import Button from "domains/common/components/styles/button";
 import PageSpinner from "domains/common/components/styles/PageSpinner";
 import { AnimatePresence } from "framer-motion";
+import { IErrorPayload } from "domains/common/@types/listener";
 
 export default function Dashboard() {
     const { dispatchRooms } = useContext(RoomContext);
@@ -27,8 +28,8 @@ export default function Dashboard() {
 
     useEffect(() => {
         adminSocket.emit("data:get");
-        adminSocket.on("error", (message: string) => {
-            toast.error(message);
+        adminSocket.on("error", (payload: IErrorPayload) => {
+            toast.error(`${payload.message} ${payload.reason}`);
         });
         adminSocket.on("connect_error", error => {
             toast.error(error.message);

@@ -18,7 +18,7 @@ import { ChatSettings } from "./";
 import { useLocalStorage, useOnClickOutside } from "domains/common/hooks";
 import { WebsocketContext } from "domains/common/contexts";
 import Button from "domains/common/components/styles/button";
-import Playlist from "../Playlist";
+import { IErrorPayload } from "domains/common/@types/listener";
 
 interface IProps {
     roomId: string;
@@ -71,7 +71,7 @@ export function Chat({ roomId }: IProps) {
 
         publicSocket.on(
             "message:error",
-            (payload: { id: string; error: string }) => {
+            (payload: IErrorPayload & { id: string }) => {
                 setMessages(messages =>
                     messages.map(message => {
                         // If message already had en error, do nothing
@@ -84,7 +84,7 @@ export function Chat({ roomId }: IProps) {
                         };
                     })
                 );
-                toast.error(payload.error);
+                toast.error(`${payload.message} ${payload.reason}`);
             }
         );
 

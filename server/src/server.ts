@@ -38,10 +38,7 @@ export const ws = new WS();
 io.on("connection", socket => {
     const _socket = new Socket(socket.id);
     ws.addSocket(_socket);
-    socket.emit("connection:success", {
-        socket: _socket.dto,
-        roomId: _socket.room?.id,
-    });
+    socket.emit("connection:success", _socket.dto);
 
     socket.on("socket:update:color", (color: Color) => {
         _socket.setColor(color);
@@ -64,28 +61,31 @@ io.on("connection", socket => {
 
         if (!room) {
             return socket.emit("message:error", {
-                error: "You must be in a room to do that.",
+                message: "Failed sending message.",
+                reason: "You must be in a room to do that.",
                 id,
             });
         }
 
         if (!room.hasSocket(_socket)) {
             return socket.emit("message:error", {
-                error: "You do not belong to that room.",
+                message: "Failed sending message.",
+                reason: "You do not belong to that room.",
                 id,
             });
         }
 
         if (!body) {
             return socket.emit("message:error", {
-                error: "Invalid message.",
+                message: "Invalid message.",
                 id,
             });
         }
 
         if (body.length > 255) {
             return socket.emit("message:error", {
-                error: "Message is too long. Max 255 characters.",
+                message: "Failed sending message.",
+                reason: "Message is too long. Max 255 characters.",
                 id,
             });
         }
@@ -103,13 +103,16 @@ io.on("connection", socket => {
 
     socket.on("room:create", (roomId: string) => {
         if (!validate(roomId)) {
-            return socket.emit("error", "Invalid room id.");
+            return socket.emit("error", {
+                message: "Failed creating room.",
+                reason: "Invalid room id.",
+            });
         }
         if ([...ws.rooms].length > 20) {
-            return socket.emit(
-                "error",
-                "There are too many rooms already, please try again later."
-            );
+            return socket.emit("error", {
+                message: "Failed creating room.",
+                reason: "There are too many rooms already, please try again later.",
+            });
         }
         const room = new Room(roomId);
         ws.addRoom(room);
@@ -118,23 +121,26 @@ io.on("connection", socket => {
 
     socket.on("room:join", (roomId: string) => {
         if (!validate(roomId)) {
-            return socket.emit("room:connection:error", "Invalid room id.");
+            return socket.emit("room:connection:error", {
+                message: "Failed joining room.",
+                reason: "Invalid room id.",
+            });
         }
 
         const room = ws.rooms.get(roomId);
 
         if (!room) {
-            return socket.emit(
-                "room:connection:error",
-                "That room does not exist."
-            );
+            return socket.emit("room:connection:error", {
+                message: "Failed joining room.",
+                reason: "That room does not exist.",
+            });
         }
 
         if (room.sockets.length >= Room.MAX_SOCKETS) {
-            return socket.emit(
-                "error",
-                "The room is full. Try again at a later time, or create a new one."
-            );
+            return socket.emit("error", {
+                message: "Failed joining room.",
+                reason: "The room is full. Try again at a later time, or create a new one.",
+            });
         }
 
         room.add(_socket);
@@ -143,14 +149,24 @@ io.on("connection", socket => {
     socket.on(
         "room:playlist:add",
         (payload: { roomId: string; videoId: string }) => {
-            //
+            const room = ws.rooms.get(payload.roomId);
+
+            if (!room) {
+                return socket.emit("error", {
+                    message: "Failed adding video to playlist.",
+                    reason: "That room does not exist.",
+                });
+            }
         }
     );
 
     socket.on("video:play", () => {
         const room = _socket.room;
         if (!room) {
-            return socket.emit("error", "You must be in a room to do that.");
+            return socket.emit("error", {
+                message: "Failed playing video for room.",
+                reason: "You must be in a room to do that.",
+            });
         }
         // Make it so the sender gets this at the same time as the others to sync them better.
         socket.to(room.id).emit("video:play");
@@ -159,21 +175,27 @@ io.on("connection", socket => {
     socket.on("video:pause", () => {
         const room = _socket.room;
         if (!room) {
-            return socket.emit("error", "You must be in a room to do that.");
+            return socket.emit("error", {
+                message: "Failed pausing video for room.",
+                reason: "You must be in a room to do that.",
+            });
         }
-        // Make it so the sender gets this at the same time as the others to sync them better.
         socket.to(room.id).emit("video:pause");
     });
 
     socket.on("room:leave", () => {
         const room = _socket.room;
-        if (room) {
-            room.remove(_socket);
-            adminNamespace.emit("room:leave", {
-                roomId: room?.id,
-                socketId: _socket.id,
+        if (!room) {
+            return socket.emit("error", {
+                message: "Failed leaving room.",
+                reason: "You must be in a room to do that.",
             });
         }
+        room.remove(_socket);
+        adminNamespace.emit("room:leave", {
+            roomId: room.id,
+            socketId: _socket.id,
+        });
     });
 
     socket.on("disconnect", () => {
@@ -201,13 +223,19 @@ adminNamespace.on("connection", socket => {
         const _socket = ws.sockets.get(socketId);
 
         if (!_socket) {
-            return socket.emit("error", "That socket does not exist.");
+            return socket.emit("error", {
+                message: "Failed kicking socket from room.",
+                reason: "That socket does not exist.",
+            });
         }
 
         const room = _socket.room;
 
         if (!room) {
-            return socket.emit("error", "Socket does not belong to a room.");
+            return socket.emit("error", {
+                message: "Failed kicking socket from room.",
+                reason: "Socket does not belong to a room.",
+            });
         }
 
         io.to(_socket.id).emit("room:kick");
@@ -219,7 +247,10 @@ adminNamespace.on("connection", socket => {
         const _socket = ws.sockets.get(socketId);
 
         if (!_socket) {
-            return socket.emit("error", "That socket does not exist.");
+            return socket.emit("error", {
+                message: "Failed destroying socket.",
+                reason: "That socket does not exist.",
+            });
         }
 
         io.to(_socket.id).emit("socket:destroy");
@@ -232,7 +263,10 @@ adminNamespace.on("connection", socket => {
         const room = ws.rooms.get(roomId);
 
         if (!room) {
-            return socket.emit("error", "That room does not exist.");
+            return socket.emit("error", {
+                message: "Failed destroying room.",
+                reason: "That room does not exist.",
+            });
         }
 
         ws.deleteRoom(room);

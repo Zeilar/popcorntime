@@ -7,6 +7,7 @@ import { Spinner } from "@chakra-ui/spinner";
 import * as Pages from "./pages";
 import { WebsocketContext } from "domains/common/contexts";
 import { ChatContextProvider } from "./contexts/ChatContext";
+import { IErrorPayload } from "domains/common/@types/listener";
 
 export default function Router() {
     const { me, setMe } = useContext(MeContext);
@@ -14,8 +15,8 @@ export default function Router() {
     const { publicSocket } = useContext(WebsocketContext);
 
     useEffect(() => {
-        publicSocket.on("error", (error: string) => {
-            toast.error(error);
+        publicSocket.on("error", (payload: IErrorPayload) => {
+            toast.error(`${payload.message}\n${payload.reason}`);
         });
         publicSocket.on("connect_failed", (error: any) => {
             console.error(error);

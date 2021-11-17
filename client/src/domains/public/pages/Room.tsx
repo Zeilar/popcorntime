@@ -14,6 +14,7 @@ import PageSpinner from "domains/common/components/styles/PageSpinner";
 import { AnimatePresence } from "framer-motion";
 import { Img } from "@chakra-ui/image";
 import Playlist from "../components/Playlist";
+import { IErrorPayload } from "domains/common/@types/listener";
 
 interface IParams {
     roomId: string;
@@ -162,8 +163,8 @@ export function Room() {
             toast.info("The room has been shut down.");
             push("/");
         });
-        publicSocket.once("room:connection:error", (message: string) => {
-            toast.error(message);
+        publicSocket.once("room:connection:error", (payload: IErrorPayload) => {
+            toast.error(`${payload.message} ${payload.reason}`);
             push("/");
         });
         return () => {

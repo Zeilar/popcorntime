@@ -11,6 +11,7 @@ ReactDOM.render(
         <ChakraProvider theme={theme}>
             <App />
             <ToastContainer
+                style={{ whiteSpace: "pre-wrap" }}
                 theme="dark"
                 hideProgressBar={true}
                 limit={3}

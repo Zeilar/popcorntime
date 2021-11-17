@@ -30,12 +30,9 @@ export function MeContextProvider({ children }: IProps) {
     }
 
     useEffect(() => {
-        publicSocket.once(
-            "connection:success",
-            (payload: { socket: ISocket; roomId: string | null }) => {
-                setMe(payload.socket);
-            }
-        );
+        publicSocket.once("connection:success", (socket: ISocket) => {
+            setMe(socket);
+        });
         publicSocket.on("socket:update:color", (color: Color) => {
             changeColor(color);
         });

@@ -28,6 +28,7 @@ export default function Playlist({ roomId, playlist }: IProps) {
             toast.error("Invalid URL.");
             return;
         }
+        setInput("");
         publicSocket.emit("room:playlist:add", { roomId, videoId });
     }
 
