@@ -133,10 +133,10 @@ export function Room() {
             return;
         }
 
-        publicSocket.on("video:play", async () => {
+        publicSocket.on("video:play", () => {
             internalPlayer.playVideo();
         });
-        publicSocket.on("video:pause", async () => {
+        publicSocket.on("video:pause", () => {
             internalPlayer.pauseVideo();
         });
         publicSocket.on("video:skip:forward", async () => {
