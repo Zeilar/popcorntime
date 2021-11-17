@@ -71,7 +71,6 @@ export default function InfoModal({ isOpen, onClose, room }: IProps) {
                             </Tab.Button>
                         </Grid>
                         <Flex
-                            className="custom-scrollbar scrollbar-inset"
                             flexDir="column"
                             maxH="60vh"
                             overflowY="auto"
@@ -108,7 +107,6 @@ export default function InfoModal({ isOpen, onClose, room }: IProps) {
                                         }
                                     />
                                     <Flex
-                                        className="custom-scrollbar scrollbar-inset"
                                         flexDir="column"
                                         overflowY="auto"
                                         mt="0.5rem"

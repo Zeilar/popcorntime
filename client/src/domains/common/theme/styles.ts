@@ -25,13 +25,14 @@ export const styles = {
         "::-webkit-scrollbar": {
             width: "1.2rem",
         },
-        ".custom-scrollbar::-webkit-scrollbar-thumb": {
+        "::-webkit-scrollbar-thumb": {
+            backgroundClip: "padding-box",
+            border: "4px solid transparent",
             backgroundColor: "brand.default",
             borderRadius: 100,
         },
-        ".scrollbar-inset::-webkit-scrollbar-thumb": {
-            backgroundClip: "padding-box",
-            border: "4px solid transparent",
+        "::-webkit-scrollbar-track": {
+            backgroundColor: "gray.900",
         },
         h1: {
             fontSize: "5xl",

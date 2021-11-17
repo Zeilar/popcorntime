@@ -171,7 +171,6 @@ export function Chat({ roomId }: IProps) {
             {isOpen && (
                 <>
                     <Flex
-                        className="custom-scrollbar scrollbar-inset"
                         flexDir="column"
                         overflowY="auto"
                         p="0.5rem"

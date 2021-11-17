@@ -30,11 +30,7 @@ export default function Sockets() {
     }, [adminSocket, prompt]);
 
     return (
-        <Flex
-            className="custom-scrollbar scrollbar-inset"
-            flexDir="column"
-            overflowY="auto"
-        >
+        <Flex flexDir="column" overflowY="auto">
             <Prompt
                 onSubmit={destroyAll}
                 onClose={prompt.onClose}
