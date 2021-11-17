@@ -1,4 +1,4 @@
-import { Flex, FlexProps, Grid, Text } from "@chakra-ui/layout";
+import { Flex, FlexProps, Text } from "@chakra-ui/layout";
 import { Divider, Switch } from "@chakra-ui/react";
 import { colors } from "data/colors";
 import Button from "domains/common/components/styles/button";
@@ -15,7 +15,7 @@ export function ChatSettings() {
             flexDir="column"
             pos="absolute"
             top="-1rem"
-            right={0}
+            left={0}
             bgColor="gray.900"
             borderRadius="base"
             boxShadow="lg"
@@ -32,11 +32,11 @@ export function ChatSettings() {
             <Text size="lg" mb="0.5rem">
                 Color
             </Text>
-            <Grid gridTemplateColumns="repeat(8, 2rem)" gridGap="0.5rem">
+            <Flex sx={{ gap: "0.5rem" }}>
                 {colors.map(color => (
                     <Button.Color key={color} color={color} />
                 ))}
-            </Grid>
+            </Flex>
             <Divider my="1rem" />
             <Text size="lg" mb="0.5rem">
                 Show server messages

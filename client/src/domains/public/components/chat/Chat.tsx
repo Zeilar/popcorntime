@@ -180,8 +180,8 @@ export function Chat({ roomId }: IProps) {
                             resize="none"
                         />
                     </Box>
-                    <Box p="0.5rem">
-                        <Box pos="relative" w="1rem" h="1rem" ref={settingsEl}>
+                    <Box px="1rem" pb="1rem">
+                        <Box pos="relative" ref={settingsEl}>
                             <Button.Icon
                                 tooltip="Settings"
                                 mdi="mdiCog"
