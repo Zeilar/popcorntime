@@ -6,11 +6,6 @@ interface IProps extends TextProps {
     socket: ISocket;
 }
 
-function abbreviateUsername(username: string) {
-    const [adjective, name] = username.split(" ");
-    return `${adjective[0]}${name[0]}`;
-}
-
 export default function SocketAvatar({ socket, ...props }: IProps) {
     return (
         <Tooltip
@@ -28,10 +23,11 @@ export default function SocketAvatar({ socket, ...props }: IProps) {
                 userSelect="none"
                 rounded="base"
                 p="0.5rem"
+                textTransform="uppercase"
                 bgColor={`${socket.color}.600`}
                 {...props}
             >
-                {abbreviateUsername(socket.username)}
+                {socket.username[0]}
             </Text>
         </Tooltip>
     );

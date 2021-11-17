@@ -1,8 +1,8 @@
-import { adjectives, animals, Config } from "unique-names-generator";
+import { animals, Config } from "unique-names-generator";
 
 export const nameConfig: Config = {
-    dictionaries: [adjectives, animals],
+    dictionaries: [animals],
     separator: " ",
     style: "capital",
-    length: 2,
+    length: 1,
 };
