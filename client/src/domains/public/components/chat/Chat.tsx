@@ -18,6 +18,7 @@ import { ChatSettings } from "./";
 import { useLocalStorage, useOnClickOutside } from "domains/common/hooks";
 import { WebsocketContext } from "domains/common/contexts";
 import Button from "domains/common/components/styles/button";
+import Playlist from "../Playlist";
 
 interface IProps {
     roomId: string;
@@ -146,28 +147,10 @@ export function Chat({ roomId }: IProps) {
         <Flex
             flexDir="column"
             h="100vh"
-            bgColor="gray.800"
             w={isOpen ? "25rem" : "3.5rem"}
             borderLeft="1px solid"
             borderColor="inherit"
         >
-            <Flex align="center" p="0.5rem">
-                {isOpen ? (
-                    <Button.Icon
-                        onClick={toggle}
-                        tooltip="Close chat"
-                        ml="auto"
-                        mdi="mdiArrowCollapseRight"
-                    />
-                ) : (
-                    <Button.Icon
-                        onClick={toggle}
-                        tooltip="Open chat"
-                        ml="auto"
-                        mdi="mdiArrowExpandLeft"
-                    />
-                )}
-            </Flex>
             <Divider />
             {isOpen && (
                 <>

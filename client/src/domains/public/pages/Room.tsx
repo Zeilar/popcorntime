@@ -12,6 +12,8 @@ import Button from "domains/common/components/styles/button";
 import { WebsocketContext } from "domains/common/contexts";
 import PageSpinner from "domains/common/components/styles/PageSpinner";
 import { AnimatePresence } from "framer-motion";
+import { Img } from "@chakra-ui/image";
+import Playlist from "../components/Playlist";
 
 interface IParams {
     roomId: string;
@@ -202,7 +204,7 @@ export function Room() {
     }
 
     return (
-        <Flex w="100%" bgColor="gray.900">
+        <Flex w="100%">
             <AnimatePresence>{!isConnected && <PageSpinner />}</AnimatePresence>
             <Flex flexDir="column" flexGrow={1}>
                 <Box
@@ -221,7 +223,6 @@ export function Room() {
                 <Flex
                     justify="center"
                     align="center"
-                    bgColor="gray.800"
                     py="1rem"
                     gridGap="0.5rem"
                 >
@@ -249,6 +250,8 @@ export function Room() {
                         onClick={skipForward}
                     />
                 </Flex>
+                <Divider />
+                <Playlist roomId={roomId} playlist={playlist} />
             </Flex>
             <Chat roomId={roomId} sockets={sockets} />
         </Flex>
