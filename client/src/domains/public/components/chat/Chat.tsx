@@ -148,6 +148,8 @@ export function Chat({ roomId }: IProps) {
             h="100vh"
             bgColor="gray.800"
             w={isOpen ? "25rem" : "3.5rem"}
+            borderLeft="1px solid"
+            borderColor="inherit"
         >
             <Flex align="center" p="0.5rem">
                 {isOpen ? (

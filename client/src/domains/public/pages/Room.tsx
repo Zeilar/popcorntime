@@ -223,7 +223,7 @@ export function Room() {
                     align="center"
                     bgColor="gray.800"
                     py="1rem"
-                    sx={{ gap: "0.5rem" }}
+                    gridGap="0.5rem"
                 >
                     <Button.Icon
                         tooltip="Skip backward 15 seconds"
