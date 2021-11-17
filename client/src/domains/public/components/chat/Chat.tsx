@@ -186,18 +186,22 @@ export function Chat({ roomId }: IProps) {
                         />
                     </Box>
                     <Box px="1rem" pb="1rem">
-                        <Box
-                            pos="relative"
-                            ref={settingsEl}
-                            display="inline-flex"
-                        >
-                            <Button.Icon
-                                tooltip="Settings"
-                                mdi="mdiCog"
-                                onClick={toggleSettings}
-                            />
+                        <Flex pos="relative">
+                            <Box pos="relative" ref={settingsEl}>
+                                <Button.Icon
+                                    tooltip="Settings"
+                                    mdi="mdiCog"
+                                    onClick={toggleSettings}
+                                />
+                            </Box>
                             {settingsOpen && <ChatSettings />}
-                        </Box>
+                            <Button.Icon
+                                tooltip="Send"
+                                ml="auto"
+                                mdi="mdiSend"
+                                onClick={sendMessage}
+                            />
+                        </Flex>
                     </Box>
                 </>
             )}
