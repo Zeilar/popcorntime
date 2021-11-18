@@ -17,6 +17,7 @@ interface IContext {
     dispatchSockets: React.Dispatch<any>;
     activeVideo: number;
     setActiveVideo: React.Dispatch<React.SetStateAction<number>>;
+    isPLaylistItemActive(id: string): boolean;
 }
 
 interface IProps {
@@ -34,6 +35,12 @@ export function RoomContextProvider({ children }: IProps) {
     const [playlist, dispatchPlaylist] = useReducer(playlistReducer, []);
     const [sockets, dispatchSockets] = useReducer(socketsReducer, []);
 
+    function isPLaylistItemActive(videoId: string) {
+        return (
+            playlist.findIndex(video => video.id === videoId) === activeVideo
+        );
+    }
+
     const values: IContext = {
         showServerMessages,
         setShowServerMessages,
@@ -43,6 +50,7 @@ export function RoomContextProvider({ children }: IProps) {
         dispatchSockets,
         activeVideo,
         setActiveVideo,
+        isPLaylistItemActive,
     };
 
     return (

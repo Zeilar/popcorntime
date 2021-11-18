@@ -57,6 +57,8 @@ export function activeVideoReducer(state: number, action: any): number {
             return state + 1;
         case Actions.PLAYLIST_PREVIOUS:
             return state - 1;
+        case Actions.PLAYLIST_SET:
+            return action.index;
         default:
             return state;
     }

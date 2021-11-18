@@ -14,7 +14,7 @@ interface IProps {
 
 export default function PlaylistItem({ video }: IProps) {
     const { publicSocket } = useContext(WebsocketContext);
-    const { dispatchPlaylist, activeVideo } = useContext(RoomContext);
+    const { dispatchPlaylist, isPLaylistItemActive } = useContext(RoomContext);
     const { roomId } = useParams<IRoomParams>();
 
     function remove() {
