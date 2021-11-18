@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useReducer } from "react";
+import { createContext, ReactNode, useReducer, useState } from "react";
 import { useLocalStorage } from "domains/common/hooks";
 import { IVideo } from "../@types/video";
 import { playlistReducer, socketsReducer } from "../state/reducers/room";
@@ -11,6 +11,8 @@ interface IContext {
     dispatchPlaylist: React.Dispatch<any>;
     sockets: ISocket[];
     dispatchSockets: React.Dispatch<any>;
+    activeVideo: IVideo | null;
+    setActiveVideo: React.Dispatch<React.SetStateAction<IVideo | null>>;
 }
 
 interface IProps {
@@ -25,6 +27,7 @@ export function RoomContextProvider({ children }: IProps) {
         true
     );
     const [playlist, dispatchPlaylist] = useReducer(playlistReducer, []);
+    const [activeVideo, setActiveVideo] = useState<IVideo | null>(null);
     const [sockets, dispatchSockets] = useReducer(socketsReducer, []);
 
     const values: IContext = {
@@ -34,6 +37,8 @@ export function RoomContextProvider({ children }: IProps) {
         dispatchPlaylist,
         sockets,
         dispatchSockets,
+        activeVideo,
+        setActiveVideo,
     };
 
     return (
