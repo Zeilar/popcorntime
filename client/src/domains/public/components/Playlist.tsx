@@ -25,10 +25,9 @@ export default function Playlist({ roomId, playlist }: IProps) {
             return;
         }
         const offsetLeft = wrapperEl.current.scrollLeft;
-        // Negative number means user rolled up
         wrapperEl.current.scrollTo({
             behavior: "smooth",
-            left: e.deltaY >= 0 ? offsetLeft + 200 : offsetLeft - 200,
+            left: e.deltaY >= 0 ? offsetLeft + 200 : offsetLeft - 200, // Negative number means user rolled up
         });
     }
 
