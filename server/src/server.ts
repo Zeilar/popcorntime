@@ -165,7 +165,7 @@ io.on("connection", socket => {
 
     socket.on(
         "room:playlist:remove",
-        (payload: { roomId: string; video: IVideo }) => {
+        (payload: { roomId: string; videoId: string }) => {
             const room = ws.rooms.get(payload.roomId);
 
             if (!room) {
@@ -175,7 +175,7 @@ io.on("connection", socket => {
                 });
             }
 
-            socket.to(room.id).emit("room:playlist:remove", payload.video.id);
+            socket.to(room.id).emit("room:playlist:remove", payload.videoId);
         }
     );
 
