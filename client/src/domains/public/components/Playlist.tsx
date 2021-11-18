@@ -27,7 +27,7 @@ export default function Playlist({ roomId, playlist }: IProps) {
         const offsetLeft = wrapperEl.current.scrollLeft;
         wrapperEl.current.scrollTo({
             behavior: "smooth",
-            left: e.deltaY >= 0 ? offsetLeft + 200 : offsetLeft - 200, // Negative number means user rolled up
+            left: offsetLeft + e.deltaY,
         });
     }
 
