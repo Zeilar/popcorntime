@@ -27,7 +27,7 @@ export default function Playlist({ roomId, playlist }: IProps) {
         const offsetLeft = wrapperEl.current.scrollLeft;
         wrapperEl.current.scrollTo({
             behavior: "smooth",
-            left: offsetLeft + e.deltaY,
+            left: offsetLeft + e.deltaY * 2,
         });
     }
 
