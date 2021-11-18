@@ -213,7 +213,7 @@ export function Room() {
     return (
         <Flex w="100%">
             <AnimatePresence>{!isConnected && <PageSpinner />}</AnimatePresence>
-            <Flex flexDir="column" flexGrow={1}>
+            <Flex flexDir="column" flexGrow={1} overflowX="auto">
                 <Box flexGrow={1} sx={{ ".youtube": { height: "100%" } }}>
                     <YouTube
                         opts={{ width: "100%", height: "100%" }}

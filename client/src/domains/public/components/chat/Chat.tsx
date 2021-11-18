@@ -145,7 +145,7 @@ export function Chat({ roomId }: IProps) {
         <Flex
             flexDir="column"
             h="100vh"
-            w={isOpen ? "25rem" : "3rem"}
+            minW={isOpen ? "25rem" : "3rem"}
             borderLeft="1px solid"
             borderColor="inherit"
         >
