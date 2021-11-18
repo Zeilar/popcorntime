@@ -137,6 +137,13 @@ io.on("connection", socket => {
             });
         }
 
+        if (room.id !== roomId) {
+            return socket.emit("room:connection:error", {
+                message: "Failed joining room.",
+                reason: "You are already in a room.",
+            });
+        }
+
         if (room.sockets.length >= Room.MAX_SOCKETS) {
             return socket.emit("error", {
                 message: "Failed joining room.",
@@ -205,10 +212,7 @@ io.on("connection", socket => {
     socket.on("room:leave", () => {
         const room = _socket.room;
         if (!room) {
-            return socket.emit("error", {
-                message: "Failed leaving room.",
-                reason: "You must be in a room to do that.",
-            });
+            return;
         }
         room.remove(_socket);
         adminNamespace.emit("room:leave", {
