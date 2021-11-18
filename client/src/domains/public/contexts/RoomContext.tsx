@@ -1,13 +1,11 @@
-import {
-    createContext,
-    ReactNode,
-    useEffect,
-    useReducer,
-    useState,
-} from "react";
+import { createContext, ReactNode, useReducer, useState } from "react";
 import { useLocalStorage } from "domains/common/hooks";
 import { IVideo } from "../@types/video";
-import { playlistReducer, socketsReducer } from "../state/reducers/room";
+import {
+    activeVideoReducer,
+    playlistReducer,
+    socketsReducer,
+} from "../state/reducers/room";
 import { ISocket } from "domains/common/@types/socket";
 
 interface IContext {
@@ -17,8 +15,8 @@ interface IContext {
     dispatchPlaylist: React.Dispatch<any>;
     sockets: ISocket[];
     dispatchSockets: React.Dispatch<any>;
-    activeVideo: IVideo | null;
-    setActiveVideo: React.Dispatch<React.SetStateAction<IVideo | null>>;
+    activeVideo: number;
+    setActiveVideo: React.Dispatch<React.SetStateAction<number>>;
 }
 
 interface IProps {
@@ -32,8 +30,8 @@ export function RoomContextProvider({ children }: IProps) {
         "showServerMessages:chat",
         true
     );
+    const [activeVideo, setActiveVideo] = useReducer(activeVideoReducer, 0);
     const [playlist, dispatchPlaylist] = useReducer(playlistReducer, []);
-    const [activeVideo, setActiveVideo] = useState<IVideo | null>(null);
     const [sockets, dispatchSockets] = useReducer(socketsReducer, []);
 
     const values: IContext = {
@@ -46,10 +44,6 @@ export function RoomContextProvider({ children }: IProps) {
         activeVideo,
         setActiveVideo,
     };
-
-    useEffect(() => {
-        setActiveVideo(playlist[0]);
-    }, [playlist]);
 
     return (
         <RoomContext.Provider value={values}>{children}</RoomContext.Provider>

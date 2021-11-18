@@ -50,3 +50,14 @@ export function socketsReducer(state: ISocket[], action: any): ISocket[] {
             return state;
     }
 }
+
+export function activeVideoReducer(state: number, action: any): number {
+    switch (action.type) {
+        case Actions.PLAYLIST_NEXT:
+            return state + 1;
+        case Actions.PLAYLIST_PREVIOUS:
+            return state - 1;
+        default:
+            return state;
+    }
+}
