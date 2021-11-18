@@ -1,5 +1,5 @@
 import { Input } from "@chakra-ui/input";
-import { Box, Divider, Flex } from "@chakra-ui/layout";
+import { Box, Divider, Flex, Grid } from "@chakra-ui/layout";
 import { WebsocketContext } from "domains/common/contexts";
 import { useContext, useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
@@ -84,7 +84,7 @@ export default function Playlist({ roomId, playlist }: IProps) {
     }
 
     return (
-        <Flex flexDir="column" maxW="100rem">
+        <Flex flexDir="column">
             <Flex p="0.5rem" flexDir="column">
                 <Box as="form" onSubmit={add}>
                     <Input
@@ -96,17 +96,18 @@ export default function Playlist({ roomId, playlist }: IProps) {
                 </Box>
             </Flex>
             <Divider />
-            <Flex
+            <Grid
                 overflowX="auto"
+                gridTemplateColumns={`repeat(${playlist.length}, 10rem)`}
                 h="10rem"
-                align="center"
+                alignItems="center"
                 onWheel={scrollHandler}
                 ref={wrapperEl}
             >
                 {playlist.map((video, i) => (
                     <PlaylistItem video={video} key={`${video.videoId}-${i}`} />
                 ))}
-            </Flex>
+            </Grid>
         </Flex>
     );
 }

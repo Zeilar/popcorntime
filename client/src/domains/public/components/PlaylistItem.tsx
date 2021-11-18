@@ -29,11 +29,11 @@ export default function PlaylistItem({ video }: IProps) {
     }
 
     return (
-        <Box onClick={remove} flexShrink={0} h="10rem" maxH="100%">
+        <Box onClick={remove} h="100%">
             <Img
                 src={`https://img.youtube.com/vi/${video.videoId}/0.jpg`}
                 objectFit="cover"
-                maxH="100%"
+                h="100%"
             />
         </Box>
     );
