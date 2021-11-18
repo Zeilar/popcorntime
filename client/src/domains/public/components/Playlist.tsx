@@ -51,6 +51,9 @@ export default function Playlist({ roomId, playlist }: IProps) {
 
     function add(e: React.FormEvent) {
         e.preventDefault();
+        if (!input) {
+            return;
+        }
         let url: URL;
         try {
             url = new URL(input);
