@@ -28,8 +28,13 @@ export function Room() {
     const { publicSocket } = useContext(WebsocketContext);
     const player = useRef<YouTube>(null);
     const { push } = useHistory();
-    const { playlist, dispatchPlaylist, sockets, dispatchSockets } =
-        useContext(RoomContext);
+    const {
+        playlist,
+        dispatchPlaylist,
+        sockets,
+        dispatchSockets,
+        activeVideo,
+    } = useContext(RoomContext);
 
     const internalPlayer: YT.Player | undefined =
         player.current?.getInternalPlayer();
@@ -219,7 +224,7 @@ export function Room() {
                         opts={{ width: "100%", height: "100%" }}
                         ref={player}
                         containerClassName="youtube"
-                        videoId={playlist[0]?.videoId}
+                        videoId={activeVideo?.videoId}
                     />
                 </Box>
                 <Divider />

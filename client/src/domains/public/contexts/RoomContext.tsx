@@ -1,4 +1,10 @@
-import { createContext, ReactNode, useReducer, useState } from "react";
+import {
+    createContext,
+    ReactNode,
+    useEffect,
+    useReducer,
+    useState,
+} from "react";
 import { useLocalStorage } from "domains/common/hooks";
 import { IVideo } from "../@types/video";
 import { playlistReducer, socketsReducer } from "../state/reducers/room";
@@ -40,6 +46,10 @@ export function RoomContextProvider({ children }: IProps) {
         activeVideo,
         setActiveVideo,
     };
+
+    useEffect(() => {
+        setActiveVideo(playlist[0]);
+    }, [playlist]);
 
     return (
         <RoomContext.Provider value={values}>{children}</RoomContext.Provider>
