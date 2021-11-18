@@ -12,6 +12,7 @@ import { Socket } from "./Socket";
 import { WS } from "./WS";
 import { Color } from "../@types/color";
 import Message from "./Message";
+import { IVideo } from "../@types/video";
 
 const clientPath = join(__dirname, "../../client");
 const { PORT, ADMIN_PASSWORD } = env;
@@ -148,7 +149,7 @@ io.on("connection", socket => {
 
     socket.on(
         "room:playlist:add",
-        (payload: { roomId: string; videoId: string }) => {
+        (payload: { roomId: string; video: IVideo }) => {
             const room = ws.rooms.get(payload.roomId);
 
             if (!room) {
@@ -157,6 +158,8 @@ io.on("connection", socket => {
                     reason: "That room does not exist.",
                 });
             }
+
+            socket.to(room.id).emit("room:playlist:add", payload.video);
         }
     );
 

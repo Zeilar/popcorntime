@@ -16,7 +16,7 @@ export function playlistReducer(state: IVideo[], action: any): IVideo[] {
         case Actions.SET_PLAYLIST:
             return action.playlist;
         case Actions.ADD_TO_PLAYLIST:
-            return [...state, ...action.playlist];
+            return [...state, action.video];
         case Actions.REMOVE_FROM_PLAYLIST:
             return state.filter(video => video.id !== action.id);
         default:

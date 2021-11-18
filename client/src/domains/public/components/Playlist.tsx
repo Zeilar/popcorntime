@@ -2,9 +2,12 @@ import { Img } from "@chakra-ui/image";
 import { Input } from "@chakra-ui/input";
 import { Box, Divider, Flex } from "@chakra-ui/layout";
 import { WebsocketContext } from "domains/common/contexts";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { v4 as uuidv4 } from "uuid";
 import { IVideo } from "../@types/video";
+import { RoomContext } from "../contexts";
+import { ADD_TO_PLAYLIST } from "../state/actions/room";
 
 interface IProps {
     roomId: string;
@@ -13,11 +16,27 @@ interface IProps {
 
 export default function Playlist({ roomId, playlist }: IProps) {
     const { publicSocket } = useContext(WebsocketContext);
+    const { dispatchPlaylist } = useContext(RoomContext);
     const [input, setInput] = useState("");
+
+    useEffect(() => {
+        publicSocket.on("room:playlist:add", (video: IVideo) => {
+            console.log("got video", video);
+        });
+        return () => {
+            publicSocket.off("room:playlist:add");
+        };
+    }, [publicSocket]);
 
     function add(e: React.FormEvent) {
         e.preventDefault();
-        const url = new URL(input);
+        let url: URL;
+        try {
+            url = new URL(input);
+        } catch (e) {
+            toast.error("Invalid URL.");
+            return;
+        }
         let videoId: string | null;
         if (url.hostname === "youtu.be") {
             const paths = url.pathname.slice(1).split("/");
@@ -30,6 +49,13 @@ export default function Playlist({ roomId, playlist }: IProps) {
             return;
         }
         setInput("");
+        dispatchPlaylist({
+            type: ADD_TO_PLAYLIST,
+            video: {
+                id: uuidv4(),
+                videoId,
+            },
+        });
         publicSocket.emit("room:playlist:add", { roomId, videoId });
     }
 
@@ -47,8 +73,8 @@ export default function Playlist({ roomId, playlist }: IProps) {
             </Flex>
             <Divider />
             <Flex gridGap="0.5rem" p="0.5rem" overflowX="auto">
-                {playlist.map(video => (
-                    <Box w="10rem" key={video.videoId}>
+                {playlist.map((video, i) => (
+                    <Box w="10rem" key={`${video.videoId}-${i}`}>
                         <Img
                             src={`https://img.youtube.com/vi/${video.videoId}/0.jpg`}
                         />
