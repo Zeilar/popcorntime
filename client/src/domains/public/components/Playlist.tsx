@@ -1,4 +1,3 @@
-import { Img } from "@chakra-ui/image";
 import { Input } from "@chakra-ui/input";
 import { Box, Divider, Flex } from "@chakra-ui/layout";
 import { WebsocketContext } from "domains/common/contexts";
@@ -7,7 +6,8 @@ import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
 import { IVideo } from "../@types/video";
 import { RoomContext } from "../contexts";
-import { ADD_TO_PLAYLIST } from "../state/actions/room";
+import { ADD_TO_PLAYLIST, REMOVE_FROM_PLAYLIST } from "../state/actions/room";
+import PlaylistItem from "./PlaylistItem";
 
 interface IProps {
     roomId: string;
@@ -21,12 +21,21 @@ export default function Playlist({ roomId, playlist }: IProps) {
 
     useEffect(() => {
         publicSocket.on("room:playlist:add", (video: IVideo) => {
-            console.log("got video", video);
+            dispatchPlaylist({
+                type: ADD_TO_PLAYLIST,
+                video,
+            });
+        });
+        publicSocket.on("room:playlist:remove", (videoId: string) => {
+            dispatchPlaylist({
+                type: REMOVE_FROM_PLAYLIST,
+                id: videoId,
+            });
         });
         return () => {
-            publicSocket.off("room:playlist:add");
+            publicSocket.off("room:playlist:add").off("room:playlist:remove");
         };
-    }, [publicSocket]);
+    }, [publicSocket, dispatchPlaylist]);
 
     function add(e: React.FormEvent) {
         e.preventDefault();
@@ -72,13 +81,15 @@ export default function Playlist({ roomId, playlist }: IProps) {
                 </Box>
             </Flex>
             <Divider />
-            <Flex gridGap="0.5rem" p="0.5rem" overflowX="auto">
+            <Flex
+                gridGap="0.5rem"
+                p="0.5rem"
+                overflowX="auto"
+                h="10rem"
+                align="center"
+            >
                 {playlist.map((video, i) => (
-                    <Box w="10rem" key={`${video.videoId}-${i}`}>
-                        <Img
-                            src={`https://img.youtube.com/vi/${video.videoId}/0.jpg`}
-                        />
-                    </Box>
+                    <PlaylistItem video={video} key={`${video.videoId}-${i}`} />
                 ))}
             </Flex>
         </Flex>

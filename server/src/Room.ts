@@ -5,6 +5,7 @@ import { uniqueNamesGenerator } from "unique-names-generator";
 import { nameConfig } from "../config/uniqueNamesGenerator";
 import Message from "./Message";
 import env from "../config/env";
+import { IVideo } from "../@types/video";
 
 const { ROOM_MAX_SOCKETS, ROOM_MAX_MESSAGES } = env;
 
@@ -13,7 +14,7 @@ export class Room {
     public static readonly MAX_MESSAGES = ROOM_MAX_MESSAGES;
     public sockets: Socket[] = [];
     public messages: Message[] = [];
-    public playlist: string[] = ["68ugkg9RePc"]; // YouTube video ids
+    public playlist: IVideo[] = [];
     public created_at: Date;
     public name: string;
 

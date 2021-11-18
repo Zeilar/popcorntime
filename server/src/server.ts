@@ -163,6 +163,22 @@ io.on("connection", socket => {
         }
     );
 
+    socket.on(
+        "room:playlist:remove",
+        (payload: { roomId: string; video: IVideo }) => {
+            const room = ws.rooms.get(payload.roomId);
+
+            if (!room) {
+                return socket.emit("error", {
+                    message: "Failed removing video to playlist.",
+                    reason: "That room does not exist.",
+                });
+            }
+
+            socket.to(room.id).emit("room:playlist:remove", payload.video.id);
+        }
+    );
+
     socket.on("video:play", () => {
         const room = _socket.room;
         if (!room) {
