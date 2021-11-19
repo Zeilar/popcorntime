@@ -1,5 +1,5 @@
 import { Input } from "@chakra-ui/input";
-import { Box, Divider, Flex } from "@chakra-ui/layout";
+import { Box, Divider, Flex, Text } from "@chakra-ui/layout";
 import { WebsocketContext } from "domains/common/contexts";
 import { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
@@ -80,6 +80,9 @@ export default function Playlist({ roomId, playlist }: IProps) {
             borderColor="inherit"
             w="15rem"
         >
+            <Text as="h2" p="0.5rem">
+                Playlist
+            </Text>
             <Flex p="0.5rem" flexDir="column">
                 <Box as="form" onSubmit={add}>
                     <Input
