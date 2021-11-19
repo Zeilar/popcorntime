@@ -16,6 +16,7 @@ import Playlist from "../components/Playlist";
 import { IErrorPayload } from "domains/common/@types/listener";
 import { RoomContext } from "../contexts";
 import * as Actions from "../state/actions/room";
+import { IVideo } from "../@types/video";
 
 interface IParams {
     roomId: string;
@@ -38,6 +39,16 @@ export function Room() {
 
     const internalPlayer: YT.Player | undefined =
         player.current?.getInternalPlayer();
+
+    async function sync() {
+        if (!internalPlayer) {
+            return;
+        }
+        publicSocket.emit(
+            "video:sync",
+            await internalPlayer.getCurrentTime<true>()
+        );
+    }
 
     function play() {
         if (!internalPlayer) {
@@ -82,7 +93,7 @@ export function Room() {
         publicSocket.emit("room:join", roomId);
         publicSocket.once(
             "room:join",
-            (payload: { sockets: ISocket[]; playlist: string[] }) => {
+            (payload: { sockets: ISocket[]; playlist: IVideo[] }) => {
                 dispatchSockets({
                     type: Actions.SET_SOCKETS,
                     sockets: payload.sockets,
@@ -247,6 +258,11 @@ export function Room() {
                         tooltip="Skip backward 15 seconds"
                         mdi="mdiSkipBackward"
                         onClick={skipBackward}
+                    />
+                    <Button.Icon
+                        mdi="mdiSync"
+                        tooltip="Sync with room"
+                        onClick={sync}
                     />
                     {playerState === 1 ? (
                         <Button.Icon

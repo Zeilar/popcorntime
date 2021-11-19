@@ -158,15 +158,13 @@ io.on("connection", socket => {
         "room:playlist:add",
         (payload: { roomId: string; video: IVideo }) => {
             const room = ws.rooms.get(payload.roomId);
-
             if (!room) {
                 return socket.emit("error", {
                     message: "Failed adding video to playlist.",
                     reason: "That room does not exist.",
                 });
             }
-
-            socket.to(room.id).emit("room:playlist:add", payload.video);
+            room.addToPlaylist(_socket, payload.video);
         }
     );
 
@@ -182,7 +180,7 @@ io.on("connection", socket => {
                 });
             }
 
-            socket.to(room.id).emit("room:playlist:remove", payload.videoId);
+            room.removeFromPlaylist(_socket, payload.videoId);
         }
     );
 

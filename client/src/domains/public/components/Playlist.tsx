@@ -72,15 +72,16 @@ export default function Playlist({ roomId, playlist }: IProps) {
             toast.error("Invalid URL.");
             return;
         }
+        const video = {
+            id: uuidv4(),
+            videoId,
+        };
         setInput("");
         dispatchPlaylist({
             type: ADD_TO_PLAYLIST,
-            video: {
-                id: uuidv4(),
-                videoId,
-            },
+            video,
         });
-        publicSocket.emit("room:playlist:add", { roomId, videoId });
+        publicSocket.emit("room:playlist:add", { roomId, video });
     }
 
     return (

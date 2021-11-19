@@ -7,11 +7,12 @@ import Message from "./Message";
 import env from "../config/env";
 import { IVideo } from "../@types/video";
 
-const { ROOM_MAX_SOCKETS, ROOM_MAX_MESSAGES } = env;
+const { ROOM_MAX_SOCKETS, ROOM_MAX_MESSAGES, ROOM_MAX_PLAYLIST } = env;
 
 export class Room {
     public static readonly MAX_SOCKETS = ROOM_MAX_SOCKETS;
     public static readonly MAX_MESSAGES = ROOM_MAX_MESSAGES;
+    public static readonly MAX_PLAYLIST = ROOM_MAX_PLAYLIST;
     public sockets: Socket[] = [];
     public messages: Message[] = [];
     public playlist: IVideo[] = [];
@@ -43,6 +44,19 @@ export class Room {
 
     public get socketsDto() {
         return this.sockets.map(socket => socket.id);
+    }
+
+    public addToPlaylist(sender: Socket, video: IVideo) {
+        if (this.playlist.length >= Room.MAX_PLAYLIST) {
+            this.playlist.shift();
+        }
+        this.playlist.push(video);
+        sender.ref.to(this.id).emit("room:playlist:add", video);
+    }
+
+    public removeFromPlaylist(sender: Socket, id: string) {
+        this.playlist = this.playlist.filter(video => video.id !== id);
+        sender.ref.to(this.id).emit("room:playlist:remove", id);
     }
 
     public hasSocket(socket: Socket) {
