@@ -5,7 +5,7 @@ import YouTube from "react-youtube";
 import { toast } from "react-toastify";
 import { Box, Divider } from "@chakra-ui/layout";
 import { Chat } from "../components/chat";
-import { v4 as uuidv4, validate } from "uuid";
+import { validate } from "uuid";
 import { Flex } from "@chakra-ui/react";
 import { Color } from "domains/common/@types/color";
 import Button from "domains/common/components/styles/button";
