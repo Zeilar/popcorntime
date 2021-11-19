@@ -100,10 +100,7 @@ export function Room() {
                 });
                 dispatchPlaylist({
                     type: Actions.SET_PLAYLIST,
-                    playlist: payload.playlist.map(video => ({
-                        id: uuidv4(),
-                        videoId: video,
-                    })),
+                    playlist: payload.playlist,
                 });
                 setIsConnected(true);
             }
@@ -238,6 +235,7 @@ export function Room() {
     return (
         <Flex w="100%">
             <AnimatePresence>{!isConnected && <PageSpinner />}</AnimatePresence>
+            <Playlist roomId={roomId} playlist={playlist} />
             <Flex flexDir="column" flexGrow={1} overflowX="auto">
                 <Box flexGrow={1} sx={{ ".youtube": { height: "100%" } }}>
                     <YouTube
@@ -285,8 +283,6 @@ export function Room() {
                         onClick={skipForward}
                     />
                 </Flex>
-                <Divider />
-                <Playlist roomId={roomId} playlist={playlist} />
             </Flex>
             <Chat roomId={roomId} sockets={sockets} />
         </Flex>

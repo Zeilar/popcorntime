@@ -1,7 +1,7 @@
 import { Input } from "@chakra-ui/input";
-import { Box, Divider, Flex, Grid } from "@chakra-ui/layout";
+import { Box, Divider, Flex } from "@chakra-ui/layout";
 import { WebsocketContext } from "domains/common/contexts";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
 import { IVideo } from "../@types/video";
@@ -18,18 +18,6 @@ export default function Playlist({ roomId, playlist }: IProps) {
     const { publicSocket } = useContext(WebsocketContext);
     const { dispatchPlaylist } = useContext(RoomContext);
     const [input, setInput] = useState("");
-    const wrapperEl = useRef<HTMLDivElement | null>(null);
-
-    function scrollHandler(e: React.WheelEvent) {
-        if (!wrapperEl.current) {
-            return;
-        }
-        const offsetLeft = wrapperEl.current.scrollLeft;
-        wrapperEl.current.scrollTo({
-            behavior: "smooth",
-            left: offsetLeft + e.deltaY * 2,
-        });
-    }
 
     useEffect(() => {
         publicSocket.on("room:playlist:add", (video: IVideo) => {
@@ -85,30 +73,29 @@ export default function Playlist({ roomId, playlist }: IProps) {
     }
 
     return (
-        <Flex flexDir="column">
+        <Flex
+            flexDir="column"
+            h="100%"
+            borderRight="1px solid"
+            borderColor="inherit"
+            w="10rem"
+        >
             <Flex p="0.5rem" flexDir="column">
                 <Box as="form" onSubmit={add}>
                     <Input
                         placeholder="Video URL"
-                        w="35rem"
+                        w="100%"
                         value={input}
                         onChange={e => setInput(e.target.value)}
                     />
                 </Box>
             </Flex>
             <Divider />
-            <Grid
-                overflowX="auto"
-                gridTemplateColumns={`repeat(${playlist.length}, 10rem)`}
-                h="10rem"
-                alignItems="center"
-                onWheel={scrollHandler}
-                ref={wrapperEl}
-            >
+            <Flex overflowY="auto" flexDir="column">
                 {playlist.map((video, i) => (
                     <PlaylistItem video={video} key={`${video.videoId}-${i}`} />
                 ))}
-            </Grid>
+            </Flex>
         </Flex>
     );
 }
