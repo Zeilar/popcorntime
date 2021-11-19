@@ -199,6 +199,8 @@ export function Room() {
         function onStateChange(e: YT.PlayerEvent) {
             const playerState = e.target.getPlayerState();
             setPlayerState(playerState);
+            // If video ended, remove from playlist
+            // Since this will register many times before playlist is filled up, we need the length check
             if (playlist.length > 0 && playerState === 0) {
                 dispatchPlaylist({
                     type: Actions.REMOVE_FROM_PLAYLIST,
@@ -211,16 +213,6 @@ export function Room() {
             internalPlayer.removeEventListener("onStateChange", onStateChange);
         };
     }, [internalPlayer, activeVideo, dispatchPlaylist, playlist]);
-
-    // useEffect(() => {
-    //     // 0 means video ended
-    //     if (playerState === 0) {
-    //         dispatchPlaylist({
-    //             type: Actions.REMOVE_FROM_PLAYLIST,
-    //             id: playlist[activeVideo].id,
-    //         });
-    //     }
-    // }, [playerState, dispatchPlaylist, activeVideo, playlist]);
 
     // TODO: have some button that shows room info (status, room id, sockets etc)
 
