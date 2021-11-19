@@ -172,14 +172,12 @@ io.on("connection", socket => {
         "room:playlist:remove",
         (payload: { roomId: string; videoId: string }) => {
             const room = ws.rooms.get(payload.roomId);
-
             if (!room) {
                 return socket.emit("error", {
                     message: "Failed removing video to playlist.",
                     reason: "That room does not exist.",
                 });
             }
-
             room.removeFromPlaylist(_socket, payload.videoId);
         }
     );

@@ -48,7 +48,10 @@ export class Room {
 
     public addToPlaylist(sender: Socket, video: IVideo) {
         if (this.playlist.length >= Room.MAX_PLAYLIST) {
-            this.playlist.shift();
+            sender.ref.emit("room:playlist:error", {
+                message: "Failed adding video to playlist.",
+                reason: "Playlist is full.",
+            });
         }
         this.playlist.push(video);
         sender.ref.to(this.id).emit("room:playlist:add", video);

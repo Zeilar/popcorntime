@@ -49,6 +49,11 @@ export default function Playlist({ roomId, playlist }: IProps) {
 
     function add(e: React.FormEvent) {
         e.preventDefault();
+        if (
+            playlist.length >= parseInt(process.env.REACT_APP_ROOM_MAX_PLAYLIST)
+        ) {
+            return toast.error("Playlist is full.");
+        }
         if (!input) {
             return;
         }
@@ -90,20 +95,19 @@ export default function Playlist({ roomId, playlist }: IProps) {
             borderColor="inherit"
             w={showPlaylist ? "15rem" : "3rem"}
         >
-            <Flex p="0.5rem" alignItems="center">
+            <Flex p="0.5rem" alignItems="center" justifyContent="space-between">
+                {showPlaylist && "Placeholder"}
                 {showPlaylist && <Text>Playlist</Text>}
                 {showPlaylist ? (
                     <Button.Icon
                         onClick={togglePlaylist}
                         tooltip="Hide playlist"
-                        ml="auto"
                         mdi="mdiArrowCollapseLeft"
                     />
                 ) : (
                     <Button.Icon
                         onClick={togglePlaylist}
                         tooltip="Show playlist"
-                        ml="auto"
                         mdi="mdiArrowExpandRight"
                     />
                 )}
@@ -111,18 +115,24 @@ export default function Playlist({ roomId, playlist }: IProps) {
             <Divider />
             {showPlaylist && (
                 <>
-                    <Flex flexDir="column" px="0.5rem" py="1rem">
-                        <Box as="form" onSubmit={add}>
-                            <Text color="GrayText" mb="0.5rem">
-                                Add video
-                            </Text>
-                            <Input
-                                placeholder="Video URL"
-                                w="100%"
-                                value={input}
-                                onChange={e => setInput(e.target.value)}
-                            />
-                        </Box>
+                    <Flex
+                        flexDir="column"
+                        px="0.5rem"
+                        py="1rem"
+                        as="form"
+                        onSubmit={add}
+                    >
+                        <Text color="GrayText" mb="0.5rem">
+                            Add video
+                        </Text>
+                        <Input
+                            placeholder="Video URL"
+                            w="100%"
+                            value={input}
+                            bgColor="gray.500"
+                            border="none"
+                            onChange={e => setInput(e.target.value)}
+                        />
                     </Flex>
                     <Divider />
                     <Flex overflowY="auto" flexDir="column">

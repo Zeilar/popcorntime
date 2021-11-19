@@ -17,6 +17,8 @@ import { IErrorPayload } from "domains/common/@types/listener";
 import { RoomContext } from "../contexts";
 import * as Actions from "../state/actions/room";
 import { IVideo } from "../@types/video";
+import BrandLogo from "domains/common/components/styles/BrandLogo";
+import { Link } from "react-router-dom";
 
 interface IParams {
     roomId: string;
@@ -233,58 +235,72 @@ export function Room() {
     }
 
     return (
-        <Flex w="100%">
-            <AnimatePresence>{!isConnected && <PageSpinner />}</AnimatePresence>
-            <Playlist roomId={roomId} playlist={playlist} />
-            <Flex flexDir="column" flexGrow={1} overflowX="auto">
-                <Box flexGrow={1} sx={{ ".youtube": { height: "100%" } }}>
-                    <YouTube
-                        opts={{ width: "100%", height: "100%" }}
-                        ref={player}
-                        containerClassName="youtube"
-                        videoId={
-                            playlist[activeVideo]?.videoId ?? "dQw4w9WgXcQ"
-                        }
-                    />
-                </Box>
-                <Divider />
-                <Flex
-                    justify="center"
-                    align="center"
-                    py="1rem"
-                    gridGap="0.5rem"
-                >
-                    <Button.Icon
-                        tooltip="Skip backward 15 seconds"
-                        mdi="mdiSkipBackward"
-                        onClick={skipBackward}
-                    />
-                    <Button.Icon
-                        mdi="mdiSync"
-                        tooltip="Sync with room"
-                        onClick={sync}
-                    />
-                    {playerState === 1 ? (
-                        <Button.Icon
-                            tooltip="Pause"
-                            onClick={pause}
-                            mdi="mdiPause"
-                        />
-                    ) : (
-                        <Button.Icon
-                            tooltip="Play"
-                            onClick={play}
-                            mdi="mdiPlay"
-                        />
-                    )}
-                    <Button.Icon
-                        tooltip="Skip forward 15 seconds"
-                        mdi="mdiSkipForward"
-                        onClick={skipForward}
-                    />
-                </Flex>
+        <Flex flexDir="column" w="100%">
+            <Flex
+                as="nav"
+                justifyContent="center"
+                boxShadow="lg"
+                bgColor="gray.900"
+            >
+                <Link to="/">
+                    <BrandLogo />
+                </Link>
             </Flex>
-            <Chat roomId={roomId} sockets={sockets} />
+            <Flex flexGrow={1}>
+                <AnimatePresence>
+                    {!isConnected && <PageSpinner />}
+                </AnimatePresence>
+                <Playlist roomId={roomId} playlist={playlist} />
+                <Flex flexDir="column" flexGrow={1} overflowX="auto">
+                    <Box flexGrow={1} sx={{ ".youtube": { height: "100%" } }}>
+                        <YouTube
+                            opts={{ width: "100%", height: "100%" }}
+                            ref={player}
+                            containerClassName="youtube"
+                            videoId={
+                                playlist[activeVideo]?.videoId ?? "dQw4w9WgXcQ"
+                            }
+                        />
+                    </Box>
+                    <Divider />
+                    <Flex
+                        justify="center"
+                        align="center"
+                        py="1rem"
+                        gridGap="0.5rem"
+                    >
+                        <Button.Icon
+                            tooltip="Skip backward 15 seconds"
+                            mdi="mdiSkipBackward"
+                            onClick={skipBackward}
+                        />
+                        <Button.Icon
+                            mdi="mdiSync"
+                            tooltip="Sync with room"
+                            onClick={sync}
+                        />
+                        {playerState === 1 ? (
+                            <Button.Icon
+                                tooltip="Pause"
+                                onClick={pause}
+                                mdi="mdiPause"
+                            />
+                        ) : (
+                            <Button.Icon
+                                tooltip="Play"
+                                onClick={play}
+                                mdi="mdiPlay"
+                            />
+                        )}
+                        <Button.Icon
+                            tooltip="Skip forward 15 seconds"
+                            mdi="mdiSkipForward"
+                            onClick={skipForward}
+                        />
+                    </Flex>
+                </Flex>
+                <Chat roomId={roomId} sockets={sockets} />
+            </Flex>
         </Flex>
     );
 }
