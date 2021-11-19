@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useReducer, useState } from "react";
+import { createContext, ReactNode, useReducer } from "react";
 import { useLocalStorage } from "domains/common/hooks";
 import { IVideo } from "../@types/video";
 import {
@@ -16,7 +16,7 @@ interface IContext {
     sockets: ISocket[];
     dispatchSockets: React.Dispatch<any>;
     activeVideo: number;
-    setActiveVideo: React.Dispatch<React.SetStateAction<number>>;
+    dispatchActiveVideo: React.Dispatch<any>;
     isPLaylistItemActive(id: string): boolean;
 }
 
@@ -31,7 +31,10 @@ export function RoomContextProvider({ children }: IProps) {
         "showServerMessages:chat",
         true
     );
-    const [activeVideo, setActiveVideo] = useReducer(activeVideoReducer, 0);
+    const [activeVideo, dispatchActiveVideo] = useReducer(
+        activeVideoReducer,
+        0
+    );
     const [playlist, dispatchPlaylist] = useReducer(playlistReducer, []);
     const [sockets, dispatchSockets] = useReducer(socketsReducer, []);
 
@@ -49,7 +52,7 @@ export function RoomContextProvider({ children }: IProps) {
         sockets,
         dispatchSockets,
         activeVideo,
-        setActiveVideo,
+        dispatchActiveVideo,
         isPLaylistItemActive,
     };
 

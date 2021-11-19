@@ -197,13 +197,30 @@ export function Room() {
             return;
         }
         function onStateChange(e: YT.PlayerEvent) {
-            setPlayerState(e.target.getPlayerState());
+            const playerState = e.target.getPlayerState();
+            setPlayerState(playerState);
+            if (playlist.length > 0 && playerState === 0) {
+                dispatchPlaylist({
+                    type: Actions.REMOVE_FROM_PLAYLIST,
+                    id: playlist[activeVideo].id,
+                });
+            }
         }
         internalPlayer.addEventListener("onStateChange", onStateChange);
         return () => {
             internalPlayer.removeEventListener("onStateChange", onStateChange);
         };
-    }, [internalPlayer]);
+    }, [internalPlayer, activeVideo, dispatchPlaylist, playlist]);
+
+    // useEffect(() => {
+    //     // 0 means video ended
+    //     if (playerState === 0) {
+    //         dispatchPlaylist({
+    //             type: Actions.REMOVE_FROM_PLAYLIST,
+    //             id: playlist[activeVideo].id,
+    //         });
+    //     }
+    // }, [playerState, dispatchPlaylist, activeVideo, playlist]);
 
     // TODO: have some button that shows room info (status, room id, sockets etc)
 
