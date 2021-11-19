@@ -244,7 +244,9 @@ export function Room() {
                         opts={{ width: "100%", height: "100%" }}
                         ref={player}
                         containerClassName="youtube"
-                        videoId={playlist[activeVideo]?.videoId}
+                        videoId={
+                            playlist[activeVideo]?.videoId ?? "dQw4w9WgXcQ"
+                        }
                     />
                 </Box>
                 <Divider />
