@@ -113,6 +113,9 @@ export default function Playlist({ roomId, playlist }: IProps) {
                 <>
                     <Flex flexDir="column" px="0.5rem" py="1rem">
                         <Box as="form" onSubmit={add}>
+                            <Text color="GrayText" mb="0.5rem">
+                                Add video
+                            </Text>
                             <Input
                                 placeholder="Video URL"
                                 w="100%"
