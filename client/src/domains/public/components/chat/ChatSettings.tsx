@@ -13,15 +13,16 @@ export function ChatSettings() {
         useContext(RoomContext);
     return (
         <MotionBox
+            w="18rem"
             flexDir="column"
             pos="absolute"
             top="-1rem"
             left={0}
-            bgColor="gray.900"
+            bgColor="gray.400"
             borderRadius="base"
             boxShadow="lg"
             p="1rem"
-            zIndex={1000000}
+            zIndex={1000}
             animate={{
                 opacity: [0.5, 1],
                 transform: ["translateY(-95%)", "translateY(-100%)"],
@@ -33,7 +34,7 @@ export function ChatSettings() {
             <Text size="lg" mb="0.5rem">
                 Color
             </Text>
-            <Flex sx={{ gap: "0.5rem" }}>
+            <Flex sx={{ gap: "0.5rem" }} flexWrap="wrap">
                 {colors.map(color => (
                     <Button.Color key={color} color={color} />
                 ))}

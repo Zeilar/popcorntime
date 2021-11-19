@@ -239,8 +239,9 @@ export function Room() {
             <Flex
                 as="nav"
                 justifyContent="center"
-                boxShadow="elevate"
-                bgColor="gray.900"
+                boxShadow="elevate.under"
+                bgColor="gray.800"
+                zIndex={100}
             >
                 <Link to="/">
                     <BrandLogo />

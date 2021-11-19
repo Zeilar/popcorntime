@@ -16,4 +16,5 @@ export const colors = {
         "100": "#3c3c3c",
     },
     danger: "var(--chakra-colors-red-600)",
+    textMuted: "var(--chakra-colors-whiteAlpha-500)",
 };

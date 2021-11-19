@@ -1,5 +1,5 @@
 import { Input } from "@chakra-ui/input";
-import { Box, Divider, Flex, Text } from "@chakra-ui/layout";
+import { Divider, Flex, Text } from "@chakra-ui/layout";
 import Button from "domains/common/components/styles/button";
 import { WebsocketContext } from "domains/common/contexts";
 import { useLocalStorage } from "domains/common/hooks";
@@ -96,7 +96,7 @@ export default function Playlist({ roomId, playlist }: IProps) {
             w={showPlaylist ? "15rem" : "3rem"}
         >
             <Flex p="0.5rem" alignItems="center" justifyContent="space-between">
-                {showPlaylist && "Placeholder"}
+                {showPlaylist && <Button.Icon />}
                 {showPlaylist && <Text>Playlist</Text>}
                 {showPlaylist ? (
                     <Button.Icon
@@ -122,16 +122,20 @@ export default function Playlist({ roomId, playlist }: IProps) {
                         as="form"
                         onSubmit={add}
                     >
-                        <Text color="GrayText" mb="0.5rem">
+                        <Text color="textMuted" mb="0.5rem">
                             Add video
                         </Text>
                         <Input
                             placeholder="Video URL"
                             w="100%"
                             value={input}
-                            bgColor="gray.500"
-                            border="none"
                             onChange={e => setInput(e.target.value)}
+                            bgColor="gray.400"
+                            border="none"
+                            _focus={{
+                                bgColor: "gray.100",
+                                boxShadow: "outline",
+                            }}
                         />
                     </Flex>
                     <Divider />

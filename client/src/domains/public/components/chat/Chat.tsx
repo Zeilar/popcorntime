@@ -139,7 +139,7 @@ export function Chat({ roomId }: IProps) {
     return (
         <Flex
             flexDir="column"
-            minW={showChat ? "25rem" : "3rem"}
+            w={showChat ? "20rem" : "3rem"}
             borderLeft="1px solid"
             borderColor="inherit"
         >
@@ -158,7 +158,7 @@ export function Chat({ roomId }: IProps) {
                     />
                 )}
                 {showChat && <Text>Chat</Text>}
-                {showChat && "Placeholder"}
+                {showChat && <Button.Icon />}
             </Flex>
             <Divider />
             {showChat && (
@@ -175,11 +175,15 @@ export function Chat({ roomId }: IProps) {
                             forwardRef={input}
                             placeholder="Send a message"
                             resize="none"
-                            bgColor="gray.500"
+                            bgColor="gray.400"
                             border="none"
+                            _focus={{
+                                bgColor: "gray.100",
+                                boxShadow: "outline",
+                            }}
                         />
                     </Box>
-                    <Box px="1rem" pb="1rem">
+                    <Box p="1rem" pt={0}>
                         <Flex pos="relative">
                             <Box pos="relative" ref={settingsEl}>
                                 <Button.Icon
