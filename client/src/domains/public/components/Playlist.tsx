@@ -78,7 +78,7 @@ export default function Playlist({ roomId, playlist }: IProps) {
             h="100%"
             borderRight="1px solid"
             borderColor="inherit"
-            w="10rem"
+            w="15rem"
         >
             <Flex p="0.5rem" flexDir="column">
                 <Box as="form" onSubmit={add}>
