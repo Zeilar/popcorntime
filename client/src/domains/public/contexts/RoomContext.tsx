@@ -9,7 +9,7 @@ import {
 import { ISocket } from "domains/common/@types/socket";
 
 interface IContext {
-    showServerMessages: boolean | null;
+    showServerMessages: boolean;
     setShowServerMessages: React.Dispatch<React.SetStateAction<boolean>>;
     playlist: IVideo[];
     dispatchPlaylist: React.Dispatch<any>;

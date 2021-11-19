@@ -1,4 +1,4 @@
-import { Box, Divider, Flex } from "@chakra-ui/layout";
+import { Box, Divider, Flex, Text } from "@chakra-ui/layout";
 import {
     KeyboardEvent,
     useCallback,
@@ -29,7 +29,6 @@ export function Chat({ roomId }: IProps) {
     const [showChat, setShowChat] = useLocalStorage<boolean>("showChat", true);
     const { showServerMessages } = useContext(RoomContext);
     const { me } = useContext(MeContext);
-    const [isOpen, setIsOpen] = useState(showChat);
     const [messages, setMessages] = useState<IMessage[]>([]);
     const scrollChat = useRef<boolean>(true);
     const chatElement = useRef<HTMLDivElement>(null);
@@ -41,10 +40,6 @@ export function Chat({ roomId }: IProps) {
     });
 
     const { REACT_APP_ROOM_MAX_MESSAGES } = process.env;
-
-    useEffect(() => {
-        setShowChat(isOpen);
-    }, [isOpen, setShowChat]);
 
     const addMessage = useCallback(
         (message: IMessage) => {
@@ -60,7 +55,7 @@ export function Chat({ roomId }: IProps) {
     );
 
     function toggle() {
-        setIsOpen(isOpen => !isOpen);
+        setShowChat(p => !p);
     }
 
     useEffect(() => {
@@ -145,29 +140,30 @@ export function Chat({ roomId }: IProps) {
         <Flex
             flexDir="column"
             h="100vh"
-            minW={isOpen ? "25rem" : "3rem"}
+            minW={showChat ? "25rem" : "3rem"}
             borderLeft="1px solid"
             borderColor="inherit"
         >
             <Flex align="center" p="0.5rem">
-                {isOpen ? (
+                {showChat ? (
                     <Button.Icon
                         onClick={toggle}
-                        tooltip="Close chat"
-                        ml="auto"
+                        tooltip="Hide chat"
+                        mr="auto"
                         mdi="mdiArrowCollapseRight"
                     />
                 ) : (
                     <Button.Icon
                         onClick={toggle}
-                        tooltip="Open chat"
-                        ml="auto"
+                        tooltip="Show chat"
+                        mr="auto"
                         mdi="mdiArrowExpandLeft"
                     />
                 )}
+                {showChat && <Text>Chat</Text>}
             </Flex>
             <Divider />
-            {isOpen && (
+            {showChat && (
                 <>
                     <Flex flexDir="column" overflowY="auto" ref={chatElement}>
                         {filteredMessages.map(message => (

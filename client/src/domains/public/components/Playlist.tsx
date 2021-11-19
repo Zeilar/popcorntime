@@ -1,6 +1,8 @@
 import { Input } from "@chakra-ui/input";
 import { Box, Divider, Flex, Text } from "@chakra-ui/layout";
+import Button from "domains/common/components/styles/button";
 import { WebsocketContext } from "domains/common/contexts";
+import { useLocalStorage } from "domains/common/hooks";
 import { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
@@ -18,6 +20,14 @@ export default function Playlist({ roomId, playlist }: IProps) {
     const { publicSocket } = useContext(WebsocketContext);
     const { dispatchPlaylist } = useContext(RoomContext);
     const [input, setInput] = useState("");
+    const [showPlaylist, setShowPlaylist] = useLocalStorage(
+        "showPLaylist:chat",
+        true
+    );
+
+    function togglePlaylist() {
+        setShowPlaylist(p => !p);
+    }
 
     useEffect(() => {
         publicSocket.on("room:playlist:add", (video: IVideo) => {
@@ -78,27 +88,50 @@ export default function Playlist({ roomId, playlist }: IProps) {
             h="100%"
             borderRight="1px solid"
             borderColor="inherit"
-            w="15rem"
+            w={showPlaylist ? "15rem" : "3rem"}
         >
-            <Text as="h2" p="0.5rem">
-                Playlist
-            </Text>
-            <Flex p="0.5rem" flexDir="column">
-                <Box as="form" onSubmit={add}>
-                    <Input
-                        placeholder="Video URL"
-                        w="100%"
-                        value={input}
-                        onChange={e => setInput(e.target.value)}
+            <Flex p="0.5rem" alignItems="center">
+                {showPlaylist && <Text>Playlist</Text>}
+                {showPlaylist ? (
+                    <Button.Icon
+                        onClick={togglePlaylist}
+                        tooltip="Hide playlist"
+                        ml="auto"
+                        mdi="mdiArrowCollapseLeft"
                     />
-                </Box>
+                ) : (
+                    <Button.Icon
+                        onClick={togglePlaylist}
+                        tooltip="Show playlist"
+                        ml="auto"
+                        mdi="mdiArrowExpandRight"
+                    />
+                )}
             </Flex>
             <Divider />
-            <Flex overflowY="auto" flexDir="column">
-                {playlist.map((video, i) => (
-                    <PlaylistItem video={video} key={`${video.videoId}-${i}`} />
-                ))}
-            </Flex>
+            {showPlaylist && (
+                <>
+                    <Flex flexDir="column" px="0.5rem" py="1rem">
+                        <Box as="form" onSubmit={add}>
+                            <Input
+                                placeholder="Video URL"
+                                w="100%"
+                                value={input}
+                                onChange={e => setInput(e.target.value)}
+                            />
+                        </Box>
+                    </Flex>
+                    <Divider />
+                    <Flex overflowY="auto" flexDir="column">
+                        {playlist.map((video, i) => (
+                            <PlaylistItem
+                                video={video}
+                                key={`${video.videoId}-${i}`}
+                            />
+                        ))}
+                    </Flex>
+                </>
+            )}
         </Flex>
     );
 }
