@@ -1,5 +1,6 @@
 import "dotenv/config";
 import convict from "convict";
+import { join } from "path";
 
 const envConfig = convict({
     NODE_ENV: {
@@ -42,7 +43,7 @@ const envConfig = convict({
     },
 });
 
-envConfig.loadFile(`config/env/${envConfig.get("NODE_ENV")}.json`);
+envConfig.loadFile(join(__dirname, `./${envConfig.get("NODE_ENV")}.env.json`));
 envConfig.validate({ allowed: "strict" });
 
 export default envConfig.getProperties();

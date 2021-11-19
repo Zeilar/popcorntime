@@ -7,7 +7,7 @@ cd server && tsc
 mv dist/src ../dist/server
 
 cp package.json ../dist/server
-cp .env.production ../dist/server/.env
+cp -r config/env ../dist/server/config
 
 rm -rf dist
 
