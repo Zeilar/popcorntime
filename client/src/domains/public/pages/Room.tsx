@@ -239,7 +239,7 @@ export function Room() {
             <Flex
                 as="nav"
                 justifyContent="center"
-                boxShadow="lg"
+                boxShadow="elevate"
                 bgColor="gray.900"
             >
                 <Link to="/">

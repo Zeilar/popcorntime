@@ -6,7 +6,7 @@ export const styles = {
         },
         body: {
             height: "100vh",
-            backgroundColor: "gray.800",
+            backgroundColor: "gray.700",
             overflow: "hidden",
             "::-webkit-scrollbar-thumb": {
                 backgroundColor: "brand.default",

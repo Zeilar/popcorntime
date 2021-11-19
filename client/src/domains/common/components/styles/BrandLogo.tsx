@@ -8,7 +8,7 @@ export default function BrandLogo() {
             align="center"
             pos="relative"
             w="fit-content"
-            minH="8rem"
+            py="1.5rem"
             userSelect="none"
         >
             <Flex
@@ -20,9 +20,9 @@ export default function BrandLogo() {
             >
                 <Text
                     p="0.25rem"
-                    minW="17rem"
+                    minW="13rem"
                     rounded="base"
-                    fontSize="1.5rem"
+                    fontSize="1.25rem"
                     fontFamily="Poppins"
                 >
                     PopcornTime
@@ -30,9 +30,9 @@ export default function BrandLogo() {
                 <Icon
                     pos="absolute"
                     right="0.5rem"
-                    bottom="-1.25rem"
-                    w="6rem"
-                    h="6rem"
+                    bottom="-0.75rem"
+                    w="4rem"
+                    h="4rem"
                     as={PopcornIcon}
                 />
             </Flex>
