@@ -18,6 +18,7 @@ const clientPath = join(__dirname, "../../client");
 const { PORT, ADMIN_PASSWORD } = env;
 
 export const app = express();
+Logger.info("Initialized Express");
 
 // Global middlewares
 app.use(express.static(clientPath), cors({ origin: "*" })); // TODO: remove cors in production
@@ -29,10 +30,13 @@ app.get("/*", (req, res) => {
 const server = app.listen(PORT, () => {
     Logger.info(`Running on port ${PORT}`);
 });
+Logger.info("Initalized server");
 
 export const io = new Server(server, {
     cors: { origin: "*" }, // TODO: remove cors in production
 });
+Logger.info("Connected socket.io to server");
+
 export const adminNamespace = io.of("/admin");
 export const ws = new WS();
 

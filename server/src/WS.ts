@@ -2,6 +2,7 @@ import { Server } from "socket.io";
 import { Color } from "../@types/color";
 import { IRoomDto } from "../@types/room";
 import { ISocketDto } from "../@types/socket";
+import Logger from "./Logger";
 import { Room } from "./Room";
 import { adminNamespace, io } from "./server";
 import { Socket } from "./Socket";
@@ -49,22 +50,26 @@ export class WS {
         this.sockets.set(socket.id, socket);
         this.pickedColors[socket.color] += 1;
         adminNamespace.emit("socket:connect", socket.dto);
+        Logger.info(`Added socket ${socket.username}`);
     }
 
     public deleteSocket(socket: Socket) {
         this.sockets.delete(socket.id);
         this.pickedColors[socket.color] -= 1;
         adminNamespace.emit("socket:disconnect", socket.id);
+        Logger.info(`Deleted socket ${socket.username}`);
     }
 
     public addRoom(room: Room) {
         this.rooms.set(room.id, room);
         adminNamespace.emit("room:new", room.dto);
+        Logger.info(`Added room ${room.name}`);
     }
 
     public deleteRoom(room: Room) {
         this.io.to(room.id).emit("room:destroy");
         adminNamespace.emit("room:destroy", room.id);
         this.rooms.delete(room.id);
+        Logger.info(`Deleted room ${room.name}`);
     }
 }
