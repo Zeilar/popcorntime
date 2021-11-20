@@ -140,6 +140,9 @@ export default function Dashboard() {
                         {me.username}
                     </Box>
                 )}
+                <DashboardItem icon="mdiHome" to="/admin">
+                    Start
+                </DashboardItem>
                 <DashboardItem icon="mdiAccountGroupOutline" to="/admin/rooms">
                     Rooms
                 </DashboardItem>

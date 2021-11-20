@@ -1,13 +1,10 @@
 import { Flex } from "@chakra-ui/layout";
-import { ReactNode } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, NavLinkProps } from "react-router-dom";
 import { Icon } from "@chakra-ui/icons";
 import { Icon as MdiIcon } from "@mdi/react";
 import * as MdiIcons from "@mdi/js";
 
-interface IProps {
-    to: string;
-    children: ReactNode;
+interface IProps extends NavLinkProps {
     icon: keyof typeof MdiIcons;
 }
 
@@ -29,6 +26,7 @@ export default function DashboardItem({ to, children, icon }: IProps) {
             p="0.75rem"
             fontSize="xl"
             borderRadius="base"
+            exact
         >
             <Icon
                 as={MdiIcon}
