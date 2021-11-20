@@ -15,5 +15,3 @@ rm -rf dist
 cd ../client && npm run build
 
 mv build ../dist/client
-
-cd ../dist/server && npm install
