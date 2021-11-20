@@ -169,13 +169,7 @@ export function Chat({ roomId }: IProps) {
                             <Message key={message.id} message={message} />
                         ))}
                     </Flex>
-                    <Box
-                        zIndex={5}
-                        mt="auto"
-                        as="form"
-                        p="1rem"
-                        boxShadow="elevate.top"
-                    >
+                    <Box zIndex={5} mt="auto" p="1rem" boxShadow="elevate.top">
                         <Box as="form" onSubmit={sendMessage}>
                             <Text color={`${me.color}.600`} mb="0.5rem">
                                 {me.username}
