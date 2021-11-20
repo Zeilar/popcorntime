@@ -1,8 +1,9 @@
 const { NODE_ENV, REACT_APP_HOST_PORT } = process.env;
-const { hostname } = window.location;
+const { hostname, protocol, host, origin } = window.location;
 
 const HOSTNAME =
-    NODE_ENV === "production" ? "" : `${hostname}:${REACT_APP_HOST_PORT}`;
-
-export const HOST = NODE_ENV === "production" ? "/" : `http://${HOSTNAME}`;
-export const WS_HOST = `ws://${HOSTNAME}`;
+    NODE_ENV === "production" ? host : `${hostname}:${REACT_APP_HOST_PORT}`;
+export const HOST =
+    NODE_ENV === "production" ? origin : `${protocol}//${HOSTNAME}`;
+export const WS_HOST =
+    NODE_ENV === "production" ? `wss://${HOSTNAME}` : `ws://${HOSTNAME}`;

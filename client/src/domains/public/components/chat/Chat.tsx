@@ -158,8 +158,12 @@ export function Chat({ roomId }: IProps) {
                         mdi="mdiArrowExpandLeft"
                     />
                 )}
-                {showChat && <Text>Chat</Text>}
-                {showChat && <Button.Icon />}
+                {showChat && (
+                    <>
+                        <Text>Chat</Text>
+                        <Button.Icon />
+                    </>
+                )}
             </Flex>
             <Divider />
             {showChat && (
