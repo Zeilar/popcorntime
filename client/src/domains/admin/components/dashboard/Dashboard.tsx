@@ -114,12 +114,7 @@ export default function Dashboard() {
     const me = sockets.find(socket => socket.id === publicSocket.id);
 
     return (
-        <Grid
-            bgColor="gray.800"
-            flexGrow={1}
-            gridTemplateColumns="25rem 1fr"
-            pb="1rem"
-        >
+        <Grid bgColor="gray.800" flexGrow={1} gridTemplateColumns="25rem 1fr">
             <AnimatePresence>{isLoading && <PageSpinner />}</AnimatePresence>
             <Flex
                 flexDir="column"

@@ -3,7 +3,7 @@ import { createLogger, format, transports } from "winston";
 
 const { combine, timestamp, printf } = format;
 
-type Level = "info" | "warning" | "error" | "debug";
+type Level = "info" | "warn" | "error" | "debug";
 
 process.on("uncaughtException", error => {
     Logger.error(error.stack ?? error.message);
@@ -41,24 +41,21 @@ const infoLogger = createLogger({
 });
 
 const warningLogger = createLogger({
-    level: "warning",
+    level: "warn",
     format: customFormat,
-    transports: customTransports("warning"),
+    transports: customTransports("warn"),
 });
 
 export default class Logger {
     public static info(message: string) {
-        infoLogger.log("info", message);
-        return this;
+        infoLogger.info(message);
     }
 
-    public static warning(message: string) {
-        warningLogger.log("warning", message);
-        return this;
+    public static warn(message: string) {
+        warningLogger.warn(message);
     }
 
     public static error(message: string) {
-        errorLogger.log("error", message);
-        return this;
+        errorLogger.error(message);
     }
 }
