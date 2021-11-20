@@ -181,6 +181,7 @@ export function Chat({ roomId }: IProps) {
                             {me.username}
                         </Text>
                         <Textarea
+                            autoFocus
                             onKeyDown={inputHandler}
                             forwardRef={input}
                             placeholder="Send a message"

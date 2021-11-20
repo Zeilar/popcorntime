@@ -3,7 +3,7 @@ import { Redirect, useHistory, useParams } from "react-router";
 import { ISocket } from "domains/common/@types/socket";
 import YouTube from "react-youtube";
 import { toast } from "react-toastify";
-import { Box, Divider } from "@chakra-ui/layout";
+import { Box } from "@chakra-ui/layout";
 import { Chat } from "../components/chat";
 import { validate } from "uuid";
 import { Flex } from "@chakra-ui/react";
@@ -259,7 +259,11 @@ export function Room() {
                     boxShadow="elevate.all"
                     zIndex={20}
                 >
-                    <Box flexGrow={1} sx={{ ".youtube": { height: "100%" } }}>
+                    <Box
+                        flexGrow={1}
+                        sx={{ ".youtube": { height: "100%" } }}
+                        boxShadow="elevate.bottom"
+                    >
                         <YouTube
                             opts={{ width: "100%", height: "100%" }}
                             ref={player}
@@ -269,7 +273,6 @@ export function Room() {
                             }
                         />
                     </Box>
-                    <Divider />
                     <Flex
                         justify="center"
                         align="center"
