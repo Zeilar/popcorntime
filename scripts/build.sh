@@ -8,6 +8,7 @@ mv dist/src ../dist/server
 
 cp package.json ../dist/server
 cp -r config/env ../dist/server/config
+cp .env ../dist/server/.env
 
 rm -rf dist
 

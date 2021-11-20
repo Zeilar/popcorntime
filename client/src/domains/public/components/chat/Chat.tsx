@@ -143,7 +143,13 @@ export function Chat({ roomId }: IProps) {
             borderLeft="1px solid"
             borderColor="inherit"
         >
-            <Flex align="center" p="0.5rem" justifyContent="space-between">
+            <Flex
+                align="center"
+                p="0.5rem"
+                justifyContent="space-between"
+                boxShadow="elevate.bottom"
+                zIndex={5}
+            >
                 {showChat ? (
                     <Button.Icon
                         onClick={toggle}
@@ -168,8 +174,13 @@ export function Chat({ roomId }: IProps) {
                             <Message key={message.id} message={message} />
                         ))}
                     </Flex>
-                    <Divider mt="auto" />
-                    <Box as="form" onSubmit={sendMessage} p="1rem">
+                    <Box
+                        mt="auto"
+                        as="form"
+                        onSubmit={sendMessage}
+                        p="1rem"
+                        boxShadow="elevate.top"
+                    >
                         <Textarea
                             onKeyDown={inputHandler}
                             forwardRef={input}

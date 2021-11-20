@@ -2,7 +2,7 @@ import "reflect-metadata";
 import Logger from "./Logger"; // Load this ASAP to get good logs and error handling registered
 import env from "../config/env";
 import { join } from "path";
-import express from "express";
+import express, { NextFunction, Request, Response } from "express";
 import { Server } from "socket.io";
 import cors from "cors";
 import { validate } from "uuid";
@@ -21,10 +21,16 @@ export const app = express();
 Logger.info("Initialized Express");
 
 // Global middlewares
-app.use(express.static(clientPath), cors({ origin: "*" })); // TODO: remove cors in production
+app.use(
+    express.static(clientPath),
+    cors({ origin: "*" }),
+    (error: Error, req: Request, res: Response, next: NextFunction) => {
+        Logger.error(`${error.message}\n${error.stack}`);
+    }
+); // TODO: remove cors in production
 
 app.get("/*", (req, res) => {
-    res.sendFile(`${clientPath}\\index.html`);
+    res.sendFile(`${clientPath}/index.html`);
 });
 
 const server = app.listen(PORT, () => {

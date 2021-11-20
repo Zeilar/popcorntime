@@ -6,7 +6,7 @@
         "noImplicitReturns": false,
         "noImplicitAny": true,
         "outDir": "dist/src",
-        "declaration": true,
+        "declaration": false,
         "module": "commonjs",
         "moduleResolution": "node",
         "target": "ES2017",

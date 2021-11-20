@@ -239,7 +239,7 @@ export function Room() {
             <Flex
                 as="nav"
                 justifyContent="center"
-                boxShadow="elevate.under"
+                boxShadow="elevate.bottom"
                 bgColor="gray.800"
                 zIndex={100}
             >
@@ -247,7 +247,7 @@ export function Room() {
                     <BrandLogo />
                 </Link>
             </Flex>
-            <Flex flexGrow={1}>
+            <Flex flexGrow={1} maxH="100%">
                 <AnimatePresence>
                     {!isConnected && <PageSpinner />}
                 </AnimatePresence>
