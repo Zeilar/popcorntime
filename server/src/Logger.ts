@@ -1,3 +1,4 @@
+import { join } from "path";
 import { createLogger, format, transports } from "winston";
 
 const { combine, timestamp, printf } = format;
@@ -21,7 +22,7 @@ function customTransports(level: Level) {
     return [
         new transports.Console(),
         new transports.File({
-            filename: `logs/${level}.log`,
+            filename: join(__dirname, `../logs/${level}.log`),
             level,
         }),
     ];

@@ -1,5 +1,5 @@
 import { Input } from "@chakra-ui/input";
-import { Divider, Flex, Text } from "@chakra-ui/layout";
+import { Flex, Text } from "@chakra-ui/layout";
 import Button from "domains/common/components/styles/button";
 import { WebsocketContext } from "domains/common/contexts";
 import { useLocalStorage } from "domains/common/hooks";
@@ -91,13 +91,21 @@ export default function Playlist({ roomId, playlist }: IProps) {
         <Flex
             flexDir="column"
             h="100%"
-            borderRight="1px solid"
-            borderColor="inherit"
+            boxShadow="elevate.right"
             w={showPlaylist ? "15rem" : "3rem"}
         >
-            <Flex p="0.5rem" alignItems="center" justifyContent="space-between">
-                {showPlaylist && <Button.Icon />}
-                {showPlaylist && <Text>Playlist</Text>}
+            <Flex
+                p="0.5rem"
+                alignItems="center"
+                justifyContent="space-between"
+                boxShadow="elevate.bottom"
+            >
+                {showPlaylist && (
+                    <>
+                        <Button.Icon />
+                        <Text>Playlist</Text>
+                    </>
+                )}
                 {showPlaylist ? (
                     <Button.Icon
                         onClick={togglePlaylist}
@@ -112,7 +120,6 @@ export default function Playlist({ roomId, playlist }: IProps) {
                     />
                 )}
             </Flex>
-            <Divider />
             {showPlaylist && (
                 <>
                     <Flex
@@ -121,6 +128,7 @@ export default function Playlist({ roomId, playlist }: IProps) {
                         py="1rem"
                         as="form"
                         onSubmit={add}
+                        boxShadow="elevate.bottom"
                     >
                         <Text color="textMuted" mb="0.5rem">
                             Add video
@@ -138,7 +146,6 @@ export default function Playlist({ roomId, playlist }: IProps) {
                             }}
                         />
                     </Flex>
-                    <Divider />
                     <Flex overflowY="auto" flexDir="column">
                         {playlist.map((video, i) => (
                             <PlaylistItem

@@ -137,12 +137,7 @@ export function Chat({ roomId }: IProps) {
         : messages.filter(message => !message.serverMessage);
 
     return (
-        <Flex
-            flexDir="column"
-            w={showChat ? "20rem" : "3rem"}
-            borderLeft="1px solid"
-            borderColor="inherit"
-        >
+        <Flex flexDir="column" w={showChat ? "25rem" : "3rem"} zIndex={10}>
             <Flex
                 align="center"
                 p="0.5rem"
@@ -175,12 +170,16 @@ export function Chat({ roomId }: IProps) {
                         ))}
                     </Flex>
                     <Box
+                        zIndex={5}
                         mt="auto"
                         as="form"
                         onSubmit={sendMessage}
                         p="1rem"
                         boxShadow="elevate.top"
                     >
+                        <Text color={`${me.color}.600`} mb="0.5rem">
+                            {me.username}
+                        </Text>
                         <Textarea
                             onKeyDown={inputHandler}
                             forwardRef={input}

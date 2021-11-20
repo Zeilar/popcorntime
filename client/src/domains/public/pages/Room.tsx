@@ -252,7 +252,13 @@ export function Room() {
                     {!isConnected && <PageSpinner />}
                 </AnimatePresence>
                 <Playlist roomId={roomId} playlist={playlist} />
-                <Flex flexDir="column" flexGrow={1} overflowX="auto">
+                <Flex
+                    flexDir="column"
+                    flexGrow={1}
+                    overflowX="auto"
+                    boxShadow="elevate.all"
+                    zIndex={20}
+                >
                     <Box flexGrow={1} sx={{ ".youtube": { height: "100%" } }}>
                         <YouTube
                             opts={{ width: "100%", height: "100%" }}

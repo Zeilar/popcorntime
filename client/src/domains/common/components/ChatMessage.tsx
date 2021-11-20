@@ -34,6 +34,13 @@ export default function ChatMessage({ message }: IProps) {
               }
             : {};
 
+    const serverMessageStyling = message.serverMessage
+        ? {
+              fontStyle: "italic",
+              color: "textMuted",
+          }
+        : {};
+
     return (
         <Motion
             alignItems="center"
@@ -42,7 +49,7 @@ export default function ChatMessage({ message }: IProps) {
             {...notSentStyling}
             {...animationStyling}
         >
-            <Text fontStyle={message.serverMessage ? "italic" : undefined}>
+            <Text {...serverMessageStyling}>
                 <Text as="span" color={`${message.socket.color}.600`}>
                     {message.serverMessage
                         ? `${message.socket.username} `
