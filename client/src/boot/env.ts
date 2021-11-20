@@ -4,9 +4,14 @@
 
 export {};
 
-const { REACT_APP_ROOM_MAX_MESSAGES, REACT_APP_ROOM_MAX_SOCKETS } = process.env;
+const {
+    REACT_APP_HOST_PORT,
+    REACT_APP_ROOM_MAX_MESSAGES,
+    REACT_APP_ROOM_MAX_SOCKETS,
+} = process.env;
 
 const variables = {
+    REACT_APP_HOST_PORT,
     REACT_APP_ROOM_MAX_MESSAGES,
     REACT_APP_ROOM_MAX_SOCKETS,
 };

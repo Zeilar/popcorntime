@@ -173,44 +173,45 @@ export function Chat({ roomId }: IProps) {
                         zIndex={5}
                         mt="auto"
                         as="form"
-                        onSubmit={sendMessage}
                         p="1rem"
                         boxShadow="elevate.top"
                     >
-                        <Text color={`${me.color}.600`} mb="0.5rem">
-                            {me.username}
-                        </Text>
-                        <Textarea
-                            autoFocus
-                            onKeyDown={inputHandler}
-                            forwardRef={input}
-                            placeholder="Send a message"
-                            resize="none"
-                            bgColor="gray.400"
-                            border="none"
-                            _focus={{
-                                bgColor: "gray.100",
-                                boxShadow: "outline",
-                            }}
-                        />
-                    </Box>
-                    <Box p="1rem" pt={0}>
-                        <Flex pos="relative">
-                            <Box pos="relative" ref={settingsEl}>
-                                <Button.Icon
-                                    tooltip="Settings"
-                                    mdi="mdiCog"
-                                    onClick={toggleSettings}
-                                />
-                                {settingsOpen && <ChatSettings />}
-                            </Box>
-                            <Button.Icon
-                                tooltip="Send"
-                                ml="auto"
-                                mdi="mdiSend"
-                                onClick={sendMessage}
+                        <Box as="form" onSubmit={sendMessage}>
+                            <Text color={`${me.color}.600`} mb="0.5rem">
+                                {me.username}
+                            </Text>
+                            <Textarea
+                                autoFocus
+                                onKeyDown={inputHandler}
+                                forwardRef={input}
+                                placeholder="Send a message"
+                                resize="none"
+                                bgColor="gray.400"
+                                border="none"
+                                _focus={{
+                                    bgColor: "gray.100",
+                                    boxShadow: "outline",
+                                }}
                             />
-                        </Flex>
+                        </Box>
+                        <Box p="1rem" pt={0}>
+                            <Flex pos="relative">
+                                <Box pos="relative" ref={settingsEl}>
+                                    <Button.Icon
+                                        tooltip="Settings"
+                                        mdi="mdiCog"
+                                        onClick={toggleSettings}
+                                    />
+                                    {settingsOpen && <ChatSettings />}
+                                </Box>
+                                <Button.Icon
+                                    tooltip="Send"
+                                    ml="auto"
+                                    mdi="mdiSend"
+                                    onClick={sendMessage}
+                                />
+                            </Flex>
+                        </Box>
                     </Box>
                 </>
             )}
