@@ -192,7 +192,7 @@ export function Chat({ roomId }: IProps) {
                                 }}
                             />
                         </Box>
-                        <Box p="1rem" pt={0}>
+                        <Box mt="1rem">
                             <Flex pos="relative">
                                 <Box pos="relative" ref={settingsEl}>
                                     <Button.Icon
