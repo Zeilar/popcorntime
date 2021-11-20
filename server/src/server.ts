@@ -237,9 +237,15 @@ io.on("connection", socket => {
 });
 
 adminNamespace.use((socket, next) => {
-    if (socket.handshake.auth.token !== ADMIN_PASSWORD) {
+    const { address } = socket.handshake;
+    if (socket.handshake.auth.token === undefined) {
+        Logger.warning(`${address} connected to admin login.`);
+        return next(new Error("Please log in first."));
+    } else if (socket.handshake.auth.token !== ADMIN_PASSWORD) {
+        Logger.warning(`${address} provided wrong admin password.`);
         return next(new Error("Incorrect token."));
     }
+    Logger.warning(`${address} logged in as admin.`);
     next();
 });
 
