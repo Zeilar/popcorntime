@@ -88,12 +88,7 @@ export default function Playlist({ roomId, playlist }: IProps) {
     }
 
     return (
-        <Flex
-            flexDir="column"
-            h="100%"
-            boxShadow="elevate.right"
-            w={showPlaylist ? "15rem" : "3rem"}
-        >
+        <Flex flexDir="column" h="100%" w={showPlaylist ? "15rem" : "3rem"}>
             <Flex
                 p="0.5rem"
                 alignItems="center"

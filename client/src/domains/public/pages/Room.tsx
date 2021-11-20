@@ -247,7 +247,7 @@ export function Room() {
                     <BrandLogo />
                 </Link>
             </Flex>
-            <Flex flexGrow={1} maxH="100%">
+            <Flex flexGrow={1} maxH="100%" overflow="hidden">
                 <AnimatePresence>
                     {!isConnected && <PageSpinner />}
                 </AnimatePresence>
