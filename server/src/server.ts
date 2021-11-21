@@ -202,6 +202,28 @@ io.on("connection", socket => {
         }
     );
 
+    socket.on("video:skip:forward", () => {
+        const room = _socket.room;
+        if (!room) {
+            return socket.emit("error", {
+                message: "Failed skipping video forward for room.",
+                reason: "You must be in a room to do that.",
+            });
+        }
+        socket.to(room.id).emit("video:skip:forward");
+    });
+
+    socket.on("video:skip:backward", () => {
+        const room = _socket.room;
+        if (!room) {
+            return socket.emit("error", {
+                message: "Failed skipping video backward for room.",
+                reason: "You must be in a room to do that.",
+            });
+        }
+        socket.to(room.id).emit("video:skip:backward");
+    });
+
     socket.on("video:sync", (timestamp: number) => {
         const room = _socket.room;
         if (!room) {
@@ -210,7 +232,6 @@ io.on("connection", socket => {
                 reason: "You must be in a room to do that.",
             });
         }
-        // Make it so the sender gets this at the same time as the others to sync them better.
         socket.to(room.id).emit("video:sync", timestamp);
     });
 
@@ -222,7 +243,6 @@ io.on("connection", socket => {
                 reason: "You must be in a room to do that.",
             });
         }
-        // Make it so the sender gets this at the same time as the others to sync them better.
         socket.to(room.id).emit("video:play");
     });
 

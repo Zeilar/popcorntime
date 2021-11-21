@@ -72,7 +72,6 @@ export function Room() {
         if (!internalPlayer) {
             return;
         }
-        await internalPlayer.getPlayerState<true>();
         internalPlayer.seekTo(
             (await internalPlayer.getCurrentTime<true>()) - 15,
             true
@@ -88,7 +87,7 @@ export function Room() {
             (await internalPlayer.getCurrentTime<true>()) + 15,
             true
         );
-        publicSocket.emit("video:skip:forawrd");
+        publicSocket.emit("video:skip:forward");
     }
 
     useEffect(() => {
