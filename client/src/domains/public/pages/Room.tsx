@@ -173,6 +173,7 @@ export function Room() {
             publicSocket
                 .off("video:play")
                 .off("video:pause")
+                .off("video:sync")
                 .off("video:skip:backward")
                 .off("video:skip:forward");
         };

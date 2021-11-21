@@ -202,6 +202,18 @@ io.on("connection", socket => {
         }
     );
 
+    socket.on("video:sync", (timestamp: number) => {
+        const room = _socket.room;
+        if (!room) {
+            return socket.emit("error", {
+                message: "Failed snycing video for room.",
+                reason: "You must be in a room to do that.",
+            });
+        }
+        // Make it so the sender gets this at the same time as the others to sync them better.
+        socket.to(room.id).emit("video:sync", timestamp);
+    });
+
     socket.on("video:play", () => {
         const room = _socket.room;
         if (!room) {
