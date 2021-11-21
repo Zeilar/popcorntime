@@ -19,6 +19,7 @@ import * as Actions from "../state/actions/room";
 import { IVideo } from "../@types/video";
 import BrandLogo from "domains/common/components/styles/BrandLogo";
 import { Link } from "react-router-dom";
+import Player from "../components/Player";
 
 interface IParams {
     roomId: string;
@@ -38,57 +39,6 @@ export function Room() {
         dispatchSockets,
         activeVideo,
     } = useContext(RoomContext);
-
-    const internalPlayer: YT.Player | undefined =
-        player.current?.getInternalPlayer();
-
-    async function sync() {
-        if (!internalPlayer) {
-            return;
-        }
-        publicSocket.emit(
-            "video:sync",
-            await internalPlayer.getCurrentTime<true>()
-        );
-    }
-
-    function play() {
-        if (!internalPlayer) {
-            return;
-        }
-        internalPlayer.playVideo();
-        publicSocket.emit("video:play");
-    }
-
-    function pause() {
-        if (!internalPlayer) {
-            return;
-        }
-        internalPlayer.pauseVideo();
-        publicSocket.emit("video:pause");
-    }
-
-    async function skipBackward() {
-        if (!internalPlayer) {
-            return;
-        }
-        internalPlayer.seekTo(
-            (await internalPlayer.getCurrentTime<true>()) - 15,
-            true
-        );
-        publicSocket.emit("video:skip:backward");
-    }
-
-    async function skipForward() {
-        if (!internalPlayer) {
-            return;
-        }
-        internalPlayer.seekTo(
-            (await internalPlayer.getCurrentTime<true>()) + 15,
-            true
-        );
-        publicSocket.emit("video:skip:forward");
-    }
 
     useEffect(() => {
         publicSocket.emit("room:join", roomId);
@@ -140,43 +90,7 @@ export function Room() {
                 .off("room:socket:leave")
                 .off("room:socket:update:color");
         };
-    }, [publicSocket, internalPlayer, dispatchSockets]);
-
-    useEffect(() => {
-        if (!internalPlayer) {
-            return;
-        }
-
-        publicSocket.on("video:sync", (timestamp: number) => {
-            internalPlayer.seekTo(timestamp, true);
-        });
-        publicSocket.on("video:play", () => {
-            internalPlayer.playVideo();
-        });
-        publicSocket.on("video:pause", () => {
-            internalPlayer.pauseVideo();
-        });
-        publicSocket.on("video:skip:forward", async () => {
-            internalPlayer.seekTo(
-                (await internalPlayer.getCurrentTime<true>()) + 15,
-                true
-            );
-        });
-        publicSocket.on("video:skip:backward", async () => {
-            internalPlayer.seekTo(
-                (await internalPlayer.getCurrentTime<true>()) - 15,
-                true
-            );
-        });
-        return () => {
-            publicSocket
-                .off("video:play")
-                .off("video:pause")
-                .off("video:sync")
-                .off("video:skip:backward")
-                .off("video:skip:forward");
-        };
-    }, [publicSocket, internalPlayer]);
+    }, [publicSocket, dispatchSockets]);
 
     useEffect(() => {
         publicSocket.on("room:kick", () => {
@@ -204,28 +118,6 @@ export function Room() {
             publicSocket.emit("room:leave");
         };
     }, [publicSocket]);
-
-    useEffect(() => {
-        if (!internalPlayer) {
-            return;
-        }
-        function onStateChange(e: YT.PlayerEvent) {
-            const playerState = e.target.getPlayerState();
-            setPlayerState(playerState);
-            // If video ended, remove from playlist
-            // Since this will register many times before playlist is filled up, we need the length check
-            if (playlist.length > 0 && playerState === 0) {
-                dispatchPlaylist({
-                    type: Actions.REMOVE_FROM_PLAYLIST,
-                    id: playlist[activeVideo]?.id,
-                });
-            }
-        }
-        internalPlayer.addEventListener("onStateChange", onStateChange);
-        return () => {
-            internalPlayer.removeEventListener("onStateChange", onStateChange);
-        };
-    }, [internalPlayer, activeVideo, dispatchPlaylist, playlist]);
 
     // TODO: have some button that shows room info (status, room id, sockets etc)
 
@@ -255,76 +147,7 @@ export function Room() {
                     {!isConnected && <PageSpinner />}
                 </AnimatePresence>
                 <Playlist roomId={roomId} playlist={playlist} />
-                <Flex
-                    flexDir="column"
-                    flexGrow={1}
-                    overflowX="auto"
-                    boxShadow="elevate.all"
-                    zIndex={20}
-                >
-                    <Box
-                        flexGrow={1}
-                        sx={{ ".youtube": { height: "100%" } }}
-                        boxShadow="elevate.bottom"
-                    >
-                        {playlist[activeVideo] ? (
-                            <YouTube
-                                opts={{ width: "100%", height: "100%" }}
-                                ref={player}
-                                containerClassName="youtube"
-                                videoId={
-                                    playlist[activeVideo]?.videoId ??
-                                    "dQw4w9WgXcQ"
-                                }
-                            />
-                        ) : (
-                            <Flex
-                                bgColor="gray.900"
-                                h="100%"
-                                color="textMuted"
-                                alignItems="center"
-                                justifyContent="center"
-                            >
-                                <Text as="h1">No video selected</Text>
-                            </Flex>
-                        )}
-                    </Box>
-                    <Flex
-                        justify="center"
-                        align="center"
-                        py="1rem"
-                        gridGap="0.5rem"
-                    >
-                        <Button.Icon
-                            tooltip="Skip backward 15 seconds"
-                            mdi="mdiSkipBackward"
-                            onClick={skipBackward}
-                        />
-                        <Button.Icon
-                            mdi="mdiSync"
-                            tooltip="Sync with room"
-                            onClick={sync}
-                        />
-                        {playerState === 1 ? (
-                            <Button.Icon
-                                tooltip="Pause"
-                                onClick={pause}
-                                mdi="mdiPause"
-                            />
-                        ) : (
-                            <Button.Icon
-                                tooltip="Play"
-                                onClick={play}
-                                mdi="mdiPlay"
-                            />
-                        )}
-                        <Button.Icon
-                            tooltip="Skip forward 15 seconds"
-                            mdi="mdiSkipForward"
-                            onClick={skipForward}
-                        />
-                    </Flex>
-                </Flex>
+                <Player />
                 <Chat roomId={roomId} sockets={sockets} />
             </Flex>
         </Flex>
