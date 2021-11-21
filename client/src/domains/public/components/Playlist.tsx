@@ -95,7 +95,6 @@ export default function Playlist({ roomId, playlist }: IProps) {
     useEffect(() => {
         // If an item was active and removed, try to make the previous one active instead.
         if (activeVideo !== 0 && !playlist[activeVideo]) {
-            console.log("go previous");
             dispatchActiveVideo({
                 type: PLAYLIST_ACTIVE_PREVIOUS,
             });

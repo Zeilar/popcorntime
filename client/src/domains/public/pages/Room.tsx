@@ -214,7 +214,7 @@ export function Room() {
             if (playlist.length > 0 && playerState === 0) {
                 dispatchPlaylist({
                     type: Actions.REMOVE_FROM_PLAYLIST,
-                    id: playlist[activeVideo].id,
+                    id: playlist[activeVideo]?.id,
                 });
             }
         }
