@@ -3,7 +3,7 @@ import { Redirect, useHistory, useParams } from "react-router";
 import { ISocket } from "domains/common/@types/socket";
 import YouTube from "react-youtube";
 import { toast } from "react-toastify";
-import { Box } from "@chakra-ui/layout";
+import { Box, Text } from "@chakra-ui/layout";
 import { Chat } from "../components/chat";
 import { validate } from "uuid";
 import { Flex } from "@chakra-ui/react";
@@ -19,6 +19,7 @@ import * as Actions from "../state/actions/room";
 import { IVideo } from "../@types/video";
 import BrandLogo from "domains/common/components/styles/BrandLogo";
 import { Link } from "react-router-dom";
+import { Img } from "@chakra-ui/image";
 
 interface IParams {
     roomId: string;
@@ -264,14 +265,27 @@ export function Room() {
                         sx={{ ".youtube": { height: "100%" } }}
                         boxShadow="elevate.bottom"
                     >
-                        <YouTube
-                            opts={{ width: "100%", height: "100%" }}
-                            ref={player}
-                            containerClassName="youtube"
-                            videoId={
-                                playlist[activeVideo]?.videoId ?? "dQw4w9WgXcQ"
-                            }
-                        />
+                        {playlist[activeVideo] ? (
+                            <YouTube
+                                opts={{ width: "100%", height: "100%" }}
+                                ref={player}
+                                containerClassName="youtube"
+                                videoId={
+                                    playlist[activeVideo]?.videoId ??
+                                    "dQw4w9WgXcQ"
+                                }
+                            />
+                        ) : (
+                            <Flex
+                                bgColor="gray.900"
+                                h="100%"
+                                color="textMuted"
+                                alignItems="center"
+                                justifyContent="center"
+                            >
+                                <Text as="h1">No video selected</Text>
+                            </Flex>
+                        )}
                     </Box>
                     <Flex
                         justify="center"
