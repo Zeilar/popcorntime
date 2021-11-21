@@ -114,9 +114,6 @@ export class Room {
             socketId: socket.id,
             roomId: this.id,
         });
-        if (this.sockets.length <= 0) {
-            ws.deleteRoom(this);
-        }
     }
 
     public sendMessage(sender: Socket, message: Message) {

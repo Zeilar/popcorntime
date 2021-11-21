@@ -13,6 +13,7 @@ import { WS } from "./WS";
 import { Color } from "../@types/color";
 import Message from "./Message";
 import { IVideo } from "../@types/video";
+import { schedule } from "node-cron";
 
 const clientPath = join(__dirname, "../../client");
 const { PORT, ADMIN_PASSWORD } = env;
@@ -45,6 +46,14 @@ Logger.info("Connected socket.io to server");
 
 export const adminNamespace = io.of("/admin");
 export const ws = new WS();
+
+schedule("0 0 * * *", () => {
+    ws.rooms.forEach(room => {
+        if (room.sockets.length === 0) {
+            ws.deleteRoom(room);
+        }
+    });
+});
 
 io.on("connection", socket => {
     const _socket = new Socket(socket.id);
