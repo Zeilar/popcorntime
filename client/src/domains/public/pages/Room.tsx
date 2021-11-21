@@ -19,7 +19,6 @@ import * as Actions from "../state/actions/room";
 import { IVideo } from "../@types/video";
 import BrandLogo from "domains/common/components/styles/BrandLogo";
 import { Link } from "react-router-dom";
-import { Img } from "@chakra-ui/image";
 
 interface IParams {
     roomId: string;
@@ -149,6 +148,9 @@ export function Room() {
             return;
         }
 
+        publicSocket.on("video:sync", (timestamp: number) => {
+            internalPlayer.seekTo(timestamp, true);
+        });
         publicSocket.on("video:play", () => {
             internalPlayer.playVideo();
         });

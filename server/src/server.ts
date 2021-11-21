@@ -47,6 +47,7 @@ Logger.info("Connected socket.io to server");
 export const adminNamespace = io.of("/admin");
 export const ws = new WS();
 
+// Runs once every midnight, destroys all empty rooms to make sure server clears memory
 schedule("0 0 * * *", () => {
     ws.rooms.forEach(room => {
         if (room.sockets.length === 0) {
