@@ -23,18 +23,13 @@ export default function DashboardItem({ to, children, icon }: IProps) {
             _activeLink={{
                 bgColor: "brand.default",
             }}
-            p="0.75rem"
+            py="0.75rem"
+            px="1rem"
             fontSize="xl"
             borderRadius="base"
             exact
         >
-            <Icon
-                as={MdiIcon}
-                path={MdiIcons[icon]}
-                mx="0.5rem"
-                w="1rem"
-                h="1rem"
-            />
+            <Icon as={MdiIcon} path={MdiIcons[icon]} mr="0.5rem" />
             {children}
         </Flex>
     );
