@@ -1,5 +1,6 @@
 import { Img } from "@chakra-ui/image";
 import { Box } from "@chakra-ui/layout";
+import Button from "domains/common/components/styles/button";
 import { WebsocketContext } from "domains/common/contexts";
 import { useContext } from "react";
 import { useParams } from "react-router";
@@ -54,7 +55,13 @@ export default function PlaylistItem({ video }: IProps) {
         <Box
             onClick={setActive}
             h="100%"
+            cursor="pointer"
             pos="relative"
+            _hover={{
+                "> .remove-button": {
+                    display: "block",
+                },
+            }}
             _after={
                 active
                     ? {
@@ -70,6 +77,23 @@ export default function PlaylistItem({ video }: IProps) {
                     : undefined
             }
         >
+            <Button.Icon
+                className="remove-button"
+                zIndex={10}
+                pos="absolute"
+                right="1rem"
+                top="1rem"
+                mdi="mdiClose"
+                display="none"
+            />
+            <Box
+                pos="absolute"
+                top={0}
+                left={0}
+                w="100%"
+                h="100%"
+                bgColor="blackAlpha.500"
+            />
             <Img
                 src={`https://img.youtube.com/vi/${video.videoId}/0.jpg`}
                 objectFit="cover"
