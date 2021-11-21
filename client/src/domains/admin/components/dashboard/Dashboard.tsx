@@ -131,10 +131,9 @@ export default function Dashboard() {
                 {me && (
                     <Box
                         bgGradient={`linear(to-r, ${me.color}.700, ${me.color}.900)`}
-                        socket={me}
                         rounded="base"
-                        m="1rem auto 3rem"
                         fontSize="xl"
+                        m="1rem auto 3rem"
                         p="1rem 2rem"
                     >
                         {me.username}

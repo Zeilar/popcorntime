@@ -8,7 +8,11 @@ import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
 import { IVideo } from "../@types/video";
 import { RoomContext } from "../contexts";
-import { ADD_TO_PLAYLIST, REMOVE_FROM_PLAYLIST } from "../state/actions/room";
+import {
+    ADD_TO_PLAYLIST,
+    PLAYLIST_ACTIVE_PREVIOUS,
+    REMOVE_FROM_PLAYLIST,
+} from "../state/actions/room";
 import PlaylistItem from "./PlaylistItem";
 
 interface IProps {
@@ -18,7 +22,8 @@ interface IProps {
 
 export default function Playlist({ roomId, playlist }: IProps) {
     const { publicSocket } = useContext(WebsocketContext);
-    const { dispatchPlaylist } = useContext(RoomContext);
+    const { dispatchPlaylist, activeVideo, dispatchActiveVideo } =
+        useContext(RoomContext);
     const [input, setInput] = useState("");
     const [showPlaylist, setShowPlaylist] = useLocalStorage(
         "showPLaylist:chat",
@@ -87,8 +92,23 @@ export default function Playlist({ roomId, playlist }: IProps) {
         publicSocket.emit("room:playlist:add", { roomId, video });
     }
 
+    useEffect(() => {
+        // If an item was active and removed, try to make the previous one active instead.
+        if (activeVideo !== 0 && !playlist[activeVideo]) {
+            console.log("go previous");
+            dispatchActiveVideo({
+                type: PLAYLIST_ACTIVE_PREVIOUS,
+            });
+        }
+    }, [playlist, activeVideo, dispatchActiveVideo]);
+
     return (
-        <Flex flexDir="column" h="100%" w={showPlaylist ? "15rem" : "3rem"}>
+        <Flex
+            flexDir="column"
+            h="100%"
+            w={showPlaylist ? "15rem" : "3rem"}
+            zIndex={100}
+        >
             <Flex
                 p="0.5rem"
                 alignItems="center"

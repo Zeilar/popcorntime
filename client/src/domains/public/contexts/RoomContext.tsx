@@ -18,6 +18,7 @@ interface IContext {
     activeVideo: number;
     dispatchActiveVideo: React.Dispatch<any>;
     isPLaylistItemActive(id: string): boolean;
+    getIndexOfPlaylistItem(id: string): number;
 }
 
 interface IProps {
@@ -38,10 +39,12 @@ export function RoomContextProvider({ children }: IProps) {
     const [playlist, dispatchPlaylist] = useReducer(playlistReducer, []);
     const [sockets, dispatchSockets] = useReducer(socketsReducer, []);
 
-    function isPLaylistItemActive(videoId: string) {
-        return (
-            playlist.findIndex(video => video.id === videoId) === activeVideo
-        );
+    function getIndexOfPlaylistItem(id: string) {
+        return playlist.findIndex(video => video.id === id);
+    }
+
+    function isPLaylistItemActive(id: string) {
+        return getIndexOfPlaylistItem(id) === activeVideo;
     }
 
     const values: IContext = {
@@ -54,6 +57,7 @@ export function RoomContextProvider({ children }: IProps) {
         activeVideo,
         dispatchActiveVideo,
         isPLaylistItemActive,
+        getIndexOfPlaylistItem,
     };
 
     return (

@@ -6,7 +6,10 @@ import { useParams } from "react-router";
 import { IRoomParams } from "../@types/params";
 import { IVideo } from "../@types/video";
 import { RoomContext } from "../contexts";
-import { REMOVE_FROM_PLAYLIST } from "../state/actions/room";
+import {
+    PLAYLIST_ACTIVE_SET,
+    REMOVE_FROM_PLAYLIST,
+} from "../state/actions/room";
 
 interface IProps {
     video: IVideo;
@@ -14,8 +17,27 @@ interface IProps {
 
 export default function PlaylistItem({ video }: IProps) {
     const { publicSocket } = useContext(WebsocketContext);
-    const { dispatchPlaylist, isPLaylistItemActive } = useContext(RoomContext);
+    const {
+        dispatchPlaylist,
+        dispatchActiveVideo,
+        isPLaylistItemActive,
+        getIndexOfPlaylistItem,
+    } = useContext(RoomContext);
     const { roomId } = useParams<IRoomParams>();
+
+    const active = isPLaylistItemActive(video.id);
+
+    function setActive() {
+        console.log("set active", getIndexOfPlaylistItem(video.id));
+        publicSocket.emit("room:playlist:select", {
+            video,
+            roomId,
+        });
+        dispatchActiveVideo({
+            type: PLAYLIST_ACTIVE_SET,
+            index: getIndexOfPlaylistItem(video.id),
+        });
+    }
 
     function remove() {
         publicSocket.emit("room:playlist:remove", {
@@ -29,7 +51,25 @@ export default function PlaylistItem({ video }: IProps) {
     }
 
     return (
-        <Box onClick={remove} h="100%">
+        <Box
+            onClick={setActive}
+            h="100%"
+            pos="relative"
+            _after={
+                active
+                    ? {
+                          content: `""`,
+                          pos: "absolute",
+                          top: 0,
+                          left: 0,
+                          w: "100%",
+                          h: "100%",
+                          border: "2px solid",
+                          borderColor: "brand.default",
+                      }
+                    : undefined
+            }
+        >
             <Img
                 src={`https://img.youtube.com/vi/${video.videoId}/0.jpg`}
                 objectFit="cover"
