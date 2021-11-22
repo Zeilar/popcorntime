@@ -2,7 +2,7 @@ import { IRoomDto } from "../@types/room";
 import { adminNamespace, io, ws } from "./server";
 import { Socket } from "./Socket";
 import { uniqueNamesGenerator } from "unique-names-generator";
-import { nameConfig } from "../config/uniqueNamesGenerator";
+import { roomNameConfig } from "../config/uniqueNamesGenerator";
 import Message from "./Message";
 import env from "../config/env";
 import { IVideo } from "../@types/video";
@@ -21,7 +21,7 @@ export class Room {
 
     public constructor(public readonly id: string) {
         this.created_at = new Date();
-        this.name = uniqueNamesGenerator(nameConfig);
+        this.name = uniqueNamesGenerator(roomNameConfig);
     }
 
     public addMessage(message: Message) {
@@ -72,11 +72,7 @@ export class Room {
         }
         this.sockets.push(socket);
         socket.ref.join(this.id);
-        socket.ref.emit("room:join", {
-            sockets: this.socketsDto,
-            messages: this.messages,
-            playlist: this.playlist,
-        });
+        socket.ref.emit("room:join", this.dto);
         socket.ref.to(this.id).emit("room:socket:join", socket.dto);
         this.sendMessageToAll(
             this.serverMessage({

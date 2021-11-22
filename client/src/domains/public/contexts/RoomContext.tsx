@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useReducer } from "react";
+import { createContext, ReactNode, useReducer, useState } from "react";
 import { useLocalStorage } from "domains/common/hooks";
 import { IVideo } from "../@types/video";
 import {
@@ -7,6 +7,7 @@ import {
     socketsReducer,
 } from "../state/reducers/room";
 import { ISocket } from "domains/common/@types/socket";
+import { IRoomDetails } from "domains/common/@types/room";
 
 interface IContext {
     showServerMessages: boolean;
@@ -19,6 +20,8 @@ interface IContext {
     dispatchActiveVideo: React.Dispatch<any>;
     isPLaylistItemActive(id: string): boolean;
     getIndexOfPlaylistItem(id: string): number;
+    room: IRoomDetails | null;
+    setRoom: React.Dispatch<React.SetStateAction<IRoomDetails | null>>;
 }
 
 interface IProps {
@@ -38,6 +41,7 @@ export function RoomContextProvider({ children }: IProps) {
     );
     const [playlist, dispatchPlaylist] = useReducer(playlistReducer, []);
     const [sockets, dispatchSockets] = useReducer(socketsReducer, []);
+    const [room, setRoom] = useState<IRoomDetails | null>(null);
 
     function getIndexOfPlaylistItem(id: string) {
         return playlist.findIndex(video => video.id === id);
@@ -58,6 +62,8 @@ export function RoomContextProvider({ children }: IProps) {
         dispatchActiveVideo,
         isPLaylistItemActive,
         getIndexOfPlaylistItem,
+        room,
+        setRoom,
     };
 
     return (

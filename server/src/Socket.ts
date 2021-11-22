@@ -3,7 +3,7 @@ import { adminNamespace, io, ws } from "./server";
 import { Color } from "../@types/color";
 import { ISocketDto } from "../@types/socket";
 import { uniqueNamesGenerator } from "unique-names-generator";
-import { nameConfig } from "../config/uniqueNamesGenerator";
+import { socketNameConfig } from "../config/uniqueNamesGenerator";
 
 export class Socket {
     public username: string;
@@ -40,7 +40,7 @@ export class Socket {
     }
 
     private async setRandomName() {
-        this.username = uniqueNamesGenerator(nameConfig);
+        this.username = uniqueNamesGenerator(socketNameConfig);
         adminNamespace.emit("socket:update:name", this.username);
     }
 

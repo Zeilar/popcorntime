@@ -13,39 +13,41 @@ import Playlist from "../components/Playlist";
 import { IErrorPayload } from "domains/common/@types/listener";
 import { RoomContext } from "../contexts";
 import * as Actions from "../state/actions/room";
-import { IVideo } from "../@types/video";
 import Player from "../components/Player";
 import { IRoomParams } from "../@types/params";
 import Navbar from "../components/Navbar";
+import { IRoom } from "domains/common/@types/room";
 
 export function Room() {
     const { roomId } = useParams<IRoomParams>();
     const [isConnected, setIsConnected] = useState(false);
     const { publicSocket } = useContext(WebsocketContext);
     const { push } = useHistory();
-    const { playlist, dispatchPlaylist, sockets, dispatchSockets } =
+    const { playlist, dispatchPlaylist, sockets, dispatchSockets, setRoom } =
         useContext(RoomContext);
 
     useEffect(() => {
         publicSocket.emit("room:join", roomId);
-        publicSocket.once(
-            "room:join",
-            (payload: { sockets: ISocket[]; playlist: IVideo[] }) => {
-                dispatchSockets({
-                    type: Actions.SET_SOCKETS,
-                    sockets: payload.sockets,
-                });
-                dispatchPlaylist({
-                    type: Actions.SET_PLAYLIST,
-                    playlist: payload.playlist,
-                });
-                setIsConnected(true);
-            }
-        );
+        publicSocket.once("room:join", (payload: IRoom) => {
+            dispatchSockets({
+                type: Actions.SET_SOCKETS,
+                sockets: payload.sockets,
+            });
+            dispatchPlaylist({
+                type: Actions.SET_PLAYLIST,
+                playlist: payload.playlist,
+            });
+            setRoom({
+                id: payload.id,
+                name: payload.name,
+                created_at: payload.created_at,
+            });
+            setIsConnected(true);
+        });
         return () => {
             publicSocket.off("room:join");
         };
-    }, [publicSocket, roomId, dispatchPlaylist, dispatchSockets]);
+    }, [publicSocket, roomId, dispatchPlaylist, dispatchSockets, setRoom]);
 
     useEffect(() => {
         publicSocket.on("room:socket:join", (socket: ISocket) => {
