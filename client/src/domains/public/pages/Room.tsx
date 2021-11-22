@@ -17,13 +17,10 @@ import { IVideo } from "../@types/video";
 import BrandLogo from "domains/common/components/styles/BrandLogo";
 import { Link } from "react-router-dom";
 import Player from "../components/Player";
-
-interface IParams {
-    roomId: string;
-}
+import { IRoomParams } from "../@types/params";
 
 export function Room() {
-    const { roomId } = useParams<IParams>();
+    const { roomId } = useParams<IRoomParams>();
     const [isConnected, setIsConnected] = useState(false);
     const { publicSocket } = useContext(WebsocketContext);
     const { push } = useHistory();

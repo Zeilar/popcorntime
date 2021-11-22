@@ -3,7 +3,9 @@ import { Spinner } from "@chakra-ui/spinner";
 import Button from "domains/common/components/styles/button";
 import { WebsocketContext } from "domains/common/contexts";
 import { useState, useEffect, useContext, useRef } from "react";
+import { useParams } from "react-router";
 import YouTube from "react-youtube";
+import { IRoomParams } from "../@types/params";
 import { RoomContext } from "../contexts";
 import { REMOVE_FROM_PLAYLIST } from "../state/actions/room";
 
@@ -13,6 +15,7 @@ export default function Player() {
     const { publicSocket } = useContext(WebsocketContext);
     const [playerState, setPlayerState] = useState<YT.PlayerState>(-1);
     const player = useRef<YouTube>(null);
+    const { roomId } = useParams<IRoomParams>();
 
     const internalPlayer: YT.Player | undefined =
         player.current?.getInternalPlayer();
@@ -67,6 +70,10 @@ export default function Player() {
                     type: REMOVE_FROM_PLAYLIST,
                     id: playlist[activeVideo].id,
                 });
+                publicSocket.emit("room:playlist:remove", {
+                    roomId,
+                    videoId: playlist[activeVideo].id,
+                });
             }
         }
         internalPlayer.addEventListener("onStateChange", onStateChange);
@@ -79,6 +86,8 @@ export default function Player() {
         dispatchPlaylist,
         playlist,
         getIndexOfPlaylistItem,
+        roomId,
+        publicSocket,
     ]);
 
     async function sync() {
