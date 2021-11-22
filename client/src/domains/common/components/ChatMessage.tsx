@@ -7,6 +7,7 @@ import dayjs from "dayjs";
 
 interface IProps {
     message: IMessage;
+    index: number;
 }
 
 const Motion = motion<FlexProps>(Flex);
@@ -15,7 +16,7 @@ function formatTimestamp(date: Date) {
     return dayjs(date).format("HH:mm");
 }
 
-export default function ChatMessage({ message }: IProps) {
+export default function ChatMessage({ message, index }: IProps) {
     const { publicSocket } = useContext(WebsocketContext);
 
     // Using Chakra FlexProps type for some reason won't work
@@ -52,6 +53,9 @@ export default function ChatMessage({ message }: IProps) {
             py="0.5rem"
             px="1rem"
             _odd={{ bgColor: "gray.400" }}
+            _even={{ bgColor: "gray.600" }}
+            boxShadow="elevate.bottom"
+            zIndex={parseInt(process.env.REACT_APP_ROOM_MAX_MESSAGES) - index}
             {...notSentStyling}
             {...animationStyling}
         >
