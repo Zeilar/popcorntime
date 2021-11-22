@@ -2,7 +2,7 @@ import { Flex, Text } from "@chakra-ui/layout";
 import { Spinner } from "@chakra-ui/spinner";
 import Button from "domains/common/components/styles/button";
 import { WebsocketContext } from "domains/common/contexts";
-import { useState, useEffect, useContext, useRef, memo } from "react";
+import { useState, useEffect, useContext, useRef } from "react";
 import YouTube from "react-youtube";
 import { RoomContext } from "../contexts";
 import { REMOVE_FROM_PLAYLIST } from "../state/actions/room";
@@ -62,10 +62,7 @@ export default function Player() {
             setPlayerState(playerState);
             // If video ended, remove from playlist
             // Since this will register many times before playlist is filled up, we need the length check
-            if (
-                playerState === 0 &&
-                getIndexOfPlaylistItem(playlist[activeVideo].id) === activeVideo
-            ) {
+            if (playerState === 0) {
                 dispatchPlaylist({
                     type: REMOVE_FROM_PLAYLIST,
                     id: playlist[activeVideo].id,

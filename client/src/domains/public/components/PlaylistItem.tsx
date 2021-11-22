@@ -29,7 +29,6 @@ export default function PlaylistItem({ video }: IProps) {
     const active = isPLaylistItemActive(video.id);
 
     function setActive() {
-        console.log("set active", getIndexOfPlaylistItem(video.id));
         publicSocket.emit("room:playlist:select", {
             video,
             roomId,
