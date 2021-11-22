@@ -3,12 +3,17 @@ import { motion } from "framer-motion";
 import { useContext } from "react";
 import { IMessage } from "../@types/message";
 import { WebsocketContext } from "../contexts";
+import dayjs from "dayjs";
 
 interface IProps {
     message: IMessage;
 }
 
 const Motion = motion<FlexProps>(Flex);
+
+function formatTimestamp(date: Date) {
+    return dayjs(date).format("HH:mm");
+}
 
 export default function ChatMessage({ message }: IProps) {
     const { publicSocket } = useContext(WebsocketContext);
@@ -50,6 +55,9 @@ export default function ChatMessage({ message }: IProps) {
             {...animationStyling}
         >
             <Text {...serverMessageStyling}>
+                <Text color="textMuted" as="span">
+                    {`${formatTimestamp(new Date(message.created_at))} `}
+                </Text>
                 <Text
                     as="span"
                     color={`${message.socket.color}.600`}
@@ -59,6 +67,7 @@ export default function ChatMessage({ message }: IProps) {
                         ? `${message.socket.username} `
                         : `${message.socket.username}: `}
                 </Text>
+                <br />
                 {message.body}
             </Text>
         </Motion>
