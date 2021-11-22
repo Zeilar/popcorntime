@@ -68,6 +68,7 @@ export default function ChatMessage({ message }: IProps) {
                         ? `${message.socket.username} `
                         : `${message.socket.username}: `}
                 </Text>
+                <br />
                 {message.body}
             </Text>
         </Motion>
