@@ -161,7 +161,7 @@ export function Chat({ roomId }: IProps) {
                 {showChat && (
                     <>
                         <Text fontWeight={600}>Chat</Text>
-                        <Button.Icon />
+                        <Button.Icon mdi="mdiInformationOutline" />
                     </>
                 )}
             </Flex>
