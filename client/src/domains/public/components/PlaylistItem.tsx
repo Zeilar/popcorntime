@@ -84,6 +84,7 @@ export default function PlaylistItem({ video }: IProps) {
                 right="1rem"
                 top="1rem"
                 mdi="mdiClose"
+                onClick={remove}
                 display="none"
             />
             <Box
