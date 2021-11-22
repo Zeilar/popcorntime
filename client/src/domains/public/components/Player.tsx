@@ -3,19 +3,14 @@ import { Spinner } from "@chakra-ui/spinner";
 import Button from "domains/common/components/styles/button";
 import { WebsocketContext } from "domains/common/contexts";
 import { useState, useEffect, useContext, useRef } from "react";
-import { useParams } from "react-router";
 import YouTube from "react-youtube";
-import { IRoomParams } from "../@types/params";
 import { RoomContext } from "../contexts";
-import { REMOVE_FROM_PLAYLIST } from "../state/actions/room";
 
 export default function Player() {
-    const { playlist, activeVideo, dispatchPlaylist, getIndexOfPlaylistItem } =
-        useContext(RoomContext);
+    const { playlist, activeVideo } = useContext(RoomContext);
     const { publicSocket } = useContext(WebsocketContext);
     const [playerState, setPlayerState] = useState<YT.PlayerState>(-1);
     const player = useRef<YouTube>(null);
-    const { roomId } = useParams<IRoomParams>();
 
     const internalPlayer: YT.Player | undefined =
         player.current?.getInternalPlayer();
@@ -63,32 +58,12 @@ export default function Player() {
         function onStateChange(e: YT.PlayerEvent) {
             const playerState = e.target.getPlayerState();
             setPlayerState(playerState);
-            // If video ended, remove from playlist
-            // Since this will register many times before playlist is filled up, we need the length check
-            if (playerState === 0) {
-                dispatchPlaylist({
-                    type: REMOVE_FROM_PLAYLIST,
-                    id: playlist[activeVideo].id,
-                });
-                publicSocket.emit("room:playlist:remove", {
-                    roomId,
-                    videoId: playlist[activeVideo].id,
-                });
-            }
         }
         internalPlayer.addEventListener("onStateChange", onStateChange);
         return () => {
             internalPlayer.removeEventListener("onStateChange", onStateChange);
         };
-    }, [
-        internalPlayer,
-        activeVideo,
-        dispatchPlaylist,
-        playlist,
-        getIndexOfPlaylistItem,
-        roomId,
-        publicSocket,
-    ]);
+    }, [internalPlayer]);
 
     async function sync() {
         if (!internalPlayer) {
