@@ -18,6 +18,7 @@ import BrandLogo from "domains/common/components/styles/BrandLogo";
 import { Link } from "react-router-dom";
 import Player from "../components/Player";
 import { IRoomParams } from "../@types/params";
+import Navbar from "../components/Navbar";
 
 export function Room() {
     const { roomId } = useParams<IRoomParams>();
@@ -118,17 +119,7 @@ export function Room() {
 
     return (
         <Flex flexDir="column" w="100%">
-            <Flex
-                as="nav"
-                justifyContent="center"
-                boxShadow="elevate.bottom"
-                bgColor="gray.800"
-                zIndex={100}
-            >
-                <Link to="/">
-                    <BrandLogo />
-                </Link>
-            </Flex>
+            <Navbar />
             <Flex flexGrow={1} maxH="100%" overflow="hidden">
                 <AnimatePresence>
                     {!isConnected && <PageSpinner />}
