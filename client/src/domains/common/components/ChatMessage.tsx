@@ -49,6 +49,7 @@ export default function ChatMessage({ message, index }: IProps) {
 
     return (
         <Motion
+            wordBreak="break-word"
             alignItems="center"
             py="0.5rem"
             px="1rem"
