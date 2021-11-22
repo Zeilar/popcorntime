@@ -117,7 +117,7 @@ export default function Playlist({ roomId, playlist }: IProps) {
                 {showPlaylist && (
                     <>
                         <Button.Icon />
-                        <Text>Playlist</Text>
+                        <Text fontWeight={600}>Playlist</Text>
                     </>
                 )}
                 {showPlaylist ? (
@@ -149,6 +149,7 @@ export default function Playlist({ roomId, playlist }: IProps) {
                                 Add video
                             </Text>
                             <Text
+                                fontWeight={600}
                                 color={
                                     playlist.length >=
                                     parseInt(REACT_APP_ROOM_MAX_PLAYLIST)

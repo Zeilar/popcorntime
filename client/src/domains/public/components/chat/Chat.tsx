@@ -160,7 +160,7 @@ export function Chat({ roomId }: IProps) {
                 )}
                 {showChat && (
                     <>
-                        <Text>Chat</Text>
+                        <Text fontWeight={600}>Chat</Text>
                         <Button.Icon />
                     </>
                 )}
