@@ -55,12 +55,12 @@ export class Room {
             });
         }
         this.playlist.push(video);
-        sender.ref.to(this.id).emit("room:playlist:add", video);
+        io.to(this.id).emit("room:playlist:add", video);
     }
 
     public removeFromPlaylist(sender: Socket, id: string) {
         this.playlist = this.playlist.filter(video => video.id !== id);
-        sender.ref.to(this.id).emit("room:playlist:remove", id);
+        io.to(this.id).emit("room:playlist:remove", id);
     }
 
     public hasSocket(socket: Socket) {

@@ -4,8 +4,10 @@ import Button from "domains/common/components/styles/button";
 import { WebsocketContext } from "domains/common/contexts";
 import { useLocalStorage } from "domains/common/hooks";
 import { useContext, useEffect, useState } from "react";
+import { useParams } from "react-router";
 import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
+import { IRoomParams } from "../@types/params";
 import { IVideo } from "../@types/video";
 import { RoomContext } from "../contexts";
 import {
@@ -15,16 +17,12 @@ import {
 } from "../state/actions/room";
 import PlaylistItem from "./PlaylistItem";
 
-interface IProps {
-    roomId: string;
-    playlist: IVideo[];
-}
-
 const { REACT_APP_ROOM_MAX_PLAYLIST } = process.env;
 
-export default function Playlist({ roomId, playlist }: IProps) {
+export default function Playlist() {
     const { publicSocket } = useContext(WebsocketContext);
-    const { dispatchPlaylist, activeVideo, dispatchActiveVideo } =
+    const { roomId } = useParams<IRoomParams>();
+    const { dispatchPlaylist, activeVideo, dispatchActiveVideo, playlist } =
         useContext(RoomContext);
     const [input, setInput] = useState("");
     const [showPlaylist, setShowPlaylist] = useLocalStorage(
@@ -85,12 +83,15 @@ export default function Playlist({ roomId, playlist }: IProps) {
             videoId,
         };
         setInput("");
-        dispatchPlaylist({
-            type: ADD_TO_PLAYLIST,
-            video,
-        });
         publicSocket.emit("room:playlist:add", { roomId, video });
     }
+
+    useEffect(() => {
+        publicSocket.on("room:playlist:new", () => {});
+        return () => {
+            publicSocket.off("room:playlist:new");
+        };
+    }, [publicSocket]);
 
     useEffect(() => {
         // If an item was active and removed, try to make the previous one active instead.

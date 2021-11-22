@@ -124,9 +124,9 @@ export function Room() {
                 <AnimatePresence>
                     {!isConnected && <PageSpinner />}
                 </AnimatePresence>
-                <Playlist roomId={roomId} playlist={playlist} />
+                <Playlist />
                 <Player />
-                <Chat sockets={sockets} />
+                <Chat />
             </Flex>
         </Flex>
     );

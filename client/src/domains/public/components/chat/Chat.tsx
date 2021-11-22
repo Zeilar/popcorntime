@@ -10,7 +10,6 @@ import {
 import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
 import { IMessage } from "domains/common/@types/message";
-import { ISocket } from "domains/common/@types/socket";
 import Message from "domains/common/components/ChatMessage";
 import Textarea from "../styles/Textarea";
 import { MeContext, RoomContext } from "domains/public/contexts";
@@ -24,11 +23,7 @@ import RoomInfo from "./RoomInfo";
 import { IRoomParams } from "domains/public/@types/params";
 import { useParams } from "react-router";
 
-interface IProps {
-    sockets: ISocket[];
-}
-
-export function Chat({ sockets }: IProps) {
+export function Chat() {
     const [showChat, setShowChat] = useLocalStorage<boolean>("showChat", true);
     const { showServerMessages } = useContext(RoomContext);
     const { roomId } = useParams<IRoomParams>();
