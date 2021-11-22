@@ -131,6 +131,11 @@ export default function Room({ room }: IProps) {
                     strokeLinecap="round"
                     strokeWidth={3}
                     fill="none"
+                    style={
+                        room.sockets.length === 0
+                            ? { display: "none" }
+                            : undefined
+                    }
                 >
                     <path
                         style={{ transition: "0.5s ease-in-out" }}
@@ -141,11 +146,10 @@ export default function Room({ room }: IProps) {
             </Box>
             <Grid
                 w="100%"
-                h="100%"
                 gridGap="0.5rem"
                 p="0.5rem"
                 gridTemplateColumns="repeat(1, 1fr)"
-                gridTemplateRows="repeat(10, 1fr)"
+                gridTemplateRows="repeat(10, 3rem)"
             >
                 {sockets.map(socket => (
                     <Socket socket={socket} key={socket.id} />

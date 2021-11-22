@@ -32,7 +32,7 @@ export default function Socket({ socket }: IProps) {
             overflow="hidden"
             rounded="base"
             key={socket.id}
-            p="0.5rem 1rem"
+            px="1rem"
             {...isLoadingStyles}
         >
             <Text
