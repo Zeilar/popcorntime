@@ -2,13 +2,14 @@ import { Flex, Text } from "@chakra-ui/layout";
 import { Spinner } from "@chakra-ui/spinner";
 import Button from "domains/common/components/styles/button";
 import { WebsocketContext } from "domains/common/contexts";
-import { useState, useEffect, useContext, useRef } from "react";
+import { useState, useEffect, useContext, useRef, memo } from "react";
 import YouTube from "react-youtube";
 import { RoomContext } from "../contexts";
 import { REMOVE_FROM_PLAYLIST } from "../state/actions/room";
 
 export default function Player() {
-    const { playlist, activeVideo, dispatchPlaylist } = useContext(RoomContext);
+    const { playlist, activeVideo, dispatchPlaylist, getIndexOfPlaylistItem } =
+        useContext(RoomContext);
     const { publicSocket } = useContext(WebsocketContext);
     const [playerState, setPlayerState] = useState<YT.PlayerState>(-1);
     const player = useRef<YouTube>(null);
@@ -61,10 +62,13 @@ export default function Player() {
             setPlayerState(playerState);
             // If video ended, remove from playlist
             // Since this will register many times before playlist is filled up, we need the length check
-            if (playlist.length > 0 && playerState === 0) {
+            if (
+                playerState === 0 &&
+                getIndexOfPlaylistItem(playlist[activeVideo].id) === activeVideo
+            ) {
                 dispatchPlaylist({
                     type: REMOVE_FROM_PLAYLIST,
-                    id: playlist[activeVideo]?.id,
+                    id: playlist[activeVideo].id,
                 });
             }
         }
@@ -72,7 +76,13 @@ export default function Player() {
         return () => {
             internalPlayer.removeEventListener("onStateChange", onStateChange);
         };
-    }, [internalPlayer, activeVideo, dispatchPlaylist, playlist]);
+    }, [
+        internalPlayer,
+        activeVideo,
+        dispatchPlaylist,
+        playlist,
+        getIndexOfPlaylistItem,
+    ]);
 
     async function sync() {
         if (!internalPlayer) {

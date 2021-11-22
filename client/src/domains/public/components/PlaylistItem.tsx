@@ -2,7 +2,7 @@ import { Img } from "@chakra-ui/image";
 import { Box } from "@chakra-ui/layout";
 import Button from "domains/common/components/styles/button";
 import { WebsocketContext } from "domains/common/contexts";
-import { useContext } from "react";
+import React, { useContext } from "react";
 import { useParams } from "react-router";
 import { IRoomParams } from "../@types/params";
 import { IVideo } from "../@types/video";
@@ -40,7 +40,8 @@ export default function PlaylistItem({ video }: IProps) {
         });
     }
 
-    function remove() {
+    function remove(e: React.MouseEvent) {
+        e.stopPropagation();
         publicSocket.emit("room:playlist:remove", {
             videoId: video.id,
             roomId,
