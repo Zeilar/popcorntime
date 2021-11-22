@@ -112,7 +112,6 @@ io.on("connection", socket => {
         }
 
         room.sendMessage(
-            _socket,
             new Message({
                 id,
                 body,

@@ -113,7 +113,7 @@ export class Room {
         });
     }
 
-    public sendMessage(sender: Socket, message: Message) {
+    public sendMessage(message: Message) {
         this.addMessage(message);
         io.to(this.id).emit("message:new", message);
         adminNamespace.emit("message:new", { roomId: this.id, message });
