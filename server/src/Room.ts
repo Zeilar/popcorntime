@@ -58,7 +58,7 @@ export class Room {
         io.to(this.id).emit("room:playlist:add", video);
     }
 
-    public removeFromPlaylist(sender: Socket, id: string) {
+    public removeFromPlaylist(id: string) {
         this.playlist = this.playlist.filter(video => video.id !== id);
         io.to(this.id).emit("room:playlist:remove", id);
     }
