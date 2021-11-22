@@ -1,14 +1,11 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Redirect, useHistory, useParams } from "react-router";
 import { ISocket } from "domains/common/@types/socket";
-import YouTube from "react-youtube";
 import { toast } from "react-toastify";
-import { Box, Text } from "@chakra-ui/layout";
 import { Chat } from "../components/chat";
 import { validate } from "uuid";
 import { Flex } from "@chakra-ui/react";
 import { Color } from "domains/common/@types/color";
-import Button from "domains/common/components/styles/button";
 import { WebsocketContext } from "domains/common/contexts";
 import PageSpinner from "domains/common/components/styles/PageSpinner";
 import { AnimatePresence } from "framer-motion";
@@ -27,18 +24,11 @@ interface IParams {
 
 export function Room() {
     const { roomId } = useParams<IParams>();
-    const [playerState, setPlayerState] = useState<YT.PlayerState>(-1);
     const [isConnected, setIsConnected] = useState(false);
     const { publicSocket } = useContext(WebsocketContext);
-    const player = useRef<YouTube>(null);
     const { push } = useHistory();
-    const {
-        playlist,
-        dispatchPlaylist,
-        sockets,
-        dispatchSockets,
-        activeVideo,
-    } = useContext(RoomContext);
+    const { playlist, dispatchPlaylist, sockets, dispatchSockets } =
+        useContext(RoomContext);
 
     useEffect(() => {
         publicSocket.emit("room:join", roomId);

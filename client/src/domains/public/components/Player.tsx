@@ -1,4 +1,4 @@
-import { Box, Flex, Text } from "@chakra-ui/layout";
+import { Flex, Text } from "@chakra-ui/layout";
 import { Spinner } from "@chakra-ui/spinner";
 import Button from "domains/common/components/styles/button";
 import { WebsocketContext } from "domains/common/contexts";
@@ -155,7 +155,9 @@ export default function Player() {
                             alignItems="center"
                             justifyContent="center"
                         >
-                            <Text as="h1">No video selected</Text>
+                            <Text as="h1" p="1rem">
+                                No video selected
+                            </Text>
                         </Flex>
                     )
                 ) : (
