@@ -19,6 +19,8 @@ import { useLocalStorage, useOnClickOutside } from "domains/common/hooks";
 import { WebsocketContext } from "domains/common/contexts";
 import Button from "domains/common/components/styles/button";
 import { IErrorPayload } from "domains/common/@types/listener";
+import { useDisclosure } from "@chakra-ui/hooks";
+import RoomInfo from "./RoomInfo";
 
 interface IProps {
     roomId: string;
@@ -35,6 +37,7 @@ export function Chat({ roomId }: IProps) {
     const input = useRef<HTMLTextAreaElement>(null);
     const [settingsOpen, setSettingsOpen] = useState(false);
     const { publicSocket } = useContext(WebsocketContext);
+    const roomInfo = useDisclosure();
     const settingsEl = useOnClickOutside<HTMLDivElement>(() => {
         setSettingsOpen(false);
     });
@@ -137,13 +140,21 @@ export function Chat({ roomId }: IProps) {
         : messages.filter(message => !message.serverMessage);
 
     return (
-        <Flex flexDir="column" w={showChat ? "25rem" : "3rem"} zIndex={10}>
+        <Flex
+            flexDir="column"
+            w={showChat ? "25rem" : "3rem"}
+            zIndex={10}
+            pos="relative"
+        >
+            {roomInfo.isOpen && (
+                <RoomInfo onClose={roomInfo.onClose} isOpen={roomInfo.isOpen} />
+            )}
             <Flex
                 align="center"
                 p="0.5rem"
                 justifyContent="space-between"
                 boxShadow="elevate.bottom"
-                zIndex={5}
+                zIndex={parseInt(REACT_APP_ROOM_MAX_MESSAGES) + 5}
             >
                 {showChat ? (
                     <Button.Icon
@@ -161,7 +172,10 @@ export function Chat({ roomId }: IProps) {
                 {showChat && (
                     <>
                         <Text fontWeight={600}>Chat</Text>
-                        <Button.Icon mdi="mdiInformationOutline" />
+                        <Button.Icon
+                            mdi="mdiInformationOutline"
+                            onClick={roomInfo.onOpen}
+                        />
                     </>
                 )}
             </Flex>
@@ -169,14 +183,25 @@ export function Chat({ roomId }: IProps) {
             {showChat && (
                 <>
                     <Flex flexDir="column" overflowY="auto" ref={chatElement}>
-                        {filteredMessages.map(message => (
-                            <Message key={message.id} message={message} />
+                        {filteredMessages.map((message, i) => (
+                            <Message
+                                key={message.id}
+                                message={message}
+                                index={i}
+                            />
                         ))}
                     </Flex>
-                    <Box zIndex={5} mt="auto">
+                    <Box
+                        zIndex={parseInt(REACT_APP_ROOM_MAX_MESSAGES) + 5}
+                        mt="auto"
+                    >
                         <Box h={2} boxShadow="elevate.top" />
                         <Box as="form" onSubmit={sendMessage} p="1rem">
-                            <Text color={`${me.color}.600`} mb="0.5rem">
+                            <Text
+                                color={`${me.color}.600`}
+                                mb="0.5rem"
+                                fontWeight={700}
+                            >
                                 {me.username}
                             </Text>
                             <Textarea

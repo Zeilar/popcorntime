@@ -9,7 +9,7 @@ export default function Navbar() {
             justifyContent="center"
             boxShadow="elevate.bottom"
             bgColor="gray.800"
-            zIndex={100}
+            zIndex={1000}
         >
             <Link to="/">
                 <BrandLogo />
