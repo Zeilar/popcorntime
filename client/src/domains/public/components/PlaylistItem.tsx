@@ -54,7 +54,6 @@ export default function PlaylistItem({ video }: IProps) {
     return (
         <Box
             onClick={setActive}
-            h="100%"
             cursor="pointer"
             pos="relative"
             _hover={{
