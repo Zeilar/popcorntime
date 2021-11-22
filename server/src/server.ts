@@ -103,10 +103,10 @@ io.on("connection", socket => {
             });
         }
 
-        if (body.length > 255) {
+        if (body.length > Room.MAX_MESSAGE_LENGTH) {
             return socket.emit("message:error", {
                 message: "Failed sending message.",
-                reason: "Message is too long. Max 255 characters.",
+                reason: `Message is too long. Max ${Room.MAX_MESSAGE_LENGTH} characters.`,
                 id,
             });
         }
