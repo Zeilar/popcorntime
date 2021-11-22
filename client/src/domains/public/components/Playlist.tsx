@@ -20,6 +20,8 @@ interface IProps {
     playlist: IVideo[];
 }
 
+const { REACT_APP_ROOM_MAX_PLAYLIST } = process.env;
+
 export default function Playlist({ roomId, playlist }: IProps) {
     const { publicSocket } = useContext(WebsocketContext);
     const { dispatchPlaylist, activeVideo, dispatchActiveVideo } =
@@ -54,13 +56,11 @@ export default function Playlist({ roomId, playlist }: IProps) {
 
     function add(e: React.FormEvent) {
         e.preventDefault();
-        if (
-            playlist.length >= parseInt(process.env.REACT_APP_ROOM_MAX_PLAYLIST)
-        ) {
-            return toast.error("Playlist is full.");
-        }
         if (!input) {
             return;
+        }
+        if (playlist.length >= parseInt(REACT_APP_ROOM_MAX_PLAYLIST)) {
+            return toast.error("Playlist is full.");
         }
         let url: URL;
         try {
@@ -144,9 +144,21 @@ export default function Playlist({ roomId, playlist }: IProps) {
                         onSubmit={add}
                         boxShadow="elevate.bottom"
                     >
-                        <Text color="textMuted" mb="0.5rem">
-                            Add video
-                        </Text>
+                        <Flex justifyContent="space-between">
+                            <Text color="textMuted" mb="0.5rem">
+                                Add video
+                            </Text>
+                            <Text
+                                color={
+                                    playlist.length >=
+                                    parseInt(REACT_APP_ROOM_MAX_PLAYLIST)
+                                        ? "danger"
+                                        : "textMuted"
+                                }
+                            >
+                                {`${playlist.length} / ${REACT_APP_ROOM_MAX_PLAYLIST}`}
+                            </Text>
+                        </Flex>
                         <Input
                             placeholder="Video URL"
                             w="100%"
