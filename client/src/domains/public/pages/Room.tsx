@@ -51,7 +51,7 @@ export function Room() {
         publicSocket.on("room:socket:join", (socket: ISocket) => {
             dispatchSockets({
                 type: Actions.ADD_SOCKET,
-                socketId: socket.id,
+                socket,
             });
         });
         publicSocket.on("room:socket:leave", (socket: ISocket) => {
@@ -124,7 +124,7 @@ export function Room() {
                 </AnimatePresence>
                 <Playlist roomId={roomId} playlist={playlist} />
                 <Player />
-                <Chat roomId={roomId} sockets={sockets} />
+                <Chat sockets={sockets} />
             </Flex>
         </Flex>
     );

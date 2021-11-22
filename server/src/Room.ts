@@ -43,7 +43,7 @@ export class Room {
     }
 
     public get socketsDto() {
-        return this.sockets.map(socket => socket.id);
+        return this.sockets.map(socket => socket.dto);
     }
 
     public addToPlaylist(sender: Socket, video: IVideo) {

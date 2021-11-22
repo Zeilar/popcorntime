@@ -21,15 +21,17 @@ import Button from "domains/common/components/styles/button";
 import { IErrorPayload } from "domains/common/@types/listener";
 import { useDisclosure } from "@chakra-ui/hooks";
 import RoomInfo from "./RoomInfo";
+import { IRoomParams } from "domains/public/@types/params";
+import { useParams } from "react-router";
 
 interface IProps {
-    roomId: string;
     sockets: ISocket[];
 }
 
-export function Chat({ roomId }: IProps) {
+export function Chat({ sockets }: IProps) {
     const [showChat, setShowChat] = useLocalStorage<boolean>("showChat", true);
     const { showServerMessages } = useContext(RoomContext);
+    const { roomId } = useParams<IRoomParams>();
     const { me } = useContext(MeContext);
     const [messages, setMessages] = useState<IMessage[]>([]);
     const scrollChat = useRef<boolean>(true);
@@ -146,9 +148,7 @@ export function Chat({ roomId }: IProps) {
             zIndex={10}
             pos="relative"
         >
-            {roomInfo.isOpen && (
-                <RoomInfo onClose={roomInfo.onClose} isOpen={roomInfo.isOpen} />
-            )}
+            {roomInfo.isOpen && <RoomInfo onClose={roomInfo.onClose} />}
             <Flex
                 align="center"
                 p="0.5rem"

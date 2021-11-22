@@ -7,6 +7,6 @@ export interface IRoomDto {
     messages: IMessage[];
     name: string;
     playlist: IVideo[];
-    sockets: string[];
+    sockets: ISocketDto[];
     created_at: Date;
 }

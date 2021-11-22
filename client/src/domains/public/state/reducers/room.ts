@@ -29,11 +29,11 @@ export function socketsReducer(state: ISocket[], action: any): ISocket[] {
         case Actions.SET_SOCKETS:
             return action.sockets;
         case Actions.ADD_SOCKET:
-            return [...state, action.socketId];
+            return [...state, action.socket];
         case Actions.REMOVE_SOCKET:
-            return state.filter(socket => socket.id !== action.socketId);
+            return state.filter(socket => socket.id !== action.socket.id);
         case Actions.EDIT_SOCKET_COLOR:
-            return editSocket(action.socketId, socket => ({
+            return editSocket(action.socket, socket => ({
                 ...socket,
                 color: action.color,
             }));
