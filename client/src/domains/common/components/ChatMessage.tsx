@@ -57,7 +57,7 @@ export default function ChatMessage({ message }: IProps) {
         >
             <Text {...serverMessageStyling}>
                 <Text color="textMuted" as="span">
-                    {`${formatTimestamp(new Date(message.created_at))} `}
+                    {`${formatTimestamp(message.created_at)} `}
                 </Text>
                 <Text
                     as="span"
