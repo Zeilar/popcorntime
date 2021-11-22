@@ -108,7 +108,6 @@ export function Chat() {
             id: uuidv4(),
             socket: me,
         };
-        addMessage(message);
         publicSocket.emit("message:send", { roomId, body, id: message.id });
     }
 

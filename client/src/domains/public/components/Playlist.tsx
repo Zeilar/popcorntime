@@ -41,10 +41,10 @@ export default function Playlist() {
                 video,
             });
         });
-        publicSocket.on("room:playlist:remove", (videoId: string) => {
+        publicSocket.on("room:playlist:remove", (id: string) => {
             dispatchPlaylist({
                 type: REMOVE_FROM_PLAYLIST,
-                id: videoId,
+                id,
             });
         });
         return () => {
@@ -75,23 +75,17 @@ export default function Playlist() {
             videoId = url.searchParams.get("v");
         }
         if (!videoId) {
-            toast.error("Invalid URL.");
-            return;
+            return toast.error("Invalid URL.");
         }
-        const video = {
-            id: uuidv4(),
-            videoId,
-        };
         setInput("");
-        publicSocket.emit("room:playlist:add", { roomId, video });
+        publicSocket.emit("room:playlist:add", {
+            roomId,
+            video: {
+                id: uuidv4(),
+                videoId,
+            },
+        });
     }
-
-    useEffect(() => {
-        publicSocket.on("room:playlist:new", () => {});
-        return () => {
-            publicSocket.off("room:playlist:new");
-        };
-    }, [publicSocket]);
 
     useEffect(() => {
         // If an item was active and removed, try to make the previous one active instead.
