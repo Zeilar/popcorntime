@@ -3,15 +3,6 @@ import { IVideo } from "domains/public/@types/video";
 import * as Actions from "../actions/room";
 
 export function playlistReducer(state: IVideo[], action: any): IVideo[] {
-    function editPlaylist(id: string, cb: (video: IVideo) => IVideo) {
-        return state.map(video => {
-            if (video.id !== id) {
-                return video;
-            }
-            return cb(video);
-        });
-    }
-
     switch (action.type) {
         case Actions.SET_PLAYLIST:
             return action.playlist;

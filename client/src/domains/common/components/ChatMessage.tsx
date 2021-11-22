@@ -62,13 +62,12 @@ export default function ChatMessage({ message }: IProps) {
                 <Text
                     as="span"
                     color={`${message.socket.color}.600`}
-                    fontWeight={600}
+                    fontWeight={700}
                 >
                     {message.serverMessage
                         ? `${message.socket.username} `
                         : `${message.socket.username}: `}
                 </Text>
-                <br />
                 {message.body}
             </Text>
         </Motion>

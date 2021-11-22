@@ -159,25 +159,34 @@ export default function Player() {
                     tooltip="Skip backward 15 seconds"
                     mdi="mdiSkipBackward"
                     onClick={skipBackward}
+                    disabled={player.current === null}
                 />
                 <Button.Icon
                     mdi="mdiSync"
                     tooltip="Sync with room"
                     onClick={sync}
+                    disabled={player.current === null}
                 />
                 {playerState === 1 ? (
                     <Button.Icon
                         tooltip="Pause"
                         onClick={pause}
                         mdi="mdiPause"
+                        disabled={player.current === null}
                     />
                 ) : (
-                    <Button.Icon tooltip="Play" onClick={play} mdi="mdiPlay" />
+                    <Button.Icon
+                        tooltip="Play"
+                        onClick={play}
+                        mdi="mdiPlay"
+                        disabled={player.current === null}
+                    />
                 )}
                 <Button.Icon
                     tooltip="Skip forward 15 seconds"
                     mdi="mdiSkipForward"
                     onClick={skipForward}
+                    disabled={player.current === null}
                 />
             </Flex>
         </Flex>

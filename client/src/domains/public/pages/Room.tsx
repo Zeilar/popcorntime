@@ -14,8 +14,6 @@ import { IErrorPayload } from "domains/common/@types/listener";
 import { RoomContext } from "../contexts";
 import * as Actions from "../state/actions/room";
 import { IVideo } from "../@types/video";
-import BrandLogo from "domains/common/components/styles/BrandLogo";
-import { Link } from "react-router-dom";
 import Player from "../components/Player";
 import { IRoomParams } from "../@types/params";
 import Navbar from "../components/Navbar";
