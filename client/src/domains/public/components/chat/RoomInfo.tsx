@@ -36,7 +36,7 @@ export default function RoomInfo({ onClose }: IProps) {
                 <Button.Icon mdi="mdiClose" onClick={onClose} />
             </Flex>
             <Flex p="0.5rem" flexDir="column">
-                <Text as="h4" mb="0.25rem">
+                <Text as="h4" mb="0.25rem" fontWeight={600} color="textMuted">
                     Users
                 </Text>
                 {sockets.map(socket => (
