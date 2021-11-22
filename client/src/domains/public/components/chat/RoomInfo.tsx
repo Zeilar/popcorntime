@@ -11,7 +11,6 @@ interface IProps {
 export default function RoomInfo({ onClose }: IProps) {
     const { sockets } = useContext(RoomContext);
     const wrapper = useOnClickOutside<HTMLDivElement>(onClose);
-    console.log(sockets);
     return (
         <Flex
             pos="absolute"

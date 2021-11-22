@@ -31,7 +31,7 @@ export function socketsReducer(state: ISocket[], action: any): ISocket[] {
         case Actions.ADD_SOCKET:
             return [...state, action.socket];
         case Actions.REMOVE_SOCKET:
-            return state.filter(socket => socket.id !== action.socket.id);
+            return state.filter(socket => socket.id !== action.socketId);
         case Actions.EDIT_SOCKET_COLOR:
             return editSocket(action.socket, socket => ({
                 ...socket,
