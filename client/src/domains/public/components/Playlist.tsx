@@ -105,7 +105,7 @@ export default function Playlist({ roomId, playlist }: IProps) {
         <Flex
             flexDir="column"
             h="100%"
-            w={showPlaylist ? "15rem" : "3rem"}
+            w={showPlaylist ? "auto" : "3rem"}
             zIndex={100}
         >
             <Flex
@@ -173,7 +173,12 @@ export default function Playlist({ roomId, playlist }: IProps) {
                             }}
                         />
                     </Flex>
-                    <Flex overflowY="auto" flexDir="column" flexGrow={1}>
+                    <Flex
+                        overflowX="hidden"
+                        overflowY="auto"
+                        flexDir="column"
+                        flexGrow={1}
+                    >
                         {playlist.map((video, i) => (
                             <PlaylistItem
                                 video={video}

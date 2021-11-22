@@ -56,6 +56,7 @@ export default function PlaylistItem({ video }: IProps) {
             onClick={setActive}
             cursor="pointer"
             pos="relative"
+            w="15rem"
             _hover={{
                 "> .remove-button": {
                     display: "block",
