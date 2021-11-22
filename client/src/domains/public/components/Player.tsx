@@ -56,8 +56,7 @@ export default function Player() {
             return;
         }
         function onStateChange(e: YT.PlayerEvent) {
-            const playerState = e.target.getPlayerState();
-            setPlayerState(playerState);
+            setPlayerState(e.target.getPlayerState());
         }
         internalPlayer.addEventListener("onStateChange", onStateChange);
         return () => {

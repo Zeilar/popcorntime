@@ -160,7 +160,7 @@ export default function Playlist({ roomId, playlist }: IProps) {
                             }}
                         />
                     </Flex>
-                    <Flex overflowY="auto" flexDir="column">
+                    <Flex overflowY="auto" flexDir="column" flexGrow={1}>
                         {playlist.map((video, i) => (
                             <PlaylistItem
                                 video={video}
