@@ -1,11 +1,10 @@
 import { Button, ButtonProps } from "@chakra-ui/button";
 import { ReactNode, Fragment } from "react";
 import * as MdiIcons from "@mdi/js";
-import MdiIcon from "@mdi/react";
-import Icon from "@chakra-ui/icon";
 import { Tooltip } from "@chakra-ui/tooltip";
 import { IconProps } from "@chakra-ui/icons";
 import { ComponentWithAs } from "@chakra-ui/react";
+import MdiIcon from "../../MdiIcon";
 
 interface IProps extends ButtonProps {
     children?: ReactNode;
@@ -32,15 +31,7 @@ export function IconButton({ children, mdi, tooltip, ...props }: IProps) {
                 h="2rem"
                 {...props}
             >
-                {mdi && (
-                    <Icon
-                        w="1.5rem"
-                        h="1.5rem"
-                        maxW="75%"
-                        as={MdiIcon}
-                        path={MdiIcons[mdi]}
-                    />
-                )}
+                {mdi && <MdiIcon w="1.5rem" h="1.5rem" maxW="75%" path={mdi} />}
                 {children}
             </Button>
         </Wrapper>

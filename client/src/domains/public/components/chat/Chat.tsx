@@ -23,10 +23,11 @@ import RoomInfo from "./RoomInfo";
 import { IRoomParams } from "domains/public/@types/params";
 import { useParams } from "react-router";
 import env from "config/env";
+import ChatName from "./ChatName";
 
 export function Chat() {
     const [showChat, setShowChat] = useLocalStorage<boolean>("showChat", true);
-    const { showServerMessages } = useContext(RoomContext);
+    const { showServerMessages, getLeader } = useContext(RoomContext);
     const { roomId } = useParams<IRoomParams>();
     const { me } = useContext(MeContext);
     const [messages, setMessages] = useState<IMessage[]>([]);
@@ -39,6 +40,8 @@ export function Chat() {
     const settingsEl = useOnClickOutside<HTMLDivElement>(() => {
         setSettingsOpen(false);
     });
+
+    const isLeader = getLeader()?.id === me.id;
 
     const addMessage = useCallback((message: IMessage) => {
         setMessages(messages => {
@@ -186,11 +189,12 @@ export function Chat() {
                         <Box h={2} boxShadow="elevate.top" />
                         <Box as="form" onSubmit={sendMessage} p="1rem">
                             <Text
+                                display="inline-flex"
                                 color={`${me.color}.600`}
-                                mb="0.5rem"
+                                mb="0.75rem"
                                 fontWeight={700}
                             >
-                                {me.username}
+                                <ChatName socket={me} />
                             </Text>
                             <Textarea
                                 autoFocus

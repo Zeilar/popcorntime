@@ -5,6 +5,7 @@ import { IMessage } from "../@types/message";
 import { WebsocketContext } from "../contexts";
 import dayjs from "dayjs";
 import env from "config/env";
+import ChatName from "domains/public/components/chat/ChatName";
 
 interface IProps {
     message: IMessage;
@@ -62,20 +63,22 @@ export default function ChatMessage({ message, index }: IProps) {
             {...animationStyling}
         >
             <Text {...serverMessageStyling}>
-                <Text color="textMuted" as="span">
-                    {`${formatTimestamp(message.created_at)} `}
-                </Text>
+                <Flex>
+                    <Text color="textMuted" as="span" mr="0.25rem">
+                        {`${formatTimestamp(message.created_at)} `}
+                    </Text>
+                    <ChatName socket={message.socket}>
+                        {message.serverMessage
+                            ? `${message.socket.username} `
+                            : `${message.socket.username}: `}
+                    </ChatName>
+                </Flex>
                 <Text
                     as="span"
-                    color={`${message.socket.color}.600`}
-                    fontWeight={700}
+                    lineHeight={!message.serverMessage ? "2.5rem" : undefined}
                 >
-                    {message.serverMessage
-                        ? `${message.socket.username} `
-                        : `${message.socket.username}: `}
+                    {message.body}
                 </Text>
-                {!message.serverMessage && <br />}
-                {message.body}
             </Text>
         </Motion>
     );
