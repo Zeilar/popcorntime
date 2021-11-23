@@ -20,39 +20,52 @@ export default function PlayerControls({ player }: IProps) {
         if (!player) {
             return;
         }
-        publicSocket.emit("video:sync", await player.getCurrentTime<true>());
+        if (isLeader) {
+            publicSocket.emit(
+                "video:sync",
+                await player.getCurrentTime<true>()
+            );
+        }
     }
 
     function play() {
         if (!player) {
             return;
         }
-        player.playVideo();
-        publicSocket.emit("video:play");
+        if (isLeader) {
+            player.playVideo();
+            publicSocket.emit("video:play");
+        }
     }
 
     function pause() {
         if (!player) {
             return;
         }
-        player.pauseVideo();
-        publicSocket.emit("video:pause");
+        if (isLeader) {
+            player.pauseVideo();
+            publicSocket.emit("video:pause");
+        }
     }
 
     async function skipBackward() {
         if (!player) {
             return;
         }
-        player.seekTo((await player.getCurrentTime<true>()) - 15, true);
-        publicSocket.emit("video:skip:backward");
+        if (isLeader) {
+            player.seekTo((await player.getCurrentTime<true>()) - 15, true);
+            publicSocket.emit("video:skip:backward");
+        }
     }
 
     async function skipForward() {
         if (!player) {
             return;
         }
-        player.seekTo((await player.getCurrentTime<true>()) + 15, true);
-        publicSocket.emit("video:skip:forward");
+        if (isLeader) {
+            player.seekTo((await player.getCurrentTime<true>()) + 15, true);
+            publicSocket.emit("video:skip:forward");
+        }
     }
 
     useEffect(() => {
