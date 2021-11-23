@@ -23,7 +23,9 @@ export default function ChatName({ socket, children }: IProps) {
                     h="1.25rem"
                 />
             )}
-            <Text fontWeight={700}>{children ?? socket?.username}</Text>
+            <Text fontWeight={700} as="span">
+                {children ?? socket?.username}
+            </Text>
         </Flex>
     );
 }

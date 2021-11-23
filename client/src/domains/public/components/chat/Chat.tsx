@@ -27,7 +27,7 @@ import ChatName from "./ChatName";
 
 export function Chat() {
     const [showChat, setShowChat] = useLocalStorage<boolean>("showChat", true);
-    const { showServerMessages, getLeader } = useContext(RoomContext);
+    const { showServerMessages } = useContext(RoomContext);
     const { roomId } = useParams<IRoomParams>();
     const { me } = useContext(MeContext);
     const [messages, setMessages] = useState<IMessage[]>([]);
@@ -40,8 +40,6 @@ export function Chat() {
     const settingsEl = useOnClickOutside<HTMLDivElement>(() => {
         setSettingsOpen(false);
     });
-
-    const isLeader = getLeader()?.id === me.id;
 
     const addMessage = useCallback((message: IMessage) => {
         setMessages(messages => {

@@ -1,4 +1,4 @@
-import { Flex, FlexProps, Text } from "@chakra-ui/layout";
+import { Box, Flex, FlexProps, Text } from "@chakra-ui/layout";
 import { motion } from "framer-motion";
 import { useContext } from "react";
 import { IMessage } from "../@types/message";
@@ -62,7 +62,7 @@ export default function ChatMessage({ message, index }: IProps) {
             {...notSentStyling}
             {...animationStyling}
         >
-            <Text {...serverMessageStyling}>
+            <Box {...serverMessageStyling}>
                 <Flex>
                     <Text color="textMuted" as="span" mr="0.25rem">
                         {`${formatTimestamp(message.created_at)} `}
@@ -79,7 +79,7 @@ export default function ChatMessage({ message, index }: IProps) {
                 >
                     {message.body}
                 </Text>
-            </Text>
+            </Box>
         </Motion>
     );
 }
