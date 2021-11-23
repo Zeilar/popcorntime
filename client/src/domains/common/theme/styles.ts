@@ -57,8 +57,7 @@ export const styles = {
         },
         ".chakra-switch__track": {
             "&[data-checked]": {
-                backgroundColor:
-                    "var(--chakra-colors-brand-default) !important",
+                backgroundColor: "var(--chakra-colors-brand-light) !important",
             },
             "&[data-focus]": {
                 boxShadow: "none !important",
