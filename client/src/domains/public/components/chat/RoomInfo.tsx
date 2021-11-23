@@ -1,15 +1,16 @@
 import { Box, Flex, Text } from "@chakra-ui/layout";
+import env from "config/env";
 import Button from "domains/common/components/styles/button";
 import { useOnClickOutside } from "domains/common/hooks";
 import { RoomContext } from "domains/public/contexts";
-import { useContext } from "react";
+import React, { useContext } from "react";
 
 interface IRoomInfoProps {
     onClose(): void;
 }
 
 interface IRoomDetailProps {
-    label: string;
+    label: React.ReactNode;
     children: React.ReactNode;
 }
 
@@ -34,6 +35,7 @@ export default function RoomInfo({ onClose }: IRoomInfoProps) {
     const { sockets, room } = useContext(RoomContext);
     const wrapper = useOnClickOutside<HTMLDivElement>(onClose);
     const leader = sockets.find(socket => socket.id === room?.leader);
+    const isFull = sockets.length >= env.ROOM_MAX_SOCKETS;
     return (
         <Flex
             pos="absolute"
@@ -68,7 +70,19 @@ export default function RoomInfo({ onClose }: IRoomInfoProps) {
                         </Text>
                     </RoomDetail>
                 )}
-                <RoomDetail label="users">
+                <RoomDetail
+                    label={
+                        <>
+                            <Text as="span">Users </Text>
+                            <Text
+                                as="span"
+                                color={isFull ? "danger" : undefined}
+                            >
+                                {`${sockets.length} / ${env.ROOM_MAX_SOCKETS}`}
+                            </Text>
+                        </>
+                    }
+                >
                     {sockets.map(socket => (
                         <Text
                             color={`${socket.color}.600`}
