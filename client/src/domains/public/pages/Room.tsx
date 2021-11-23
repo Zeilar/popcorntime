@@ -23,7 +23,7 @@ export function Room() {
     const [isConnected, setIsConnected] = useState(false);
     const { publicSocket } = useContext(WebsocketContext);
     const { push } = useHistory();
-    const { playlist, dispatchPlaylist, sockets, dispatchSockets, setRoom } =
+    const { dispatchPlaylist, dispatchSockets, setRoom } =
         useContext(RoomContext);
 
     useEffect(() => {

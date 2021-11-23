@@ -1,5 +1,5 @@
 import { IRoomDto } from "../@types/room";
-import { adminNamespace, io, ws } from "./server";
+import { adminNamespace, io } from "./server";
 import { Socket } from "./Socket";
 import { uniqueNamesGenerator } from "unique-names-generator";
 import { roomNameConfig } from "../config/uniqueNamesGenerator";

@@ -169,6 +169,7 @@ export function Chat() {
                         <Button.Icon
                             mdi="mdiInformationOutline"
                             onClick={roomInfo.onOpen}
+                            tooltip="Room details"
                         />
                     </>
                 )}

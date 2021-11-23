@@ -2,7 +2,7 @@ import { Flex, FlexProps, Text } from "@chakra-ui/layout";
 import { ISocket } from "domains/common/@types/socket";
 import Button from "domains/common/components/styles/button";
 import { WebsocketContext } from "domains/common/contexts";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 
 interface IProps {
     socket: ISocket;
@@ -10,18 +10,8 @@ interface IProps {
 
 export default function Socket({ socket }: IProps) {
     const { adminSocket } = useContext(WebsocketContext);
-    const [isLoading, setIsLoading] = useState(false);
-
-    const isLoadingStyles: FlexProps = isLoading
-        ? {
-              userSelect: "none",
-              cursor: "wait",
-              opacity: 0.35,
-          }
-        : {};
 
     function kick(socketId: string) {
-        setIsLoading(true);
         adminSocket.emit("room:kick", socketId);
     }
 
@@ -33,14 +23,12 @@ export default function Socket({ socket }: IProps) {
             rounded="base"
             key={socket.id}
             px="1rem"
-            {...isLoadingStyles}
         >
             <Text
                 whiteSpace="nowrap"
                 overflow="hidden"
                 textOverflow="ellipsis"
                 mr="0.5rem"
-                pointerEvents={isLoading ? "none" : undefined}
             >
                 {socket.username}
             </Text>
@@ -48,7 +36,6 @@ export default function Socket({ socket }: IProps) {
                 ml="auto"
                 onClick={() => kick(socket.id)}
                 flexShrink={0}
-                pointerEvents={isLoading ? "none" : undefined}
                 mdi="mdiClose"
             />
         </Flex>

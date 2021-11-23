@@ -22,13 +22,9 @@ export const app = express();
 Logger.info("Initialized Express");
 
 // Global middlewares
-app.use(
-    express.static(clientPath),
-    cors({ origin: "*" }),
-    (error: Error, req: Request, res: Response, next: NextFunction) => {
-        Logger.error(`${error.message}\n${error.stack}`);
-    }
-); // TODO: remove cors in production
+app.use(express.static(clientPath), cors({ origin: "*" }), (error: Error) => {
+    Logger.error(`${error.message}\n${error.stack}`);
+}); // TODO: remove cors in production
 
 app.get("/*", (req, res) => {
     res.sendFile(`${clientPath}/index.html`);
@@ -49,6 +45,7 @@ export const ws = new WS();
 
 // Runs once every midnight, destroys all empty rooms to make sure server clears memory
 schedule("0 0 * * *", () => {
+    Logger.info("Deleting stale rooms");
     ws.rooms.forEach(room => {
         if (room.sockets.length === 0) {
             ws.deleteRoom(room);
