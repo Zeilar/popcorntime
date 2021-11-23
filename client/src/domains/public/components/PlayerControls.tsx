@@ -89,10 +89,6 @@ export default function PlayerControls({ player }: IProps) {
 
             // If video ended, leader calls to remove it from playlist
             if (isLeader && state === 0) {
-                dispatchPlaylist({
-                    type: REMOVE_FROM_PLAYLIST,
-                    id: activeVideo.id,
-                });
                 publicSocket.emit("room:playlist:remove", {
                     roomId,
                     videoId: activeVideo.id,

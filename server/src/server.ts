@@ -198,7 +198,7 @@ io.on("connection", socket => {
                     reason: "That room does not exist.",
                 });
             }
-            room.removeFromPlaylist(_socket, payload.videoId);
+            room.removeFromPlaylist(payload.videoId);
         }
     );
 
