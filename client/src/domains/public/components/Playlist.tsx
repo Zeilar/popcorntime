@@ -1,5 +1,6 @@
 import { Input } from "@chakra-ui/input";
 import { Flex, Text } from "@chakra-ui/layout";
+import env from "config/env";
 import Button from "domains/common/components/styles/button";
 import { WebsocketContext } from "domains/common/contexts";
 import { useLocalStorage } from "domains/common/hooks";
@@ -16,8 +17,6 @@ import {
     REMOVE_FROM_PLAYLIST,
 } from "../state/actions/room";
 import PlaylistItem from "./PlaylistItem";
-
-const { REACT_APP_ROOM_MAX_PLAYLIST } = process.env;
 
 export default function Playlist() {
     const { publicSocket } = useContext(WebsocketContext);
@@ -57,7 +56,7 @@ export default function Playlist() {
         if (!input) {
             return;
         }
-        if (playlist.length >= parseInt(REACT_APP_ROOM_MAX_PLAYLIST)) {
+        if (playlist.length >= env.ROOM_MAX_PLAYLIST) {
             return toast.error("Playlist is full.");
         }
         let url: URL;
@@ -146,13 +145,12 @@ export default function Playlist() {
                             <Text
                                 fontWeight={600}
                                 color={
-                                    playlist.length >=
-                                    parseInt(REACT_APP_ROOM_MAX_PLAYLIST)
+                                    playlist.length >= env.ROOM_MAX_PLAYLIST
                                         ? "danger"
                                         : "textMuted"
                                 }
                             >
-                                {`${playlist.length} / ${REACT_APP_ROOM_MAX_PLAYLIST}`}
+                                {`${playlist.length} / ${env.ROOM_MAX_PLAYLIST}`}
                             </Text>
                         </Flex>
                         <Input

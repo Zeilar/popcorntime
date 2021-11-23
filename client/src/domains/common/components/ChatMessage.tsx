@@ -4,6 +4,7 @@ import { useContext } from "react";
 import { IMessage } from "../@types/message";
 import { WebsocketContext } from "../contexts";
 import dayjs from "dayjs";
+import env from "config/env";
 
 interface IProps {
     message: IMessage;
@@ -56,7 +57,7 @@ export default function ChatMessage({ message, index }: IProps) {
             _odd={{ bgColor: "gray.400" }}
             _even={{ bgColor: "gray.600" }}
             boxShadow="elevate.bottom"
-            zIndex={parseInt(process.env.REACT_APP_ROOM_MAX_MESSAGES) - index}
+            zIndex={env.ROOM_MAX_MESSAGES - index}
             {...notSentStyling}
             {...animationStyling}
         >

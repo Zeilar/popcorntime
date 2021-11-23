@@ -22,6 +22,7 @@ import { useDisclosure } from "@chakra-ui/hooks";
 import RoomInfo from "./RoomInfo";
 import { IRoomParams } from "domains/public/@types/params";
 import { useParams } from "react-router";
+import env from "config/env";
 
 export function Chat() {
     const [showChat, setShowChat] = useLocalStorage<boolean>("showChat", true);
@@ -39,20 +40,15 @@ export function Chat() {
         setSettingsOpen(false);
     });
 
-    const { REACT_APP_ROOM_MAX_MESSAGES } = process.env;
-
-    const addMessage = useCallback(
-        (message: IMessage) => {
-            setMessages(messages => {
-                const array = [...messages, message];
-                if (array.length > parseInt(REACT_APP_ROOM_MAX_MESSAGES)) {
-                    array.shift();
-                }
-                return array;
-            });
-        },
-        [REACT_APP_ROOM_MAX_MESSAGES]
-    );
+    const addMessage = useCallback((message: IMessage) => {
+        setMessages(messages => {
+            const array = [...messages, message];
+            if (array.length > env.ROOM_MAX_MESSAGES) {
+                array.shift();
+            }
+            return array;
+        });
+    }, []);
 
     function toggle() {
         setShowChat(p => !p);
@@ -148,7 +144,7 @@ export function Chat() {
                 p="0.5rem"
                 justifyContent="space-between"
                 boxShadow="elevate.bottom"
-                zIndex={parseInt(REACT_APP_ROOM_MAX_MESSAGES) + 5}
+                zIndex={env.ROOM_MAX_MESSAGES + 5}
             >
                 {showChat ? (
                     <Button.Icon
@@ -186,10 +182,7 @@ export function Chat() {
                             />
                         ))}
                     </Flex>
-                    <Box
-                        zIndex={parseInt(REACT_APP_ROOM_MAX_MESSAGES) + 5}
-                        mt="auto"
-                    >
+                    <Box zIndex={env.ROOM_MAX_MESSAGES + 5} mt="auto">
                         <Box h={2} boxShadow="elevate.top" />
                         <Box as="form" onSubmit={sendMessage} p="1rem">
                             <Text

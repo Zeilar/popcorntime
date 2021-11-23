@@ -9,6 +9,7 @@ import {
     Text,
 } from "@chakra-ui/layout";
 import { Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/menu";
+import env from "config/env";
 import { SocketContext } from "domains/admin/contexts";
 import { IRoom } from "domains/common/@types/room";
 import { Prompt } from "domains/common/components/modals";
@@ -23,12 +24,9 @@ interface IProps {
     room: IRoom;
 }
 
-const { REACT_APP_ROOM_MAX_SOCKETS } = process.env;
-
 export default function Room({ room }: IProps) {
     const destroyPrompt = useDisclosure();
     const infoDisclosure = useDisclosure();
-    const maxSockets = parseInt(REACT_APP_ROOM_MAX_SOCKETS);
     const { adminSocket } = useContext(WebsocketContext);
     const socketContext = useContext(SocketContext);
 
@@ -36,13 +34,13 @@ export default function Room({ room }: IProps) {
 
     const Motion = motion<FlexProps>(Flex);
 
-    const placeholderAmount = maxSockets - room.sockets.length;
+    const placeholderAmount = env.ROOM_MAX_SOCKETS - room.sockets.length;
 
     function destroy() {
         adminSocket.emit("room:destroy", room.id);
     }
 
-    const isFull = room.sockets.length >= maxSockets;
+    const isFull = room.sockets.length >= env.ROOM_MAX_SOCKETS;
 
     return (
         <Motion
@@ -123,7 +121,7 @@ export default function Room({ room }: IProps) {
                         color={isFull ? "brand.default" : undefined}
                         userSelect="none"
                     >
-                        {`${room.sockets.length} / ${REACT_APP_ROOM_MAX_SOCKETS}`}
+                        {`${room.sockets.length} / ${env.ROOM_MAX_SOCKETS}`}
                     </Text>
                 </AbsoluteCenter>
                 <svg
