@@ -49,8 +49,6 @@ export default function Player() {
         };
     }, [publicSocket, internalPlayer]);
 
-    console.log({ internalPlayer });
-
     return (
         <Flex
             flexDir="column"
