@@ -87,7 +87,7 @@ export default function PlayerControls({ player }: IProps) {
                 return;
             }
 
-            // If video ended, host calls to remove it from playlist
+            // If video ended, leader calls to remove it from playlist
             if (isLeader && state === 0) {
                 console.log("remove");
                 dispatchPlaylist({
