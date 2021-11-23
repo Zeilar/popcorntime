@@ -5,7 +5,6 @@ import { useState, useContext, useEffect } from "react";
 import { useParams } from "react-router";
 import { IRoomParams } from "../@types/params";
 import { MeContext, RoomContext } from "../contexts";
-import { REMOVE_FROM_PLAYLIST } from "../state/actions/room";
 
 interface IProps {
     player: YT.Player | undefined;
