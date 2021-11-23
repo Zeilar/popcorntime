@@ -20,16 +20,16 @@ export default function BrandLogo() {
             >
                 <Text
                     p="0.25rem"
-                    minW="13rem"
+                    w="10rem"
                     rounded="base"
                     fontSize="1.25rem"
                     fontFamily="Poppins"
                 >
-                    PopcornTime
+                    SyncTube
                 </Text>
                 <Icon
                     pos="absolute"
-                    right="0.5rem"
+                    right="0.15rem"
                     bottom="-0.75rem"
                     w="4rem"
                     h="4rem"
