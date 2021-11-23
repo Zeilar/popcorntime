@@ -14,6 +14,7 @@ export class Room {
     public static readonly MAX_MESSAGES = ROOM_MAX_MESSAGES;
     public static readonly MAX_PLAYLIST = ROOM_MAX_PLAYLIST;
     public static readonly MAX_MESSAGE_LENGTH = 500;
+    public leader: string | null;
     public sockets: Socket[] = [];
     public messages: Message[] = [];
     public playlist: IVideo[] = [];
@@ -22,6 +23,7 @@ export class Room {
 
     public constructor(public readonly id: string) {
         this.created_at = new Date();
+        this.leader = null;
         this.name = uniqueNamesGenerator(roomNameConfig);
     }
 
@@ -32,10 +34,19 @@ export class Room {
         this.messages.push(message);
     }
 
+    private autoSetLeader() {
+        this.leader = this.sockets[0]?.id ?? null;
+        if (this.sockets.length > 0) {
+            io.to(this.id).emit("room:leader:new", this.leader);
+        }
+        adminNamespace.emit("room:leader:new", this.leader);
+    }
+
     public get dto(): IRoomDto {
         return {
             id: this.id,
             name: this.name,
+            leader: this.leader,
             playlist: this.playlist,
             messages: this.messages,
             created_at: this.created_at,
@@ -72,6 +83,9 @@ export class Room {
             return;
         }
         this.sockets.push(socket);
+        if (!this.leader) {
+            this.autoSetLeader();
+        }
         socket.ref.join(this.id);
         socket.ref.emit("room:join", this.dto);
         socket.ref.to(this.id).emit("room:socket:join", socket.dto);
@@ -98,6 +112,9 @@ export class Room {
 
     public remove(socket: Socket) {
         this.sockets = this.sockets.filter(element => element.id !== socket.id);
+        if (this.leader === socket.id || this.sockets.length === 0) {
+            this.autoSetLeader();
+        }
         socket.ref.leave(this.id);
         socket.ref.emit("room:leave");
         socket.ref.to(this.id).emit("room:socket:leave", socket.dto);

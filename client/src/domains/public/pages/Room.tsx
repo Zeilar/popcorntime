@@ -29,6 +29,7 @@ export function Room() {
     useEffect(() => {
         publicSocket.emit("room:join", roomId);
         publicSocket.once("room:join", (payload: IRoom) => {
+            console.log(payload.leader);
             dispatchSockets({
                 type: Actions.SET_SOCKETS,
                 sockets: payload.sockets,

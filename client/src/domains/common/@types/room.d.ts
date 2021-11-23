@@ -10,4 +10,5 @@ export interface IRoom extends IRoomDetails {
     sockets: string[];
     messages: IMessage[];
     playlist: string[];
+    leader: string;
 }
