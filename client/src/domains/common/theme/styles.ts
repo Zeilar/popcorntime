@@ -1,8 +1,8 @@
 export const styles = {
     global: {
         "::selection": {
-            backgroundColor: "black",
-            color: "brand.default",
+            backgroundColor: "brand.light",
+            color: "white",
         },
         body: {
             height: "100vh",
