@@ -22,6 +22,7 @@ interface IContext {
     getIndexOfPlaylistItem(id: string): number;
     room: IRoomDetails | null;
     setRoom: React.Dispatch<React.SetStateAction<IRoomDetails>>;
+    getLeader(): ISocket | undefined;
 }
 
 interface IProps {
@@ -42,6 +43,10 @@ export function RoomContextProvider({ children }: IProps) {
     const [playlist, dispatchPlaylist] = useReducer(playlistReducer, []);
     const [sockets, dispatchSockets] = useReducer(socketsReducer, []);
     const [room, setRoom] = useState<IRoomDetails>({} as IRoomDetails);
+
+    function getLeader() {
+        return sockets.find(socket => socket.id === room?.leader);
+    }
 
     function getIndexOfPlaylistItem(id: string) {
         return playlist.findIndex(video => video.id === id);
@@ -64,6 +69,7 @@ export function RoomContextProvider({ children }: IProps) {
         getIndexOfPlaylistItem,
         room,
         setRoom,
+        getLeader,
     };
 
     return (

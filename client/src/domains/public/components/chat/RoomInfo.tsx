@@ -32,9 +32,9 @@ function RoomDetail({ label, children }: IRoomDetailProps) {
 }
 
 export default function RoomInfo({ onClose }: IRoomInfoProps) {
-    const { sockets, room } = useContext(RoomContext);
+    const { sockets, room, getLeader } = useContext(RoomContext);
     const wrapper = useOnClickOutside<HTMLDivElement>(onClose);
-    const leader = sockets.find(socket => socket.id === room?.leader);
+    const leader = getLeader();
     const isFull = sockets.length >= env.ROOM_MAX_SOCKETS;
     return (
         <Flex

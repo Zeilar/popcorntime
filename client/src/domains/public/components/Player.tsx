@@ -1,15 +1,14 @@
 import { Flex, Text } from "@chakra-ui/layout";
 import { Spinner } from "@chakra-ui/spinner";
-import Button from "domains/common/components/styles/button";
 import { WebsocketContext } from "domains/common/contexts";
-import { useState, useEffect, useContext, useRef } from "react";
+import { useEffect, useContext, useRef } from "react";
 import YouTube from "react-youtube";
 import { RoomContext } from "../contexts";
+import PlayerControls from "./PlayerControls";
 
 export default function Player() {
     const { playlist, activeVideo } = useContext(RoomContext);
     const { publicSocket } = useContext(WebsocketContext);
-    const [playerState, setPlayerState] = useState<YT.PlayerState>(-1);
     const player = useRef<YouTube>(null);
 
     const internalPlayer: YT.Player | undefined =
@@ -50,67 +49,6 @@ export default function Player() {
                 .off("video:skip:forward");
         };
     }, [publicSocket, internalPlayer]);
-
-    useEffect(() => {
-        if (!internalPlayer) {
-            return;
-        }
-        function onStateChange(e: YT.PlayerEvent) {
-            setPlayerState(e.target.getPlayerState());
-        }
-        internalPlayer.addEventListener("onStateChange", onStateChange);
-        return () => {
-            internalPlayer.removeEventListener("onStateChange", onStateChange);
-        };
-    }, [internalPlayer]);
-
-    async function sync() {
-        if (!internalPlayer) {
-            return;
-        }
-        publicSocket.emit(
-            "video:sync",
-            await internalPlayer.getCurrentTime<true>()
-        );
-    }
-
-    function play() {
-        if (!internalPlayer) {
-            return;
-        }
-        internalPlayer.playVideo();
-        publicSocket.emit("video:play");
-    }
-
-    function pause() {
-        if (!internalPlayer) {
-            return;
-        }
-        internalPlayer.pauseVideo();
-        publicSocket.emit("video:pause");
-    }
-
-    async function skipBackward() {
-        if (!internalPlayer) {
-            return;
-        }
-        internalPlayer.seekTo(
-            (await internalPlayer.getCurrentTime<true>()) - 15,
-            true
-        );
-        publicSocket.emit("video:skip:backward");
-    }
-
-    async function skipForward() {
-        if (!internalPlayer) {
-            return;
-        }
-        internalPlayer.seekTo(
-            (await internalPlayer.getCurrentTime<true>()) + 15,
-            true
-        );
-        publicSocket.emit("video:skip:forward");
-    }
 
     return (
         <Flex
@@ -154,41 +92,7 @@ export default function Player() {
                     <Spinner color="brand.default" size="xl" />
                 )}
             </Flex>
-            <Flex justify="center" align="center" py="1rem" gridGap="0.5rem">
-                <Button.Icon
-                    tooltip="Skip backward 15 seconds"
-                    mdi="mdiSkipBackward"
-                    onClick={skipBackward}
-                    disabled={player.current === null}
-                />
-                <Button.Icon
-                    mdi="mdiSync"
-                    tooltip="Sync with room"
-                    onClick={sync}
-                    disabled={player.current === null}
-                />
-                {playerState === 1 ? (
-                    <Button.Icon
-                        tooltip="Pause"
-                        onClick={pause}
-                        mdi="mdiPause"
-                        disabled={player.current === null}
-                    />
-                ) : (
-                    <Button.Icon
-                        tooltip="Play"
-                        onClick={play}
-                        mdi="mdiPlay"
-                        disabled={player.current === null}
-                    />
-                )}
-                <Button.Icon
-                    tooltip="Skip forward 15 seconds"
-                    mdi="mdiSkipForward"
-                    onClick={skipForward}
-                    disabled={player.current === null}
-                />
-            </Flex>
+            <PlayerControls player={internalPlayer} />
         </Flex>
     );
 }
