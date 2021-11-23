@@ -16,7 +16,13 @@ interface IRoomDetailProps {
 function RoomDetail({ label, children }: IRoomDetailProps) {
     return (
         <Box mb="1rem">
-            <Text mb="0.25rem" color="textMuted" textTransform="uppercase">
+            <Text
+                mb="0.25rem"
+                color="textMuted"
+                textTransform="uppercase"
+                fontSize="sm"
+                fontWeight={600}
+            >
                 {label}
             </Text>
             {children}
@@ -27,6 +33,7 @@ function RoomDetail({ label, children }: IRoomDetailProps) {
 export default function RoomInfo({ onClose }: IRoomInfoProps) {
     const { sockets, room } = useContext(RoomContext);
     const wrapper = useOnClickOutside<HTMLDivElement>(onClose);
+    const leader = sockets.find(socket => socket.id === room?.leader);
     return (
         <Flex
             pos="absolute"
@@ -54,6 +61,13 @@ export default function RoomInfo({ onClose }: IRoomInfoProps) {
             <Flex p="0.5rem" flexDir="column">
                 <RoomDetail label="id">{room?.id}</RoomDetail>
                 <RoomDetail label="name">{room?.name}</RoomDetail>
+                {leader && (
+                    <RoomDetail label="leader">
+                        <Text color={`${leader.color}.600`} fontWeight={700}>
+                            {leader.username}
+                        </Text>
+                    </RoomDetail>
+                )}
                 <RoomDetail label="users">
                     {sockets.map(socket => (
                         <Text

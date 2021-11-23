@@ -29,7 +29,6 @@ export function Room() {
     useEffect(() => {
         publicSocket.emit("room:join", roomId);
         publicSocket.once("room:join", (payload: IRoom) => {
-            console.log(payload.leader);
             dispatchSockets({
                 type: Actions.SET_SOCKETS,
                 sockets: payload.sockets,
@@ -42,6 +41,7 @@ export function Room() {
                 id: payload.id,
                 name: payload.name,
                 created_at: payload.created_at,
+                leader: payload.leader,
             });
             setIsConnected(true);
         });
@@ -103,8 +103,17 @@ export function Room() {
     }, [publicSocket, push]);
 
     useEffect(() => {
+        publicSocket.on("room:leader:new", (leader: string | null) => {
+            setRoom(p => ({ ...p, leader }));
+        });
         return () => {
-            publicSocket.emit("room:leave");
+            publicSocket.off("room:leader:new");
+        };
+    }, [publicSocket, setRoom]);
+
+    useEffect(() => {
+        return () => {
+            publicSocket.emit("room:leave").off("room:leader:new");
         };
     }, [publicSocket]);
 

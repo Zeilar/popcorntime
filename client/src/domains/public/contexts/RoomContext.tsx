@@ -21,7 +21,7 @@ interface IContext {
     isPLaylistItemActive(id: string): boolean;
     getIndexOfPlaylistItem(id: string): number;
     room: IRoomDetails | null;
-    setRoom: React.Dispatch<React.SetStateAction<IRoomDetails | null>>;
+    setRoom: React.Dispatch<React.SetStateAction<IRoomDetails>>;
 }
 
 interface IProps {
@@ -41,7 +41,7 @@ export function RoomContextProvider({ children }: IProps) {
     );
     const [playlist, dispatchPlaylist] = useReducer(playlistReducer, []);
     const [sockets, dispatchSockets] = useReducer(socketsReducer, []);
-    const [room, setRoom] = useState<IRoomDetails | null>(null);
+    const [room, setRoom] = useState<IRoomDetails>({} as IRoomDetails);
 
     function getIndexOfPlaylistItem(id: string) {
         return playlist.findIndex(video => video.id === id);
