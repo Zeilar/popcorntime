@@ -23,6 +23,7 @@ interface IContext {
     room: IRoomDetails | null;
     setRoom: React.Dispatch<React.SetStateAction<IRoomDetails>>;
     getLeader(): ISocket | undefined;
+    getActiveVideo(): IVideo;
 }
 
 interface IProps {
@@ -43,6 +44,10 @@ export function RoomContextProvider({ children }: IProps) {
     const [playlist, dispatchPlaylist] = useReducer(playlistReducer, []);
     const [sockets, dispatchSockets] = useReducer(socketsReducer, []);
     const [room, setRoom] = useState<IRoomDetails>({} as IRoomDetails);
+
+    function getActiveVideo() {
+        return playlist[activeVideo];
+    }
 
     function getLeader() {
         return sockets.find(socket => socket.id === room?.leader);
@@ -70,6 +75,7 @@ export function RoomContextProvider({ children }: IProps) {
         room,
         setRoom,
         getLeader,
+        getActiveVideo,
     };
 
     return (

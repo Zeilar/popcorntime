@@ -1,5 +1,4 @@
 import { Flex, Text } from "@chakra-ui/layout";
-import { Spinner } from "@chakra-ui/spinner";
 import { WebsocketContext } from "domains/common/contexts";
 import { useEffect, useContext, useRef } from "react";
 import YouTube from "react-youtube";
@@ -50,6 +49,8 @@ export default function Player() {
         };
     }, [publicSocket, internalPlayer]);
 
+    console.log({ internalPlayer });
+
     return (
         <Flex
             flexDir="column"
@@ -63,34 +64,34 @@ export default function Player() {
                 sx={{ ".youtube": { flexGrow: 1, height: "100%" } }}
                 boxShadow="elevate.bottom"
                 bgColor="gray.900"
+                pos="relative"
                 justifyContent="center"
                 alignItems="center"
             >
-                {player ? (
-                    playlist[activeVideo] ? (
-                        <YouTube
-                            opts={{ width: "100%", height: "100%" }}
-                            ref={player}
-                            containerClassName="youtube"
-                            videoId={
-                                playlist[activeVideo]?.videoId ?? "dQw4w9WgXcQ"
-                            }
-                        />
-                    ) : (
-                        <Flex
-                            h="100%"
-                            color="textMuted"
-                            alignItems="center"
-                            justifyContent="center"
-                        >
-                            <Text as="h1" p="1rem">
-                                No video selected
-                            </Text>
-                        </Flex>
-                    )
-                ) : (
-                    <Spinner color="brand.default" size="xl" />
+                {!playlist[activeVideo] && (
+                    <Flex
+                        h="100%"
+                        color="textMuted"
+                        alignItems="center"
+                        justifyContent="center"
+                        pos="absolute"
+                        bgColor="gray.900"
+                        w="100%"
+                        zIndex={100}
+                        top={0}
+                        left={0}
+                    >
+                        <Text as="h1" p="1rem">
+                            No video selected
+                        </Text>
+                    </Flex>
                 )}
+                <YouTube
+                    opts={{ width: "100%", height: "100%" }}
+                    ref={player}
+                    containerClassName="youtube"
+                    videoId={playlist[activeVideo]?.videoId}
+                />
             </Flex>
             <PlayerControls player={internalPlayer} />
         </Flex>
