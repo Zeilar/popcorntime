@@ -22,9 +22,13 @@ export const app = express();
 Logger.info("Initialized Express");
 
 // Global middlewares
-app.use(express.static(clientPath), cors({ origin: "*" }), (error: Error) => {
-    Logger.error(`${error.message}\n${error.stack}`);
-}); // TODO: remove cors in production
+app.use(
+    express.static(clientPath),
+    cors({ origin: "*" }),
+    (error: Error, req: Request, res: Response, next: NextFunction) => {
+        Logger.error(`${error.message}\n${error.stack}`);
+    }
+); // TODO: remove cors in production
 
 app.get("/*", (req, res) => {
     res.sendFile(`${clientPath}/index.html`);
