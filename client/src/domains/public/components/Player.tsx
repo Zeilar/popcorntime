@@ -79,7 +79,7 @@ export default function Player() {
                         top={0}
                         left={0}
                     >
-                        <Text as="h1" p="1rem">
+                        <Text as="h1" p="1rem" userSelect="none">
                             No video selected
                         </Text>
                     </Flex>
