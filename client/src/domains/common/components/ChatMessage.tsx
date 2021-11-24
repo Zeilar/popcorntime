@@ -73,12 +73,7 @@ export default function ChatMessage({ message, index }: IProps) {
                             : `${message.socket.username}: `}
                     </ChatName>
                 </Flex>
-                <Text
-                    as="span"
-                    lineHeight={!message.serverMessage ? "2.5rem" : undefined}
-                >
-                    {message.body}
-                </Text>
+                <Text as="span">{message.body}</Text>
             </Box>
         </Motion>
     );
