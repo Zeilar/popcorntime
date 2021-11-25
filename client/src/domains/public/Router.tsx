@@ -15,6 +15,8 @@ import {
 } from "@chakra-ui/modal";
 import Button from "domains/common/components/styles/button";
 import PageSpinner from "domains/common/components/styles/PageSpinner";
+import MdiIcon from "domains/common/components/MdiIcon";
+import { Flex } from "@chakra-ui/layout";
 
 export default function Router() {
     const { publicSocket } = useContext(WebsocketContext);
@@ -70,7 +72,14 @@ export default function Router() {
             >
                 <ModalOverlay />
                 <ModalContent>
-                    <ModalHeader p="1rem">{error}</ModalHeader>
+                    <ModalHeader p="1rem" as={Flex} alignItems="center">
+                        <MdiIcon
+                            mr="0.5rem"
+                            path="mdiAlertOutline"
+                            color="danger"
+                        />
+                        {error}
+                    </ModalHeader>
                     <ModalBody p="1rem">
                         <Button.Primary onClick={reconnect} w="100%">
                             Reconnect
