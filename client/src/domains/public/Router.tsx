@@ -32,7 +32,7 @@ export default function Router() {
         function genericErrorHandler(error: Error) {
             console.error(error);
             toast.error("Something went wrong.");
-            setError("Unable to establish connection.");
+            setError("Unable to establish a connection.");
             setIsLoading(false);
         }
 
@@ -51,30 +51,33 @@ export default function Router() {
             setError("You have been disconnected.");
             setIsLoading(false);
         });
+        return () => {
+            publicSocket
+                .off("connect_failed")
+                .off("connect_error")
+                .off("disconnect");
+        };
     }, [publicSocket]);
 
     return (
         <>
             {isLoading && <PageSpinner />}
-            {error && (
-                <Modal
-                    isOpen
-                    onClose={prompt.onClose}
-                    blockScrollOnMount
-                    size="xs"
-                    closeOnOverlayClick={false}
-                >
-                    <ModalOverlay />
-                    <ModalContent>
-                        <ModalHeader>{error}</ModalHeader>
-                        <ModalBody>
-                            <Button.Primary onClick={reconnect} w="100%">
-                                Reconnect
-                            </Button.Primary>
-                        </ModalBody>
-                    </ModalContent>
-                </Modal>
-            )}
+            <Modal
+                isOpen={Boolean(error)}
+                onClose={prompt.onClose}
+                blockScrollOnMount
+                closeOnOverlayClick={false}
+            >
+                <ModalOverlay />
+                <ModalContent>
+                    <ModalHeader>{error}</ModalHeader>
+                    <ModalBody p="1rem">
+                        <Button.Primary onClick={reconnect} w="100%">
+                            Reconnect
+                        </Button.Primary>
+                    </ModalBody>
+                </ModalContent>
+            </Modal>
             <Switch>
                 <Route path="/room/new" exact>
                     <Pages.CreateRoom />

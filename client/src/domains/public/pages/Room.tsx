@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { Redirect, useHistory, useParams } from "react-router";
 import { ISocket } from "domains/common/@types/socket";
 import { toast } from "react-toastify";
@@ -7,8 +7,6 @@ import { validate } from "uuid";
 import { Flex } from "@chakra-ui/react";
 import { Color } from "domains/common/@types/color";
 import { WebsocketContext } from "domains/common/contexts";
-import PageSpinner from "domains/common/components/styles/PageSpinner";
-import { AnimatePresence } from "framer-motion";
 import Playlist from "../components/Playlist";
 import { IErrorPayload } from "domains/common/@types/listener";
 import { RoomContext } from "../contexts";
@@ -20,7 +18,6 @@ import { IRoom } from "domains/common/@types/room";
 
 export function Room() {
     const { roomId } = useParams<IRoomParams>();
-    const [isConnected, setIsConnected] = useState(false);
     const { publicSocket } = useContext(WebsocketContext);
     const { push } = useHistory();
     const { dispatchPlaylist, dispatchSockets, setRoom } =
@@ -43,7 +40,6 @@ export function Room() {
                 created_at: payload.created_at,
                 leader: payload.leader,
             });
-            setIsConnected(true);
         });
         return () => {
             publicSocket.off("room:join");
@@ -137,9 +133,6 @@ export function Room() {
         <Flex flexDir="column" w="100%">
             <Navbar />
             <Flex flexGrow={1} maxH="100%" overflow="hidden">
-                <AnimatePresence>
-                    {!isConnected && <PageSpinner />}
-                </AnimatePresence>
                 <Playlist />
                 <Player />
                 <Chat />

@@ -11,8 +11,8 @@ export default function PageSpinner() {
             w="100%"
             pos="fixed"
             zIndex={100000}
-            backdropFilter="blur(3px)"
-            bgColor="blackAlpha.700"
+            backdropFilter="blur(4px)"
+            bgColor="blackAlpha.800"
             left={0}
             top={0}
             justify="center"
