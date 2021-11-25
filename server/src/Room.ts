@@ -60,18 +60,26 @@ export class Room {
 
     public addToPlaylist(sender: Socket, video: IVideo) {
         if (this.playlist.length >= Room.MAX_PLAYLIST) {
-            sender.ref.emit("room:playlist:error", {
+            return sender.ref.emit("room:playlist:error", {
                 message: "Failed adding video to playlist.",
                 reason: "Playlist is full.",
             });
         }
         this.playlist.push(video);
         io.to(this.id).emit("room:playlist:add", video);
+        adminNamespace.emit("room:playlist:add", {
+            roomId: this.id,
+            videoId: video.id,
+        });
     }
 
     public removeFromPlaylist(id: string) {
         this.playlist = this.playlist.filter(video => video.id !== id);
         io.to(this.id).emit("room:playlist:remove", id);
+        adminNamespace.emit("room:playlist:remove", {
+            roomId: this.id,
+            videoId: id,
+        });
     }
 
     public hasSocket(socket: Socket) {

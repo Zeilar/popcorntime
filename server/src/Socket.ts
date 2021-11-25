@@ -4,6 +4,7 @@ import { Color } from "../@types/color";
 import { ISocketDto } from "../@types/socket";
 import { uniqueNamesGenerator } from "unique-names-generator";
 import { socketNameConfig } from "../config/uniqueNamesGenerator";
+import { Room } from "./Room";
 
 export class Socket {
     public username: string;
@@ -32,6 +33,10 @@ export class Socket {
 
     public get room() {
         return [...ws.rooms.values()].find(room => room.hasSocket(this));
+    }
+
+    public isLeader(room: Room) {
+        return room.leader === this.id;
     }
 
     public generate() {
