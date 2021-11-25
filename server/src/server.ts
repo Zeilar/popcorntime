@@ -51,7 +51,7 @@ export const ws = new WS();
 schedule("0 0 * * *", () => {
     Logger.info("Deleting stale rooms");
     ws.rooms.forEach(room => {
-        if (room.sockets.length === 0) {
+        if (room.empty()) {
             ws.deleteRoom(room);
         }
     });
@@ -164,7 +164,7 @@ io.on("connection", socket => {
             });
         }
 
-        if (room.sockets.length >= Room.MAX_SOCKETS) {
+        if (room.full()) {
             return socket.emit("error", {
                 message: "Failed joining room.",
                 reason: "The room is full. Try again at a later time, or create a new one.",

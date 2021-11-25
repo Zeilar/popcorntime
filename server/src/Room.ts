@@ -15,11 +15,11 @@ export class Room {
     public static readonly MAX_PLAYLIST = ROOM_MAX_PLAYLIST;
     public static readonly MAX_MESSAGE_LENGTH = 500;
     private leader: string | null;
-    public sockets: Socket[] = [];
-    public messages: Message[] = [];
-    public playlist: IVideo[] = [];
-    public created_at: Date;
-    public name: string;
+    private sockets: Socket[] = [];
+    private messages: Message[] = [];
+    private playlist: IVideo[] = [];
+    private created_at: Date;
+    private name: string;
 
     public constructor(public readonly id: string) {
         this.created_at = new Date();
@@ -32,6 +32,14 @@ export class Room {
             this.messages.shift();
         }
         this.messages.push(message);
+    }
+
+    public empty() {
+        return this.sockets.length === 0;
+    }
+
+    public full() {
+        return this.sockets.length >= Room.MAX_SOCKETS;
     }
 
     private autoSetLeader() {
