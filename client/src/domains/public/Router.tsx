@@ -47,8 +47,8 @@ export default function Router() {
         publicSocket.on("connect_error", genericErrorHandler);
         publicSocket.on("disconnect", (error: string) => {
             console.error(error);
-            toast.error("Something went wrong.");
-            setError("You have been disconnected.");
+            toast.error("You were disconnected.");
+            setError("You were disconnected.");
             setIsLoading(false);
         });
         return () => {
@@ -70,7 +70,7 @@ export default function Router() {
             >
                 <ModalOverlay />
                 <ModalContent>
-                    <ModalHeader>{error}</ModalHeader>
+                    <ModalHeader p="1rem">{error}</ModalHeader>
                     <ModalBody p="1rem">
                         <Button.Primary onClick={reconnect} w="100%">
                             Reconnect
