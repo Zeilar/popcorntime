@@ -1,9 +1,6 @@
-import { MeContext } from "./contexts";
 import { Route, Switch } from "react-router";
 import { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { AbsoluteCenter, Flex, Text } from "@chakra-ui/layout";
-import { Spinner } from "@chakra-ui/spinner";
 import * as Pages from "./pages";
 import { WebsocketContext } from "domains/common/contexts";
 import { RoomContextProvider } from "./contexts/RoomContext";
@@ -20,9 +17,7 @@ import Button from "domains/common/components/styles/button";
 import PageSpinner from "domains/common/components/styles/PageSpinner";
 
 export default function Router() {
-    const { me } = useContext(MeContext);
     const { publicSocket } = useContext(WebsocketContext);
-    const [isConnected, setIsConnected] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const prompt = useDisclosure();
@@ -38,7 +33,6 @@ export default function Router() {
             console.error(error);
             toast.error("Something went wrong.");
             setError("Could not connect.");
-            setIsConnected(false);
             setIsLoading(false);
         }
 
@@ -47,7 +41,6 @@ export default function Router() {
         });
         publicSocket.on("connect", () => {
             setError(null);
-            setIsConnected(true);
             setIsLoading(false);
         });
         publicSocket.on("connect_failed", genericErrorHandler);
