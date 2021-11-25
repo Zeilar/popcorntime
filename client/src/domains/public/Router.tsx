@@ -17,6 +17,7 @@ import Button from "domains/common/components/styles/button";
 import PageSpinner from "domains/common/components/styles/PageSpinner";
 import MdiIcon from "domains/common/components/MdiIcon";
 import { Flex } from "@chakra-ui/layout";
+import { AnimatePresence } from "framer-motion";
 
 export default function Router() {
     const { publicSocket } = useContext(WebsocketContext);
@@ -63,7 +64,11 @@ export default function Router() {
 
     return (
         <>
-            {isLoading && <PageSpinner />}
+            {isLoading && (
+                <AnimatePresence>
+                    <PageSpinner />
+                </AnimatePresence>
+            )}
             <Modal
                 isOpen={Boolean(error)}
                 onClose={prompt.onClose}
@@ -71,13 +76,8 @@ export default function Router() {
                 closeOnOverlayClick={false}
             >
                 <ModalOverlay />
-                <ModalContent>
-                    <ModalHeader
-                        px="2rem"
-                        pt="2rem"
-                        as={Flex}
-                        alignItems="center"
-                    >
+                <ModalContent p="2rem">
+                    <ModalHeader as={Flex} alignItems="center" p={0}>
                         <MdiIcon
                             mr="0.5rem"
                             path="mdiAlertOutline"
@@ -85,7 +85,7 @@ export default function Router() {
                         />
                         {error}
                     </ModalHeader>
-                    <ModalBody p="2rem">
+                    <ModalBody p={0} mt="1rem">
                         <Button.Primary onClick={reconnect} w="100%">
                             Reconnect
                         </Button.Primary>
