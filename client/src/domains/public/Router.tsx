@@ -62,6 +62,7 @@ export default function Router() {
                     onClose={prompt.onClose}
                     blockScrollOnMount
                     size="xs"
+                    closeOnOverlayClick={false}
                 >
                     <ModalOverlay />
                     <ModalContent>
