@@ -34,7 +34,6 @@ export default function Router() {
     useEffect(() => {
         function genericErrorHandler(error: Error) {
             console.error(error);
-            toast.error("Something went wrong.");
             setError("Unable to establish a connection.");
             setIsLoading(false);
         }
@@ -50,7 +49,6 @@ export default function Router() {
         publicSocket.on("connect_error", genericErrorHandler);
         publicSocket.on("disconnect", error => {
             console.error(error);
-            toast.error("You were disconnected.");
             setError("You were disconnected.");
             setIsLoading(false);
         });
