@@ -192,7 +192,9 @@ export function Chat() {
                                 mb="0.75rem"
                                 fontWeight={700}
                             >
-                                <ChatName socket={me} />
+                                {publicSocket.connected && (
+                                    <ChatName socket={me} />
+                                )}
                             </Text>
                             <Textarea
                                 autoFocus
