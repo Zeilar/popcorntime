@@ -44,10 +44,7 @@ export function Chat() {
     const addMessage = useCallback((message: IMessage) => {
         setMessages(messages => {
             const array = [...messages, message];
-            const socketMessages = array.filter(
-                message => !message.serverMessage
-            );
-            if (socketMessages.length > env.ROOM_MAX_MESSAGES) {
+            if (array.length > env.ROOM_MAX_MESSAGES) {
                 array.shift();
             }
             return array;
