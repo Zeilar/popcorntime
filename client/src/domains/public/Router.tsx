@@ -72,7 +72,12 @@ export default function Router() {
             >
                 <ModalOverlay />
                 <ModalContent>
-                    <ModalHeader p="1rem" as={Flex} alignItems="center">
+                    <ModalHeader
+                        px="2rem"
+                        pt="2rem"
+                        as={Flex}
+                        alignItems="center"
+                    >
                         <MdiIcon
                             mr="0.5rem"
                             path="mdiAlertOutline"
@@ -80,7 +85,7 @@ export default function Router() {
                         />
                         {error}
                     </ModalHeader>
-                    <ModalBody p="1rem">
+                    <ModalBody p="2rem">
                         <Button.Primary onClick={reconnect} w="100%">
                             Reconnect
                         </Button.Primary>
