@@ -14,7 +14,7 @@ export class Room {
     public static readonly MAX_MESSAGES = ROOM_MAX_MESSAGES;
     public static readonly MAX_PLAYLIST = ROOM_MAX_PLAYLIST;
     public static readonly MAX_MESSAGE_LENGTH = 500;
-    public leader: string | null;
+    private leader: string | null;
     public sockets: Socket[] = [];
     public messages: Message[] = [];
     public playlist: IVideo[] = [];
@@ -56,6 +56,10 @@ export class Room {
 
     public get socketsDto() {
         return this.sockets.map(socket => socket.dto);
+    }
+
+    public isLeader(socketId: string) {
+        return this.leader === socketId;
     }
 
     public addToPlaylist(sender: Socket, video: IVideo) {

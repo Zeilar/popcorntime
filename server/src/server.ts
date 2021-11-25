@@ -184,7 +184,7 @@ io.on("connection", socket => {
                     reason: "That room does not exist.",
                 });
             }
-            if (!_socket.isLeader(room)) {
+            if (!room.isLeader(_socket.id)) {
                 return socket.emit("error", {
                     message: "Failed adding video to playlist.",
                     reason: "You are not the room leader.",

@@ -35,10 +35,6 @@ export class Socket {
         return [...ws.rooms.values()].find(room => room.hasSocket(this));
     }
 
-    public isLeader(room: Room) {
-        return room.leader === this.id;
-    }
-
     public generate() {
         this.setRandomColor();
         this.setRandomName();
