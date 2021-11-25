@@ -167,7 +167,7 @@ io.on("connection", socket => {
         if (room.full()) {
             return socket.emit("error", {
                 message: "Failed joining room.",
-                reason: "The room is full. Try again at a later time, or create a new one.",
+                reason: "The room is full.",
             });
         }
 
