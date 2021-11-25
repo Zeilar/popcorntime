@@ -31,7 +31,7 @@ export function ColorButton({ children, color, ...props }: IProps) {
             _hover={{ backgroundColor: `${color}.500` }}
             _active={{ backgroundColor: `${color}.500` }}
             boxShadow={
-                me.color === color
+                me?.color === color
                     ? `0 0 0 2px ${theme.colors[color]["300"]}`
                     : undefined
             }

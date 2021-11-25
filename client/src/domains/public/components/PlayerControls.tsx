@@ -18,58 +18,45 @@ export default function PlayerControls({ player }: IProps) {
     const { publicSocket } = useContext(WebsocketContext);
     const { roomId } = useParams<IRoomParams>();
 
-    const isRoomLeader = isLeader(me.id);
+    const isRoomLeader = isLeader(me?.id);
 
     async function sync() {
-        if (!player) {
+        if (!player || !isRoomLeader) {
             return;
         }
-        if (isRoomLeader) {
-            publicSocket.emit(
-                "video:sync",
-                await player.getCurrentTime<true>()
-            );
-        }
+        publicSocket.emit("video:sync", await player.getCurrentTime<true>());
     }
 
     function play() {
-        if (!player) {
+        if (!player || !isRoomLeader) {
             return;
         }
-        if (isRoomLeader) {
-            player.playVideo();
-            publicSocket.emit("video:play");
-        }
+        player.playVideo();
+        publicSocket.emit("video:play");
     }
 
     function pause() {
-        if (!player) {
+        if (!player || !isRoomLeader) {
             return;
         }
-        if (isRoomLeader) {
-            player.pauseVideo();
-            publicSocket.emit("video:pause");
-        }
+        player.pauseVideo();
+        publicSocket.emit("video:pause");
     }
 
     async function skipBackward() {
-        if (!player) {
+        if (!player || !isRoomLeader) {
             return;
         }
-        if (isRoomLeader) {
-            player.seekTo((await player.getCurrentTime<true>()) - 15, true);
-            publicSocket.emit("video:skip:backward");
-        }
+        player.seekTo((await player.getCurrentTime<true>()) - 15, true);
+        publicSocket.emit("video:skip:backward");
     }
 
     async function skipForward() {
-        if (!player) {
+        if (!player || !isRoomLeader) {
             return;
         }
-        if (isRoomLeader) {
-            player.seekTo((await player.getCurrentTime<true>()) + 15, true);
-            publicSocket.emit("video:skip:forward");
-        }
+        player.seekTo((await player.getCurrentTime<true>()) + 15, true);
+        publicSocket.emit("video:skip:forward");
     }
 
     useEffect(() => {

@@ -84,7 +84,7 @@ export function Chat() {
     }, [addMessage, publicSocket]);
 
     function sendMessage() {
-        if (!input.current) {
+        if (!input.current || !me) {
             return;
         }
         const body = input.current.value;
@@ -179,16 +179,18 @@ export function Chat() {
                     <Box zIndex={env.ROOM_MAX_MESSAGES + 5} mt="auto">
                         <Box h={2} boxShadow="elevate.top" />
                         <Box as="form" onSubmit={sendMessage} p="1rem">
-                            <Text
-                                display="inline-flex"
-                                color={`${me.color}.600`}
-                                mb="0.75rem"
-                                fontWeight={700}
-                            >
-                                {publicSocket.connected && (
-                                    <ChatName socket={me} />
-                                )}
-                            </Text>
+                            {me && (
+                                <Text
+                                    display="inline-flex"
+                                    color={`${me.color}.600`}
+                                    mb="0.75rem"
+                                    fontWeight={700}
+                                >
+                                    {publicSocket.connected && (
+                                        <ChatName socket={me} />
+                                    )}
+                                </Text>
+                            )}
                             <Textarea
                                 autoFocus
                                 onKeyDown={inputHandler}

@@ -24,7 +24,7 @@ interface IContext {
     setRoom: React.Dispatch<React.SetStateAction<IRoomDetails>>;
     getLeader(): ISocket | undefined;
     getActiveVideo(): IVideo;
-    isLeader(socketId: string): boolean | undefined;
+    isLeader(socketId: string | null | undefined): boolean | undefined;
 }
 
 interface IProps {
@@ -54,7 +54,10 @@ export function RoomContextProvider({ children }: IProps) {
         return sockets.find(socket => socket.id === room?.leader);
     }
 
-    function isLeader(socketId: string) {
+    function isLeader(socketId: string | null | undefined) {
+        if (typeof socketId !== "string") {
+            return false;
+        }
         const leader = getLeader();
         return leader && leader.id === socketId;
     }

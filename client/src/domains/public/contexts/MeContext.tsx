@@ -4,14 +4,15 @@ import {
     ReactNode,
     useEffect,
     useContext,
+    useCallback,
 } from "react";
 import { ISocket } from "../../common/@types/socket";
 import { Color } from "../../common/@types/color";
 import { WebsocketContext } from "domains/common/contexts";
 
 interface IContext {
-    me: ISocket;
-    setMe: React.Dispatch<React.SetStateAction<ISocket>>;
+    me: ISocket | null;
+    setMe: React.Dispatch<React.SetStateAction<ISocket | null>>;
     changeColor(color: Color): void;
 }
 
@@ -22,12 +23,18 @@ interface IProps {
 export const MeContext = createContext({} as IContext);
 
 export function MeContextProvider({ children }: IProps) {
-    const [me, setMe] = useState<ISocket>({} as ISocket);
+    const [me, setMe] = useState<ISocket | null>(null);
     const { publicSocket } = useContext(WebsocketContext);
 
-    function changeColor(color: Color) {
-        setMe(me => ({ ...me, color }));
-    }
+    const changeColor = useCallback(
+        (color: Color) => {
+            if (!me) {
+                return;
+            }
+            setMe(me => ({ ...me!, color }));
+        },
+        [me]
+    );
 
     useEffect(() => {
         publicSocket.once("connection:success", (socket: ISocket) => {
@@ -39,7 +46,7 @@ export function MeContextProvider({ children }: IProps) {
         return () => {
             publicSocket.off("socket:update:color").off("connection:success");
         };
-    }, [publicSocket]);
+    }, [publicSocket, changeColor]);
 
     const values: IContext = {
         me,
