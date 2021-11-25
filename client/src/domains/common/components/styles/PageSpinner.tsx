@@ -10,7 +10,7 @@ export default function PageSpinner() {
             h="100%"
             w="100%"
             pos="fixed"
-            zIndex={1000}
+            zIndex={100000}
             backdropFilter="blur(3px)"
             bgColor="blackAlpha.700"
             left={0}

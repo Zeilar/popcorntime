@@ -112,8 +112,14 @@ export function Room() {
     }, [publicSocket, setRoom]);
 
     useEffect(() => {
+        publicSocket.once("socket:kick", () => {
+            toast.info("You were kicked from the server.");
+        });
         return () => {
-            publicSocket.emit("room:leave").off("room:leader:new");
+            publicSocket
+                .emit("room:leave")
+                .off("room:leader:new")
+                .off("socket:kick");
         };
     }, [publicSocket]);
 
