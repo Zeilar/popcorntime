@@ -45,7 +45,7 @@ export default function Router() {
         });
         publicSocket.on("connect_failed", genericErrorHandler);
         publicSocket.on("connect_error", genericErrorHandler);
-        publicSocket.on("disconnect", (error: string) => {
+        publicSocket.on("disconnect", error => {
             console.error(error);
             toast.error("You were disconnected.");
             setError("You were disconnected.");
