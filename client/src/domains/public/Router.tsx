@@ -32,7 +32,7 @@ export default function Router() {
         function genericErrorHandler(error: Error) {
             console.error(error);
             toast.error("Something went wrong.");
-            setError("Could not connect.");
+            setError("Unable to establish connection.");
             setIsLoading(false);
         }
 
@@ -57,12 +57,17 @@ export default function Router() {
         <>
             {isLoading && <PageSpinner />}
             {error && (
-                <Modal isOpen onClose={prompt.onClose} blockScrollOnMount>
+                <Modal
+                    isOpen
+                    onClose={prompt.onClose}
+                    blockScrollOnMount
+                    size="xs"
+                >
                     <ModalOverlay />
                     <ModalContent>
-                        <ModalHeader>Reconnect</ModalHeader>
+                        <ModalHeader>{error}</ModalHeader>
                         <ModalBody>
-                            <Button.Primary onClick={reconnect}>
+                            <Button.Primary onClick={reconnect} w="100%">
                                 Reconnect
                             </Button.Primary>
                         </ModalBody>
