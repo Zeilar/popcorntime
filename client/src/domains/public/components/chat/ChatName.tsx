@@ -10,14 +10,13 @@ interface IProps {
 }
 
 export default function ChatName({ socket, children }: IProps) {
-    const { getLeader } = useContext(RoomContext);
-    const isLeader = getLeader()?.id === socket?.id;
+    const { isLeader } = useContext(RoomContext);
     if (!socket) {
         return null;
     }
     return (
         <Flex as="span" color={`${socket?.color}.600`} alignItems="center">
-            {isLeader && (
+            {isLeader(socket.id) && (
                 <MdiIcon
                     mr="0.1rem"
                     path="mdiCrownOutline"

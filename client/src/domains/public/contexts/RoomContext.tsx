@@ -24,6 +24,7 @@ interface IContext {
     setRoom: React.Dispatch<React.SetStateAction<IRoomDetails>>;
     getLeader(): ISocket | undefined;
     getActiveVideo(): IVideo;
+    isLeader(socketId: string): boolean | undefined;
 }
 
 interface IProps {
@@ -53,6 +54,11 @@ export function RoomContextProvider({ children }: IProps) {
         return sockets.find(socket => socket.id === room?.leader);
     }
 
+    function isLeader(socketId: string) {
+        const leader = getLeader();
+        return leader && leader.id === socketId;
+    }
+
     function getIndexOfPlaylistItem(id: string) {
         return playlist.findIndex(video => video.id === id);
     }
@@ -76,6 +82,7 @@ export function RoomContextProvider({ children }: IProps) {
         setRoom,
         getLeader,
         getActiveVideo,
+        isLeader,
     };
 
     return (

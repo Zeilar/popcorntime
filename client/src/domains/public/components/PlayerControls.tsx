@@ -12,19 +12,19 @@ interface IProps {
 
 export default function PlayerControls({ player }: IProps) {
     const [playerState, setPlayerState] = useState(-1);
-    const { getLeader, dispatchPlaylist, getActiveVideo } =
+    const { isLeader, dispatchPlaylist, getActiveVideo } =
         useContext(RoomContext);
     const { me } = useContext(MeContext);
     const { publicSocket } = useContext(WebsocketContext);
     const { roomId } = useParams<IRoomParams>();
 
-    const isLeader = getLeader()?.id === me.id;
+    const isRoomLeader = isLeader(me.id);
 
     async function sync() {
         if (!player) {
             return;
         }
-        if (isLeader) {
+        if (isRoomLeader) {
             publicSocket.emit(
                 "video:sync",
                 await player.getCurrentTime<true>()
@@ -36,7 +36,7 @@ export default function PlayerControls({ player }: IProps) {
         if (!player) {
             return;
         }
-        if (isLeader) {
+        if (isRoomLeader) {
             player.playVideo();
             publicSocket.emit("video:play");
         }
@@ -46,7 +46,7 @@ export default function PlayerControls({ player }: IProps) {
         if (!player) {
             return;
         }
-        if (isLeader) {
+        if (isRoomLeader) {
             player.pauseVideo();
             publicSocket.emit("video:pause");
         }
@@ -56,7 +56,7 @@ export default function PlayerControls({ player }: IProps) {
         if (!player) {
             return;
         }
-        if (isLeader) {
+        if (isRoomLeader) {
             player.seekTo((await player.getCurrentTime<true>()) - 15, true);
             publicSocket.emit("video:skip:backward");
         }
@@ -66,7 +66,7 @@ export default function PlayerControls({ player }: IProps) {
         if (!player) {
             return;
         }
-        if (isLeader) {
+        if (isRoomLeader) {
             player.seekTo((await player.getCurrentTime<true>()) + 15, true);
             publicSocket.emit("video:skip:forward");
         }
@@ -87,7 +87,7 @@ export default function PlayerControls({ player }: IProps) {
             }
 
             // If video ended, leader calls to remove it from playlist
-            if (isLeader && state === 0) {
+            if (isRoomLeader && state === 0) {
                 publicSocket.emit("room:playlist:remove", {
                     roomId,
                     videoId: activeVideo.id,
@@ -101,7 +101,7 @@ export default function PlayerControls({ player }: IProps) {
     }, [
         player,
         dispatchPlaylist,
-        isLeader,
+        isRoomLeader,
         getActiveVideo,
         publicSocket,
         roomId,
@@ -113,34 +113,34 @@ export default function PlayerControls({ player }: IProps) {
                 tooltip="Skip backward 15 seconds"
                 mdi="mdiSkipBackward"
                 onClick={skipBackward}
-                disabled={player === undefined || !isLeader}
+                disabled={player === undefined || !isRoomLeader}
             />
             <Button.Icon
                 mdi="mdiSync"
                 tooltip="Sync with room"
                 onClick={sync}
-                disabled={player === undefined || !isLeader}
+                disabled={player === undefined || !isRoomLeader}
             />
             {playerState === 1 ? (
                 <Button.Icon
                     tooltip="Pause"
                     onClick={pause}
                     mdi="mdiPause"
-                    disabled={player === undefined || !isLeader}
+                    disabled={player === undefined || !isRoomLeader}
                 />
             ) : (
                 <Button.Icon
                     tooltip="Play"
                     onClick={play}
                     mdi="mdiPlay"
-                    disabled={player === undefined || !isLeader}
+                    disabled={player === undefined || !isRoomLeader}
                 />
             )}
             <Button.Icon
                 tooltip="Skip forward 15 seconds"
                 mdi="mdiSkipForward"
                 onClick={skipForward}
-                disabled={player === undefined || !isLeader}
+                disabled={player === undefined || !isRoomLeader}
             />
         </Flex>
     );

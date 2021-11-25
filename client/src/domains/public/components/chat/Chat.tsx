@@ -1,12 +1,5 @@
 import { Box, Divider, Flex, Text } from "@chakra-ui/layout";
-import {
-    KeyboardEvent,
-    useCallback,
-    useContext,
-    useEffect,
-    useRef,
-    useState,
-} from "react";
+import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
 import { IMessage } from "domains/common/@types/message";
@@ -108,7 +101,7 @@ export function Chat() {
         publicSocket.emit("message:send", { roomId, body, id: message.id });
     }
 
-    function inputHandler(e: KeyboardEvent) {
+    function inputHandler(e: React.KeyboardEvent) {
         if (!e.shiftKey && e.key === "Enter") {
             e.preventDefault();
             sendMessage();
