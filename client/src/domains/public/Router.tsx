@@ -64,11 +64,7 @@ export default function Router() {
 
     return (
         <>
-            {isLoading && (
-                <AnimatePresence>
-                    <PageSpinner />
-                </AnimatePresence>
-            )}
+            <AnimatePresence>{isLoading && <PageSpinner />}</AnimatePresence>
             <Modal
                 isOpen={Boolean(error)}
                 onClose={prompt.onClose}
