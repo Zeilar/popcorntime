@@ -126,20 +126,21 @@ export class Room {
         const activeVideo = this.activeVideo;
         const activeVideoIndex = this.activeVideoIndex;
 
-        // If video was active, make previous video the new active
+        // If video was active and there are more videos, make another video the new active
         // Do it before removing current active to not lose it and avoid duplicate variable etc
-        if (activeVideo?.id === id) {
-            // If playlist has multiple item and first was removed, pick the adjacent one
-            // Otherwise pick the previous one if possible
-            if (activeVideoIndex === 0 && this.playlist.length > 1) {
+        if (activeVideo?.id === id && this.playlist.length > 1) {
+            // If playlist has multiple items and first was removed, pick the next one
+            // Otherwise pick the previous one
+            if (activeVideoIndex === 0) {
+                // Loop instead of writing to this.playlist[1] to make sure only one video has active
                 this.playlist = this.playlist.map((video, i) => ({
                     ...video,
-                    active: i === 1,
+                    active: i === 1, // it can only ever be playlist[1] here
                 }));
             } else {
                 this.playlist = this.playlist.map((video, i) => ({
                     ...video,
-                    active: this.activeVideoIndex === i - 1,
+                    active: i === activeVideoIndex - 1,
                 }));
             }
             publicNamespace
