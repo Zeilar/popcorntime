@@ -33,6 +33,7 @@ export default function Router() {
         }
 
         publicSocket.on("error", (payload: IErrorPayload) => {
+            console.log(payload.message);
             toast.error(`${payload.message}\n${payload.reason}`);
         });
         publicSocket.on("connect", () => {
@@ -54,7 +55,7 @@ export default function Router() {
                 .off("error")
                 .off("connect");
         };
-    }, [publicSocket]);
+    }, [publicSocket, publicSocket.connected]);
 
     return (
         <>

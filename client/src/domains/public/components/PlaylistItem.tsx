@@ -7,10 +7,7 @@ import { useParams } from "react-router";
 import { IRoomParams } from "../@types/params";
 import { IVideo } from "../@types/video";
 import { RoomContext } from "../contexts";
-import {
-    PLAYLIST_ACTIVE_SET,
-    REMOVE_FROM_PLAYLIST,
-} from "../state/actions/room";
+import { REMOVE_FROM_PLAYLIST } from "../state/actions/room";
 
 interface IProps {
     video: IVideo;
@@ -18,24 +15,16 @@ interface IProps {
 
 export default function PlaylistItem({ video }: IProps) {
     const { publicSocket } = useContext(WebsocketContext);
-    const {
-        dispatchPlaylist,
-        dispatchActiveVideo,
-        isPLaylistItemActive,
-        getIndexOfPlaylistItem,
-    } = useContext(RoomContext);
+    const { dispatchPlaylist, isPLaylistItemActive, getIndexOfPlaylistItem } =
+        useContext(RoomContext);
     const { roomId } = useParams<IRoomParams>();
 
     const active = isPLaylistItemActive(video.id);
 
     function setActive() {
         publicSocket.emit("room:playlist:select", {
-            video,
-            roomId,
-        });
-        dispatchActiveVideo({
-            type: PLAYLIST_ACTIVE_SET,
             index: getIndexOfPlaylistItem(video.id),
+            roomId,
         });
     }
 

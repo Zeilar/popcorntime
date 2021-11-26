@@ -18,12 +18,14 @@ export class Room {
     private sockets: Socket[] = [];
     private messages: Message[] = [];
     private playlist: IVideo[] = [];
+    private activeVideo: number;
     private created_at: Date;
     public name: string;
 
     public constructor(public readonly id: string) {
         this.created_at = new Date();
         this.leader = null;
+        this.activeVideo = 0;
         this.name = uniqueNamesGenerator(roomNameConfig);
     }
 
@@ -50,12 +52,27 @@ export class Room {
         adminNamespace.emit("room:leader:new", this.leader);
     }
 
+    public playlistNext() {
+        if (this.activeVideo >= this.playlist.length) {
+            return;
+        }
+        this.activeVideo += 1;
+    }
+
+    public playlistPrevious() {
+        if (this.activeVideo <= 0) {
+            return;
+        }
+        this.activeVideo -= 1;
+    }
+
     public get dto(): IRoomDto {
         return {
             id: this.id,
             name: this.name,
             leader: this.leader,
             playlist: this.playlist,
+            activeVideo: this.activeVideo,
             messages: this.messages,
             created_at: this.created_at,
             sockets: this.socketsDto,
@@ -100,6 +117,11 @@ export class Room {
         }
         this.playlist = this.playlist.filter(video => video.id !== id);
         publicNamespace.to(this.id).emit("room:playlist:remove", id);
+        if (this.activeVideo >= this.playlist.length) {
+            publicNamespace
+                .to(this.id)
+                .emit("room:playlist:select", this.playlist.length - 1);
+        }
         adminNamespace.emit("room:playlist:remove", {
             roomId: this.id,
             videoId: id,

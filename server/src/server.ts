@@ -176,6 +176,22 @@ publicNamespace.on("connection", socket => {
     });
 
     socket.on(
+        "room:playlist:select",
+        (payload: { roomId: string; index: number }) => {
+            const room = ws.rooms.get(payload.roomId);
+            if (!room) {
+                return socket.emit("error", {
+                    message: "Failed changing active playlist video.",
+                    reason: "That room does not exist.",
+                });
+            }
+            publicNamespace
+                .to(room.id)
+                .emit("room:playlist:select", payload.index);
+        }
+    );
+
+    socket.on(
         "room:playlist:add",
         (payload: { roomId: string; video: IVideo }) => {
             const room = ws.rooms.get(payload.roomId);

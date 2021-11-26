@@ -14,6 +14,7 @@ import { RoomContext } from "../contexts";
 import {
     ADD_TO_PLAYLIST,
     PLAYLIST_ACTIVE_PREVIOUS,
+    PLAYLIST_ACTIVE_SET,
     REMOVE_FROM_PLAYLIST,
 } from "../state/actions/room";
 import PlaylistItem from "./PlaylistItem";
@@ -21,19 +22,35 @@ import PlaylistItem from "./PlaylistItem";
 export default function Playlist() {
     const { publicSocket } = useContext(WebsocketContext);
     const { roomId } = useParams<IRoomParams>();
-    const { dispatchPlaylist, activeVideo, dispatchActiveVideo, playlist } =
-        useContext(RoomContext);
+    const {
+        dispatchPlaylist,
+        activeVideo,
+        dispatchActiveVideo,
+        playlist,
+        getActiveVideo,
+    } = useContext(RoomContext);
     const [input, setInput] = useState("");
     const [showPlaylist, setShowPlaylist] = useLocalStorage(
         "showPLaylist:chat",
         true
     );
 
+    const video = getActiveVideo();
+
     function togglePlaylist() {
         setShowPlaylist(p => !p);
     }
 
     useEffect(() => {
+        publicSocket.on("room:playlist:select", (index: number) => {
+            if (!playlist[index]) {
+                return;
+            }
+            dispatchActiveVideo({
+                type: PLAYLIST_ACTIVE_SET,
+                index,
+            });
+        });
         publicSocket.on("room:playlist:add", (video: IVideo) => {
             dispatchPlaylist({
                 type: ADD_TO_PLAYLIST,
@@ -47,9 +64,12 @@ export default function Playlist() {
             });
         });
         return () => {
-            publicSocket.off("room:playlist:add").off("room:playlist:remove");
+            publicSocket
+                .off("room:playlist:add")
+                .off("room:playlist:remove")
+                .off("room:playlist:setactive");
         };
-    }, [publicSocket, dispatchPlaylist]);
+    }, [publicSocket, dispatchPlaylist, dispatchActiveVideo, playlist]);
 
     function add(e: React.FormEvent) {
         e.preventDefault();
@@ -86,14 +106,14 @@ export default function Playlist() {
         });
     }
 
-    useEffect(() => {
-        // If an item was active and removed, try to make the previous one active instead.
-        if (activeVideo !== 0 && !playlist[activeVideo]) {
-            dispatchActiveVideo({
-                type: PLAYLIST_ACTIVE_PREVIOUS,
-            });
-        }
-    }, [playlist, activeVideo, dispatchActiveVideo]);
+    // useEffect(() => {
+    //     // If an item was active and removed, try to make the previous one active instead.
+    //     if (activeVideo !== 0 && !video) {
+    //         dispatchActiveVideo({
+    //             type: PLAYLIST_ACTIVE_PREVIOUS,
+    //         });
+    //     }
+    // }, [activeVideo, dispatchActiveVideo, video]);
 
     return (
         <Flex
