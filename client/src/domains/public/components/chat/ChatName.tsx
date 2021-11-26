@@ -18,7 +18,7 @@ export default function ChatName({ socket, children }: IProps) {
         <Flex as="span" color={`${socket?.color}.600`} alignItems="center">
             {isLeader(socket.id) && (
                 <MdiIcon
-                    mr="0.1rem"
+                    mx="0.25rem"
                     path="mdiCrownOutline"
                     color="gold"
                     w="1.25rem"
