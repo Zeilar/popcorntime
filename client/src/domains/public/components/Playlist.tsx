@@ -21,8 +21,7 @@ import PlaylistItem from "./PlaylistItem";
 export default function Playlist() {
     const { publicSocket } = useContext(WebsocketContext);
     const { roomId } = useParams<IRoomParams>();
-    const { dispatchPlaylist, dispatchActiveVideo, playlist } =
-        useContext(RoomContext);
+    const { dispatchPlaylist, playlist } = useContext(RoomContext);
     const [input, setInput] = useState("");
     const [showPlaylist, setShowPlaylist] = useLocalStorage(
         "showPLaylist:chat",
@@ -34,10 +33,10 @@ export default function Playlist() {
     }
 
     useEffect(() => {
-        publicSocket.on("room:playlist:select", (index: number) => {
-            dispatchActiveVideo({
+        publicSocket.on("room:playlist:select", (id: string) => {
+            dispatchPlaylist({
                 type: PLAYLIST_ACTIVE_SET,
-                index,
+                id,
             });
         });
         publicSocket.on("room:playlist:add", (video: IVideo) => {
@@ -58,7 +57,7 @@ export default function Playlist() {
                 .off("room:playlist:remove")
                 .off("room:playlist:setactive");
         };
-    }, [publicSocket, dispatchPlaylist, dispatchActiveVideo, playlist]);
+    }, [publicSocket, dispatchPlaylist, playlist]);
 
     function add(e: React.FormEvent) {
         e.preventDefault();

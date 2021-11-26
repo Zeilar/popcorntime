@@ -15,15 +15,15 @@ interface IProps {
 
 export default function PlaylistItem({ video }: IProps) {
     const { publicSocket } = useContext(WebsocketContext);
-    const { dispatchPlaylist, isPLaylistItemActive, getIndexOfPlaylistItem } =
-        useContext(RoomContext);
+    const { dispatchPlaylist, getActiveVideo } = useContext(RoomContext);
     const { roomId } = useParams<IRoomParams>();
 
-    const active = isPLaylistItemActive(video.id);
+    const activeVideo = getActiveVideo();
+    const active = activeVideo && activeVideo.id === video.id;
 
     function setActive() {
         publicSocket.emit("room:playlist:select", {
-            index: getIndexOfPlaylistItem(video.id),
+            id: video.id,
             roomId,
         });
     }

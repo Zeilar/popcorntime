@@ -177,7 +177,7 @@ publicNamespace.on("connection", socket => {
 
     socket.on(
         "room:playlist:select",
-        (payload: { roomId: string; index: number }) => {
+        (payload: { roomId: string; id: string }) => {
             const room = ws.rooms.get(payload.roomId);
             if (!room) {
                 return socket.emit("error", {
@@ -185,9 +185,10 @@ publicNamespace.on("connection", socket => {
                     reason: "That room does not exist.",
                 });
             }
+            room.playlistSelect(payload.id);
             publicNamespace
                 .to(room.id)
-                .emit("room:playlist:select", payload.index);
+                .emit("room:playlist:select", payload.id);
         }
     );
 

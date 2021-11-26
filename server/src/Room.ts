@@ -53,15 +53,14 @@ export class Room {
     }
 
     // Validate to make sure active video is never out of bounds of the playlist
-    public playlistSelect(index: number) {
-        if (typeof index !== "number") {
-            return;
-        } else if (index >= this.playlist.length) {
-            return;
-        } else if (index < 0) {
+    public playlistSelect(id: string) {
+        if (!this.playlist.some(video => video.id === id)) {
             return;
         }
-        this.activeVideo = index;
+        this.playlist = this.playlist.map(video => ({
+            ...video,
+            active: video.id === id,
+        }));
     }
 
     public playlistNext() {

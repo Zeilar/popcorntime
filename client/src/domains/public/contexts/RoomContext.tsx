@@ -1,11 +1,7 @@
 import { createContext, ReactNode, useReducer, useState } from "react";
 import { useLocalStorage } from "domains/common/hooks";
 import { IVideo } from "../@types/video";
-import {
-    activeVideoReducer,
-    playlistReducer,
-    socketsReducer,
-} from "../state/reducers/room";
+import { playlistReducer, socketsReducer } from "../state/reducers/room";
 import { ISocket } from "domains/common/@types/socket";
 import { IRoomDetails } from "domains/common/@types/room";
 
@@ -16,10 +12,6 @@ interface IContext {
     dispatchPlaylist: React.Dispatch<any>;
     sockets: ISocket[];
     dispatchSockets: React.Dispatch<any>;
-    activeVideo: number;
-    dispatchActiveVideo: React.Dispatch<any>;
-    isPLaylistItemActive(id: string): boolean;
-    getIndexOfPlaylistItem(id: string): number;
     room: IRoomDetails | null;
     setRoom: React.Dispatch<React.SetStateAction<IRoomDetails>>;
     getLeader(): ISocket | undefined;
@@ -38,16 +30,12 @@ export function RoomContextProvider({ children }: IProps) {
         "showServerMessages:chat",
         true
     );
-    const [activeVideo, dispatchActiveVideo] = useReducer(
-        activeVideoReducer,
-        0
-    );
     const [playlist, dispatchPlaylist] = useReducer(playlistReducer, []);
     const [sockets, dispatchSockets] = useReducer(socketsReducer, []);
     const [room, setRoom] = useState<IRoomDetails>({} as IRoomDetails);
 
     function getActiveVideo(): IVideo | undefined {
-        return playlist[activeVideo];
+        return playlist.find(video => video.active);
     }
 
     function getLeader() {
@@ -62,14 +50,6 @@ export function RoomContextProvider({ children }: IProps) {
         return leader && leader.id === socketId;
     }
 
-    function getIndexOfPlaylistItem(id: string) {
-        return playlist.findIndex(video => video.id === id);
-    }
-
-    function isPLaylistItemActive(id: string) {
-        return getIndexOfPlaylistItem(id) === activeVideo;
-    }
-
     const values: IContext = {
         showServerMessages,
         setShowServerMessages,
@@ -77,10 +57,6 @@ export function RoomContextProvider({ children }: IProps) {
         dispatchPlaylist,
         sockets,
         dispatchSockets,
-        activeVideo,
-        dispatchActiveVideo,
-        isPLaylistItemActive,
-        getIndexOfPlaylistItem,
         room,
         setRoom,
         getLeader,
