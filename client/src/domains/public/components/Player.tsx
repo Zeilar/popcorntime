@@ -52,13 +52,7 @@ export default function Player() {
     }, [publicSocket, internalPlayer]);
 
     return (
-        <Flex
-            flexDir="column"
-            flexGrow={1}
-            overflowX="auto"
-            boxShadow="elevate.all"
-            zIndex={20}
-        >
+        <Flex flexDir="column" flexGrow={1} overflowX="auto">
             <Flex
                 flexGrow={1}
                 sx={{ ".youtube": { flexGrow: 1, height: "100%" } }}
@@ -77,7 +71,7 @@ export default function Player() {
                         pos="absolute"
                         bgColor="gray.900"
                         w="100%"
-                        zIndex={100}
+                        zIndex={10}
                         top={0}
                         left={0}
                     >

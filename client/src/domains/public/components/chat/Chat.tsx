@@ -1,4 +1,4 @@
-import { Box, Divider, Flex, Text } from "@chakra-ui/layout";
+import { Box, Flex, Text } from "@chakra-ui/layout";
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
@@ -131,6 +131,7 @@ export function Chat() {
             w={showChat ? "25rem" : "3rem"}
             zIndex={10}
             pos="relative"
+            boxShadow="elevate.left"
         >
             {roomInfo.isOpen && <RoomInfo onClose={roomInfo.onClose} />}
             <Flex
@@ -164,7 +165,6 @@ export function Chat() {
                     </>
                 )}
             </Flex>
-            <Divider />
             {showChat && (
                 <>
                     <Flex flexDir="column" overflowY="auto" ref={chatElement}>

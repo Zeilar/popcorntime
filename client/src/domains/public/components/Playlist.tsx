@@ -100,6 +100,7 @@ export default function Playlist() {
             h="100%"
             w={showPlaylist ? "auto" : "3rem"}
             zIndex={100}
+            boxShadow="elevate.right"
         >
             <Flex
                 p="0.5rem"
