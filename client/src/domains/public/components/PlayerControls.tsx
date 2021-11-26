@@ -12,23 +12,25 @@ interface IProps {
 
 export default function PlayerControls({ player }: IProps) {
     const [playerState, setPlayerState] = useState(-1);
-    const { isLeader, dispatchPlaylist, getActiveVideo } =
-        useContext(RoomContext);
+    const { isLeader, getActiveVideo } = useContext(RoomContext);
     const { me } = useContext(MeContext);
     const { publicSocket } = useContext(WebsocketContext);
     const { roomId } = useParams<IRoomParams>();
 
     const isRoomLeader = isLeader(me?.id);
+    const activeVideo = getActiveVideo();
+
+    const canControl = isRoomLeader && player !== undefined && activeVideo;
 
     async function sync() {
-        if (!player || !isRoomLeader) {
+        if (!canControl) {
             return;
         }
         publicSocket.emit("video:sync", await player.getCurrentTime<true>());
     }
 
     function play() {
-        if (!player || !isRoomLeader) {
+        if (!canControl) {
             return;
         }
         player.playVideo();
@@ -36,7 +38,7 @@ export default function PlayerControls({ player }: IProps) {
     }
 
     function pause() {
-        if (!player || !isRoomLeader) {
+        if (!canControl) {
             return;
         }
         player.pauseVideo();
@@ -44,7 +46,7 @@ export default function PlayerControls({ player }: IProps) {
     }
 
     async function skipBackward() {
-        if (!player || !isRoomLeader) {
+        if (!canControl) {
             return;
         }
         player.seekTo((await player.getCurrentTime<true>()) - 15, true);
@@ -52,7 +54,7 @@ export default function PlayerControls({ player }: IProps) {
     }
 
     async function skipForward() {
-        if (!player || !isRoomLeader) {
+        if (!canControl) {
             return;
         }
         player.seekTo((await player.getCurrentTime<true>()) + 15, true);
@@ -66,8 +68,6 @@ export default function PlayerControls({ player }: IProps) {
         function onStateChange(e: YT.PlayerEvent) {
             const state = e.target.getPlayerState();
             setPlayerState(state);
-
-            const activeVideo = getActiveVideo();
 
             if (!activeVideo) {
                 return;
@@ -85,14 +85,7 @@ export default function PlayerControls({ player }: IProps) {
         return () => {
             player.removeEventListener("onStateChange", onStateChange);
         };
-    }, [
-        player,
-        dispatchPlaylist,
-        isRoomLeader,
-        getActiveVideo,
-        publicSocket,
-        roomId,
-    ]);
+    }, [player, isRoomLeader, publicSocket, activeVideo, roomId]);
 
     return (
         <Flex justify="center" align="center" py="1rem" gridGap="0.5rem">
@@ -100,34 +93,34 @@ export default function PlayerControls({ player }: IProps) {
                 tooltip="Skip backward 15 seconds"
                 mdi="mdiSkipBackward"
                 onClick={skipBackward}
-                disabled={player === undefined || !isRoomLeader}
+                disabled={!canControl}
             />
             <Button.Icon
                 mdi="mdiSync"
                 tooltip="Sync with room"
                 onClick={sync}
-                disabled={player === undefined || !isRoomLeader}
+                disabled={!canControl}
             />
             {playerState === 1 ? (
                 <Button.Icon
                     tooltip="Pause"
                     onClick={pause}
                     mdi="mdiPause"
-                    disabled={player === undefined || !isRoomLeader}
+                    disabled={!canControl}
                 />
             ) : (
                 <Button.Icon
                     tooltip="Play"
                     onClick={play}
                     mdi="mdiPlay"
-                    disabled={player === undefined || !isRoomLeader}
+                    disabled={!canControl}
                 />
             )}
             <Button.Icon
                 tooltip="Skip forward 15 seconds"
                 mdi="mdiSkipForward"
                 onClick={skipForward}
-                disabled={player === undefined || !isRoomLeader}
+                disabled={!canControl}
             />
         </Flex>
     );

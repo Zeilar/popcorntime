@@ -6,12 +6,14 @@ import { RoomContext } from "../contexts";
 import PlayerControls from "./PlayerControls";
 
 export default function Player() {
-    const { playlist, activeVideo, getActiveVideo } = useContext(RoomContext);
+    const { getActiveVideo } = useContext(RoomContext);
     const { publicSocket } = useContext(WebsocketContext);
     const player = useRef<YouTube>(null);
 
     const internalPlayer: YT.Player | undefined =
         player.current?.getInternalPlayer();
+
+    const video = getActiveVideo();
 
     useEffect(() => {
         if (!internalPlayer) {
@@ -66,7 +68,7 @@ export default function Player() {
                 justifyContent="center"
                 alignItems="center"
             >
-                {!getActiveVideo() && (
+                {!video && (
                     <Flex
                         h="100%"
                         color="textMuted"
@@ -93,7 +95,7 @@ export default function Player() {
                     opts={{ width: "100%", height: "100%" }}
                     ref={player}
                     containerClassName="youtube"
-                    videoId={playlist[activeVideo]?.videoId}
+                    videoId={video?.videoId}
                 />
             </Flex>
             <PlayerControls player={internalPlayer} />
