@@ -38,7 +38,6 @@ export function MeContextProvider({ children }: IProps) {
 
     useEffect(() => {
         publicSocket.once("connection:success", (socket: ISocket) => {
-            console.log("got socket", socket);
             setMe(socket);
         });
         publicSocket.on("socket:update:color", (color: Color) => {

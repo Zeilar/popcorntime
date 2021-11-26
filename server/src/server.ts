@@ -62,8 +62,6 @@ io.on("connection", socket => {
     ws.addSocket(_socket);
     socket.emit("connection:success", _socket.dto);
 
-    console.log("connected", _socket.dto);
-
     socket.on("socket:update:color", (color: Color) => {
         _socket.setColor(color);
         const room = _socket.room;
