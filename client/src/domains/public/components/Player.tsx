@@ -13,7 +13,7 @@ export default function Player() {
     const internalPlayer: YT.Player | undefined =
         player.current?.getInternalPlayer();
 
-    const video = getActiveVideo();
+    const activeVideo = getActiveVideo();
 
     useEffect(() => {
         if (!internalPlayer) {
@@ -68,7 +68,7 @@ export default function Player() {
                 justifyContent="center"
                 alignItems="center"
             >
-                {!video && (
+                {!activeVideo && (
                     <Flex
                         h="100%"
                         color="textMuted"
@@ -95,7 +95,7 @@ export default function Player() {
                     opts={{ width: "100%", height: "100%" }}
                     ref={player}
                     containerClassName="youtube"
-                    videoId={video?.videoId}
+                    videoId={activeVideo?.videoId}
                 />
             </Flex>
             <PlayerControls player={internalPlayer} />
