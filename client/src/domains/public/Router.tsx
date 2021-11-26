@@ -2,7 +2,7 @@ import { Route, Switch } from "react-router";
 import { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import * as Pages from "./pages";
-import { WebsocketContext } from "domains/common/contexts";
+import { WebsocketContext } from "domains/public/contexts";
 import { RoomContextProvider } from "./contexts/RoomContext";
 import { IErrorPayload } from "domains/common/@types/listener";
 import { useDisclosure } from "@chakra-ui/hooks";

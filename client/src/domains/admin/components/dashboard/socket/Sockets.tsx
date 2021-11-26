@@ -4,7 +4,7 @@ import { Flex, Grid, Text } from "@chakra-ui/layout";
 import { SocketContext } from "domains/admin/contexts";
 import { Prompt } from "domains/common/components/modals";
 import Button from "domains/common/components/styles/button";
-import { WebsocketContext } from "domains/common/contexts";
+import { WebsocketContext } from "domains/admin/contexts";
 import { AnimatePresence } from "framer-motion";
 import { useContext, useEffect } from "react";
 import { toast } from "react-toastify";

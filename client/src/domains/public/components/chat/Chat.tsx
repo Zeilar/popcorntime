@@ -8,7 +8,7 @@ import Textarea from "../styles/Textarea";
 import { MeContext, RoomContext } from "domains/public/contexts";
 import { ChatSettings } from "./";
 import { useLocalStorage, useOnClickOutside } from "domains/common/hooks";
-import { WebsocketContext } from "domains/common/contexts";
+import { WebsocketContext } from "domains/public/contexts";
 import Button from "domains/common/components/styles/button";
 import { IErrorPayload } from "domains/common/@types/listener";
 import { useDisclosure } from "@chakra-ui/hooks";

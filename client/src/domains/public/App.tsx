@@ -1,4 +1,4 @@
-import { WebsocketContextProvider } from "domains/common/contexts";
+import { WebsocketContextProvider } from "domains/public/contexts";
 import { MeContextProvider } from "./contexts";
 import Router from "./Router";
 

@@ -6,7 +6,7 @@ import { RoomContext } from "domains/admin/contexts";
 import { ISocket } from "domains/common/@types/socket";
 import { Prompt } from "domains/common/components/modals";
 import Button from "domains/common/components/styles/button";
-import { WebsocketContext } from "domains/common/contexts";
+import { WebsocketContext } from "domains/admin/contexts";
 import { motion } from "framer-motion";
 import { useContext } from "react";
 

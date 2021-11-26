@@ -1,4 +1,4 @@
-import { WebsocketContext } from "domains/common/contexts";
+import { WebsocketContext } from "domains/public/contexts";
 import { useContext, useEffect, useRef } from "react";
 import { Redirect } from "react-router";
 import { v4 as uuidv4 } from "uuid";

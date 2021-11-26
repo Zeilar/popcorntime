@@ -2,7 +2,7 @@ import { Input } from "@chakra-ui/input";
 import { Flex, Text } from "@chakra-ui/layout";
 import env from "config/env";
 import Button from "domains/common/components/styles/button";
-import { WebsocketContext } from "domains/common/contexts";
+import { WebsocketContext } from "domains/public/contexts";
 import { useLocalStorage } from "domains/common/hooks";
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router";

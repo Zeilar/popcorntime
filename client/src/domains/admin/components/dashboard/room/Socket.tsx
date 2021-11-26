@@ -1,7 +1,7 @@
 import { Flex, Text } from "@chakra-ui/layout";
 import { ISocket } from "domains/common/@types/socket";
 import Button from "domains/common/components/styles/button";
-import { WebsocketContext } from "domains/common/contexts";
+import { WebsocketContext } from "domains/admin/contexts";
 import { useContext } from "react";
 
 interface IProps {

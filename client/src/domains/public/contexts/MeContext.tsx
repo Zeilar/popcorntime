@@ -8,7 +8,7 @@ import {
 } from "react";
 import { ISocket } from "../../common/@types/socket";
 import { Color } from "../../common/@types/color";
-import { WebsocketContext } from "domains/common/contexts";
+import { WebsocketContext } from "domains/public/contexts";
 
 interface IContext {
     me: ISocket | null;
@@ -38,6 +38,7 @@ export function MeContextProvider({ children }: IProps) {
 
     useEffect(() => {
         publicSocket.once("connection:success", (socket: ISocket) => {
+            console.log("got socket", socket);
             setMe(socket);
         });
         publicSocket.on("socket:update:color", (color: Color) => {

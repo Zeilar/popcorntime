@@ -13,7 +13,7 @@ import * as SocketActions from "../../state/actions/socket";
 import DashboardItem from "./DashboardItem";
 import Rooms from "./room/Rooms";
 import Sockets from "./socket/Sockets";
-import { WebsocketContext } from "domains/common/contexts";
+import { WebsocketContext } from "domains/admin/contexts";
 import { Color } from "domains/common/@types/color";
 import Button from "domains/common/components/styles/button";
 import PageSpinner from "domains/common/components/styles/PageSpinner";
@@ -22,8 +22,8 @@ import { IErrorPayload } from "domains/common/@types/listener";
 
 export default function Dashboard() {
     const { dispatchRooms } = useContext(RoomContext);
-    const { dispatchSockets, sockets } = useContext(SocketContext);
-    const { adminSocket, publicSocket } = useContext(WebsocketContext);
+    const { dispatchSockets } = useContext(SocketContext);
+    const { adminSocket } = useContext(WebsocketContext);
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
@@ -111,8 +111,6 @@ export default function Dashboard() {
         };
     }, [dispatchRooms, dispatchSockets, adminSocket]);
 
-    const me = sockets.find(socket => socket.id === publicSocket.id);
-
     return (
         <Grid bgColor="gray.800" flexGrow={1} gridTemplateColumns="25rem 1fr">
             <AnimatePresence>{isLoading && <PageSpinner />}</AnimatePresence>
@@ -128,17 +126,6 @@ export default function Dashboard() {
                         <BrandLogo />
                     </Link>
                 </Box>
-                {me && (
-                    <Box
-                        bgGradient={`linear(to-r, ${me.color}.700, ${me.color}.900)`}
-                        rounded="base"
-                        fontSize="xl"
-                        m="1rem auto 3rem"
-                        p="1rem 2rem"
-                    >
-                        {me.username}
-                    </Box>
-                )}
                 <DashboardItem icon="mdiHome" to="/admin">
                     Start
                 </DashboardItem>

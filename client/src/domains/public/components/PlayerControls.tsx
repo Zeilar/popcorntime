@@ -1,6 +1,6 @@
 import { Flex } from "@chakra-ui/layout";
 import Button from "domains/common/components/styles/button";
-import { WebsocketContext } from "domains/common/contexts";
+import { WebsocketContext } from "domains/public/contexts";
 import { useState, useContext, useEffect } from "react";
 import { useParams } from "react-router";
 import { IRoomParams } from "../@types/params";

@@ -1,5 +1,5 @@
 import { Flex, Text } from "@chakra-ui/layout";
-import { WebsocketContext } from "domains/common/contexts";
+import { WebsocketContext } from "domains/public/contexts";
 import { useEffect, useContext, useRef } from "react";
 import YouTube from "react-youtube";
 import { RoomContext } from "../contexts";

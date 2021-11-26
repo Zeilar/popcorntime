@@ -2,10 +2,10 @@ import { Box, Flex, FlexProps, Text } from "@chakra-ui/layout";
 import { motion } from "framer-motion";
 import { useContext } from "react";
 import { IMessage } from "../@types/message";
-import { WebsocketContext } from "../contexts";
 import dayjs from "dayjs";
 import env from "config/env";
 import ChatName from "domains/public/components/chat/ChatName";
+import { WebsocketContext } from "domains/public/contexts";
 
 interface IProps {
     message: IMessage;

@@ -6,7 +6,7 @@ import { Chat } from "../components/chat";
 import { validate } from "uuid";
 import { Flex } from "@chakra-ui/react";
 import { Color } from "domains/common/@types/color";
-import { WebsocketContext } from "domains/common/contexts";
+import { WebsocketContext } from "domains/public/contexts";
 import Playlist from "../components/Playlist";
 import { IErrorPayload } from "domains/common/@types/listener";
 import { RoomContext } from "../contexts";

@@ -2,7 +2,7 @@ import { useDisclosure } from "@chakra-ui/hooks";
 import { Input } from "@chakra-ui/input";
 import { Box } from "@chakra-ui/layout";
 import { Prompt } from "domains/common/components/modals";
-import { WebsocketContext } from "domains/common/contexts";
+import { WebsocketContext } from "domains/admin/contexts";
 import React, { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Dashboard from "./components/dashboard/Dashboard";

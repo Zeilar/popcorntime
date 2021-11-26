@@ -3,7 +3,7 @@ import { Box, BoxProps } from "@chakra-ui/layout";
 import { useContext } from "react";
 import theme from "@chakra-ui/theme";
 import { MeContext } from "domains/public/contexts";
-import { WebsocketContext } from "domains/common/contexts";
+import { WebsocketContext } from "domains/public/contexts";
 
 interface IProps extends BoxProps {
     color: Color;
