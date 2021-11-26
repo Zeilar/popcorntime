@@ -1,12 +1,18 @@
-import { RoomContextProvider, SocketContextProvider } from "./contexts";
+import {
+    RoomContextProvider,
+    SocketContextProvider,
+    WebsocketContextProvider,
+} from "./contexts";
 import Router from "./Router";
 
 export default function Admin() {
     return (
-        <SocketContextProvider>
-            <RoomContextProvider>
-                <Router />
-            </RoomContextProvider>
-        </SocketContextProvider>
+        <WebsocketContextProvider>
+            <SocketContextProvider>
+                <RoomContextProvider>
+                    <Router />
+                </RoomContextProvider>
+            </SocketContextProvider>
+        </WebsocketContextProvider>
     );
 }
