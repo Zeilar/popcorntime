@@ -1,5 +1,5 @@
 import { WS_HOST } from "domains/common/config/host";
-import { createContext } from "react";
+import { createContext, useRef } from "react";
 import { Socket, io } from "socket.io-client";
 
 interface IContext {
@@ -10,11 +10,13 @@ interface IProps {
     children: React.ReactNode;
 }
 
-const publicSocket = io(`${WS_HOST}/public`, { reconnection: false });
-
 export const WebsocketContext = createContext({} as IContext);
 
 export function WebsocketContextProvider({ children }: IProps) {
+    const publicSocket = useRef(
+        io(`${WS_HOST}/public`, { reconnection: false })
+    ).current;
+
     const values: IContext = {
         publicSocket,
     };
