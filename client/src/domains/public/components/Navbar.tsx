@@ -6,7 +6,6 @@ export default function Navbar() {
     return (
         <Flex
             as="nav"
-            justifyContent="center"
             boxShadow="elevate.bottom"
             bgColor="gray.800"
             zIndex={1000}

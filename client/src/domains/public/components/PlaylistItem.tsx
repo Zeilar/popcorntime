@@ -1,7 +1,7 @@
 import { Img } from "@chakra-ui/image";
 import { Box } from "@chakra-ui/layout";
 import Button from "domains/common/components/styles/button";
-import { WebsocketContext } from "domains/public/contexts";
+import { MeContext, WebsocketContext } from "domains/public/contexts";
 import React, { useContext } from "react";
 import { useParams } from "react-router";
 import { IRoomParams } from "../@types/params";
@@ -14,10 +14,12 @@ interface IProps {
 
 export default function PlaylistItem({ video }: IProps) {
     const { publicSocket } = useContext(WebsocketContext);
-    const { getActiveVideo } = useContext(RoomContext);
+    const { me } = useContext(MeContext);
+    const { getActiveVideo, isLeader } = useContext(RoomContext);
     const { roomId } = useParams<IRoomParams>();
 
     const activeVideo = getActiveVideo();
+    const canControl = isLeader(me?.id);
     const active = activeVideo && activeVideo.id === video.id;
 
     function setActive() {
@@ -61,16 +63,18 @@ export default function PlaylistItem({ video }: IProps) {
                     : undefined
             }
         >
-            <Button.Icon
-                className="remove-button"
-                zIndex={10}
-                pos="absolute"
-                right="1rem"
-                top="1rem"
-                mdi="mdiClose"
-                onClick={remove}
-                display="none"
-            />
+            {canControl && (
+                <Button.Icon
+                    className="remove-button"
+                    zIndex={10}
+                    pos="absolute"
+                    right="1rem"
+                    top="1rem"
+                    mdi="mdiClose"
+                    onClick={remove}
+                    display="none"
+                />
+            )}
             <Box
                 pos="absolute"
                 top={0}
