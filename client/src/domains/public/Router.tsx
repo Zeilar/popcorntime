@@ -51,7 +51,8 @@ export default function Router() {
                 .off("connect_failed")
                 .off("connect_error")
                 .off("disconnect")
-                .off("error");
+                .off("error")
+                .off("connect");
         };
     }, [publicSocket]);
 

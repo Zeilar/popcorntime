@@ -285,7 +285,7 @@ adminNamespace.use((socket, next) => {
         Logger.warn(`${address} connected to admin login.`);
         return next(new Error("Please log in first."));
     } else if (socket.handshake.auth.token !== ADMIN_PASSWORD) {
-        Logger.warn(`${address} provided wrong admin password.`);
+        Logger.warn(`${address} tried logging in with incorrect password.`);
         return next(new Error("Incorrect token."));
     }
     Logger.warn(`${address} logged in as admin.`);
