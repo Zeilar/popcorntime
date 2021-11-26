@@ -101,6 +101,11 @@ export class Room {
         }
         this.playlist.push(video);
         publicNamespace.to(this.id).emit("room:playlist:add", video);
+        if (this.playlist.length > 0) {
+            publicNamespace
+                .to(this.id)
+                .emit("room:playlist:select", this.playlist[0].id);
+        }
         adminNamespace.emit("room:playlist:add", {
             roomId: this.id,
             videoId: video.id,
