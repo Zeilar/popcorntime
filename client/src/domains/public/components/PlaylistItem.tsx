@@ -7,7 +7,6 @@ import { useParams } from "react-router";
 import { IRoomParams } from "../@types/params";
 import { IVideo } from "../@types/video";
 import { RoomContext } from "../contexts";
-import { REMOVE_FROM_PLAYLIST } from "../state/actions/room";
 
 interface IProps {
     video: IVideo;
