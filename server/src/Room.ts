@@ -123,19 +123,27 @@ export class Room {
             });
         }
 
-        const activeVideo = this.activeVideo;
+        const activeVideo = { ...this.activeVideo };
         const activeVideoIndex = this.activeVideoIndex;
+
+        this.playlist = this.playlist.filter(video => video.id !== id);
+
+        publicNamespace.to(this.id).emit("room:playlist:remove", id);
+        adminNamespace.emit("room:playlist:remove", {
+            roomId: this.id,
+            videoId: id,
+        });
 
         // If video was active and there are more videos, make another video the new active
         // Do it before removing current active to not lose it and avoid duplicate variable etc
-        if (activeVideo?.id === id && this.playlist.length > 1) {
+        if (activeVideo?.id === id && this.playlist.length > 0) {
             // If playlist has multiple items and first was removed, pick the next one
             // Otherwise pick the previous one
             if (activeVideoIndex === 0) {
-                // Loop instead of writing to this.playlist[1] to make sure only one video has active
+                // Loop instead of writing to this.playlist[0] to make sure only one video has active
                 this.playlist = this.playlist.map((video, i) => ({
                     ...video,
-                    active: i === 1, // it can only ever be playlist[1] here
+                    active: i === 0, // it can only ever be playlist[0] here
                 }));
             } else {
                 this.playlist = this.playlist.map((video, i) => ({
@@ -147,14 +155,6 @@ export class Room {
                 .to(this.id)
                 .emit("room:playlist:select", this.activeVideo?.id);
         }
-
-        this.playlist = this.playlist.filter(video => video.id !== id);
-
-        publicNamespace.to(this.id).emit("room:playlist:remove", id);
-        adminNamespace.emit("room:playlist:remove", {
-            roomId: this.id,
-            videoId: id,
-        });
     }
 
     public hasSocket(socket: Socket) {
