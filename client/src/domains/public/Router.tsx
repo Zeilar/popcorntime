@@ -6,13 +6,7 @@ import { WebsocketContext } from "domains/public/contexts";
 import { RoomContextProvider } from "./contexts/RoomContext";
 import { IErrorPayload } from "domains/common/@types/listener";
 import { useDisclosure } from "@chakra-ui/hooks";
-import {
-    Modal,
-    ModalBody,
-    ModalContent,
-    ModalHeader,
-    ModalOverlay,
-} from "@chakra-ui/modal";
+import Modal from "domains/common/components/styles/modal";
 import Button from "domains/common/components/styles/button";
 import PageSpinner from "domains/common/components/styles/PageSpinner";
 import MdiIcon from "domains/common/components/MdiIcon";
@@ -70,22 +64,28 @@ export default function Router() {
                 blockScrollOnMount
                 closeOnOverlayClick={false}
             >
-                <ModalOverlay />
-                <ModalContent p="2rem">
-                    <ModalHeader as={Flex} alignItems="center" p={0}>
+                <Modal.Overlay />
+                <Modal.Content>
+                    <Modal.Header
+                        as={Flex}
+                        alignItems="center"
+                        justifyContent="center"
+                    >
                         <MdiIcon
-                            mr="0.5rem"
+                            mr="1rem"
                             path="mdiAlertOutline"
                             color="danger"
+                            w="3rem"
+                            h="3rem"
                         />
                         {error}
-                    </ModalHeader>
-                    <ModalBody p={0} mt="1rem">
+                    </Modal.Header>
+                    <Modal.Body>
                         <Button.Primary onClick={reconnect} w="100%">
                             Reconnect
                         </Button.Primary>
-                    </ModalBody>
-                </ModalContent>
+                    </Modal.Body>
+                </Modal.Content>
             </Modal>
             <Switch>
                 <Route path="/room/new" exact>
