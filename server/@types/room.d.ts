@@ -8,7 +8,6 @@ export interface IRoomDto {
     name: string;
     leader: string | null;
     playlist: IVideo[];
-    activeVideo: number;
     sockets: ISocketDto[];
     created_at: Date;
 }

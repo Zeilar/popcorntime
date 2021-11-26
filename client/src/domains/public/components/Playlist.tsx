@@ -55,7 +55,7 @@ export default function Playlist() {
             publicSocket
                 .off("room:playlist:add")
                 .off("room:playlist:remove")
-                .off("room:playlist:setactive");
+                .off("room:playlist:select");
         };
     }, [publicSocket, dispatchPlaylist, playlist]);
 

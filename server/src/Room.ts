@@ -6,6 +6,7 @@ import { roomNameConfig } from "../config/uniqueNamesGenerator";
 import Message from "./Message";
 import env from "../config/env";
 import { IVideo } from "../@types/video";
+import e from "cors";
 
 const { ROOM_MAX_SOCKETS, ROOM_MAX_MESSAGES, ROOM_MAX_PLAYLIST } = env;
 
@@ -18,14 +19,12 @@ export class Room {
     private sockets: Socket[] = [];
     private messages: Message[] = [];
     private playlist: IVideo[] = [];
-    private activeVideo: number;
     private created_at: Date;
     public name: string;
 
     public constructor(public readonly id: string) {
         this.created_at = new Date();
         this.leader = null;
-        this.activeVideo = 0;
         this.name = uniqueNamesGenerator(roomNameConfig);
     }
 
@@ -63,19 +62,9 @@ export class Room {
         }));
     }
 
-    public playlistNext() {
-        if (this.activeVideo >= this.playlist.length) {
-            return;
-        }
-        this.activeVideo += 1;
-    }
+    public playlistNext() {}
 
-    public playlistPrevious() {
-        if (this.activeVideo <= 0) {
-            return;
-        }
-        this.activeVideo -= 1;
-    }
+    public playlistPrevious() {}
 
     public get dto(): IRoomDto {
         return {
@@ -83,7 +72,6 @@ export class Room {
             name: this.name,
             leader: this.leader,
             playlist: this.playlist,
-            activeVideo: this.activeVideo,
             messages: this.messages,
             created_at: this.created_at,
             sockets: this.socketsDto,
@@ -119,6 +107,14 @@ export class Room {
         });
     }
 
+    public get activeVideo() {
+        return this.playlist.find(video => video.active);
+    }
+
+    public get activeVideoIndex() {
+        return this.playlist.findIndex(video => video.active);
+    }
+
     public removeFromPlaylist(sender: Socket, id: string) {
         if (!this.isLeader(sender.id)) {
             return sender.ref.emit("room:playlist:error", {
@@ -126,13 +122,34 @@ export class Room {
                 reason: "Unauthorized.",
             });
         }
-        this.playlist = this.playlist.filter(video => video.id !== id);
-        publicNamespace.to(this.id).emit("room:playlist:remove", id);
-        if (this.activeVideo >= this.playlist.length) {
+
+        const activeVideo = this.activeVideo;
+        const activeVideoIndex = this.activeVideoIndex;
+
+        // If video was active, make previous video the new active
+        // Do it before removing current active to not lose it and avoid duplicate variable etc
+        if (activeVideo?.id === id) {
+            // If playlist has multiple item and first was removed, pick the adjacent one
+            // Otherwise pick the previous one if possible
+            if (activeVideoIndex === 0 && this.playlist.length > 1) {
+                this.playlist = this.playlist.map((video, i) => ({
+                    ...video,
+                    active: i === 1,
+                }));
+            } else {
+                this.playlist = this.playlist.map((video, i) => ({
+                    ...video,
+                    active: this.activeVideoIndex === i - 1,
+                }));
+            }
             publicNamespace
                 .to(this.id)
-                .emit("room:playlist:select", this.playlist.length - 1);
+                .emit("room:playlist:select", this.activeVideo?.id);
         }
+
+        this.playlist = this.playlist.filter(video => video.id !== id);
+
+        publicNamespace.to(this.id).emit("room:playlist:remove", id);
         adminNamespace.emit("room:playlist:remove", {
             roomId: this.id,
             videoId: id,
