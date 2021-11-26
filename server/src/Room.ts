@@ -1,5 +1,5 @@
 import { IRoomDto } from "../@types/room";
-import { adminNamespace, io } from "./server";
+import { adminNamespace, publicNamespace } from "./server";
 import { Socket } from "./Socket";
 import { uniqueNamesGenerator } from "unique-names-generator";
 import { roomNameConfig } from "../config/uniqueNamesGenerator";
@@ -19,7 +19,7 @@ export class Room {
     private messages: Message[] = [];
     private playlist: IVideo[] = [];
     private created_at: Date;
-    private name: string;
+    public name: string;
 
     public constructor(public readonly id: string) {
         this.created_at = new Date();
@@ -45,7 +45,7 @@ export class Room {
     private autoSetLeader() {
         this.leader = this.sockets[0]?.id ?? null;
         if (this.sockets.length > 0) {
-            io.to(this.id).emit("room:leader:new", this.leader);
+            publicNamespace.to(this.id).emit("room:leader:new", this.leader);
         }
         adminNamespace.emit("room:leader:new", this.leader);
     }
@@ -84,7 +84,7 @@ export class Room {
             });
         }
         this.playlist.push(video);
-        io.to(this.id).emit("room:playlist:add", video);
+        publicNamespace.to(this.id).emit("room:playlist:add", video);
         adminNamespace.emit("room:playlist:add", {
             roomId: this.id,
             videoId: video.id,
@@ -99,7 +99,7 @@ export class Room {
             });
         }
         this.playlist = this.playlist.filter(video => video.id !== id);
-        io.to(this.id).emit("room:playlist:remove", id);
+        publicNamespace.to(this.id).emit("room:playlist:remove", id);
         adminNamespace.emit("room:playlist:remove", {
             roomId: this.id,
             videoId: id,
@@ -164,13 +164,13 @@ export class Room {
 
     public sendMessage(message: Message) {
         this.addMessage(message);
-        io.to(this.id).emit("message:new", message);
+        publicNamespace.to(this.id).emit("message:new", message);
         adminNamespace.emit("message:new", { roomId: this.id, message });
     }
 
     public sendMessageToAll(message: Message) {
         this.addMessage(message);
-        io.to(this.id).emit("message:new", message);
+        publicNamespace.to(this.id).emit("message:new", message);
         adminNamespace.emit("message:new", { roomId: this.id, message });
     }
 }

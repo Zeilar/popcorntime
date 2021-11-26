@@ -37,7 +37,7 @@ app.get("/*", (req, res) => {
 const server = app.listen(PORT, () => {
     Logger.info(`Running on port ${PORT}`);
 });
-Logger.info("Initalized server");
+Logger.info("Initialized server");
 
 export const io = new Server(server, {
     cors: { origin: "*" }, // TODO: remove cors in production
@@ -45,6 +45,7 @@ export const io = new Server(server, {
 Logger.info("Connected socket.io to server");
 
 export const adminNamespace = io.of("/admin");
+export const publicNamespace = io.of("/public");
 export const ws = new WS();
 
 // Runs once every midnight, destroys all empty rooms to make sure server clears memory
@@ -57,10 +58,12 @@ schedule("0 0 * * *", () => {
     });
 });
 
-io.on("connection", socket => {
+publicNamespace.on("connection", socket => {
     const _socket = new Socket(socket.id);
     ws.addSocket(_socket);
     socket.emit("connection:success", _socket.dto);
+
+    console.log(socket.handshake);
 
     socket.on("socket:update:color", (color: Color) => {
         _socket.setColor(color);
@@ -315,7 +318,7 @@ adminNamespace.on("connection", socket => {
             });
         }
 
-        io.to(_socket.id).emit("room:kick");
+        publicNamespace.to(_socket.id).emit("room:kick");
         room.remove(_socket);
         adminNamespace.emit("room:kick");
     });
@@ -330,7 +333,7 @@ adminNamespace.on("connection", socket => {
             });
         }
 
-        io.to(_socket.id).emit("socket:destroy");
+        publicNamespace.to(_socket.id).emit("socket:destroy");
         socket.emit("socket:disconnect", socketId);
 
         _socket.ref.disconnect();

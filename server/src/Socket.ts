@@ -1,5 +1,5 @@
 import { Socket as S } from "socket.io";
-import { adminNamespace, io, ws } from "./server";
+import { adminNamespace, publicNamespace, ws } from "./server";
 import { Color } from "../@types/color";
 import { ISocketDto } from "../@types/socket";
 import { uniqueNamesGenerator } from "unique-names-generator";
@@ -54,7 +54,7 @@ export class Socket {
         this.color = color;
         this.ref.emit("socket:update:color", color);
         if (this.room) {
-            io.to(this.room.id).emit("room:socket:update:color", {
+            publicNamespace.to(this.room.id).emit("room:socket:update:color", {
                 socketId: this.id,
                 color,
             });
