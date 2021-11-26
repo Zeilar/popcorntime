@@ -71,6 +71,12 @@ export class Room {
     }
 
     public addToPlaylist(sender: Socket, video: IVideo) {
+        if (!this.isLeader(sender.id)) {
+            return sender.ref.emit("room:playlist:error", {
+                message: "Failed adding video to playlist.",
+                reason: "Unauthorized.",
+            });
+        }
         if (this.playlist.length >= Room.MAX_PLAYLIST) {
             return sender.ref.emit("room:playlist:error", {
                 message: "Failed adding video to playlist.",
@@ -85,7 +91,13 @@ export class Room {
         });
     }
 
-    public removeFromPlaylist(id: string) {
+    public removeFromPlaylist(sender: Socket, id: string) {
+        if (!this.isLeader(sender.id)) {
+            return sender.ref.emit("room:playlist:error", {
+                message: "Failed removing video from playlist.",
+                reason: "Unauthorized.",
+            });
+        }
         this.playlist = this.playlist.filter(video => video.id !== id);
         io.to(this.id).emit("room:playlist:remove", id);
         adminNamespace.emit("room:playlist:remove", {

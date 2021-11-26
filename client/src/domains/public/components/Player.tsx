@@ -6,7 +6,7 @@ import { RoomContext } from "../contexts";
 import PlayerControls from "./PlayerControls";
 
 export default function Player() {
-    const { playlist, activeVideo } = useContext(RoomContext);
+    const { playlist, activeVideo, getActiveVideo } = useContext(RoomContext);
     const { publicSocket } = useContext(WebsocketContext);
     const player = useRef<YouTube>(null);
 
@@ -66,7 +66,7 @@ export default function Player() {
                 justifyContent="center"
                 alignItems="center"
             >
-                {!playlist[activeVideo] && (
+                {!getActiveVideo() && (
                     <Flex
                         h="100%"
                         color="textMuted"
@@ -79,7 +79,12 @@ export default function Player() {
                         top={0}
                         left={0}
                     >
-                        <Text as="h1" p="1rem" userSelect="none">
+                        <Text
+                            as="h1"
+                            p="1rem"
+                            userSelect="none"
+                            textAlign="center"
+                        >
                             No video selected
                         </Text>
                     </Flex>

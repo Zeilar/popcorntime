@@ -184,12 +184,6 @@ io.on("connection", socket => {
                     reason: "That room does not exist.",
                 });
             }
-            if (!room.isLeader(_socket.id)) {
-                return socket.emit("error", {
-                    message: "Failed adding video to playlist.",
-                    reason: "You are not the room leader.",
-                });
-            }
             room.addToPlaylist(_socket, payload.video);
         }
     );
@@ -204,7 +198,7 @@ io.on("connection", socket => {
                     reason: "That room does not exist.",
                 });
             }
-            room.removeFromPlaylist(payload.videoId);
+            room.removeFromPlaylist(_socket, payload.videoId);
         }
     );
 
