@@ -13,7 +13,7 @@ export class Socket {
     public created_at: Date;
 
     constructor(public readonly id: string) {
-        const socket = ws.io.sockets.sockets.get(id);
+        const socket = publicNamespace.sockets.get(id);
         if (!socket) {
             throw new Error(`Failed retrieving socket ref with id ${id}`);
         }

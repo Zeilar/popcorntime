@@ -63,8 +63,6 @@ publicNamespace.on("connection", socket => {
     ws.addSocket(_socket);
     socket.emit("connection:success", _socket.dto);
 
-    console.log(socket.handshake);
-
     socket.on("socket:update:color", (color: Color) => {
         _socket.setColor(color);
         const room = _socket.room;

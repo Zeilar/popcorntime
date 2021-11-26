@@ -12,6 +12,8 @@ interface IProps {
 
 const publicSocket = io(`${WS_HOST}/public`, { reconnection: false });
 
+console.log(`${WS_HOST}/public`);
+
 export const WebsocketContext = createContext({} as IContext);
 
 export function WebsocketContextProvider({ children }: IProps) {
