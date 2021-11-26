@@ -35,9 +35,6 @@ export default function Playlist() {
 
     useEffect(() => {
         publicSocket.on("room:playlist:select", (index: number) => {
-            if (!playlist[index]) {
-                return;
-            }
             dispatchActiveVideo({
                 type: PLAYLIST_ACTIVE_SET,
                 index,

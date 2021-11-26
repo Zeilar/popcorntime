@@ -52,6 +52,18 @@ export class Room {
         adminNamespace.emit("room:leader:new", this.leader);
     }
 
+    // Validate to make sure active video is never out of bounds of the playlist
+    public playlistSelect(index: number) {
+        if (typeof index !== "number") {
+            return;
+        } else if (index >= this.playlist.length) {
+            return;
+        } else if (index < 0) {
+            return;
+        }
+        this.activeVideo = index;
+    }
+
     public playlistNext() {
         if (this.activeVideo >= this.playlist.length) {
             return;
