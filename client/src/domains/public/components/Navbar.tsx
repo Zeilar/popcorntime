@@ -9,6 +9,7 @@ export default function Navbar() {
             boxShadow="elevate.bottom"
             bgColor="gray.800"
             zIndex={1000}
+            p="1rem"
         >
             <Link to="/">
                 <BrandLogo />
