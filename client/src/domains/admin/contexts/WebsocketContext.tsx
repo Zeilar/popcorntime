@@ -1,5 +1,5 @@
 import { WS_HOST } from "domains/common/config/host";
-import { createContext, ReactNode } from "react";
+import { createContext, ReactNode, useRef } from "react";
 import { Socket, io } from "socket.io-client";
 
 interface IContext {
@@ -11,11 +11,13 @@ interface IProps {
     children: ReactNode;
 }
 
-const adminSocket = io(`${WS_HOST}/admin`, { reconnection: false });
-
 export const WebsocketContext = createContext({} as IContext);
 
 export function WebsocketContextProvider({ children }: IProps) {
+    const adminSocket = useRef(
+        io(`${WS_HOST}/admin`, { reconnection: false })
+    ).current;
+
     function adminLogin(password: string) {
         adminSocket.auth = {};
         adminSocket.auth.token = password;
