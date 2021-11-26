@@ -1,7 +1,6 @@
 import { Box, Flex, Text } from "@chakra-ui/layout";
 import env from "config/env";
 import Button from "domains/common/components/styles/button";
-import { useOnClickOutside } from "domains/common/hooks";
 import { RoomContext } from "domains/public/contexts";
 import React, { useContext } from "react";
 
@@ -33,7 +32,6 @@ function RoomDetail({ label, children }: IRoomDetailProps) {
 
 export default function RoomInfo({ onClose }: IRoomInfoProps) {
     const { sockets, room, getLeader } = useContext(RoomContext);
-    const wrapper = useOnClickOutside<HTMLDivElement>(onClose);
     const leader = getLeader();
     const isFull = sockets.length >= env.ROOM_MAX_SOCKETS;
     return (
@@ -44,7 +42,6 @@ export default function RoomInfo({ onClose }: IRoomInfoProps) {
             h="100%"
             w="100%"
             flexDir="column"
-            ref={wrapper}
             bgColor="gray.600"
             zIndex={100}
         >
