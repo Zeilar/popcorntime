@@ -141,7 +141,7 @@ export class Room {
             // If playlist has multiple items and first was removed, pick the next one
             // Otherwise pick the previous one
             if (activeVideoIndex === 0) {
-                // Loop instead of writing to this.playlist[0] to make sure only one video has active
+                // Loop instead of write to this.playlist[0] to make sure only one video has active
                 this.playlist = this.playlist.map((video, i) => ({
                     ...video,
                     active: i === 0, // it can only ever be playlist[0] here

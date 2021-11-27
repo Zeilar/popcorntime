@@ -125,9 +125,6 @@ export function Room() {
         publicSocket.on("connect", () => {
             publicSocket.emit("room:join", roomId);
         });
-        return () => {
-            publicSocket.off("connect");
-        };
     }, [publicSocket, roomId]);
 
     // TODO: have some button that shows room info (status, room id, sockets etc)
