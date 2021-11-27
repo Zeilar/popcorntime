@@ -40,7 +40,7 @@
         "start": "react-scripts start",
         "build": "react-scripts build",
         "test": "react-scripts test",
-        "gen:chakra-typings": "chakra-cli tokens src/common/theme/index.ts"
+        "gen:chakra-typings": "chakra-cli tokens src/domains/common/theme/index.ts"
     },
     "eslintConfig": {
         "extends": [
