@@ -37,16 +37,23 @@ export function MeContextProvider({ children }: IProps) {
     );
 
     useEffect(() => {
-        publicSocket.once("connection:success", (socket: ISocket) => {
-            setMe(socket);
-        });
         publicSocket.on("socket:update:color", (color: Color) => {
             changeColor(color);
         });
         return () => {
-            publicSocket.off("socket:update:color").off("connection:success");
+            publicSocket.off("socket:update:color");
         };
     }, [publicSocket, changeColor]);
+
+    useEffect(() => {
+        publicSocket.once("connection:success", (socket: ISocket) => {
+            setMe(socket);
+        });
+
+        return () => {
+            publicSocket.off("connection:success");
+        };
+    }, [publicSocket]);
 
     const values: IContext = {
         me,
