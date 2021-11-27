@@ -56,7 +56,6 @@ export default function Player() {
             <Flex
                 flexGrow={1}
                 sx={{ ".youtube": { flexGrow: 1, height: "100%" } }}
-                boxShadow="elevate.bottom"
                 bgColor="gray.900"
                 pos="relative"
                 justifyContent="center"

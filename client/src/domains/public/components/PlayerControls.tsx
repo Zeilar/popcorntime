@@ -88,7 +88,14 @@ export default function PlayerControls({ player }: IProps) {
     }, [player, isRoomLeader, publicSocket, activeVideo, roomId]);
 
     return (
-        <Flex justify="center" align="center" py="1rem" gridGap="0.5rem">
+        <Flex
+            justify="center"
+            align="center"
+            py="1rem"
+            gridGap="0.5rem"
+            boxShadow="elevate.top"
+            zIndex={10}
+        >
             <Button.Icon
                 tooltip="Skip backward 15 seconds"
                 mdi="mdiSkipBackward"
