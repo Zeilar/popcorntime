@@ -136,7 +136,6 @@ export class Room {
         });
 
         // If video was active and there are more videos, make another video the new active
-        // Do it before removing current active to not lose it and avoid duplicate variable etc
         if (activeVideo?.id === id && this.playlist.length > 0) {
             // If playlist has multiple items and first was removed, pick the next one
             // Otherwise pick the previous one
