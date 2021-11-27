@@ -49,7 +49,6 @@ export function MeContextProvider({ children }: IProps) {
         publicSocket.once("connection:success", (socket: ISocket) => {
             setMe(socket);
         });
-
         return () => {
             publicSocket.off("connection:success");
         };
