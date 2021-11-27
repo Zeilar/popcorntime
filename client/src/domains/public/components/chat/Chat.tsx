@@ -71,7 +71,7 @@ export function Chat() {
             }
         );
 
-        publicSocket.once("room:join", (payload: { messages: IMessage[] }) => {
+        publicSocket.on("room:join", (payload: { messages: IMessage[] }) => {
             setMessages(payload.messages);
         });
 

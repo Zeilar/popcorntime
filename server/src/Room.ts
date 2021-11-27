@@ -62,10 +62,6 @@ export class Room {
         }));
     }
 
-    public playlistNext() {}
-
-    public playlistPrevious() {}
-
     public get dto(): IRoomDto {
         return {
             id: this.id,

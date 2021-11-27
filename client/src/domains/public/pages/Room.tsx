@@ -24,8 +24,7 @@ export function Room() {
         useContext(RoomContext);
 
     useEffect(() => {
-        publicSocket.emit("room:join", roomId);
-        publicSocket.once("room:join", (payload: IRoom) => {
+        publicSocket.on("room:join", (payload: IRoom) => {
             dispatchSockets({
                 type: Actions.SET_SOCKETS,
                 sockets: payload.sockets,
@@ -118,6 +117,18 @@ export function Room() {
                 .off("socket:kick");
         };
     }, [publicSocket]);
+
+    useEffect(() => {
+        if (publicSocket.connected) {
+            publicSocket.emit("room:join", roomId);
+        }
+        publicSocket.on("connect", () => {
+            publicSocket.emit("room:join", roomId);
+        });
+        return () => {
+            publicSocket.off("connect");
+        };
+    }, [publicSocket, roomId]);
 
     // TODO: have some button that shows room info (status, room id, sockets etc)
 
