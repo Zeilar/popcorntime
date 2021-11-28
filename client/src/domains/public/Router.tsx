@@ -12,6 +12,8 @@ import PageSpinner from "domains/common/components/styles/PageSpinner";
 import MdiIcon from "domains/common/components/MdiIcon";
 import { Flex } from "@chakra-ui/layout";
 import { AnimatePresence } from "framer-motion";
+import Navbar from "./components/Navbar";
+import Footer from "domains/common/components/Footer";
 
 export default function Router() {
     const { publicSocket } = useContext(WebsocketContext);
@@ -58,7 +60,7 @@ export default function Router() {
     }, [publicSocket]);
 
     return (
-        <>
+        <Flex flexDir="column" flexGrow={1}>
             <AnimatePresence>{isLoading && <PageSpinner />}</AnimatePresence>
             <Modal
                 isOpen={Boolean(error)}
@@ -89,6 +91,7 @@ export default function Router() {
                     </Modal.Body>
                 </Modal.Content>
             </Modal>
+            <Navbar />
             <Switch>
                 <Route path="/room/new" exact>
                     <Pages.CreateRoom />
@@ -103,6 +106,7 @@ export default function Router() {
                 </Route>
                 <Route>404</Route>
             </Switch>
-        </>
+            <Footer />
+        </Flex>
     );
 }

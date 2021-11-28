@@ -13,7 +13,6 @@ import { RoomContext } from "../contexts";
 import * as Actions from "../state/actions/room";
 import Player from "../components/Player";
 import { IRoomParams } from "../@types/params";
-import Navbar from "../components/Navbar";
 import { IRoom } from "domains/common/@types/room";
 
 export function Room() {
@@ -139,13 +138,10 @@ export function Room() {
     }
 
     return (
-        <Flex flexDir="column" w="100%">
-            <Navbar />
-            <Flex flexGrow={1} maxH="100%" overflow="hidden">
-                <Playlist />
-                <Player />
-                <Chat />
-            </Flex>
+        <Flex flexGrow={1} maxH="100%" overflow="hidden">
+            <Playlist />
+            <Player />
+            <Chat />
         </Flex>
     );
 }
