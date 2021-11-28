@@ -38,6 +38,7 @@ export function Room() {
                 name: payload.name,
                 created_at: payload.created_at,
                 leader: payload.leader,
+                privacy: payload.privacy,
             });
         });
         return () => {

@@ -63,5 +63,18 @@ export const styles = {
                 boxShadow: "none !important",
             },
         },
+        ".ripple": {
+            position: "absolute",
+            borderRadius: "50%",
+            transform: "scale(0)",
+            animation: "ripple 600ms linear",
+            backgroundColor: "rgba(255, 255, 255, 0.7)",
+            "@keyframes ripple": {
+                to: {
+                    transform: "scale(4)",
+                    opacity: 0,
+                },
+            },
+        },
     },
 };

@@ -19,7 +19,7 @@ const clientPath = join(__dirname, "../../client");
 const { PORT, ADMIN_PASSWORD } = env;
 
 export const app = express();
-Logger.info("Initialized Express");
+Logger.debug("Initialized Express");
 
 // Global middlewares
 app.use(
@@ -37,12 +37,12 @@ app.get("/*", (req, res) => {
 const server = app.listen(PORT, () => {
     Logger.info(`Running on port ${PORT}`);
 });
-Logger.info("Initialized server");
+Logger.debug("Initialized server");
 
 export const io = new Server(server, {
     cors: { origin: "*" }, // TODO: remove cors in production
 });
-Logger.info("Connected socket.io to server");
+Logger.debug("Connected socket.io to server");
 
 export const adminNamespace = io.of("/admin");
 export const publicNamespace = io.of("/public");
@@ -299,13 +299,13 @@ publicNamespace.on("connection", socket => {
 adminNamespace.use((socket, next) => {
     const { address } = socket.handshake;
     if (socket.handshake.auth.token === undefined) {
-        Logger.warn(`${address} connected to admin login.`);
+        Logger.info(`${address} connected to admin login.`);
         return next(new Error("Please log in first."));
     } else if (socket.handshake.auth.token !== ADMIN_PASSWORD) {
-        Logger.warn(`${address} tried logging in with incorrect password.`);
+        Logger.warn(`${address} attempted to login as admin.`);
         return next(new Error("Incorrect token."));
     }
-    Logger.warn(`${address} logged in as admin.`);
+    Logger.info(`${address} logged in as admin.`);
     next();
 });
 

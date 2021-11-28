@@ -1,8 +1,13 @@
 export const colors = {
     brand: {
-        default: "#9c162c",
+        default: "#a33346",
         light: "#da455e",
-        dark: "#7d1123",
+        dark: "#7a2634",
+    },
+    secondary: {
+        default: "#2064f5",
+        light: "#19abff",
+        dark: "#242f46",
     },
     gray: {
         "900": "#141414",

@@ -46,6 +46,12 @@ const warningLogger = createLogger({
     transports: customTransports("warn"),
 });
 
+const debugLogger = createLogger({
+    level: "debug",
+    format: customFormat,
+    transports: customTransports("debug"),
+});
+
 export default class Logger {
     public static info(message: string) {
         infoLogger.info(message);
@@ -57,5 +63,9 @@ export default class Logger {
 
     public static error(message: string) {
         errorLogger.error(message);
+    }
+
+    public static debug(message: string) {
+        debugLogger.debug(message);
     }
 }
