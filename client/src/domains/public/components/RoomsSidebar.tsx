@@ -26,7 +26,7 @@ export default function RoomsSidebar() {
     }, [publicSocket]);
 
     return (
-        <Flex boxShadow="elevate.right" h="100%">
+        <Flex boxShadow="elevate.right" h="100%" zIndex={100}>
             Sidebar
         </Flex>
     );
