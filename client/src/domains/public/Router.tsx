@@ -113,9 +113,6 @@ export default function Router() {
             <Flex flexGrow={1} overflow="hidden">
                 <RoomsSidebar />
                 <Switch>
-                    <Route path="/room/new" exact>
-                        <Pages.CreateRoom />
-                    </Route>
                     <Route path="/" exact>
                         <Pages.Home />
                     </Route>
