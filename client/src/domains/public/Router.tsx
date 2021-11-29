@@ -1,4 +1,4 @@
-import { Route, Switch } from "react-router";
+import { Route, Switch, useHistory } from "react-router";
 import { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import * as Pages from "./pages";
@@ -15,11 +15,13 @@ import { AnimatePresence } from "framer-motion";
 import Navbar from "./components/Navbar";
 import Footer from "domains/common/components/Footer";
 import RoomsSidebar from "./components/RoomsSidebar";
+import { validate } from "uuid";
 
 export default function Router() {
     const { publicSocket } = useContext(WebsocketContext);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const { push } = useHistory();
     const prompt = useDisclosure();
 
     function reconnect() {
@@ -59,6 +61,21 @@ export default function Router() {
                 .off("connect");
         };
     }, [publicSocket]);
+
+    useEffect(() => {
+        publicSocket.on(
+            "room:create",
+            (payload: { roomId: string; videoId?: string }) => {
+                if (!validate(payload.roomId)) {
+                    return toast.error("Invalid room id.");
+                }
+                push(`/room/${payload.roomId}`);
+            }
+        );
+        return () => {
+            publicSocket.off("room:create");
+        };
+    }, [publicSocket, push]);
 
     return (
         <Flex flexDir="column" flexGrow={1} bgColor="gray.900">
@@ -101,6 +118,9 @@ export default function Router() {
                     </Route>
                     <Route path="/" exact>
                         <Pages.Home />
+                    </Route>
+                    <Route path="/watch" exact>
+                        <Pages.Watch />
                     </Route>
                     <Route path="/room/:roomId" exact>
                         <RoomContextProvider>

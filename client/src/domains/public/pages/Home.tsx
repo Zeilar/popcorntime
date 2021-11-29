@@ -9,9 +9,7 @@ import Button from "domains/common/components/styles/button";
 import ContainerSpinner from "domains/common/components/ContainerSpinner";
 import { AnimatePresence } from "framer-motion";
 import { WebsocketContext } from "../contexts";
-import { useHistory, useLocation } from "react-router";
 import { toast } from "react-toastify";
-import { validate } from "uuid";
 
 export function Home() {
     const [submitting, setSubmitting] = useState(false);
@@ -20,8 +18,6 @@ export function Home() {
         uniqueNamesGenerator(roomNameConfig)
     );
     const { publicSocket } = useContext(WebsocketContext);
-    const { push } = useHistory();
-    const { search } = useLocation();
 
     function generateRoomName() {
         setRoomName(uniqueNamesGenerator(roomNameConfig));
@@ -38,36 +34,6 @@ export function Home() {
             name: roomName,
         });
     }
-
-    useEffect(() => {
-        if (!publicSocket.connected) {
-            return;
-        }
-        const videoId = new URLSearchParams(search).get("v");
-        if (videoId) {
-            publicSocket.emit("room:create", {
-                privacy: "public",
-                name: uniqueNamesGenerator(roomNameConfig),
-                videoId,
-            });
-            setSubmitting(true);
-        }
-    }, [search, publicSocket, publicSocket.connected]);
-
-    useEffect(() => {
-        publicSocket.on(
-            "room:create",
-            (payload: { roomId: string; videoId?: string | null }) => {
-                if (!validate(payload.roomId)) {
-                    return toast.error("Invalid room id.");
-                }
-                push(`/room/${payload.roomId}`);
-            }
-        );
-        return () => {
-            publicSocket.off("room:create");
-        };
-    }, [publicSocket, push]);
 
     useEffect(() => {
         publicSocket.on("disconnect", () => {
