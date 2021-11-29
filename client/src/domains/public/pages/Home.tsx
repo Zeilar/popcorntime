@@ -26,7 +26,7 @@ export function Home() {
         >
             <Flex
                 flexDir="column"
-                bgColor="gray.700"
+                bgColor="gray.900"
                 rounded="base"
                 boxShadow="elevate.all"
                 alignItems="flex-start"
@@ -36,7 +36,9 @@ export function Home() {
                     Create room
                 </Text>
                 <Flex flexDir="column" mb="1rem">
-                    <Text mb="0.25rem">Name</Text>
+                    <Text fontWeight={600} mb="0.25rem">
+                        Name
+                    </Text>
                     <Flex>
                         <Input
                             placeholder="Fail compilations"
@@ -50,7 +52,9 @@ export function Home() {
                     </Flex>
                 </Flex>
                 <Flex flexDir="column" w="100%">
-                    <Text mb="0.25rem">Privacy</Text>
+                    <Text fontWeight={600} mb="0.25rem">
+                        Privacy
+                    </Text>
                     <Select
                         defaultValue={roomPrivacy}
                         onChange={e =>

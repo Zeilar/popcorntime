@@ -1,3 +1,5 @@
+import { colors } from "./colors";
+
 export const styles = {
     global: {
         "::selection": {
@@ -63,17 +65,9 @@ export const styles = {
                 boxShadow: "none !important",
             },
         },
-        ".ripple": {
-            position: "absolute",
-            borderRadius: "50%",
-            transform: "scale(0)",
-            animation: "ripple 600ms linear",
-            backgroundColor: "rgba(255, 255, 255, 0.7)",
-            "@keyframes ripple": {
-                to: {
-                    transform: "scale(4)",
-                    opacity: 0,
-                },
+        "select.chakra-select, input.chakra-input": {
+            "&:focus, &[data-focus]": {
+                boxShadow: `0 0 0 1px ${colors.secondary.light}`,
             },
         },
     },
