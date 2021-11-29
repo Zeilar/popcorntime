@@ -41,6 +41,12 @@ const envConfig = convict({
         default: 20,
         env: "ROOM_MAX_PLAYLIST",
     },
+    MAX_ROOMS: {
+        doc: "Max amount of rooms the app can be open at once.",
+        nullable: true,
+        default: 20,
+        env: "MAX_ROOMS",
+    },
 });
 
 envConfig.loadFile(join(__dirname, `./${envConfig.get("NODE_ENV")}.env.json`));

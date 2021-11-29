@@ -11,6 +11,7 @@ import { AnimatePresence } from "framer-motion";
 import { WebsocketContext } from "../contexts";
 import { useHistory } from "react-router";
 import { toast } from "react-toastify";
+import { validate } from "uuid";
 
 export function Home() {
     const [submitting, setSubmitting] = useState(false);
@@ -39,12 +40,24 @@ export function Home() {
 
     useEffect(() => {
         publicSocket.on("room:create", (id: string) => {
+            if (!validate(id)) {
+                return toast.error("Invalid room id.");
+            }
             push(`/room/${id}`);
         });
         return () => {
             publicSocket.off("room:create");
         };
     }, [publicSocket, push]);
+
+    useEffect(() => {
+        publicSocket.on("disconnect", () => {
+            setSubmitting(false);
+        });
+        return () => {
+            publicSocket.off("disconnect");
+        };
+    }, [publicSocket]);
 
     return (
         <Flex
