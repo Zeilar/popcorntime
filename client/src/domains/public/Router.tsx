@@ -14,6 +14,7 @@ import { Flex } from "@chakra-ui/layout";
 import { AnimatePresence } from "framer-motion";
 import Navbar from "./components/Navbar";
 import Footer from "domains/common/components/Footer";
+import RoomsSidebar from "./components/RoomsSidebar";
 
 export default function Router() {
     const { publicSocket } = useContext(WebsocketContext);
@@ -92,20 +93,23 @@ export default function Router() {
                 </Modal.Content>
             </Modal>
             <Navbar />
-            <Switch>
-                <Route path="/room/new" exact>
-                    <Pages.CreateRoom />
-                </Route>
-                <Route path="/" exact>
-                    <Pages.Home />
-                </Route>
-                <Route path="/room/:roomId" exact>
-                    <RoomContextProvider>
-                        <Pages.Room />
-                    </RoomContextProvider>
-                </Route>
-                <Route>404</Route>
-            </Switch>
+            <Flex flexGrow={1}>
+                <RoomsSidebar />
+                <Switch>
+                    <Route path="/room/new" exact>
+                        <Pages.CreateRoom />
+                    </Route>
+                    <Route path="/" exact>
+                        <Pages.Home />
+                    </Route>
+                    <Route path="/room/:roomId" exact>
+                        <RoomContextProvider>
+                            <Pages.Room />
+                        </RoomContextProvider>
+                    </Route>
+                    <Route>404</Route>
+                </Switch>
+            </Flex>
             <Footer />
         </Flex>
     );

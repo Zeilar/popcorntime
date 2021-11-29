@@ -137,6 +137,9 @@ publicNamespace.on("connection", socket => {
             socket.emit("room:create", room.id);
             ws.addRoom(room);
             room.add(_socket);
+            if (room.privacy === "public") {
+                publicNamespace.emit("rooms:new", room.dto);
+            }
         }
     );
 
@@ -172,6 +175,10 @@ publicNamespace.on("connection", socket => {
         }
 
         room.add(_socket);
+    });
+
+    socket.on("rooms:get", () => {
+        socket.emit("rooms:get", ws.roomsDto);
     });
 
     socket.on(
