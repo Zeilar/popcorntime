@@ -12,7 +12,6 @@ import { Socket } from "./Socket";
 import { WS } from "./WS";
 import { Color } from "../@types/color";
 import Message from "./Message";
-import { IVideo } from "../@types/video";
 import { schedule } from "node-cron";
 import { RoomPrivacy } from "../@types/room";
 
@@ -126,20 +125,24 @@ publicNamespace.on("connection", socket => {
 
     socket.on(
         "room:create",
-        (payload: { name: string; privacy: RoomPrivacy }) => {
+        (payload: { name: string; privacy: RoomPrivacy; videoId?: string }) => {
             if ([...ws.rooms].length > env.MAX_ROOMS) {
                 return socket.emit("error", {
                     message: "Failed creating room.",
                     reason: "There are too many rooms already, please try again later.",
                 });
             }
-            const room = new Room(payload.name, payload.privacy);
-            socket.emit("room:create", room.id);
+            const room = new Room(
+                payload.name,
+                payload.privacy,
+                payload.videoId
+            );
+            socket.emit("room:create", {
+                roomId: room.id,
+                videoId: room.videoId,
+            });
             ws.addRoom(room);
             room.add(_socket);
-            if (room.privacy === "public") {
-                publicNamespace.emit("rooms:new", room.dto);
-            }
         }
     );
 
@@ -177,54 +180,25 @@ publicNamespace.on("connection", socket => {
         room.add(_socket);
     });
 
+    socket.on(
+        "room:video:change",
+        (payload: { roomId: string; video: string }) => {
+            const room = ws.rooms.get(payload.roomId);
+
+            if (!room) {
+                return socket.emit("error", {
+                    message: "Failed changing video.",
+                    reason: "You must be in a room to do that.",
+                });
+            }
+
+            room.changeVideo(_socket, payload.video);
+        }
+    );
+
     socket.on("rooms:get", () => {
         socket.emit("rooms:get", ws.roomsDto);
     });
-
-    socket.on(
-        "room:playlist:select",
-        (payload: { roomId: string; id: string }) => {
-            const room = ws.rooms.get(payload.roomId);
-            if (!room) {
-                return socket.emit("error", {
-                    message: "Failed changing active playlist video.",
-                    reason: "That room does not exist.",
-                });
-            }
-            room.playlistSelect(payload.id);
-            publicNamespace
-                .to(room.id)
-                .emit("room:playlist:select", payload.id);
-        }
-    );
-
-    socket.on(
-        "room:playlist:add",
-        (payload: { roomId: string; video: IVideo }) => {
-            const room = ws.rooms.get(payload.roomId);
-            if (!room) {
-                return socket.emit("error", {
-                    message: "Failed adding video to playlist.",
-                    reason: "That room does not exist.",
-                });
-            }
-            room.addToPlaylist(_socket, payload.video);
-        }
-    );
-
-    socket.on(
-        "room:playlist:remove",
-        (payload: { roomId: string; videoId: string }) => {
-            const room = ws.rooms.get(payload.roomId);
-            if (!room) {
-                return socket.emit("error", {
-                    message: "Failed removing video to playlist.",
-                    reason: "That room does not exist.",
-                });
-            }
-            room.removeFromPlaylist(_socket, payload.videoId);
-        }
-    );
 
     socket.on("video:skip:forward", () => {
         const room = _socket.room;

@@ -12,14 +12,14 @@ interface IProps {
 
 export default function PlayerControls({ player }: IProps) {
     const [playerState, setPlayerState] = useState(-1);
-    const { isLeader, activeVideo } = useContext(RoomContext);
+    const { isLeader, room } = useContext(RoomContext);
     const { me } = useContext(MeContext);
     const { publicSocket } = useContext(WebsocketContext);
     const { roomId } = useParams<IRoomParams>();
 
     const isRoomLeader = isLeader(me?.id);
 
-    const canControl = isRoomLeader && player !== undefined && activeVideo;
+    const canControl = isRoomLeader && player !== undefined && room?.videoId;
 
     async function sync() {
         if (!canControl) {
@@ -72,7 +72,7 @@ export default function PlayerControls({ player }: IProps) {
         return () => {
             player.removeEventListener("onStateChange", onStateChange);
         };
-    }, [player, isRoomLeader, publicSocket, activeVideo, roomId]);
+    }, [player, isRoomLeader, publicSocket, room?.videoId, roomId]);
 
     return (
         <Flex

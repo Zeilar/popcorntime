@@ -13,8 +13,7 @@ interface IContext {
     setRoom: React.Dispatch<React.SetStateAction<IRoomDetails>>;
     getLeader(): ISocket | undefined;
     isLeader(socketId: string | null | undefined): boolean | undefined;
-    activeVideo: string | undefined;
-    setActiveVideo: React.Dispatch<React.SetStateAction<string | undefined>>;
+    changeVideo(videoId: string): void;
 }
 
 interface IProps {
@@ -30,7 +29,10 @@ export function RoomContextProvider({ children }: IProps) {
     );
     const [sockets, dispatchSockets] = useReducer(socketsReducer, []);
     const [room, setRoom] = useState<IRoomDetails>({} as IRoomDetails);
-    const [activeVideo, setActiveVideo] = useState<string>();
+
+    function changeVideo(videoId: string) {
+        setRoom(room => ({ ...room, videoId }));
+    }
 
     function getLeader() {
         return sockets.find(socket => socket.id === room?.leader);
@@ -53,8 +55,7 @@ export function RoomContextProvider({ children }: IProps) {
         setRoom,
         getLeader,
         isLeader,
-        activeVideo,
-        setActiveVideo,
+        changeVideo,
     };
 
     return (

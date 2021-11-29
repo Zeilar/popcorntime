@@ -8,10 +8,10 @@ export interface IRoomDetails {
     created_at: Date;
     leader: string | null;
     privacy: RoomPrivacy;
+    videoId?: string;
 }
 
 export interface IRoom extends IRoomDetails {
     sockets: string[];
     messages: IMessage[];
-    playlist: string[];
 }

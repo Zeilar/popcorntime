@@ -3,7 +3,6 @@ import { adminNamespace, publicNamespace } from "./server";
 import { Socket } from "./Socket";
 import Message from "./Message";
 import env from "../config/env";
-import { IVideo } from "../@types/video";
 import { v4 as uuidv4 } from "uuid";
 
 const { ROOM_MAX_SOCKETS, ROOM_MAX_MESSAGES, ROOM_MAX_PLAYLIST } = env;
@@ -16,17 +15,27 @@ export class Room {
     private leader: string | null;
     private sockets: Socket[] = [];
     private messages: Message[] = [];
-    private playlist: IVideo[] = [];
     private created_at: Date;
     public id: string;
 
     public constructor(
         public readonly name: string,
-        public readonly privacy: RoomPrivacy
+        public readonly privacy: RoomPrivacy,
+        public videoId?: string
     ) {
         this.id = uuidv4();
         this.created_at = new Date();
         this.leader = null;
+    }
+
+    public changeVideo(socket: Socket, id: string) {
+        if (!this.isLeader(socket.id)) {
+            return socket.ref.emit("error", {
+                message: "Failed changing video.",
+                reason: "You must be the room leader to do that.",
+            });
+        }
+        this.videoId = id;
     }
 
     public addMessage(message: Message) {
@@ -52,23 +61,12 @@ export class Room {
         adminNamespace.emit("room:leader:new", this.leader);
     }
 
-    // Validate to make sure active video is never out of bounds of the playlist
-    public playlistSelect(id: string) {
-        if (!this.playlist.some(video => video.id === id)) {
-            return;
-        }
-        this.playlist = this.playlist.map(video => ({
-            ...video,
-            active: video.id === id,
-        }));
-    }
-
     public get dto(): IRoomDto {
         return {
             id: this.id,
             name: this.name,
             leader: this.leader,
-            playlist: this.playlist,
+            videoId: this.videoId,
             messages: this.messages,
             created_at: this.created_at,
             privacy: this.privacy,
@@ -82,81 +80,6 @@ export class Room {
 
     public isLeader(socketId: string) {
         return this.leader === socketId;
-    }
-
-    public addToPlaylist(sender: Socket, video: IVideo) {
-        if (!this.isLeader(sender.id)) {
-            return sender.ref.emit("room:playlist:error", {
-                message: "Failed adding video to playlist.",
-                reason: "Unauthorized.",
-            });
-        }
-        if (this.playlist.length >= Room.MAX_PLAYLIST) {
-            return sender.ref.emit("room:playlist:error", {
-                message: "Failed adding video to playlist.",
-                reason: "Playlist is full.",
-            });
-        }
-        this.playlist.push(video);
-        publicNamespace.to(this.id).emit("room:playlist:add", video);
-        if (this.playlist.length > 0) {
-            publicNamespace
-                .to(this.id)
-                .emit("room:playlist:select", this.playlist[0].id);
-        }
-        adminNamespace.emit("room:playlist:add", {
-            roomId: this.id,
-            videoId: video.id,
-        });
-    }
-
-    public get activeVideo() {
-        return this.playlist.find(video => video.active);
-    }
-
-    public get activeVideoIndex() {
-        return this.playlist.findIndex(video => video.active);
-    }
-
-    public removeFromPlaylist(sender: Socket, id: string) {
-        if (!this.isLeader(sender.id)) {
-            return sender.ref.emit("room:playlist:error", {
-                message: "Failed removing video from playlist.",
-                reason: "Unauthorized.",
-            });
-        }
-
-        const activeVideo = { ...this.activeVideo };
-        const activeVideoIndex = this.activeVideoIndex;
-
-        this.playlist = this.playlist.filter(video => video.id !== id);
-
-        publicNamespace.to(this.id).emit("room:playlist:remove", id);
-        adminNamespace.emit("room:playlist:remove", {
-            roomId: this.id,
-            videoId: id,
-        });
-
-        // If video was active and there are more videos, make another video the new active
-        if (activeVideo?.id === id && this.playlist.length > 0) {
-            // If playlist has multiple items and first was removed, pick the next one
-            // Otherwise pick the previous one
-            if (activeVideoIndex === 0) {
-                // Loop instead of write to this.playlist[0] to make sure only one video has active
-                this.playlist = this.playlist.map((video, i) => ({
-                    ...video,
-                    active: i === 0, // it can only ever be playlist[0] here
-                }));
-            } else {
-                this.playlist = this.playlist.map((video, i) => ({
-                    ...video,
-                    active: i === activeVideoIndex - 1,
-                }));
-            }
-            publicNamespace
-                .to(this.id)
-                .emit("room:playlist:select", this.activeVideo?.id);
-        }
     }
 
     public hasSocket(socket: Socket) {
@@ -173,7 +96,6 @@ export class Room {
         }
         socket.ref.join(this.id);
         socket.ref.emit("room:join", this.dto);
-        console.log("emitted room:join, id", this.id);
         socket.ref.to(this.id).emit("room:socket:join", socket.dto);
         this.sendMessageToAll(
             this.serverMessage({

@@ -22,9 +22,7 @@ export function Room() {
     const { me } = useContext(MeContext);
 
     useEffect(() => {
-        console.log("register room:join listener", publicSocket.connected);
         publicSocket.on("room:join", (payload: IRoom) => {
-            console.log("joined room", payload);
             dispatchSockets({
                 type: Actions.SET_SOCKETS,
                 sockets: payload.sockets,
@@ -35,12 +33,13 @@ export function Room() {
                 created_at: payload.created_at,
                 leader: payload.leader,
                 privacy: payload.privacy,
+                videoId: payload.videoId,
             });
         });
         return () => {
             publicSocket.off("room:join");
         };
-    });
+    }, [publicSocket, dispatchSockets, setRoom]);
 
     useEffect(() => {
         publicSocket.on("room:socket:join", (socket: ISocket) => {
@@ -111,23 +110,18 @@ export function Room() {
             toast.info("You were kicked from the server.");
         });
         return () => {
-            publicSocket.emit("room:leave").off("socket:kick");
+            publicSocket.off("socket:kick");
         };
     }, [publicSocket]);
 
     useEffect(() => {
-        if (publicSocket.connected) {
-            console.log(
-                "you are connected, join",
-                roomId,
-                "has event yet?",
-                publicSocket.hasListeners("room:join")
-            );
-            publicSocket.emit("room:join", roomId);
-        }
+        publicSocket.emit("room:join", roomId);
         publicSocket.on("connect", () => {
             publicSocket.emit("room:join", roomId);
         });
+        return () => {
+            publicSocket.emit("room:leave", roomId);
+        };
     }, [publicSocket, roomId]);
 
     if (!validate(roomId)) {

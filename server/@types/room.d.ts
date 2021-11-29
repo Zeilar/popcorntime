@@ -9,7 +9,7 @@ export interface IRoomDto {
     messages: IMessage[];
     name: string;
     leader: string | null;
-    playlist: IVideo[];
+    videoId?: string;
     sockets: ISocketDto[];
     privacy: RoomPrivacy;
     created_at: Date;

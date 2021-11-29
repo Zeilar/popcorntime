@@ -80,6 +80,9 @@ export class WS {
 
     public addRoom(room: Room) {
         this.rooms.set(room.id, room);
+        if (room.privacy === "public") {
+            publicNamespace.emit("rooms:new", room.dto);
+        }
         adminNamespace.emit("room:new", room.dto);
         Logger.info(`Added room ${room.name}`);
     }

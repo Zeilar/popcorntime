@@ -55,12 +55,15 @@ export function Home() {
     }, [search, publicSocket, publicSocket.connected]);
 
     useEffect(() => {
-        publicSocket.on("room:create", (id: string) => {
-            if (!validate(id)) {
-                return toast.error("Invalid room id.");
+        publicSocket.on(
+            "room:create",
+            (payload: { roomId: string; videoId?: string | null }) => {
+                if (!validate(payload.roomId)) {
+                    return toast.error("Invalid room id.");
+                }
+                push(`/room/${payload.roomId}`);
             }
-            push(`/room/${id}`);
-        });
+        );
         return () => {
             publicSocket.off("room:create");
         };

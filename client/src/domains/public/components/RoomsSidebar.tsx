@@ -23,8 +23,15 @@ export default function RoomsSidebar() {
         publicSocket.on("rooms:destroy", (roomId: string) => {
             setRooms(rooms => rooms.filter(room => room.id !== roomId));
         });
+        publicSocket.on("disconnect", () => {
+            setRooms([]);
+        });
         return () => {
-            publicSocket.off("rooms:get").off("rooms:new").off("rooms:destroy");
+            publicSocket
+                .off("rooms:get")
+                .off("rooms:new")
+                .off("rooms:destroy")
+                .off("disconnect");
         };
     }, [publicSocket]);
 
@@ -74,6 +81,7 @@ export default function RoomsSidebar() {
                         p="0.5rem"
                         as={NavLink}
                         to={`/room/${room.id}`}
+                        key={room.id}
                         _hover={{
                             bgColor: "gray.700",
                         }}

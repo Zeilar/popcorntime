@@ -93,7 +93,7 @@ export default function Router() {
                 </Modal.Content>
             </Modal>
             <Navbar />
-            <Flex flexGrow={1}>
+            <Flex flexGrow={1} overflow="hidden">
                 <RoomsSidebar />
                 <Switch>
                     <Route path="/room/new" exact>

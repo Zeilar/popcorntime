@@ -8,7 +8,7 @@ import { RoomContext } from "../contexts";
 import PlayerControls from "./PlayerControls";
 
 export default function Player() {
-    const { activeVideo, isLeader, setActiveVideo } = useContext(RoomContext);
+    const { isLeader, room, changeVideo } = useContext(RoomContext);
     const { publicSocket } = useContext(WebsocketContext);
     const { me } = useContext(MeContext);
     const [videoInput, setVideoInput] = useState("");
@@ -19,7 +19,7 @@ export default function Player() {
     const internalPlayer: YT.Player | undefined =
         player.current?.getInternalPlayer();
 
-    function changeVideo(e: React.FormEvent) {
+    function submitVideo(e: React.FormEvent) {
         e.preventDefault();
         if (!videoInput) {
             return;
@@ -41,11 +41,11 @@ export default function Player() {
         if (!videoId) {
             return toast.error("Invalid URL.");
         }
-        if (videoId === activeVideo) {
+        if (videoId === room?.videoId) {
             return toast.error("That video is already active.");
         }
         setVideoInput("");
-        setActiveVideo(videoId);
+        changeVideo(videoId);
     }
 
     useEffect(() => {
@@ -89,7 +89,7 @@ export default function Player() {
             {canControl && (
                 <Box
                     as="form"
-                    onSubmit={changeVideo}
+                    onSubmit={submitVideo}
                     boxShadow="elevate.bottom"
                     zIndex={50}
                 >
@@ -111,7 +111,7 @@ export default function Player() {
                 justifyContent="center"
                 alignItems="center"
             >
-                {!activeVideo && (
+                {!room?.videoId && (
                     <Flex
                         h="100%"
                         color="textMuted"
@@ -138,7 +138,7 @@ export default function Player() {
                     opts={{ width: "100%", height: "100%" }}
                     ref={player}
                     containerClassName="youtube"
-                    videoId={activeVideo}
+                    videoId={room?.videoId}
                 />
             </Flex>
             <PlayerControls player={internalPlayer} />
