@@ -1,1 +1,1 @@
-Source code for my application SyncTube.
+Source code for my application SyncedTube.

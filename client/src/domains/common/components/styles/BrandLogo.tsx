@@ -14,12 +14,12 @@ export default function BrandLogo() {
             >
                 <Text
                     p="0.25rem"
-                    w="10rem"
+                    w="12rem"
                     rounded="base"
                     fontSize="1.25rem"
                     fontFamily="Poppins"
                 >
-                    SyncTube
+                    SyncedTube
                 </Text>
                 <Icon
                     pos="absolute"
