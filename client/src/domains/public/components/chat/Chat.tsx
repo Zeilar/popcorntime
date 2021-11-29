@@ -132,6 +132,7 @@ export function Chat() {
             zIndex={10}
             pos="relative"
             boxShadow="elevate.left"
+            bgColor="gray.600"
         >
             {roomInfo.isOpen && <RoomInfo onClose={roomInfo.onClose} />}
             <Flex
@@ -156,7 +157,13 @@ export function Chat() {
                 )}
                 {showChat && (
                     <>
-                        <Text fontWeight={600}>Chat</Text>
+                        <Text
+                            fontWeight={600}
+                            textTransform="uppercase"
+                            fontSize="sm"
+                        >
+                            Chat
+                        </Text>
                         <Button.Icon
                             mdi="mdiInformationOutline"
                             onClick={roomInfo.onOpen}

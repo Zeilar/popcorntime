@@ -85,7 +85,7 @@ export default function Player() {
     }, [publicSocket, internalPlayer]);
 
     return (
-        <Flex flexDir="column" flexGrow={1} overflowX="auto">
+        <Flex flexDir="column" flexGrow={1} overflowX="auto" bgColor="gray.600">
             {canControl && (
                 <Box
                     as="form"

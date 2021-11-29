@@ -84,7 +84,7 @@ export function Home() {
         >
             <Flex
                 flexDir="column"
-                bgColor="gray.900"
+                bgColor="gray.600"
                 rounded="base"
                 boxShadow="elevate.all"
                 pos="relative"

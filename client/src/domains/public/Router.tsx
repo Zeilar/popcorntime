@@ -61,7 +61,7 @@ export default function Router() {
     }, [publicSocket]);
 
     return (
-        <Flex flexDir="column" flexGrow={1}>
+        <Flex flexDir="column" flexGrow={1} bgColor="gray.900">
             <AnimatePresence>{isLoading && <PageSpinner />}</AnimatePresence>
             <Modal
                 isOpen={Boolean(error)}

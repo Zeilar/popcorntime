@@ -31,7 +31,9 @@ export function IconButton({ children, mdi, tooltip, ...props }: IProps) {
                 h="2rem"
                 {...props}
             >
-                {mdi && <MdiIcon w="1.5rem" h="1.5rem" maxW="75%" path={mdi} />}
+                {mdi && (
+                    <MdiIcon w="1.25rem" h="1.25rem" maxW="75%" path={mdi} />
+                )}
                 {children}
             </Button>
         </Wrapper>

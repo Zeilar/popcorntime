@@ -52,7 +52,12 @@ export default function RoomInfo({ onClose }: IRoomInfoProps) {
                 boxShadow="elevate.bottom"
             >
                 <Button.Icon />
-                <Text fontWeight={600} textAlign="center">
+                <Text
+                    fontWeight={600}
+                    textAlign="center"
+                    fontSize="sm"
+                    textTransform="uppercase"
+                >
                     Details
                 </Text>
                 <Button.Icon mdi="mdiClose" onClick={onClose} />
