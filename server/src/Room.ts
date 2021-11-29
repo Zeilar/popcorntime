@@ -173,6 +173,7 @@ export class Room {
         }
         socket.ref.join(this.id);
         socket.ref.emit("room:join", this.dto);
+        console.log("emitted room:join, id", this.id);
         socket.ref.to(this.id).emit("room:socket:join", socket.dto);
         this.sendMessageToAll(
             this.serverMessage({

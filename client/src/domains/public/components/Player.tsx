@@ -1,19 +1,52 @@
-import { Flex, Text } from "@chakra-ui/layout";
-import { WebsocketContext } from "domains/public/contexts";
-import { useEffect, useContext, useRef } from "react";
+import { Input } from "@chakra-ui/input";
+import { Box, Flex, Text } from "@chakra-ui/layout";
+import { MeContext, WebsocketContext } from "domains/public/contexts";
+import { useEffect, useContext, useRef, useState } from "react";
+import { toast } from "react-toastify";
 import YouTube from "react-youtube";
 import { RoomContext } from "../contexts";
 import PlayerControls from "./PlayerControls";
 
 export default function Player() {
-    const { getActiveVideo } = useContext(RoomContext);
+    const { activeVideo, isLeader, setActiveVideo } = useContext(RoomContext);
     const { publicSocket } = useContext(WebsocketContext);
+    const { me } = useContext(MeContext);
+    const [videoInput, setVideoInput] = useState("");
     const player = useRef<YouTube>(null);
+
+    const canControl = isLeader(me?.id);
 
     const internalPlayer: YT.Player | undefined =
         player.current?.getInternalPlayer();
 
-    const activeVideo = getActiveVideo();
+    function changeVideo(e: React.FormEvent) {
+        e.preventDefault();
+        if (!videoInput) {
+            return;
+        }
+        let url: URL;
+        try {
+            url = new URL(videoInput);
+        } catch (e) {
+            toast.error("Invalid URL.");
+            return;
+        }
+        let videoId: string | null;
+        if (url.hostname === "youtu.be") {
+            const paths = url.pathname.slice(1).split("/");
+            videoId = paths[0];
+        } else {
+            videoId = url.searchParams.get("v");
+        }
+        if (!videoId) {
+            return toast.error("Invalid URL.");
+        }
+        if (videoId === activeVideo) {
+            return toast.error("That video is already active.");
+        }
+        setVideoInput("");
+        setActiveVideo(videoId);
+    }
 
     useEffect(() => {
         if (!internalPlayer) {
@@ -53,6 +86,23 @@ export default function Player() {
 
     return (
         <Flex flexDir="column" flexGrow={1} overflowX="auto">
+            {canControl && (
+                <Box
+                    as="form"
+                    onSubmit={changeVideo}
+                    boxShadow="elevate.bottom"
+                    zIndex={50}
+                >
+                    <Input
+                        variant="unstyled"
+                        px="1rem"
+                        py="0.5rem"
+                        value={videoInput}
+                        onChange={e => setVideoInput(e.target.value)}
+                        placeholder="Change video"
+                    />
+                </Box>
+            )}
             <Flex
                 flexGrow={1}
                 sx={{ ".youtube": { flexGrow: 1, height: "100%" } }}
@@ -88,7 +138,7 @@ export default function Player() {
                     opts={{ width: "100%", height: "100%" }}
                     ref={player}
                     containerClassName="youtube"
-                    videoId={activeVideo?.videoId}
+                    videoId={activeVideo}
                 />
             </Flex>
             <PlayerControls player={internalPlayer} />

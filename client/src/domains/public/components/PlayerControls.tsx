@@ -12,13 +12,12 @@ interface IProps {
 
 export default function PlayerControls({ player }: IProps) {
     const [playerState, setPlayerState] = useState(-1);
-    const { isLeader, getActiveVideo } = useContext(RoomContext);
+    const { isLeader, activeVideo } = useContext(RoomContext);
     const { me } = useContext(MeContext);
     const { publicSocket } = useContext(WebsocketContext);
     const { roomId } = useParams<IRoomParams>();
 
     const isRoomLeader = isLeader(me?.id);
-    const activeVideo = getActiveVideo();
 
     const canControl = isRoomLeader && player !== undefined && activeVideo;
 
@@ -68,18 +67,6 @@ export default function PlayerControls({ player }: IProps) {
         function onStateChange(e: YT.PlayerEvent) {
             const state = e.target.getPlayerState();
             setPlayerState(state);
-
-            if (!activeVideo) {
-                return;
-            }
-
-            // If video ended, leader calls to remove it from playlist
-            if (isRoomLeader && state === 0) {
-                publicSocket.emit("room:playlist:remove", {
-                    roomId,
-                    videoId: activeVideo.id,
-                });
-            }
         }
         player.addEventListener("onStateChange", onStateChange);
         return () => {

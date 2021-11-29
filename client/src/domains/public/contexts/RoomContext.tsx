@@ -1,22 +1,20 @@
 import { createContext, ReactNode, useReducer, useState } from "react";
 import { useLocalStorage } from "domains/common/hooks";
-import { IVideo } from "../@types/video";
-import { playlistReducer, socketsReducer } from "../state/reducers/room";
+import { socketsReducer } from "../state/reducers/room";
 import { ISocket } from "domains/common/@types/socket";
 import { IRoomDetails } from "domains/common/@types/room";
 
 interface IContext {
     showServerMessages: boolean;
     setShowServerMessages: React.Dispatch<React.SetStateAction<boolean>>;
-    playlist: IVideo[];
-    dispatchPlaylist: React.Dispatch<any>;
     sockets: ISocket[];
     dispatchSockets: React.Dispatch<any>;
     room: IRoomDetails | null;
     setRoom: React.Dispatch<React.SetStateAction<IRoomDetails>>;
     getLeader(): ISocket | undefined;
-    getActiveVideo(): IVideo | undefined;
     isLeader(socketId: string | null | undefined): boolean | undefined;
+    activeVideo: string | undefined;
+    setActiveVideo: React.Dispatch<React.SetStateAction<string | undefined>>;
 }
 
 interface IProps {
@@ -30,13 +28,9 @@ export function RoomContextProvider({ children }: IProps) {
         "showServerMessages:chat",
         true
     );
-    const [playlist, dispatchPlaylist] = useReducer(playlistReducer, []);
     const [sockets, dispatchSockets] = useReducer(socketsReducer, []);
     const [room, setRoom] = useState<IRoomDetails>({} as IRoomDetails);
-
-    function getActiveVideo(): IVideo | undefined {
-        return playlist.find(video => video.active);
-    }
+    const [activeVideo, setActiveVideo] = useState<string>();
 
     function getLeader() {
         return sockets.find(socket => socket.id === room?.leader);
@@ -53,15 +47,14 @@ export function RoomContextProvider({ children }: IProps) {
     const values: IContext = {
         showServerMessages,
         setShowServerMessages,
-        playlist,
-        dispatchPlaylist,
         sockets,
         dispatchSockets,
         room,
         setRoom,
         getLeader,
-        getActiveVideo,
         isLeader,
+        activeVideo,
+        setActiveVideo,
     };
 
     return (

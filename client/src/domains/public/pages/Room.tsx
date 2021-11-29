@@ -6,8 +6,7 @@ import { Chat } from "../components/chat";
 import { validate } from "uuid";
 import { Flex } from "@chakra-ui/react";
 import { Color } from "domains/common/@types/color";
-import { WebsocketContext } from "domains/public/contexts";
-import Playlist from "../components/Playlist";
+import { MeContext, WebsocketContext } from "domains/public/contexts";
 import { IErrorPayload } from "domains/common/@types/listener";
 import { RoomContext } from "../contexts";
 import * as Actions from "../state/actions/room";
@@ -19,18 +18,16 @@ export function Room() {
     const { roomId } = useParams<IRoomParams>();
     const { publicSocket } = useContext(WebsocketContext);
     const { push } = useHistory();
-    const { dispatchPlaylist, dispatchSockets, setRoom } =
-        useContext(RoomContext);
+    const { dispatchSockets, setRoom } = useContext(RoomContext);
+    const { me } = useContext(MeContext);
 
     useEffect(() => {
+        console.log("register room:join listener", publicSocket.connected);
         publicSocket.on("room:join", (payload: IRoom) => {
+            console.log("joined room", payload);
             dispatchSockets({
                 type: Actions.SET_SOCKETS,
                 sockets: payload.sockets,
-            });
-            dispatchPlaylist({
-                type: Actions.SET_PLAYLIST,
-                playlist: payload.playlist,
             });
             setRoom({
                 id: payload.id,
@@ -43,7 +40,7 @@ export function Room() {
         return () => {
             publicSocket.off("room:join");
         };
-    }, [publicSocket, roomId, dispatchPlaylist, dispatchSockets, setRoom]);
+    });
 
     useEffect(() => {
         publicSocket.on("room:socket:join", (socket: ISocket) => {
@@ -81,11 +78,11 @@ export function Room() {
             toast.info("You were kicked from the room.");
             push("/");
         });
-        publicSocket.once("room:destroy", () => {
+        publicSocket.on("room:destroy", () => {
             toast.info("The room has been shut down.");
             push("/");
         });
-        publicSocket.once("room:connection:error", (payload: IErrorPayload) => {
+        publicSocket.on("room:connection:error", (payload: IErrorPayload) => {
             toast.error(`${payload.message} ${payload.reason}`);
             push("/");
         });
@@ -99,35 +96,39 @@ export function Room() {
 
     useEffect(() => {
         publicSocket.on("room:leader:new", (leader: string | null) => {
-            setRoom(p => ({ ...p, leader }));
+            if (me?.id === leader) {
+                toast.info("You are now the room leader.");
+            }
+            setRoom(room => ({ ...room, leader }));
         });
         return () => {
             publicSocket.off("room:leader:new");
         };
-    }, [publicSocket, setRoom]);
+    }, [publicSocket, setRoom, me?.id]);
 
     useEffect(() => {
-        publicSocket.once("socket:kick", () => {
+        publicSocket.on("socket:kick", () => {
             toast.info("You were kicked from the server.");
         });
         return () => {
-            publicSocket
-                .emit("room:leave")
-                .off("room:leader:new")
-                .off("socket:kick");
+            publicSocket.emit("room:leave").off("socket:kick");
         };
     }, [publicSocket]);
 
     useEffect(() => {
         if (publicSocket.connected) {
+            console.log(
+                "you are connected, join",
+                roomId,
+                "has event yet?",
+                publicSocket.hasListeners("room:join")
+            );
             publicSocket.emit("room:join", roomId);
         }
         publicSocket.on("connect", () => {
             publicSocket.emit("room:join", roomId);
         });
     }, [publicSocket, roomId]);
-
-    // TODO: have some button that shows room info (status, room id, sockets etc)
 
     if (!validate(roomId)) {
         toast.error(
@@ -139,7 +140,6 @@ export function Room() {
 
     return (
         <Flex flexGrow={1} maxH="100%" overflow="hidden">
-            <Playlist />
             <Player />
             <Chat />
         </Flex>

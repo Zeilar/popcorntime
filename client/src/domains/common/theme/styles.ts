@@ -1,5 +1,3 @@
-import { colors } from "./colors";
-
 export const styles = {
     global: {
         "::selection": {
@@ -63,11 +61,6 @@ export const styles = {
             },
             "&[data-focus]": {
                 boxShadow: "none !important",
-            },
-        },
-        "select.chakra-select, input.chakra-input": {
-            "&:focus, &[data-focus]": {
-                boxShadow: `0 0 0 1px ${colors.secondary.light}`,
             },
         },
     },
