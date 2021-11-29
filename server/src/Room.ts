@@ -36,6 +36,7 @@ export class Room {
             });
         }
         this.videoId = id;
+        publicNamespace.to(this.id).emit("room:video:change", this.videoId);
     }
 
     public addMessage(message: Message) {

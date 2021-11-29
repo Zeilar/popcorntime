@@ -180,21 +180,18 @@ publicNamespace.on("connection", socket => {
         room.add(_socket);
     });
 
-    socket.on(
-        "room:video:change",
-        (payload: { roomId: string; video: string }) => {
-            const room = ws.rooms.get(payload.roomId);
+    socket.on("room:video:change", (videoId: string) => {
+        const room = _socket.room;
 
-            if (!room) {
-                return socket.emit("error", {
-                    message: "Failed changing video.",
-                    reason: "You must be in a room to do that.",
-                });
-            }
-
-            room.changeVideo(_socket, payload.video);
+        if (!room) {
+            return socket.emit("error", {
+                message: "Failed changing video.",
+                reason: "You must be in a room to do that.",
+            });
         }
-    );
+
+        room.changeVideo(_socket, videoId);
+    });
 
     socket.on("rooms:get", () => {
         socket.emit("rooms:get", ws.roomsDto);

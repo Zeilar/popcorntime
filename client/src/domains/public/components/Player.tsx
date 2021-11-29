@@ -45,8 +45,17 @@ export default function Player() {
             return toast.error("That video is already active.");
         }
         setVideoInput("");
-        changeVideo(videoId);
+        publicSocket.emit("room:video:change", videoId);
     }
+
+    useEffect(() => {
+        publicSocket.on("room:video:change", (videoId: string) => {
+            changeVideo(videoId);
+        });
+        return () => {
+            publicSocket.off("room:video:change");
+        };
+    }, [publicSocket, changeVideo]);
 
     useEffect(() => {
         if (!internalPlayer) {
