@@ -14,6 +14,7 @@ import { Color } from "../@types/color";
 import Message from "./Message";
 import { IVideo } from "../@types/video";
 import { schedule } from "node-cron";
+import { RoomPrivacy } from "../@types/room";
 
 const clientPath = join(__dirname, "../../client");
 const { PORT, ADMIN_PASSWORD } = env;
@@ -123,23 +124,21 @@ publicNamespace.on("connection", socket => {
         );
     });
 
-    socket.on("room:create", (roomId: string) => {
-        if (!validate(roomId)) {
-            return socket.emit("error", {
-                message: "Failed creating room.",
-                reason: "Invalid room id.",
-            });
+    socket.on(
+        "room:create",
+        (payload: { name: string; privacy: RoomPrivacy }) => {
+            if ([...ws.rooms].length > 20) {
+                return socket.emit("error", {
+                    message: "Failed creating room.",
+                    reason: "There are too many rooms already, please try again later.",
+                });
+            }
+            const room = new Room(payload.name, payload.privacy);
+            socket.emit("room:create", room.id);
+            ws.addRoom(room);
+            room.add(_socket);
         }
-        if ([...ws.rooms].length > 20) {
-            return socket.emit("error", {
-                message: "Failed creating room.",
-                reason: "There are too many rooms already, please try again later.",
-            });
-        }
-        const room = new Room(roomId);
-        ws.addRoom(room);
-        room.add(_socket);
-    });
+    );
 
     socket.on("room:join", (roomId: string) => {
         if (!validate(roomId)) {

@@ -1,12 +1,10 @@
-import { IRoomDto } from "../@types/room";
+import { IRoomDto, RoomPrivacy } from "../@types/room";
 import { adminNamespace, publicNamespace } from "./server";
 import { Socket } from "./Socket";
-import { uniqueNamesGenerator } from "unique-names-generator";
-import { roomNameConfig } from "../config/uniqueNamesGenerator";
 import Message from "./Message";
 import env from "../config/env";
 import { IVideo } from "../@types/video";
-import e from "cors";
+import { v4 as uuidv4 } from "uuid";
 
 const { ROOM_MAX_SOCKETS, ROOM_MAX_MESSAGES, ROOM_MAX_PLAYLIST } = env;
 
@@ -20,12 +18,15 @@ export class Room {
     private messages: Message[] = [];
     private playlist: IVideo[] = [];
     private created_at: Date;
-    public name: string;
+    public id: string;
 
-    public constructor(public readonly id: string) {
+    public constructor(
+        public readonly name: string,
+        public readonly privacy: RoomPrivacy
+    ) {
+        this.id = uuidv4();
         this.created_at = new Date();
         this.leader = null;
-        this.name = uniqueNamesGenerator(roomNameConfig);
     }
 
     public addMessage(message: Message) {
@@ -70,6 +71,7 @@ export class Room {
             playlist: this.playlist,
             messages: this.messages,
             created_at: this.created_at,
+            privacy: this.privacy,
             sockets: this.socketsDto,
         };
     }
