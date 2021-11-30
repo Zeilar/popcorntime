@@ -14,6 +14,7 @@ import { Color } from "../@types/color";
 import Message from "./Message";
 import { schedule } from "node-cron";
 import { RoomPrivacy } from "../@types/room";
+import { compareSync } from "bcrypt";
 
 const clientPath = join(__dirname, "../../client");
 const { PORT, ADMIN_PASSWORD } = env;
@@ -52,7 +53,7 @@ export const ws = new WS();
 schedule("0 0 * * *", () => {
     Logger.info("Deleting stale rooms");
     ws.rooms.forEach(room => {
-        if (room.empty()) {
+        if (room.isEmpty()) {
             ws.deleteRoom(room);
         }
     });
@@ -143,11 +144,10 @@ publicNamespace.on("connection", socket => {
                 videoId: room.videoId,
             });
             ws.addRoom(room);
-            room.add(_socket);
         }
     );
 
-    socket.on("room:join", (payload: { roomId: string }) => {
+    socket.on("room:join", (payload: { roomId: string; password?: string }) => {
         if (!validate(payload.roomId)) {
             return socket.emit("error", {
                 message: "Failed joining room.",
@@ -171,7 +171,16 @@ publicNamespace.on("connection", socket => {
             });
         }
 
-        if (room.full()) {
+        if (room.isPrivate) {
+            if (!payload.password || !room.checkPassword(payload.password)) {
+                return socket.emit("error", {
+                    message: "Failed joining room.",
+                    reason: "Incorrect password.",
+                });
+            }
+        }
+
+        if (room.isFull()) {
             return socket.emit("error", {
                 message: "Failed joining room.",
                 reason: "The room is full.",
@@ -179,7 +188,7 @@ publicNamespace.on("connection", socket => {
         }
 
         _socket.leaveRoom();
-        room.add(_socket);
+        room.addSocket(_socket);
     });
 
     socket.on("room:video:change", (videoId: string) => {
@@ -259,7 +268,7 @@ publicNamespace.on("connection", socket => {
         if (!room) {
             return;
         }
-        room.remove(_socket);
+        room.removeSocket(_socket);
         adminNamespace.emit("room:leave", {
             roomId: room.id,
             socketId: _socket.id,
@@ -269,7 +278,7 @@ publicNamespace.on("connection", socket => {
     socket.on("disconnect", () => {
         const room = _socket.room;
         if (room) {
-            room.remove(_socket);
+            room.removeSocket(_socket);
         }
         ws.deleteSocket(_socket);
     });
@@ -313,7 +322,7 @@ adminNamespace.on("connection", socket => {
         }
 
         publicNamespace.to(_socket.id).emit("room:kick");
-        room.remove(_socket);
+        room.removeSocket(_socket);
         adminNamespace.emit("room:kick");
     });
 

@@ -10,7 +10,6 @@ import ContainerSpinner from "domains/common/components/ContainerSpinner";
 import { AnimatePresence } from "framer-motion";
 import { WebsocketContext } from "../contexts";
 import { toast } from "react-toastify";
-import { Checkbox } from "@chakra-ui/checkbox";
 
 export function Home() {
     const [submitting, setSubmitting] = useState(false);
@@ -20,7 +19,6 @@ export function Home() {
     );
     const [roomPassword, setRoomPassword] = useState("");
     const { publicSocket } = useContext(WebsocketContext);
-    const [usePassword, setUsePassword] = useState(false);
 
     function generateRoomName() {
         setRoomName(uniqueNamesGenerator(roomNameConfig));
@@ -36,7 +34,7 @@ export function Home() {
             privacy: roomPrivacy,
             name: roomName,
         };
-        if (usePassword) {
+        if (roomPrivacy === "private") {
             Object.assign(room, { password: roomPassword });
         }
         publicSocket.emit("room:create", room);
@@ -105,22 +103,18 @@ export function Home() {
                         <option value="private">Private</option>
                     </Select>
                 </Flex>
-                <Flex flexDir="column" w="100%">
-                    <Flex mb="0.25rem">
-                        <Text fontWeight={600}>Password</Text>
-                        <Checkbox
-                            ml="0.5rem"
-                            checked={usePassword}
-                            onChange={e => setUsePassword(e.target.checked)}
+                {roomPrivacy === "private" && (
+                    <Flex flexDir="column" w="100%">
+                        <Flex mb="0.25rem">
+                            <Text fontWeight={600}>Password</Text>
+                        </Flex>
+                        <Input
+                            type="password"
+                            value={roomPassword}
+                            onChange={e => setRoomPassword(e.target.value)}
                         />
                     </Flex>
-                    <Input
-                        type="password"
-                        disabled={!usePassword}
-                        value={roomPassword}
-                        onChange={e => setRoomPassword(e.target.value)}
-                    />
-                </Flex>
+                )}
                 <Button
                     variant="primary"
                     mt="1rem"

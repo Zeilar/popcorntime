@@ -16,7 +16,7 @@ export class Room {
     public id: string;
     public videoId?: string;
     public readonly name: string;
-    public readonly privacy: RoomPrivacy;
+    private privacy: RoomPrivacy;
     private leader: string | null;
     private sockets: Socket[] = [];
     private password?: string;
@@ -65,11 +65,11 @@ export class Room {
         this.messages.push(message);
     }
 
-    public empty() {
+    public isEmpty() {
         return this.sockets.length === 0;
     }
 
-    public full() {
+    public isFull() {
         return this.sockets.length >= Room.MAX_SOCKETS;
     }
 
@@ -102,11 +102,19 @@ export class Room {
         return this.leader === socketId;
     }
 
+    public get isPrivate() {
+        return this.privacy === "private";
+    }
+
+    public get isPublic() {
+        return this.privacy === "public";
+    }
+
     public hasSocket(socket: Socket) {
         return this.sockets.some(element => element.id === socket.id);
     }
 
-    public add(socket: Socket) {
+    public addSocket(socket: Socket) {
         if (this.hasSocket(socket)) {
             return;
         }
@@ -138,7 +146,7 @@ export class Room {
         });
     }
 
-    public remove(socket: Socket) {
+    public removeSocket(socket: Socket) {
         this.sockets = this.sockets.filter(element => element.id !== socket.id);
         if (this.leader === socket.id || this.sockets.length === 0) {
             this.autoSetLeader();

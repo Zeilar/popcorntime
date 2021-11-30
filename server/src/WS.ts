@@ -45,7 +45,7 @@ export class WS {
     public get publicRoomsDto() {
         const rooms: IRoomDto[] = [];
         this.rooms.forEach(room => {
-            if (room.privacy === "public") {
+            if (room.isPublic) {
                 rooms.push(room.dto);
             }
         });
@@ -80,7 +80,7 @@ export class WS {
 
     public addRoom(room: Room) {
         this.rooms.set(room.id, room);
-        if (room.privacy === "public") {
+        if (room.isPublic) {
             publicNamespace.emit("rooms:new", room.dto);
         }
         adminNamespace.emit("room:new", room.dto);

@@ -39,7 +39,7 @@ export class Socket {
         if (!room) {
             return;
         }
-        room.remove(this);
+        room.removeSocket(this);
     }
 
     public generate() {
