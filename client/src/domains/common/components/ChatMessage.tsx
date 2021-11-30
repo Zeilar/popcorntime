@@ -1,46 +1,25 @@
 import { Box, Flex, FlexProps, Text } from "@chakra-ui/layout";
-import { motion } from "framer-motion";
-import { useContext } from "react";
 import { IMessage } from "../@types/message";
 import dayjs from "dayjs";
 import env from "config/env";
 import ChatName from "domains/public/components/chat/ChatName";
-import { WebsocketContext } from "domains/public/contexts";
 
 interface IProps {
     message: IMessage;
     index: number;
 }
 
-const Motion = motion<FlexProps>(Flex);
-
 function formatTimestamp(date: Date) {
     return dayjs(date).format("HH:mm");
 }
 
 export default function ChatMessage({ message, index }: IProps) {
-    const { publicSocket } = useContext(WebsocketContext);
-
-    // Using Chakra FlexProps type for some reason won't work
-    const notSentStyling: any = message.notSent
+    const notSentStyling: FlexProps = message.notSent
         ? {
               opacity: 0.25,
               userSelect: "none",
           }
         : {};
-
-    // Don't animate user's own messages
-    const animationStyling =
-        message.socket.id !== publicSocket.id
-            ? {
-                  animate: {
-                      opacity: [0.75, 1],
-                  },
-                  transition: {
-                      duration: 0.25,
-                  },
-              }
-            : {};
 
     const serverMessageStyling = message.serverMessage
         ? {
@@ -50,7 +29,7 @@ export default function ChatMessage({ message, index }: IProps) {
         : {};
 
     return (
-        <Motion
+        <Flex
             wordBreak="break-word"
             alignItems="center"
             py="0.5rem"
@@ -60,7 +39,6 @@ export default function ChatMessage({ message, index }: IProps) {
             boxShadow="elevate.bottom"
             zIndex={env.ROOM_MAX_MESSAGES - index}
             {...notSentStyling}
-            {...animationStyling}
         >
             <Box {...serverMessageStyling}>
                 <Flex>
@@ -75,6 +53,6 @@ export default function ChatMessage({ message, index }: IProps) {
                 </Flex>
                 <Text as="span">{message.body}</Text>
             </Box>
-        </Motion>
+        </Flex>
     );
 }
