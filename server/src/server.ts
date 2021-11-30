@@ -125,18 +125,19 @@ publicNamespace.on("connection", socket => {
 
     socket.on(
         "room:create",
-        (payload: { name: string; privacy: RoomPrivacy; videoId?: string }) => {
+        (payload: {
+            name: string;
+            privacy: RoomPrivacy;
+            videoId?: string;
+            password?: string;
+        }) => {
             if ([...ws.rooms].length > env.MAX_ROOMS) {
                 return socket.emit("error", {
                     message: "Failed creating room.",
                     reason: "There are too many rooms already, please try again later.",
                 });
             }
-            const room = new Room(
-                payload.name,
-                payload.privacy,
-                payload.videoId
-            );
+            const room = new Room({ ...payload });
             socket.emit("room:create", {
                 roomId: room.id,
                 videoId: room.videoId,

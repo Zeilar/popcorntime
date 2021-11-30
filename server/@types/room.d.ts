@@ -10,6 +10,7 @@ export interface IRoomDto {
     name: string;
     leader: string | null;
     videoId?: string;
+    password?: string;
     sockets: ISocketDto[];
     privacy: RoomPrivacy;
     created_at: Date;

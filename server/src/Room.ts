@@ -4,6 +4,7 @@ import { Socket } from "./Socket";
 import Message from "./Message";
 import env from "../config/env";
 import { v4 as uuidv4 } from "uuid";
+import { compareSync, hashSync } from "bcrypt";
 
 const { ROOM_MAX_SOCKETS, ROOM_MAX_MESSAGES, ROOM_MAX_PLAYLIST } = env;
 
@@ -12,20 +13,38 @@ export class Room {
     public static readonly MAX_MESSAGES = ROOM_MAX_MESSAGES;
     public static readonly MAX_PLAYLIST = ROOM_MAX_PLAYLIST;
     public static readonly MAX_MESSAGE_LENGTH = 500;
+    public id: string;
+    public videoId?: string;
+    public readonly name: string;
+    public readonly privacy: RoomPrivacy;
     private leader: string | null;
     private sockets: Socket[] = [];
+    private password?: string;
     private messages: Message[] = [];
     private created_at: Date;
-    public id: string;
 
-    public constructor(
-        public readonly name: string,
-        public readonly privacy: RoomPrivacy,
-        public videoId?: string
-    ) {
+    public constructor(props: {
+        name: string;
+        privacy: RoomPrivacy;
+        videoId?: string;
+        password?: string;
+    }) {
         this.id = uuidv4();
         this.created_at = new Date();
         this.leader = null;
+        this.name = props.name;
+        this.privacy = props.privacy;
+        this.videoId = props.videoId;
+        if (typeof props.password === "string") {
+            this.password = hashSync(props.password, 10);
+        }
+    }
+
+    public checkPassword(password: string) {
+        if (typeof this.password === "undefined") {
+            return true;
+        }
+        return compareSync(password, this.password);
     }
 
     public changeVideo(socket: Socket, id: string) {

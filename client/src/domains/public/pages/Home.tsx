@@ -39,7 +39,6 @@ export function Home() {
         if (usePassword) {
             Object.assign(room, { password: roomPassword });
         }
-        console.log(room);
         publicSocket.emit("room:create", room);
     }
 
