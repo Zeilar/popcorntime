@@ -4,7 +4,6 @@ import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
 import { IMessage } from "domains/common/@types/message";
 import Message from "domains/common/components/ChatMessage";
-import Textarea from "../styles/Textarea";
 import { MeContext, RoomContext } from "domains/public/contexts";
 import { ChatSettings } from "./";
 import { useLocalStorage, useOnClickOutside } from "domains/common/hooks";
@@ -17,6 +16,7 @@ import { IRoomParams } from "domains/public/@types/params";
 import { useParams } from "react-router";
 import env from "config/env";
 import ChatName from "./ChatName";
+import { Textarea } from "@chakra-ui/textarea";
 
 export function Chat() {
     const [showChat, setShowChat] = useLocalStorage<boolean>("showChat", true);
@@ -203,12 +203,6 @@ export function Chat() {
                                 forwardRef={input}
                                 placeholder="Send a message"
                                 resize="none"
-                                bgColor="gray.400"
-                                border="none"
-                                _focus={{
-                                    bgColor: "gray.100",
-                                    boxShadow: "outline",
-                                }}
                             />
                         </Box>
                         <Box px="1rem" mb="1rem">

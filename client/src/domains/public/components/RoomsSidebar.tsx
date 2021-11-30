@@ -83,21 +83,14 @@ export default function RoomsSidebar() {
                         as={NavLink}
                         to={`/room/${room.id}`}
                         key={room.id}
-                        _hover={{
-                            bgColor: "gray.600",
-                        }}
-                        _active={{
-                            bgColor: "gray.500",
-                        }}
-                        _activeLink={{
-                            bgColor: "brand.default",
-                        }}
+                        _hover={{ bgColor: "gray.600" }}
+                        _active={{ bgColor: "gray.500" }}
+                        _activeLink={{ bgColor: "brand.default" }}
                     >
                         <Text>{room.name}</Text>
-                        <Text
-                            ml="1rem"
-                            whiteSpace="nowrap"
-                        >{`${room.sockets.length} / ${env.ROOM_MAX_SOCKETS}`}</Text>
+                        <Text ml="1rem" whiteSpace="nowrap">
+                            {`${room.sockets.length} / ${env.ROOM_MAX_SOCKETS}`}
+                        </Text>
                     </Flex>
                 ))}
         </Flex>

@@ -1,5 +1,5 @@
 import { Input } from "@chakra-ui/input";
-import { Box, Flex, Text } from "@chakra-ui/layout";
+import { Flex, Text } from "@chakra-ui/layout";
 import { MeContext, WebsocketContext } from "domains/public/contexts";
 import { useEffect, useContext, useRef, useState } from "react";
 import { toast } from "react-toastify";
@@ -96,7 +96,7 @@ export default function Player() {
     return (
         <Flex flexDir="column" flexGrow={1} overflowX="auto" bgColor="gray.600">
             {canControl && (
-                <Box
+                <Flex
                     as="form"
                     onSubmit={submitVideo}
                     boxShadow="elevate.bottom"
@@ -111,7 +111,7 @@ export default function Player() {
                         onChange={e => setVideoInput(e.target.value)}
                         placeholder="Change video"
                     />
-                </Box>
+                </Flex>
             )}
             <Flex
                 flexGrow={1}
