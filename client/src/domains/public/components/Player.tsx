@@ -121,7 +121,14 @@ export default function Player() {
                 justifyContent="center"
                 alignItems="center"
             >
-                {!room?.videoId && (
+                {room?.videoId ? (
+                    <YouTube
+                        opts={{ width: "100%", height: "100%" }}
+                        ref={player}
+                        containerClassName="youtube"
+                        videoId={room.videoId}
+                    />
+                ) : (
                     <Flex
                         h="100%"
                         color="textMuted"
@@ -144,12 +151,6 @@ export default function Player() {
                         </Text>
                     </Flex>
                 )}
-                <YouTube
-                    opts={{ width: "100%", height: "100%" }}
-                    ref={player}
-                    containerClassName="youtube"
-                    videoId={room?.videoId}
-                />
             </Flex>
             <PlayerControls player={internalPlayer} />
         </Flex>
