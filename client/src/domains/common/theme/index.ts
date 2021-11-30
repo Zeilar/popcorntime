@@ -5,7 +5,7 @@ import { config } from "./config";
 import { fonts } from "./fonts";
 import { shadows } from "./shadows";
 import { styles } from "./styles";
-import { globalDefaults } from "./globalDefaults";
+import { withDefaults } from "./withDefaults";
 
 export default extendTheme(
     {
@@ -16,5 +16,5 @@ export default extendTheme(
         components,
         styles,
     },
-    ...globalDefaults
+    ...withDefaults
 );
