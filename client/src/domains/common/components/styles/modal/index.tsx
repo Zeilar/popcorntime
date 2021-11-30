@@ -5,7 +5,7 @@ import ModalContent from "./Content";
 import ModalOverlay from "./Overlay";
 
 function Modal(props: ModalProps) {
-    return <ChakraModal {...props} />;
+    return <ChakraModal {...props}>{props.children}</ChakraModal>;
 }
 
 Modal.Body = ModalBody;

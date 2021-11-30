@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Redirect, useHistory, useParams } from "react-router";
 import { ISocket } from "domains/common/@types/socket";
 import { toast } from "react-toastify";
@@ -13,6 +13,11 @@ import * as Actions from "../state/actions/room";
 import Player from "../components/Player";
 import { IRoomParams } from "../@types/params";
 import { IRoom } from "domains/common/@types/room";
+import Modal from "domains/common/components/styles/modal";
+import { useDisclosure } from "@chakra-ui/hooks";
+import { Text } from "@chakra-ui/layout";
+import { Input } from "@chakra-ui/input";
+import Button from "domains/common/components/styles/button";
 
 export function Room() {
     const { roomId } = useParams<IRoomParams>();
@@ -20,6 +25,13 @@ export function Room() {
     const { push } = useHistory();
     const { dispatchSockets, setRoom } = useContext(RoomContext);
     const { me } = useContext(MeContext);
+    const [authorized, setAuthorized] = useState(false);
+    const passwordPrompt = useDisclosure();
+    const [password, setPassword] = useState("");
+
+    function authorize() {
+        publicSocket.emit("room:join", { roomId, password });
+    }
 
     useEffect(() => {
         publicSocket.on("room:join", (payload: IRoom) => {
@@ -35,6 +47,8 @@ export function Room() {
                 privacy: payload.privacy,
                 videoId: payload.videoId,
             });
+            setAuthorized(true);
+            passwordPrompt.onClose();
         });
         return () => {
             publicSocket.off("room:join");
@@ -136,6 +150,33 @@ export function Room() {
 
     return (
         <Flex flexGrow={1} maxH="100%" overflow="hidden">
+            <Modal
+                onClose={passwordPrompt.onClose}
+                isOpen={authorized === false}
+                size="lg"
+            >
+                <Modal.Overlay />
+                <Modal.Content>
+                    <Modal.Body>
+                        <Text as="h3" mb="0.5rem">
+                            Please enter the password
+                        </Text>
+                        <Flex>
+                            <Input
+                                value={password}
+                                onChange={e => setPassword(e.target.value)}
+                            />
+                            <Button
+                                ml="0.5rem"
+                                variant="primary"
+                                onClick={authorize}
+                            >
+                                Submit
+                            </Button>
+                        </Flex>
+                    </Modal.Body>
+                </Modal.Content>
+            </Modal>
             <Player />
             <Chat />
         </Flex>

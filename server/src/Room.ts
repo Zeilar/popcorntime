@@ -13,6 +13,7 @@ export class Room {
     public static readonly MAX_MESSAGES = ROOM_MAX_MESSAGES;
     public static readonly MAX_PLAYLIST = ROOM_MAX_PLAYLIST;
     public static readonly MAX_MESSAGE_LENGTH = 500;
+
     public id: string;
     public videoId?: string;
     public readonly name: string;
