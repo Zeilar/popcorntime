@@ -95,25 +95,24 @@ export default function Player() {
 
     return (
         <Flex flexDir="column" flexGrow={1} overflowX="auto" bgColor="gray.600">
-            {canControl && (
-                <Flex
-                    as="form"
-                    onSubmit={submitVideo}
-                    boxShadow="elevate.bottom"
-                    h="3rem"
-                    zIndex={50}
-                >
-                    <Input
-                        variant="flushed"
-                        px="1rem"
-                        h="100%"
-                        py="0.5rem"
-                        value={videoInput}
-                        onChange={e => setVideoInput(e.target.value)}
-                        placeholder="Change video"
-                    />
-                </Flex>
-            )}
+            <Flex
+                as="form"
+                onSubmit={submitVideo}
+                boxShadow="elevate.bottom"
+                h="3rem"
+                zIndex={50}
+            >
+                <Input
+                    variant="flushed"
+                    px="1rem"
+                    h="100%"
+                    py="0.5rem"
+                    value={videoInput}
+                    onChange={e => setVideoInput(e.target.value)}
+                    disabled={!canControl}
+                    placeholder="Change video"
+                />
+            </Flex>
             <Flex
                 flexGrow={1}
                 sx={{ ".youtube": { flexGrow: 1, height: "100%" } }}
