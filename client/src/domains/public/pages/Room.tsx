@@ -25,11 +25,12 @@ export function Room() {
     const { push } = useHistory();
     const { dispatchSockets, setRoom } = useContext(RoomContext);
     const { me } = useContext(MeContext);
-    const [authorized, setAuthorized] = useState(false);
+    const [authorized, setAuthorized] = useState<boolean | null>(null);
     const passwordPrompt = useDisclosure();
     const [password, setPassword] = useState("");
 
-    function authorize() {
+    function authorize(e: React.FormEvent) {
+        e.preventDefault();
         publicSocket.emit("room:join", { roomId, password });
     }
 
@@ -53,7 +54,7 @@ export function Room() {
         return () => {
             publicSocket.off("room:join");
         };
-    }, [publicSocket, dispatchSockets, setRoom]);
+    }, [publicSocket, dispatchSockets, setRoom, passwordPrompt]);
 
     useEffect(() => {
         publicSocket.on("room:socket:join", (socket: ISocket) => {
@@ -132,6 +133,9 @@ export function Room() {
         if (publicSocket.connected) {
             publicSocket.emit("room:join", { roomId });
         }
+        publicSocket.on("room:error:password", () => {
+            setAuthorized(false);
+        });
         publicSocket.on("connect", () => {
             publicSocket.emit("room:join", { roomId });
         });
@@ -161,16 +165,12 @@ export function Room() {
                         <Text as="h3" mb="0.5rem">
                             Please enter the password
                         </Text>
-                        <Flex>
+                        <Flex as="form" onSubmit={authorize}>
                             <Input
                                 value={password}
                                 onChange={e => setPassword(e.target.value)}
                             />
-                            <Button
-                                ml="0.5rem"
-                                variant="primary"
-                                onClick={authorize}
-                            >
+                            <Button ml="0.5rem" variant="primary">
                                 Submit
                             </Button>
                         </Flex>

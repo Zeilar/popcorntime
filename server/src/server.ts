@@ -173,7 +173,7 @@ publicNamespace.on("connection", socket => {
 
         if (room.isPrivate) {
             if (!payload.password || !room.checkPassword(payload.password)) {
-                return socket.emit("error", {
+                return socket.emit("room:error:password", {
                     message: "Failed joining room.",
                     reason: "Incorrect password.",
                 });
