@@ -146,15 +146,15 @@ publicNamespace.on("connection", socket => {
         }
     );
 
-    socket.on("room:join", (roomId: string) => {
-        if (!validate(roomId)) {
+    socket.on("room:join", (payload: { roomId: string }) => {
+        if (!validate(payload.roomId)) {
             return socket.emit("error", {
                 message: "Failed joining room.",
                 reason: "Invalid room id.",
             });
         }
 
-        const room = ws.rooms.get(roomId);
+        const room = ws.rooms.get(payload.roomId);
 
         if (!room) {
             return socket.emit("error", {
@@ -163,7 +163,7 @@ publicNamespace.on("connection", socket => {
             });
         }
 
-        if (room.id !== roomId) {
+        if (room.id !== payload.roomId) {
             return socket.emit("error", {
                 message: "Failed joining room.",
                 reason: "Something went wrong.",

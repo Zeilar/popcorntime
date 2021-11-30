@@ -115,9 +115,11 @@ export function Room() {
     }, [publicSocket]);
 
     useEffect(() => {
-        publicSocket.emit("room:join", roomId);
+        if (publicSocket.connected) {
+            publicSocket.emit("room:join", { roomId });
+        }
         publicSocket.on("connect", () => {
-            publicSocket.emit("room:join", roomId);
+            publicSocket.emit("room:join", { roomId });
         });
         return () => {
             publicSocket.emit("room:leave", roomId);
