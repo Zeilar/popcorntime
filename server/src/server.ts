@@ -148,7 +148,7 @@ publicNamespace.on("connection", socket => {
 
     socket.on("room:join", (roomId: string) => {
         if (!validate(roomId)) {
-            return socket.emit("room:connection:error", {
+            return socket.emit("error", {
                 message: "Failed joining room.",
                 reason: "Invalid room id.",
             });
@@ -157,16 +157,16 @@ publicNamespace.on("connection", socket => {
         const room = ws.rooms.get(roomId);
 
         if (!room) {
-            return socket.emit("room:connection:error", {
+            return socket.emit("error", {
                 message: "Failed joining room.",
                 reason: "That room does not exist.",
             });
         }
 
         if (room.id !== roomId) {
-            return socket.emit("room:connection:error", {
+            return socket.emit("error", {
                 message: "Failed joining room.",
-                reason: "You are already in a room.",
+                reason: "Something went wrong.",
             });
         }
 
@@ -177,6 +177,7 @@ publicNamespace.on("connection", socket => {
             });
         }
 
+        _socket.leaveRoom();
         room.add(_socket);
     });
 

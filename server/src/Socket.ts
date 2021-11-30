@@ -34,6 +34,14 @@ export class Socket {
         return [...ws.rooms.values()].find(room => room.hasSocket(this));
     }
 
+    public leaveRoom() {
+        const room = this.room;
+        if (!room) {
+            return;
+        }
+        room.remove(this);
+    }
+
     public generate() {
         this.setRandomColor();
         this.setRandomName();

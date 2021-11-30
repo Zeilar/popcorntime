@@ -100,6 +100,7 @@ export default function Player() {
                     as="form"
                     onSubmit={submitVideo}
                     boxShadow="elevate.bottom"
+                    h="3rem"
                     zIndex={50}
                 >
                     <Input

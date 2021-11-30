@@ -199,7 +199,6 @@ export function Chat() {
                                 </Text>
                             )}
                             <Textarea
-                                autoFocus
                                 onKeyDown={inputHandler}
                                 forwardRef={input}
                                 placeholder="Send a message"
