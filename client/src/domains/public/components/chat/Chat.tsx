@@ -200,7 +200,7 @@ export function Chat() {
                             )}
                             <Textarea
                                 onKeyDown={inputHandler}
-                                forwardRef={input}
+                                ref={input}
                                 placeholder="Send a message"
                                 resize="none"
                             />

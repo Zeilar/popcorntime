@@ -113,9 +113,7 @@ export default function Player() {
                         onChange={e => setVideoInput(e.target.value)}
                         borderColor="transparent"
                         placeholder="Change video"
-                        _focus={{
-                            borderColor: "secondary.light",
-                        }}
+                        _focus={{ borderColor: "secondary.light" }}
                     />
                 </Flex>
             )}

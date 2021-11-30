@@ -1,8 +1,6 @@
 import { StyleConfig } from "@chakra-ui/theme-tools";
 import { colors } from "../colors";
 
-console.log(colors.secondary.light);
-
 export const Textarea: StyleConfig = {
     variants: {
         outline: {
