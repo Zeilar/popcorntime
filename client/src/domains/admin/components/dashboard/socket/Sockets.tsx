@@ -46,10 +46,10 @@ export default function Sockets() {
                 zIndex={50}
                 top={0}
             >
-                <Button.Primary ml="auto" onClick={prompt.onOpen}>
+                <Button variant="primary" ml="auto" onClick={prompt.onOpen}>
                     <DeleteIcon mr="0.5rem" />
                     Destroy all
-                </Button.Primary>
+                </Button>
             </Flex>
             {sockets.length > 0 ? (
                 <Grid

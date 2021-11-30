@@ -38,13 +38,17 @@ export function Prompt(props: IProps) {
                 <ModalHeader>{props.header}</ModalHeader>
                 <ModalBody>{props.body}</ModalBody>
                 <ModalFooter mt="1rem">
-                    <Button.Primary {...noCancelStyling} onClick={submit}>
+                    <Button
+                        variant="primary"
+                        {...noCancelStyling}
+                        onClick={submit}
+                    >
                         Ok
-                    </Button.Primary>
+                    </Button>
                     {!props.noCancel && (
-                        <Button.Ghost onClick={props.onClose}>
+                        <Button variant="ghost" onClick={props.onClose}>
                             Cancel
-                        </Button.Ghost>
+                        </Button>
                     )}
                 </ModalFooter>
             </ModalContent>

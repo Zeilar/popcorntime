@@ -46,10 +46,10 @@ export default function Rooms() {
                 zIndex={50}
                 top={0}
             >
-                <Button.Primary ml="auto" onClick={prompt.onOpen}>
+                <Button ml="auto" variant="primary" onClick={prompt.onOpen}>
                     <DeleteIcon mr="0.5rem" />
                     Destroy all
-                </Button.Primary>
+                </Button>
             </Flex>
             {rooms.length > 0 ? (
                 <Grid

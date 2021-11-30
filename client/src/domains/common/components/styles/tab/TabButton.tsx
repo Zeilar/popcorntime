@@ -24,7 +24,8 @@ export default function TabButton({ active, children, ...props }: IProps) {
           }
         : {};
     return (
-        <Button.Unstyled
+        <Button
+            variant="unstyled"
             h="auto"
             textTransform="uppercase"
             p="1rem"
@@ -32,6 +33,6 @@ export default function TabButton({ active, children, ...props }: IProps) {
             {...props}
         >
             {children}
-        </Button.Unstyled>
+        </Button>
     );
 }

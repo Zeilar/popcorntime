@@ -103,9 +103,9 @@ export default function Router() {
                         {error}
                     </Modal.Header>
                     <Modal.Body>
-                        <Button.Primary onClick={reconnect} w="100%">
+                        <Button variant="primary" onClick={reconnect} w="100%">
                             Reconnect
-                        </Button.Primary>
+                        </Button>
                     </Modal.Body>
                 </Modal.Content>
             </Modal>

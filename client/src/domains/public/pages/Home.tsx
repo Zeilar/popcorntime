@@ -87,9 +87,9 @@ export function Home() {
                             onChange={e => setRoomName(e.target.value)}
                             mr="0.5rem"
                         />
-                        <Button.Secondary onClick={generateRoomName}>
+                        <Button onClick={generateRoomName} variant="secondary">
                             Generate
-                        </Button.Secondary>
+                        </Button>
                     </Flex>
                 </Flex>
                 <Flex flexDir="column" w="100%" mb="1rem">
@@ -122,14 +122,15 @@ export function Home() {
                         onChange={e => setRoomPassword(e.target.value)}
                     />
                 </Flex>
-                <Button.Primary
+                <Button
+                    variant="primary"
                     mt="1rem"
                     flexGrow={0}
                     type="submit"
                     isLoading={submitting}
                 >
                     Go
-                </Button.Primary>
+                </Button>
             </Flex>
         </Flex>
     );

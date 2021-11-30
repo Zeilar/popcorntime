@@ -5,12 +5,16 @@ import { config } from "./config";
 import { fonts } from "./fonts";
 import { shadows } from "./shadows";
 import { styles } from "./styles";
+import { globalDefaults } from "./globalDefaults";
 
-export default extendTheme({
-    config,
-    colors,
-    shadows,
-    fonts,
-    components,
-    styles,
-});
+export default extendTheme(
+    {
+        config,
+        colors,
+        shadows,
+        fonts,
+        components,
+        styles,
+    },
+    ...globalDefaults
+);

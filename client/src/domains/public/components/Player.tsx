@@ -107,13 +107,10 @@ export default function Player() {
                         variant="flushed"
                         px="1rem"
                         h="100%"
-                        rounded="none"
                         py="0.5rem"
                         value={videoInput}
                         onChange={e => setVideoInput(e.target.value)}
-                        borderColor="transparent"
                         placeholder="Change video"
-                        _focus={{ borderColor: "secondary.light" }}
                     />
                 </Flex>
             )}

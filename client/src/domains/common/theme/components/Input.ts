@@ -6,8 +6,17 @@ export const Input: StyleConfig = {
         outline: {
             field: {
                 _focus: {
-                    borderColor: colors.secondary.light,
+                    borderColor: "secondary.light",
                     boxShadow: `0 0 0 1px ${colors.secondary.light}`,
+                },
+            },
+        },
+        flushed: {
+            field: {
+                borderColor: "transparent",
+                _focus: {
+                    borderColor: "secondary.light",
+                    boxShadow: `0 1px 0 0 ${colors.secondary.light}`,
                 },
             },
         },
