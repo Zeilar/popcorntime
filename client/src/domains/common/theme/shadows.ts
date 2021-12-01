@@ -1,5 +1,3 @@
-import { colors } from "./colors";
-
 export const shadows = {
     sm: "0 0 5px 0 rgba(0, 0, 0, 0.15)",
     md: "0 0 10px 0 rgba(0, 0, 0, 0.25)",
@@ -12,5 +10,5 @@ export const shadows = {
         right: "1px 0 2px 0 rgba(0, 0, 0, 0.85)",
         all: "0 0 2px 0 rgba(0, 0, 0, 0.85)",
     },
-    outline: `0 0 0 2px ${colors.secondary.light}`,
+    outline: "0 0 0 2px var(--chakra-colors-secondary-light)",
 };

@@ -63,5 +63,17 @@ export const styles = {
                 boxShadow: "none !important",
             },
         },
+        ".Toastify__toast--error": {
+            border: "2px solid",
+            borderColor: "danger",
+        },
+        ".Toastify__toast--info": {
+            border: "2px solid",
+            borderColor: "secondary.light",
+        },
+        ".Toastify__toast--success": {
+            border: "2px solid",
+            borderColor: "success",
+        },
     },
 };

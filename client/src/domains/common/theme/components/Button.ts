@@ -1,6 +1,5 @@
 import theme from "@chakra-ui/theme";
 import { StyleConfig } from "@chakra-ui/theme-tools";
-import { colors } from "../colors";
 
 export const Button: StyleConfig = {
     baseStyle: {
@@ -19,7 +18,7 @@ export const Button: StyleConfig = {
             overflow: "hidden",
             transitionDuration: "0.25s",
             _focus: {
-                boxShadow: `0 0 0 2px ${colors.brand.light}`,
+                boxShadow: "0 0 0 2px var(--chakra-colors-brand-light)",
             },
         },
         secondary: {
@@ -28,12 +27,12 @@ export const Button: StyleConfig = {
             px: "2rem",
             py: "1rem",
             _focus: {
-                boxShadow: `0 0 0 2px ${colors.secondary.light}`,
+                boxShadow: "0 0 0 2px var(--chakra-colors-secondary-light)",
             },
         },
         ghost: {
             _focus: {
-                boxShadow: `0 0 0 2px ${colors.secondary.light}`,
+                boxShadow: "0 0 0 2px var(--chakra-colors-secondary-light)",
             },
         },
     },

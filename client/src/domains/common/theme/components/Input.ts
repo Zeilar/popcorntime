@@ -1,5 +1,4 @@
 import { StyleConfig } from "@chakra-ui/theme-tools";
-import { colors } from "../colors";
 
 export const Input: StyleConfig = {
     variants: {
@@ -7,7 +6,7 @@ export const Input: StyleConfig = {
             field: {
                 _focus: {
                     borderColor: "secondary.light",
-                    boxShadow: `0 0 0 1px ${colors.secondary.light}`,
+                    boxShadow: "0 0 0 1px var(--chakra-colors-secondary-light)",
                 },
             },
         },
@@ -16,7 +15,7 @@ export const Input: StyleConfig = {
                 borderColor: "transparent",
                 _focus: {
                     borderColor: "secondary.light",
-                    boxShadow: `0 1px 0 0 ${colors.secondary.light}`,
+                    boxShadow: "0 1px 0 0 var(--chakra-colors-secondary-light)",
                 },
             },
         },
