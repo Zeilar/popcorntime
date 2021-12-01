@@ -76,5 +76,8 @@ export const styles = {
             border: "2px solid",
             borderColor: "success",
         },
+        "input[disabled], textarea[disabled]": {
+            cursor: "not-allowed",
+        },
     },
 };
