@@ -31,5 +31,10 @@ export const Button: StyleConfig = {
                 boxShadow: `0 0 0 2px ${colors.secondary.light}`,
             },
         },
+        ghost: {
+            _focus: {
+                boxShadow: `0 0 0 2px ${colors.secondary.light}`,
+            },
+        },
     },
 };
