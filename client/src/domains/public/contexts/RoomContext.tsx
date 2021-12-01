@@ -10,10 +10,11 @@ interface IContext {
     sockets: ISocket[];
     dispatchSockets: React.Dispatch<any>;
     room: IRoomDetails | null;
-    setRoom: React.Dispatch<React.SetStateAction<IRoomDetails>>;
+    setRoom: React.Dispatch<React.SetStateAction<IRoomDetails | null>>;
     getLeader(): ISocket | undefined;
     isLeader(socketId: string | null | undefined): boolean | undefined;
     changeVideo(videoId: string): void;
+    setLeader(leader: string | null): void;
 }
 
 interface IProps {
@@ -28,14 +29,24 @@ export function RoomContextProvider({ children }: IProps) {
         true
     );
     const [sockets, dispatchSockets] = useReducer(socketsReducer, []);
-    const [room, setRoom] = useState<IRoomDetails>({} as IRoomDetails);
+    const [room, setRoom] = useState<IRoomDetails | null>(null);
 
     function changeVideo(videoId: string) {
-        setRoom(room => ({ ...room, videoId }));
+        if (room === null) {
+            return;
+        }
+        setRoom(room => ({ ...room!, videoId }));
     }
 
     function getLeader() {
         return sockets.find(socket => socket.id === room?.leader);
+    }
+
+    function setLeader(leader: string | null) {
+        if (!room || !leader) {
+            return;
+        }
+        setRoom(room => ({ ...room!, leader }));
     }
 
     function isLeader(socketId: string | null | undefined) {
@@ -56,6 +67,7 @@ export function RoomContextProvider({ children }: IProps) {
         getLeader,
         isLeader,
         changeVideo,
+        setLeader,
     };
 
     return (

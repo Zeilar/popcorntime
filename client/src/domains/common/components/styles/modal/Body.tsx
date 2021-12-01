@@ -1,5 +1,5 @@
-import { ModalBodyProps, ModalBody as ChakraModalBody } from "@chakra-ui/modal";
+import { Box, BoxProps } from "@chakra-ui/layout";
 
-export default function ModalBody(props: ModalBodyProps) {
-    return <ChakraModalBody {...props} />;
+export default function ModalBody(props: BoxProps) {
+    return <Box {...props} />;
 }

@@ -172,7 +172,11 @@ publicNamespace.on("connection", socket => {
         }
 
         if (room.isPrivate) {
-            if (!payload.password || !room.checkPassword(payload.password)) {
+            // Password should only be undefined when the client first visits the room.
+            if (!payload.password) {
+                return socket.emit("room:unauthorized");
+            }
+            if (!room.checkPassword(payload.password)) {
                 return socket.emit("room:error:password", {
                     message: "Failed joining room.",
                     reason: "Incorrect password.",

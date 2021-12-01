@@ -15,7 +15,6 @@ import { IRoomParams } from "../@types/params";
 import { IRoom } from "domains/common/@types/room";
 import Modal from "domains/common/components/styles/modal";
 import { useDisclosure } from "@chakra-ui/hooks";
-import { Text } from "@chakra-ui/layout";
 import { Input } from "@chakra-ui/input";
 import Button from "domains/common/components/styles/button";
 
@@ -23,7 +22,7 @@ export function Room() {
     const { roomId } = useParams<IRoomParams>();
     const { publicSocket } = useContext(WebsocketContext);
     const { push } = useHistory();
-    const { dispatchSockets, setRoom } = useContext(RoomContext);
+    const { dispatchSockets, setRoom, setLeader } = useContext(RoomContext);
     const { me } = useContext(MeContext);
     const [authorized, setAuthorized] = useState<boolean | null>(null);
     const passwordPrompt = useDisclosure();
@@ -113,12 +112,20 @@ export function Room() {
             if (me?.id === leader) {
                 toast.info("You are now the room leader.");
             }
-            setRoom(room => ({ ...room, leader }));
+            setLeader(leader);
         });
         return () => {
             publicSocket.off("room:leader:new");
         };
-    }, [publicSocket, setRoom, me?.id]);
+    }, [publicSocket, setRoom, me?.id, setLeader]);
+
+    useEffect(() => {
+        return () => {
+            setRoom({} as any);
+            setAuthorized(false);
+            setPassword("");
+        };
+    }, [roomId, setRoom]);
 
     useEffect(() => {
         publicSocket.on("socket:kick", () => {
@@ -133,14 +140,20 @@ export function Room() {
         if (publicSocket.connected) {
             publicSocket.emit("room:join", { roomId });
         }
-        publicSocket.on("room:error:password", () => {
+        publicSocket.on("room:error:password", (payload: IErrorPayload) => {
+            toast.error(`${payload.message}\n${payload.reason}`);
+        });
+        publicSocket.on("room:unauthorized", () => {
             setAuthorized(false);
         });
         publicSocket.on("connect", () => {
             publicSocket.emit("room:join", { roomId });
         });
         return () => {
-            publicSocket.emit("room:leave", roomId);
+            publicSocket
+                .emit("room:leave", roomId)
+                .off("room:error:password")
+                .off("room:unauthorized");
         };
     }, [publicSocket, roomId]);
 
@@ -157,20 +170,18 @@ export function Room() {
             <Modal
                 onClose={passwordPrompt.onClose}
                 isOpen={authorized === false}
-                size="lg"
             >
-                <Modal.Overlay />
                 <Modal.Content>
                     <Modal.Body>
-                        <Text as="h3" mb="0.5rem">
+                        <Modal.Header as="h3">
                             Please enter the password
-                        </Text>
+                        </Modal.Header>
                         <Flex as="form" onSubmit={authorize}>
                             <Input
                                 value={password}
                                 onChange={e => setPassword(e.target.value)}
                             />
-                            <Button ml="0.5rem" variant="primary">
+                            <Button ml="0.5rem" variant="primary" type="submit">
                                 Submit
                             </Button>
                         </Flex>

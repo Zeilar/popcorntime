@@ -84,7 +84,6 @@ export default function Router() {
                 isOpen={Boolean(error)}
                 onClose={prompt.onClose}
                 blockScrollOnMount
-                closeOnOverlayClick={false}
             >
                 <Modal.Overlay />
                 <Modal.Content>

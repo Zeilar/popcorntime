@@ -11,7 +11,6 @@ export const Button: StyleConfig = {
     },
     variants: {
         primary: {
-            ...theme.components.Button.variants.solid,
             backgroundColor: "brand.default",
             px: "2rem",
             py: "1rem",

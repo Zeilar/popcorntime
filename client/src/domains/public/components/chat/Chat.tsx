@@ -121,6 +121,12 @@ export function Chat() {
         chatElement.current?.scrollTo({ top: 9999 });
     }, [showServerMessages, showChat]);
 
+    useEffect(() => {
+        return () => {
+            setMessages([]);
+        };
+    }, [roomId]);
+
     const filteredMessages = showServerMessages
         ? messages
         : messages.filter(message => !message.serverMessage);
