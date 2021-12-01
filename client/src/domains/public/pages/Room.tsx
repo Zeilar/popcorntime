@@ -180,6 +180,7 @@ export function Room() {
                             <Input
                                 value={password}
                                 onChange={e => setPassword(e.target.value)}
+                                autoFocus
                             />
                             <Button ml="0.5rem" variant="primary" type="submit">
                                 Submit

@@ -18,7 +18,9 @@ export default function Modal({
     ...props
 }: IModalProps) {
     useEffect(() => {
-        document.body.style.overflowY = "hidden";
+        if (blockScrollOnMount) {
+            document.body.style.overflowY = "hidden";
+        }
         return () => {
             document.body.style.overflowY = "";
         };
@@ -29,10 +31,11 @@ export default function Modal({
             pos="fixed"
             transform="translateX(-50%)"
             left="50%"
-            bgColor="secondary.dark"
+            top="10rem"
+            bgColor="gray.600"
             zIndex={100000}
             rounded="base"
-            boxShadow="lg"
+            boxShadow="0 0 30px 0 rgba(0, 0, 0, 0.5)"
             opacity={isOpen ? 1 : 0}
             {...props}
         >

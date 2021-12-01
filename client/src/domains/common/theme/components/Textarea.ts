@@ -1,16 +1,15 @@
 import { StyleConfig } from "@chakra-ui/theme-tools";
 export const Textarea: StyleConfig = {
     variants: {
-        outline: {
-            field: {
-                _focus: {
-                    borderColor: "var(--chakra-colors-secondary-light)",
-                    boxShadow: "0 0 0 1px var(--chakra-colors-secondary-light)",
-                },
+        filled: {
+            bgColor: "gray.800",
+            _hover: {
+                bgColor: "gray.800",
             },
             _focus: {
-                borderColor: "var(--chakra-colors-secondary-light)",
-                boxShadow: "0 0 0 1px var(--chakra-colors-secondary-light)",
+                bgColor: "gray.700",
+                borderColor: "primary.light",
+                boxShadow: "0 0 0 1px var(--chakra-colors-primary-light)",
             },
         },
     },

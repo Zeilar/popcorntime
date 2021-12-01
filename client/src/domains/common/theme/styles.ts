@@ -57,7 +57,8 @@ export const styles = {
         },
         ".chakra-switch__track": {
             "&[data-checked]": {
-                backgroundColor: "var(--chakra-colors-brand-light) !important",
+                backgroundColor:
+                    "var(--chakra-colors-primary-light) !important",
             },
             "&[data-focus]": {
                 boxShadow: "none !important",
@@ -69,7 +70,7 @@ export const styles = {
         },
         ".Toastify__toast--info": {
             border: "2px solid",
-            borderColor: "secondary.light",
+            borderColor: "primary.light",
         },
         ".Toastify__toast--success": {
             border: "2px solid",

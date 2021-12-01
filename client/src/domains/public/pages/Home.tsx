@@ -84,7 +84,7 @@ export function Home() {
                             onChange={e => setRoomName(e.target.value)}
                             mr="0.5rem"
                         />
-                        <Button onClick={generateRoomName} variant="secondary">
+                        <Button onClick={generateRoomName} variant="primary">
                             Generate
                         </Button>
                     </Flex>

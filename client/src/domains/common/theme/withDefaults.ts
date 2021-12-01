@@ -2,7 +2,7 @@ import { withDefaultVariant } from "@chakra-ui/react";
 
 export const withDefaults = [
     withDefaultVariant({
-        variant: "outline",
+        variant: "filled",
         components: ["Input", "Textarea", "Select", "Checkbox"],
     }),
 ];

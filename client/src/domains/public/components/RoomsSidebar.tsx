@@ -1,6 +1,7 @@
 import { Flex, Text } from "@chakra-ui/layout";
 import env from "config/env";
 import { IRoom } from "domains/common/@types/room";
+import { ISocket } from "domains/common/@types/socket";
 import Button from "domains/common/components/styles/button";
 import { useLocalStorage } from "domains/common/hooks";
 import { useContext, useEffect, useState } from "react";
@@ -16,6 +17,9 @@ export default function RoomsSidebar() {
         publicSocket.emit("rooms:get");
         publicSocket.on("rooms:get", (rooms: IRoom[]) => {
             setRooms(rooms);
+        });
+        publicSocket.on("room:socket:join", (socket: ISocket) => {
+            //
         });
         publicSocket.on("rooms:new", (room: IRoom) => {
             setRooms(rooms => [...rooms, room]);
@@ -88,13 +92,13 @@ export default function RoomsSidebar() {
                         _hover={{ bgColor: "gray.600" }}
                         _active={{ bgColor: "gray.400" }}
                         _activeLink={{
-                            bgColor: "brand.dark",
+                            bgColor: "primary.dark",
                             _after: {
                                 content: `""`,
                                 pos: "absolute",
                                 w: "4px",
                                 h: "100%",
-                                bgColor: "brand.light",
+                                bgColor: "primary.light",
                                 right: 0,
                                 top: 0,
                             },
