@@ -10,6 +10,10 @@ ReactDOM.render(
         <App />
         <ToastContainer
             style={{ whiteSpace: "pre-wrap" }}
+            toastStyle={{
+                backgroundColor: "var(--chakra-colors-gray-600)",
+                boxShadow: "var(--chakra-shadows-lg)",
+            }}
             theme="dark"
             hideProgressBar={true}
             limit={3}
