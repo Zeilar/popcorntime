@@ -61,7 +61,7 @@ export function Room() {
         return () => {
             publicSocket.off("room:join");
         };
-    }, [publicSocket, dispatchSockets, setRoom, passwordPrompt]);
+    }, [publicSocket, dispatchSockets, setRoom, passwordPrompt, setMessages]);
 
     useEffect(() => {
         publicSocket.on("room:socket:join", (socket: ISocket) => {
