@@ -4,7 +4,6 @@ import ModalContent from "./Content";
 import ModalOverlay from "./Overlay";
 import { Flex, FlexProps } from "@chakra-ui/layout";
 import { useEffect } from "react";
-import { motion } from "framer-motion";
 
 interface IModalProps extends FlexProps {
     onClose(): void;
@@ -12,25 +11,21 @@ interface IModalProps extends FlexProps {
     blockScrollOnMount?: boolean;
 }
 
-const Motion = motion<FlexProps>(Flex);
-
-const animations = {
-    visible: {
-        top: "10rem",
-        opacity: 1,
-    },
-    hidden: {
-        top: "0rem",
-        opacity: 0,
-    },
-};
-
 export default function Modal({
     isOpen,
     blockScrollOnMount,
     children,
     ...props
 }: IModalProps) {
+    const animatedProps = isOpen
+        ? {
+              top: "10rem",
+              opacity: 1,
+          }
+        : {
+              top: "8rem",
+              opacity: 0,
+          };
     useEffect(() => {
         if (blockScrollOnMount) {
             document.body.style.overflowY = "hidden";
@@ -40,23 +35,22 @@ export default function Modal({
         };
     }, [blockScrollOnMount]);
     return (
-        <Motion
-            animate={isOpen ? "visible" : "hidden"}
-            variants={animations}
+        <Flex
+            transition="opacity 0.15s, top 0.25s"
             pos="fixed"
             transform="translateX(-50%)"
             left="50%"
-            top="10rem"
             bgColor="primary.darkest"
             zIndex={100000}
             rounded="base"
             pointerEvents={!isOpen ? "none" : undefined}
             boxShadow="0 0 30px 0 rgba(0, 0, 0, 0.5)"
             opacity={isOpen ? 1 : 0}
+            {...(animatedProps as any)}
             {...(props as any)}
         >
             {children}
-        </Motion>
+        </Flex>
     );
 }
 

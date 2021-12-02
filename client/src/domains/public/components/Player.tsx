@@ -142,6 +142,7 @@ export default function Player() {
                         src={curtain}
                         objectFit="cover"
                         h="100%"
+                        w="100%"
                         pos="absolute"
                         bgColor="gray.900"
                     />
