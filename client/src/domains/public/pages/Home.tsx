@@ -77,12 +77,13 @@ export function Home() {
                     <Text fontWeight={600} mb="0.25rem">
                         Name
                     </Text>
-                    <Flex>
+                    <Flex bgColor="gray.800" p="0.5rem">
                         <Input
                             placeholder="Fail compilations"
                             value={roomName}
                             onChange={e => setRoomName(e.target.value)}
                             mr="0.5rem"
+                            px="0.5rem"
                         />
                         <Button onClick={generateRoomName} variant="primary">
                             Generate
