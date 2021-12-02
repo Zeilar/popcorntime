@@ -23,8 +23,8 @@ export default function BrandLogo() {
                 </Text>
                 <Icon
                     pos="absolute"
-                    right="0.15rem"
-                    bottom="-0.75rem"
+                    right="0.25rem"
+                    bottom="-0.5rem"
                     w="4rem"
                     h="4rem"
                     as={PopcornIcon}

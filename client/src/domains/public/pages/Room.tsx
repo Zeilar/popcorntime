@@ -17,12 +17,14 @@ import Modal from "domains/common/components/styles/modal";
 import { useDisclosure } from "@chakra-ui/hooks";
 import { Input } from "@chakra-ui/input";
 import Button from "domains/common/components/styles/button";
+import { useTitle } from "domains/common/hooks";
 
 export function Room() {
     const { roomId } = useParams<IRoomParams>();
     const { publicSocket } = useContext(WebsocketContext);
     const { push } = useHistory();
-    const { dispatchSockets, setRoom, setLeader } = useContext(RoomContext);
+    const { dispatchSockets, setRoom, setLeader, room } =
+        useContext(RoomContext);
     const { me } = useContext(MeContext);
     const [authorized, setAuthorized] = useState<boolean | null>(null);
     const passwordPrompt = useDisclosure();
@@ -30,8 +32,13 @@ export function Room() {
 
     function authorize(e: React.FormEvent) {
         e.preventDefault();
+        if (!password) {
+            return;
+        }
         publicSocket.emit("room:join", { roomId, password });
     }
+
+    useTitle(room?.name && `SyncedTube | ${room.name}`);
 
     useEffect(() => {
         publicSocket.on("room:join", (payload: IRoom) => {

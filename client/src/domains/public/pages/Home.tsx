@@ -10,6 +10,7 @@ import ContainerSpinner from "domains/common/components/ContainerSpinner";
 import { AnimatePresence } from "framer-motion";
 import { WebsocketContext } from "../contexts";
 import { toast } from "react-toastify";
+import { useTitle } from "domains/common/hooks";
 
 export function Home() {
     const [submitting, setSubmitting] = useState(false);
@@ -29,6 +30,9 @@ export function Home() {
         if (submitting) {
             return toast.error("Room is already being created.");
         }
+        if (!roomName) {
+            return;
+        }
         setSubmitting(true);
         const room = {
             privacy: roomPrivacy,
@@ -39,6 +43,8 @@ export function Home() {
         }
         publicSocket.emit("room:create", room);
     }
+
+    useTitle("SyncedTube");
 
     useEffect(() => {
         publicSocket.on("disconnect", () => {
