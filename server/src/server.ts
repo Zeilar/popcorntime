@@ -133,9 +133,9 @@ publicNamespace.on("connection", socket => {
             password?: string;
         }) => {
             if ([...ws.rooms].length > env.MAX_ROOMS) {
-                return socket.emit("error", {
+                return socket.emit("room:create:error", {
                     message: "Failed creating room.",
-                    reason: "There are too many rooms already, please try again later.",
+                    reason: "There are too many rooms, please try again later.",
                 });
             }
             const room = new Room({ ...payload });

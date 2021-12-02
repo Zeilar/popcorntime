@@ -11,6 +11,7 @@ import { AnimatePresence } from "framer-motion";
 import { WebsocketContext } from "../contexts";
 import { toast } from "react-toastify";
 import { useTitle } from "domains/common/hooks";
+import { IErrorPayload } from "domains/common/@types/listener";
 
 export function Home() {
     const [submitting, setSubmitting] = useState(false);
@@ -47,22 +48,22 @@ export function Home() {
     useTitle("SyncedTube");
 
     useEffect(() => {
+        publicSocket.on("room:create:error", (payload: IErrorPayload) => {
+            toast.error(`${payload.message}\n${payload.reason}`);
+            setSubmitting(false);
+        });
         publicSocket.on("disconnect", () => {
             setSubmitting(false);
         });
         return () => {
-            publicSocket.off("disconnect");
+            publicSocket.off("disconnect").off("room:create:error");
         };
     }, [publicSocket]);
 
     return (
-        <Flex
-            flexDir="column"
-            alignItems="center"
-            justifyContent="center"
-            flexGrow={1}
-        >
+        <Flex flexDir="column" alignItems="center" flexGrow={1}>
             <Flex
+                mt="5rem"
                 flexDir="column"
                 bgColor="gray.600"
                 rounded="base"
@@ -83,15 +84,19 @@ export function Home() {
                     <Text fontWeight={600} mb="0.25rem">
                         Name
                     </Text>
-                    <Flex bgColor="gray.800" p="0.5rem">
+                    <Flex bgColor="gray.800">
                         <Input
+                            h="100%"
                             placeholder="Fail compilations"
+                            px="0.5rem"
                             value={roomName}
                             onChange={e => setRoomName(e.target.value)}
-                            mr="0.5rem"
-                            px="0.5rem"
                         />
-                        <Button onClick={generateRoomName} variant="primary">
+                        <Button
+                            onClick={generateRoomName}
+                            variant="primary"
+                            m="2px"
+                        >
                             Generate
                         </Button>
                     </Flex>
@@ -129,7 +134,7 @@ export function Home() {
                     type="submit"
                     isLoading={submitting}
                 >
-                    Go
+                    Submit
                 </Button>
             </Flex>
         </Flex>
