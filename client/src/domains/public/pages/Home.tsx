@@ -6,8 +6,6 @@ import { uniqueNamesGenerator } from "unique-names-generator";
 import { roomNameConfig } from "domains/common/config/uniqueNamesGenerator";
 import { Input } from "@chakra-ui/input";
 import Button from "domains/common/components/styles/button";
-import ContainerSpinner from "domains/common/components/ContainerSpinner";
-import { AnimatePresence } from "framer-motion";
 import { WebsocketContext } from "../contexts";
 import { toast } from "react-toastify";
 import { useTitle } from "domains/common/hooks";
@@ -74,9 +72,6 @@ export function Home() {
                 as="form"
                 onSubmit={submit}
             >
-                <AnimatePresence>
-                    {submitting && <ContainerSpinner />}
-                </AnimatePresence>
                 <Text as="h2" mb="1rem">
                     Create room
                 </Text>

@@ -28,6 +28,7 @@ export function Room() {
     const { me } = useContext(MeContext);
     const [authorized, setAuthorized] = useState<boolean | null>(null);
     const passwordPrompt = useDisclosure();
+    const [submittingPassword, setSubmittingPassword] = useState(false);
     const [password, setPassword] = useState("");
 
     function authorize(e: React.FormEvent) {
@@ -35,6 +36,7 @@ export function Room() {
         if (!password) {
             return;
         }
+        setSubmittingPassword(true);
         publicSocket.emit("room:join", { roomId, password });
     }
 
@@ -150,6 +152,7 @@ export function Room() {
         }
         publicSocket.on("room:error:password", (payload: IErrorPayload) => {
             toast.error(`${payload.message}\n${payload.reason}`);
+            setSubmittingPassword(false);
             setAuthorized(false);
         });
         publicSocket.on("room:unauthorized", () => {
@@ -198,6 +201,7 @@ export function Room() {
                                 ml="0.25rem"
                                 variant="primary"
                                 type="submit"
+                                isLoading={submittingPassword}
                             >
                                 Submit
                             </Button>
