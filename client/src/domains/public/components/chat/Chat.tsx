@@ -102,7 +102,7 @@ export function Chat() {
 
     useEffect(() => {
         scrollChat.current = false;
-        chatElement.current?.scrollTo({ top: 9999, behavior: "smooth" });
+        chatElement.current?.scrollTo({ top: 9999 });
     }, [messages]);
 
     useEffect(() => {

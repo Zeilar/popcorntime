@@ -65,7 +65,7 @@ export function Home() {
             <Flex
                 mt="5rem"
                 flexDir="column"
-                bgColor="gray.600"
+                bgColor="primary.darkest"
                 rounded="base"
                 boxShadow="elevate.all"
                 pos="relative"
@@ -84,7 +84,7 @@ export function Home() {
                     <Text fontWeight={600} mb="0.25rem">
                         Name
                     </Text>
-                    <Flex bgColor="gray.800">
+                    <Flex>
                         <Input
                             h="100%"
                             placeholder="Fail compilations"
@@ -93,9 +93,9 @@ export function Home() {
                             onChange={e => setRoomName(e.target.value)}
                         />
                         <Button
+                            ml="0.25rem"
                             onClick={generateRoomName}
                             variant="primary"
-                            m="2px"
                         >
                             Generate
                         </Button>

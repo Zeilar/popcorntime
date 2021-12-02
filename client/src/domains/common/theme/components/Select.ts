@@ -3,7 +3,7 @@ import { StyleConfig } from "@chakra-ui/theme-tools";
 export const Select: StyleConfig = {
     baseStyle: {
         field: {
-            bgColor: "gray.800",
+            bgColor: "primary.dark",
         },
     },
     variants: {
@@ -11,7 +11,7 @@ export const Select: StyleConfig = {
             field: {
                 rounded: "sm",
                 _hover: {
-                    bgColor: "gray.800",
+                    bgColor: "primary.dark",
                     cursor: "pointer",
                 },
                 _focus: {

@@ -16,6 +16,9 @@ export const Button: StyleConfig = {
             color: "primary.light",
             px: "2rem",
             py: "1rem",
+            _active: {
+                bgColor: "primary.darkest",
+            },
             _focus: {
                 boxShadow: "0 0 0 2px var(--chakra-colors-primary-light)",
             },

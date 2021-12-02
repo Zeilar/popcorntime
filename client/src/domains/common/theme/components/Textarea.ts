@@ -8,7 +8,7 @@ export const Textarea: StyleConfig = {
                 bgColor: "gray.800",
             },
             _focus: {
-                bgColor: "primary.dark",
+                bgColor: "primary.darkest",
                 borderColor: "primary.light",
                 boxShadow: "0 0 0 1px var(--chakra-colors-primary-light)",
             },

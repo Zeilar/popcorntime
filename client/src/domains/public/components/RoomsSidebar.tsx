@@ -89,8 +89,8 @@ export default function RoomsSidebar() {
                         to={`/room/${room.id}`}
                         key={room.id}
                         pos="relative"
-                        _hover={{ bgColor: "gray.600" }}
-                        _active={{ bgColor: "gray.400" }}
+                        _hover={{ bgColor: "primary.darkest" }}
+                        _active={{ bgColor: "primary.darkest" }}
                         _activeLink={{
                             bgColor: "primary.dark",
                             _after: {

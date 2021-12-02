@@ -47,9 +47,10 @@ export default function Modal({
             transform="translateX(-50%)"
             left="50%"
             top="10rem"
-            bgColor="gray.600"
+            bgColor="primary.darkest"
             zIndex={100000}
             rounded="base"
+            pointerEvents={!isOpen ? "none" : undefined}
             boxShadow="0 0 30px 0 rgba(0, 0, 0, 0.5)"
             opacity={isOpen ? 1 : 0}
             {...(props as any)}

@@ -14,7 +14,7 @@ export default function ContainerSpinner() {
             zIndex={1000}
         >
             <AbsoluteCenter>
-                <Spinner color="brand.default" size="xl" />
+                <Spinner />
             </AbsoluteCenter>
         </Motion>
     );

@@ -21,7 +21,7 @@ export default function PageSpinner() {
             exit={{ opacity: 0 }}
         >
             <AbsoluteCenter as={Flex} alignItems="center" flexDir="column">
-                <Spinner color="brand.default" size="xl" zIndex={1000} />
+                <Spinner zIndex={1000} />
                 <Text textAlign="center" mt="1rem">
                     Connecting...
                 </Text>

@@ -85,7 +85,6 @@ export function Room() {
                 });
             }
         );
-
         return () => {
             publicSocket
                 .off("room:socket:join")
@@ -104,7 +103,7 @@ export function Room() {
             push("/");
         });
         publicSocket.on("room:connection:error", (payload: IErrorPayload) => {
-            toast.error(`${payload.message} ${payload.reason}`);
+            toast.error(`${payload.message}\${payload.reason}`);
             push("/");
         });
         return () => {
@@ -117,7 +116,7 @@ export function Room() {
 
     useEffect(() => {
         publicSocket.on("room:leader:new", (leader: string | null) => {
-            if (me?.id === leader) {
+            if (me && me.id === leader) {
                 toast.info("You are now the room leader.");
             }
             setLeader(leader);
@@ -125,15 +124,16 @@ export function Room() {
         return () => {
             publicSocket.off("room:leader:new");
         };
-    }, [publicSocket, setRoom, me?.id, setLeader]);
+    }, [publicSocket, setRoom, me, setLeader]);
 
     useEffect(() => {
         return () => {
+            setMessages([]);
             setRoom({} as any);
             setAuthorized(false);
             setPassword("");
         };
-    }, [roomId, setRoom]);
+    }, [roomId, setRoom, setMessages]);
 
     useEffect(() => {
         publicSocket.on("socket:kick", () => {
@@ -150,6 +150,7 @@ export function Room() {
         }
         publicSocket.on("room:error:password", (payload: IErrorPayload) => {
             toast.error(`${payload.message}\n${payload.reason}`);
+            setAuthorized(false);
         });
         publicSocket.on("room:unauthorized", () => {
             setAuthorized(false);
@@ -190,8 +191,14 @@ export function Room() {
                                 onChange={e => setPassword(e.target.value)}
                                 type="password"
                                 autoFocus
+                                bgColor="primary.dark"
+                                placeholder="••••••••••"
                             />
-                            <Button ml="0.5rem" variant="primary" type="submit">
+                            <Button
+                                ml="0.25rem"
+                                variant="primary"
+                                type="submit"
+                            >
                                 Submit
                             </Button>
                         </Flex>

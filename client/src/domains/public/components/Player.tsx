@@ -1,11 +1,15 @@
 import { Input } from "@chakra-ui/input";
-import { Flex, Text } from "@chakra-ui/layout";
+import { AbsoluteCenter, Flex } from "@chakra-ui/layout";
 import { MeContext, WebsocketContext } from "domains/public/contexts";
 import { useEffect, useContext, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import YouTube from "react-youtube";
 import { RoomContext } from "../contexts";
 import PlayerControls from "./PlayerControls";
+
+import curtain from "domains/public/assets/images/curtain.png";
+import { Img } from "@chakra-ui/image";
+import { Spinner } from "@chakra-ui/spinner";
 
 export default function Player() {
     const { isLeader, room, changeVideo } = useContext(RoomContext);
@@ -115,41 +119,32 @@ export default function Player() {
             </Flex>
             <Flex
                 flexGrow={1}
-                sx={{ ".youtube": { flexGrow: 1, height: "100%" } }}
+                sx={{ ".youtube": { flexGrow: 1, height: "100%", zIndex: 10 } }}
                 bgColor="gray.900"
                 pos="relative"
                 justifyContent="center"
                 alignItems="center"
             >
                 {room?.videoId ? (
-                    <YouTube
-                        opts={{ width: "100%", height: "100%" }}
-                        ref={player}
-                        containerClassName="youtube"
-                        videoId={room.videoId}
-                    />
+                    <>
+                        <AbsoluteCenter zIndex={1}>
+                            <Spinner />
+                        </AbsoluteCenter>
+                        <YouTube
+                            opts={{ width: "100%", height: "100%" }}
+                            ref={player}
+                            containerClassName="youtube"
+                            videoId={room.videoId}
+                        />
+                    </>
                 ) : (
-                    <Flex
+                    <Img
+                        src={curtain}
+                        objectFit="cover"
                         h="100%"
-                        color="textMuted"
-                        alignItems="center"
-                        justifyContent="center"
                         pos="absolute"
                         bgColor="gray.900"
-                        w="100%"
-                        zIndex={10}
-                        top={0}
-                        left={0}
-                    >
-                        <Text
-                            as="h1"
-                            p="1rem"
-                            userSelect="none"
-                            textAlign="center"
-                        >
-                            No video selected
-                        </Text>
-                    </Flex>
+                    />
                 )}
             </Flex>
             <PlayerControls player={internalPlayer} />
