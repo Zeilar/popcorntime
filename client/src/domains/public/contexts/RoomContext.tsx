@@ -3,6 +3,8 @@ import { useLocalStorage } from "domains/common/hooks";
 import { socketsReducer } from "../state/reducers/room";
 import { ISocket } from "domains/common/@types/socket";
 import { IRoomDetails } from "domains/common/@types/room";
+import { IMessage } from "domains/common/@types/message";
+import env from "config/env";
 
 interface IContext {
     showServerMessages: boolean;
@@ -15,6 +17,9 @@ interface IContext {
     isLeader(socketId: string | null | undefined): boolean | undefined;
     changeVideo(videoId: string): void;
     setLeader(leader: string | null): void;
+    messages: IMessage[];
+    setMessages: React.Dispatch<React.SetStateAction<IMessage[]>>;
+    addMessage(message: IMessage): void;
 }
 
 interface IProps {
@@ -29,7 +34,18 @@ export function RoomContextProvider({ children }: IProps) {
         true
     );
     const [sockets, dispatchSockets] = useReducer(socketsReducer, []);
+    const [messages, setMessages] = useState<IMessage[]>([]);
     const [room, setRoom] = useState<IRoomDetails | null>(null);
+
+    function addMessage(message: IMessage) {
+        setMessages(messages => {
+            const array = [...messages, message];
+            if (array.length > env.ROOM_MAX_MESSAGES) {
+                array.shift();
+            }
+            return array;
+        });
+    }
 
     function changeVideo(videoId: string) {
         if (room === null) {
@@ -68,6 +84,9 @@ export function RoomContextProvider({ children }: IProps) {
         isLeader,
         changeVideo,
         setLeader,
+        messages,
+        addMessage,
+        setMessages,
     };
 
     return (

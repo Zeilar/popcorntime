@@ -1,5 +1,5 @@
 import { Box, Flex, Text } from "@chakra-ui/layout";
-import { useCallback, useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
 import { IMessage } from "domains/common/@types/message";
@@ -20,10 +20,10 @@ import { Textarea } from "@chakra-ui/textarea";
 
 export function Chat() {
     const [showChat, setShowChat] = useLocalStorage<boolean>("showChat", true);
-    const { showServerMessages } = useContext(RoomContext);
+    const { showServerMessages, messages, setMessages, addMessage } =
+        useContext(RoomContext);
     const { roomId } = useParams<IRoomParams>();
     const { me } = useContext(MeContext);
-    const [messages, setMessages] = useState<IMessage[]>([]);
     const scrollChat = useRef<boolean>(true);
     const chatElement = useRef<HTMLDivElement>(null);
     const input = useRef<HTMLTextAreaElement>(null);
@@ -33,16 +33,6 @@ export function Chat() {
     const settingsEl = useOnClickOutside<HTMLDivElement>(() => {
         setSettingsOpen(false);
     });
-
-    const addMessage = useCallback((message: IMessage) => {
-        setMessages(messages => {
-            const array = [...messages, message];
-            if (array.length > env.ROOM_MAX_MESSAGES) {
-                array.shift();
-            }
-            return array;
-        });
-    }, []);
 
     function toggle() {
         setShowChat(p => !p);
@@ -54,6 +44,12 @@ export function Chat() {
             addMessage(message);
         });
 
+        return () => {
+            publicSocket.off("message:new");
+        };
+    }, [addMessage, publicSocket]);
+
+    useEffect(() => {
         publicSocket.on(
             "message:error",
             (payload: IErrorPayload & { id: string }) => {
@@ -70,18 +66,10 @@ export function Chat() {
                 toast.error(`${payload.message} ${payload.reason}`);
             }
         );
-
-        publicSocket.on("room:join", (payload: { messages: IMessage[] }) => {
-            setMessages(payload.messages);
-        });
-
         return () => {
-            publicSocket
-                .off("message:new")
-                .off("message:error")
-                .off("room:join");
+            publicSocket.off("message:error");
         };
-    }, [addMessage, publicSocket]);
+    }, [publicSocket, setMessages]);
 
     function sendMessage() {
         if (!input.current || !me) {
@@ -120,12 +108,6 @@ export function Chat() {
     useEffect(() => {
         chatElement.current?.scrollTo({ top: 9999 });
     }, [showServerMessages, showChat]);
-
-    useEffect(() => {
-        return () => {
-            setMessages([]);
-        };
-    }, [roomId]);
 
     const filteredMessages = showServerMessages
         ? messages

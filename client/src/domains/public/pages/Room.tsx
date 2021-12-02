@@ -23,7 +23,7 @@ export function Room() {
     const { roomId } = useParams<IRoomParams>();
     const { publicSocket } = useContext(WebsocketContext);
     const { push } = useHistory();
-    const { dispatchSockets, setRoom, setLeader, room } =
+    const { dispatchSockets, setRoom, setLeader, room, setMessages } =
         useContext(RoomContext);
     const { me } = useContext(MeContext);
     const [authorized, setAuthorized] = useState<boolean | null>(null);
@@ -54,6 +54,7 @@ export function Room() {
                 privacy: payload.privacy,
                 videoId: payload.videoId,
             });
+            setMessages(payload.messages);
             setAuthorized(true);
             passwordPrompt.onClose();
         });
