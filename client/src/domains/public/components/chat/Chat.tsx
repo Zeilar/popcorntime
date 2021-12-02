@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
 import { IMessage } from "domains/common/@types/message";
 import Message from "domains/common/components/ChatMessage";
-import { MeContext, RoomContext } from "domains/public/contexts";
+import { MeContext } from "domains/public/contexts";
 import { ChatSettings } from "./";
 import { useLocalStorage, useOnClickOutside } from "domains/common/hooks";
 import { WebsocketContext } from "domains/public/contexts";
@@ -20,7 +20,10 @@ import { Textarea } from "@chakra-ui/textarea";
 
 export function Chat() {
     const [showChat, setShowChat] = useLocalStorage<boolean>("showChat", true);
-    const { showServerMessages } = useContext(RoomContext);
+    const [showServerMessages] = useLocalStorage(
+        "showServerMessages:chat",
+        true
+    );
     const { roomId } = useParams<IRoomParams>();
     const { me } = useContext(MeContext);
     const [messages, setMessages] = useState<IMessage[]>([]);

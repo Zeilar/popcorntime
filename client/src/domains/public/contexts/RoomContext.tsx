@@ -1,12 +1,9 @@
 import { createContext, ReactNode, useReducer, useState } from "react";
-import { useLocalStorage } from "domains/common/hooks";
 import { socketsReducer } from "../state/reducers/room";
 import { ISocket } from "domains/common/@types/socket";
 import { IRoomDetails } from "domains/common/@types/room";
 
 interface IContext {
-    showServerMessages: boolean;
-    setShowServerMessages: React.Dispatch<React.SetStateAction<boolean>>;
     sockets: ISocket[];
     dispatchSockets: React.Dispatch<any>;
     room: IRoomDetails | null;
@@ -24,10 +21,6 @@ interface IProps {
 export const RoomContext = createContext({} as IContext);
 
 export function RoomContextProvider({ children }: IProps) {
-    const [showServerMessages, setShowServerMessages] = useLocalStorage(
-        "showServerMessages:chat",
-        true
-    );
     const [sockets, dispatchSockets] = useReducer(socketsReducer, []);
     const [room, setRoom] = useState<IRoomDetails | null>(null);
 
@@ -58,8 +51,6 @@ export function RoomContextProvider({ children }: IProps) {
     }
 
     const values: IContext = {
-        showServerMessages,
-        setShowServerMessages,
         sockets,
         dispatchSockets,
         room,

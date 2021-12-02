@@ -65,15 +65,15 @@ export const styles = {
             },
         },
         ".Toastify__toast--error": {
-            border: "2px solid",
+            borderLeft: "4px solid",
             borderColor: "danger",
         },
         ".Toastify__toast--info": {
-            border: "2px solid",
+            borderLeft: "4px solid",
             borderColor: "primary.light",
         },
         ".Toastify__toast--success": {
-            border: "2px solid",
+            borderLeft: "4px solid",
             borderColor: "success",
         },
         "input[disabled], textarea[disabled]": {
