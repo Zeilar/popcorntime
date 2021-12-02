@@ -21,7 +21,14 @@ export const Button: StyleConfig = {
             },
         },
         ghost: {
+            _hover: {
+                bgColor: "gray.300",
+            },
+            _active: {
+                bgColor: "gray.300",
+            },
             _focus: {
+                bgColor: "gray.300",
                 boxShadow: "0 0 0 2px var(--chakra-colors-primary-light)",
             },
         },
