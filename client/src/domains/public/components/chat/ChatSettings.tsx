@@ -2,16 +2,15 @@ import { Flex, FlexProps, Text } from "@chakra-ui/layout";
 import { Divider, Switch } from "@chakra-ui/react";
 import { colors } from "data/colors";
 import Button from "domains/common/components/styles/button";
-import { useLocalStorage } from "domains/common/hooks";
+import { RoomContext } from "domains/public/contexts/RoomContext";
 import { motion } from "framer-motion";
+import { useContext } from "react";
 
 const MotionBox = motion<FlexProps>(Flex);
 
 export function ChatSettings() {
-    const [showServerMessages, setShowServerMessages] = useLocalStorage(
-        "showServerMessages:chat",
-        true
-    );
+    const { showServerMessages, setShowServerMessages } =
+        useContext(RoomContext);
     return (
         <MotionBox
             w="18rem"
