@@ -141,6 +141,9 @@ export function Room() {
         publicSocket.on("socket:kick", () => {
             toast.info("You were kicked from the server.");
         });
+        publicSocket.on("disconnect", () => {
+            setSubmittingPassword(false);
+        });
         return () => {
             publicSocket.off("socket:kick");
         };
