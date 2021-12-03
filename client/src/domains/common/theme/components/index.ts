@@ -5,6 +5,7 @@ import { Link } from "./Link";
 import { Textarea } from "./Textarea";
 import { Select } from "./Select";
 import { Spinner } from "./Spinner";
+import { Switch } from "./Switch";
 
 export const components = {
     Button,
@@ -14,4 +15,5 @@ export const components = {
     Textarea,
     Select,
     Spinner,
+    Switch,
 };

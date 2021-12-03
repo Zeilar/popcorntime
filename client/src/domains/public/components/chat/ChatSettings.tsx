@@ -34,7 +34,7 @@ export function ChatSettings() {
             <Text size="lg" mb="0.5rem">
                 Color
             </Text>
-            <Flex sx={{ gap: "0.5rem" }} flexWrap="wrap">
+            <Flex gridGap="0.5rem" flexWrap="wrap">
                 {colors.map(color => (
                     <Button.Color key={color} color={color} />
                 ))}

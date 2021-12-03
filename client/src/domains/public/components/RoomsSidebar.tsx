@@ -31,11 +31,7 @@ export default function RoomsSidebar() {
             setRooms([]);
         });
         return () => {
-            publicSocket
-                .off("rooms:get")
-                .off("rooms:new")
-                .off("rooms:destroy")
-                .off("disconnect");
+            publicSocket.off("rooms:get").off("rooms:new").off("rooms:destroy");
         };
     }, [publicSocket]);
 

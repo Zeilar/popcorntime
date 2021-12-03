@@ -52,18 +52,18 @@ export const styles = {
         h6: {
             fontSize: "md",
         },
-        ".chakra-switch": {
-            width: "fit-content",
-        },
-        ".chakra-switch__track": {
-            "&[data-checked]": {
-                backgroundColor:
-                    "var(--chakra-colors-primary-light) !important",
-            },
-            "&[data-focus]": {
-                boxShadow: "none !important",
-            },
-        },
+        // ".chakra-switch": {
+        //     width: "fit-content",
+        // },
+        // ".chakra-switch__track": {
+        //     "&[data-checked]": {
+        //         backgroundColor:
+        //             "var(--chakra-colors-primary-light) !important",
+        //     },
+        //     "&[data-focus]": {
+        //         boxShadow: "none !important",
+        //     },
+        // },
         ".Toastify__toast--error": {
             borderLeft: "4px solid",
             borderColor: "danger",

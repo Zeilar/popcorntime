@@ -54,7 +54,7 @@ export function Home() {
             setSubmitting(false);
         });
         return () => {
-            publicSocket.off("disconnect").off("room:create:error");
+            publicSocket.off("room:create:error");
         };
     }, [publicSocket]);
 
