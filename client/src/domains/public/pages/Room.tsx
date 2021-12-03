@@ -1,9 +1,8 @@
 import { useContext, useEffect, useState } from "react";
-import { Redirect, useHistory, useParams } from "react-router";
+import { useHistory, useParams } from "react-router";
 import { ISocket } from "domains/common/@types/socket";
 import { toast } from "react-toastify";
 import { Chat } from "../components/chat";
-import { validate } from "uuid";
 import { Flex } from "@chakra-ui/react";
 import { Color } from "domains/common/@types/color";
 import { MeContext, WebsocketContext } from "domains/public/contexts";
@@ -170,14 +169,6 @@ export function Room() {
                 .off("room:unauthorized");
         };
     }, [publicSocket, roomId]);
-
-    if (!validate(roomId)) {
-        toast.error(
-            "Invalid room id. Please click the button to generate one.",
-            { toastId: "invalid:room:id" } // For some reason this toast fires twice, prevent this with id
-        );
-        return <Redirect to="/" />;
-    }
 
     return (
         <Flex flexGrow={1} maxH="100%" overflow="hidden">
