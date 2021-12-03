@@ -41,7 +41,7 @@ export default function RoomsSidebar() {
             h="100%"
             zIndex={100}
             bgColor="gray.800"
-            w={isOpen ? "15rem" : "3rem"}
+            w={isOpen ? "18rem" : "3rem"}
             flexDir="column"
         >
             <Flex
@@ -78,7 +78,7 @@ export default function RoomsSidebar() {
                 rooms.map(room => (
                     <Flex
                         justifyContent="space-between"
-                        py="0.5rem"
+                        py="0.75rem"
                         px="1rem"
                         fontWeight={600}
                         as={NavLink}
@@ -86,7 +86,6 @@ export default function RoomsSidebar() {
                         key={room.id}
                         pos="relative"
                         _hover={{ bgColor: "primary.darkest" }}
-                        _active={{ bgColor: "primary.darkest" }}
                         _activeLink={{
                             bgColor: "primary.dark",
                             _after: {
