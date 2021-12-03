@@ -125,7 +125,7 @@ export default function Player() {
                 justifyContent="center"
                 alignItems="center"
             >
-                {room?.videoId ? (
+                {room?.videoId && (
                     <>
                         <AbsoluteCenter zIndex={1}>
                             <Spinner />
@@ -137,7 +137,8 @@ export default function Player() {
                             videoId={room.videoId}
                         />
                     </>
-                ) : (
+                )}
+                {room && !room.videoId && (
                     <Img
                         src={curtain}
                         objectFit="cover"
