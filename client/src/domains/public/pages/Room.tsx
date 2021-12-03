@@ -56,6 +56,7 @@ export function Room() {
                 videoId: payload.videoId,
             });
             setMessages(payload.messages);
+            setSubmittingPassword(false);
             setAuthorized(true);
             passwordPrompt.onClose();
         });
@@ -194,6 +195,7 @@ export function Room() {
                                 ml="0.25rem"
                                 variant="primary"
                                 type="submit"
+                                isSuccess={authorized}
                                 isLoading={submittingPassword}
                             >
                                 Submit
