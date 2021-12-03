@@ -33,7 +33,7 @@ export function ColorButton({ children, color, ...props }: IProps) {
             _hover={!active ? { bgColor: `${color}.300` } : undefined}
             boxShadow={
                 active
-                    ? `0 0 0 2px var(--chakra-colors-${color}-300)`
+                    ? `0 0 0 3px var(--chakra-colors-${color}-300)`
                     : undefined
             }
             {...props}
