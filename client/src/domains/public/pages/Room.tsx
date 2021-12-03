@@ -132,7 +132,6 @@ export function Room() {
         return () => {
             setMessages([]);
             setRoom({} as any);
-            setAuthorized(false);
             setPassword("");
         };
     }, [roomId, setRoom, setMessages]);
