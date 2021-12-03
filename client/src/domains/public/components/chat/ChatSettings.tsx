@@ -2,6 +2,7 @@ import { Flex, FlexProps, Text } from "@chakra-ui/layout";
 import { Divider, Switch } from "@chakra-ui/react";
 import { colors } from "data/colors";
 import Button from "domains/common/components/styles/button";
+import { MeContext } from "domains/public/contexts";
 import { RoomContext } from "domains/public/contexts/RoomContext";
 import { motion } from "framer-motion";
 import { useContext } from "react";
@@ -11,6 +12,7 @@ const MotionBox = motion<FlexProps>(Flex);
 export function ChatSettings() {
     const { showServerMessages, setShowServerMessages } =
         useContext(RoomContext);
+    const { me } = useContext(MeContext);
     return (
         <MotionBox
             w="18rem"
@@ -31,9 +33,16 @@ export function ChatSettings() {
                 },
             }}
         >
-            <Text size="lg" mb="0.5rem">
-                Color
-            </Text>
+            {me && (
+                <Text
+                    mb="0.5rem"
+                    color={`${me.color}.600`}
+                    fontWeight={700}
+                    size="lg"
+                >
+                    {me.username}
+                </Text>
+            )}
             <Flex gridGap="0.5rem" flexWrap="wrap">
                 {colors.map(color => (
                     <Button.Color key={color} color={color} />
