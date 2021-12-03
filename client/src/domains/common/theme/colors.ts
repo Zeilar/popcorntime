@@ -3,6 +3,7 @@ export const colors = {
         default: "#822838",
         light: "#a33346",
         dark: "#7a2634",
+        darkest: "#4a171f",
         900: "var(--chakra-colors-brand-default)",
         800: "var(--chakra-colors-brand-default)",
         700: "var(--chakra-colors-brand-default)",

@@ -1,8 +1,8 @@
 export const styles = {
     global: {
         "::selection": {
-            backgroundColor: "brand.light",
-            color: "white",
+            backgroundColor: "brand.darkest",
+            color: "textMuted",
         },
         body: {
             height: "100vh",
@@ -35,35 +35,29 @@ export const styles = {
             backgroundColor: "gray.900",
         },
         h1: {
+            fontWeight: 700,
             fontSize: "5xl",
         },
         h2: {
+            fontWeight: 700,
             fontSize: "3xl",
         },
         h3: {
+            fontWeight: 700,
             fontSize: "2xl",
         },
         h4: {
+            fontWeight: 700,
             fontSize: "xl",
         },
         h5: {
+            fontWeight: 600,
             fontSize: "lg",
         },
         h6: {
+            fontWeight: 600,
             fontSize: "md",
         },
-        // ".chakra-switch": {
-        //     width: "fit-content",
-        // },
-        // ".chakra-switch__track": {
-        //     "&[data-checked]": {
-        //         backgroundColor:
-        //             "var(--chakra-colors-primary-light) !important",
-        //     },
-        //     "&[data-focus]": {
-        //         boxShadow: "none !important",
-        //     },
-        // },
         ".Toastify__toast--error": {
             borderLeft: "4px solid",
             borderColor: "danger",
