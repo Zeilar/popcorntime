@@ -144,6 +144,7 @@ export default function Player() {
                         h="100%"
                         w="100%"
                         pos="absolute"
+                        pointerEvents="none"
                         bgColor="gray.900"
                     />
                 )}
