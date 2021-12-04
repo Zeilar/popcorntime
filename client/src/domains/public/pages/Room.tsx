@@ -129,14 +129,6 @@ export function Room() {
     }, [publicSocket, setRoom, me, setLeader]);
 
     useEffect(() => {
-        return () => {
-            setMessages([]);
-            setRoom({} as any);
-            setPassword("");
-        };
-    }, [roomId, setRoom, setMessages]);
-
-    useEffect(() => {
         publicSocket.on("socket:kick", () => {
             toast.info("You were kicked from the server.");
         });
@@ -170,6 +162,18 @@ export function Room() {
                 .off("room:unauthorized");
         };
     }, [publicSocket, roomId]);
+
+    useEffect(() => {
+        return () => {
+            setMessages([]);
+            setRoom({} as any);
+            setPassword("");
+            dispatchSockets({
+                type: Actions.SET_SOCKETS,
+                sockets: [],
+            });
+        };
+    }, [roomId, setRoom, setMessages, dispatchSockets]);
 
     return (
         <Flex flexGrow={1} maxH="100%" overflow="hidden" pos="relative">

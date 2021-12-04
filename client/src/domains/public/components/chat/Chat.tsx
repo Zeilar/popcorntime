@@ -43,7 +43,6 @@ export function Chat() {
             scrollChat.current = true;
             addMessage(message);
         });
-
         return () => {
             publicSocket.off("message:new");
         };
