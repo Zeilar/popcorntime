@@ -35,7 +35,7 @@ export default function Modal({
             {isOpen && (
                 <Motion
                     exit={{ top: "8rem", opacity: 0 }}
-                    animate={{ top: "10rem", opacity: [0.75, 1] }}
+                    animate={{ top: "10rem", opacity: 1 }}
                     top="8rem"
                     transition="opacity 0.15s, top 0.25s"
                     pos="fixed"
