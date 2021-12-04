@@ -25,7 +25,9 @@ export function SocketContextProvider({ children }: IProps) {
     };
 
     function getSocketsInRoom(room: IRoom) {
-        return sockets.filter(socket => room.sockets.includes(socket.id));
+        return sockets.filter(socket =>
+            room.sockets.some(element => element.id === socket.id)
+        );
     }
 
     return (

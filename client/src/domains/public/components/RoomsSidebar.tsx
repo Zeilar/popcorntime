@@ -1,39 +1,59 @@
 import { Flex, Text } from "@chakra-ui/layout";
 import env from "config/env";
 import { IRoom } from "domains/common/@types/room";
-import { ISocket } from "domains/common/@types/socket";
 import Button from "domains/common/components/styles/button";
 import { useLocalStorage } from "domains/common/hooks";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { WebsocketContext } from "../contexts";
+import { RoomsContext } from "../contexts/RoomsContext";
+import * as Actions from "domains/public/state/actions/rooms";
 
 export default function RoomsSidebar() {
     const { publicSocket } = useContext(WebsocketContext);
-    const [rooms, setRooms] = useState<IRoom[]>([]);
     const [isOpen, setIsOpen] = useLocalStorage("showRoomsSideBar", true);
+    const { rooms, dispatchRooms } = useContext(RoomsContext);
 
     useEffect(() => {
         publicSocket.emit("rooms:get");
+    }, [publicSocket]);
+
+    useEffect(() => {
         publicSocket.on("rooms:get", (rooms: IRoom[]) => {
-            setRooms(rooms);
+            dispatchRooms({
+                type: Actions.SET_ROOMS,
+                rooms,
+            });
         });
-        publicSocket.on("room:socket:join", (socket: ISocket) => {
-            //
+        publicSocket.on("rooms:socket:join", (socket: any) => {
+            console.log(socket);
         });
         publicSocket.on("rooms:new", (room: IRoom) => {
-            setRooms(rooms => [...rooms, room]);
+            dispatchRooms({
+                type: Actions.ADD_ROOM,
+                room,
+            });
         });
         publicSocket.on("rooms:destroy", (roomId: string) => {
-            setRooms(rooms => rooms.filter(room => room.id !== roomId));
+            dispatchRooms({
+                type: Actions.REMOVE_ROOM,
+                roomId,
+            });
         });
         publicSocket.on("disconnect", () => {
-            setRooms([]);
+            dispatchRooms({
+                type: Actions.SET_ROOMS,
+                rooms: [],
+            });
         });
         return () => {
-            publicSocket.off("rooms:get").off("rooms:new").off("rooms:destroy");
+            publicSocket
+                .off("rooms:get")
+                .off("rooms:new")
+                .off("rooms:destroy")
+                .off("rooms:socket:join");
         };
-    }, [publicSocket]);
+    }, [publicSocket, dispatchRooms]);
 
     return (
         <Flex

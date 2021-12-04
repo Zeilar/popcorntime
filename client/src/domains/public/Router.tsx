@@ -16,6 +16,7 @@ import Navbar from "./components/Navbar";
 import Footer from "domains/common/components/Footer";
 import RoomsSidebar from "./components/RoomsSidebar";
 import { validate } from "uuid";
+import { RoomsContextProvider } from "./contexts/RoomsContext";
 
 export default function Router() {
     const { publicSocket } = useContext(WebsocketContext);
@@ -104,21 +105,23 @@ export default function Router() {
             </Modal>
             <Navbar />
             <Flex flexGrow={1} overflow="hidden">
-                <RoomsSidebar />
-                <Switch>
-                    <Route path="/" exact>
-                        <Pages.Home />
-                    </Route>
-                    <Route path="/watch" exact>
-                        <Pages.Watch />
-                    </Route>
-                    <Route path="/room/:roomId" exact>
-                        <RoomContextProvider>
-                            <Pages.Room />
-                        </RoomContextProvider>
-                    </Route>
-                    <Route>404</Route>
-                </Switch>
+                <RoomsContextProvider>
+                    <RoomsSidebar />
+                    <Switch>
+                        <Route path="/" exact>
+                            <Pages.Home />
+                        </Route>
+                        <Route path="/watch" exact>
+                            <Pages.Watch />
+                        </Route>
+                        <Route path="/room/:roomId" exact>
+                            <RoomContextProvider>
+                                <Pages.Room />
+                            </RoomContextProvider>
+                        </Route>
+                        <Route>404</Route>
+                    </Switch>
+                </RoomsContextProvider>
             </Flex>
             <Footer />
         </Flex>
