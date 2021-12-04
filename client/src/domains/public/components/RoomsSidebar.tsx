@@ -78,8 +78,7 @@ export default function RoomsSidebar() {
                 rooms.map(room => (
                     <Flex
                         justifyContent="space-between"
-                        py="0.75rem"
-                        px="1rem"
+                        p="0.5rem"
                         fontWeight={600}
                         as={NavLink}
                         to={`/room/${room.id}`}
