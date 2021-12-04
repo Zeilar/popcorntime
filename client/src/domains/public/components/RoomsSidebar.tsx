@@ -9,6 +9,7 @@ import { NavLink } from "react-router-dom";
 import { WebsocketContext } from "../contexts";
 import { RoomsContext } from "../contexts/RoomsContext";
 import { RoomsActions } from "domains/public/state/actions/rooms";
+import MdiIcon from "domains/common/components/MdiIcon";
 
 export default function RoomsSidebar() {
     const { publicSocket } = useContext(WebsocketContext);
@@ -137,9 +138,12 @@ export default function RoomsSidebar() {
                         }}
                     >
                         <Text>{room.name}</Text>
-                        <Text ml="1rem" whiteSpace="nowrap">
-                            {`${room.sockets.length} / ${env.ROOM_MAX_SOCKETS}`}
-                        </Text>
+                        <Flex>
+                            <Text ml="1rem" whiteSpace="nowrap">
+                                {`${room.sockets.length} / ${env.ROOM_MAX_SOCKETS}`}
+                            </Text>
+                            <MdiIcon ml="0.5rem" path="mdiAccount" />
+                        </Flex>
                     </Flex>
                 ))}
         </Flex>
