@@ -13,19 +13,14 @@ export default function Navbar() {
             bgColor="gray.800"
             zIndex={1000}
             alignItems="center"
-            py="1rem"
-            px="2rem"
+            py="0.5rem"
+            px="1rem"
         >
             <Link to="/">
                 <BrandLogo />
             </Link>
             {me && (
-                <Text
-                    as="h2"
-                    ml="auto"
-                    fontWeight={600}
-                    color={`${me.color}.600`}
-                >
+                <Text as="h3" ml="auto" color={`${me.color}.600`}>
                     {me.username}
                 </Text>
             )}
