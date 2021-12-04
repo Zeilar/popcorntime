@@ -28,7 +28,7 @@ export default function Navbar() {
                 to="/"
                 as={RouterLink}
                 mr="1rem"
-                color="auto"
+                color="inherit"
                 _hover={{ textDecor: "none" }}
             >
                 <BrandLogo />

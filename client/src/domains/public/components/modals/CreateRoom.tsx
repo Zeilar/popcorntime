@@ -1,4 +1,4 @@
-import { Flex, Text } from "@chakra-ui/layout";
+import { Box, Flex, Text } from "@chakra-ui/layout";
 import { Select } from "@chakra-ui/select";
 import { RoomPrivacy } from "domains/common/@types/room";
 import { useContext, useEffect, useState } from "react";
@@ -71,64 +71,71 @@ export function CreateRoom({ isOpen, onClose }: IProps) {
     }, [publicSocket]);
 
     return (
-        <Modal isOpen={isOpen} onClose={onClose} onClickOutside={onClose}>
-            <Modal.Content as="form" onSubmit={submit}>
-                <Modal.Header>Create room</Modal.Header>
-                <Modal.Body>
-                    <Text fontWeight={600} mb="0.25rem">
-                        Name
-                    </Text>
-                    <Flex mb="1rem">
-                        <Input
-                            placeholder="Fail compilations"
-                            px="0.5rem"
-                            value={roomName}
-                            onChange={e => setRoomName(e.target.value)}
-                        />
-                        <Button
-                            ml="0.25rem"
-                            onClick={generateRoomName}
-                            variant="primary"
-                        >
-                            Generate
-                        </Button>
-                    </Flex>
-                    <Flex mb="1rem" flexDir="column">
+        <Box>
+            <Modal.Overlay isOpen={isOpen} />
+            <Modal isOpen={isOpen} onClose={onClose} onClickOutside={onClose}>
+                <Modal.Content as="form" onSubmit={submit}>
+                    <Modal.Header>Create room</Modal.Header>
+                    <Modal.Body>
                         <Text fontWeight={600} mb="0.25rem">
-                            Privacy
+                            Name
                         </Text>
-                        <Select
-                            defaultValue={roomPrivacy}
-                            onChange={e =>
-                                setRoomPrivacy(e.target.value as RoomPrivacy)
-                            }
-                        >
-                            <option value="public">Public</option>
-                            <option value="private">Private</option>
-                        </Select>
-                    </Flex>
-                    {roomPrivacy === "private" && (
-                        <Flex flexDir="column" w="100%">
-                            <Text mb="0.25rem" fontWeight={600}>
-                                Password
-                            </Text>
+                        <Flex mb="1rem">
                             <Input
-                                autoFocus
-                                type="password"
-                                value={roomPassword}
-                                onChange={e => setRoomPassword(e.target.value)}
+                                placeholder="Fail compilations"
+                                px="0.5rem"
+                                value={roomName}
+                                onChange={e => setRoomName(e.target.value)}
                             />
+                            <Button
+                                ml="0.25rem"
+                                onClick={generateRoomName}
+                                variant="primary"
+                            >
+                                Generate
+                            </Button>
                         </Flex>
-                    )}
-                    <Button
-                        variant="primary"
-                        type="submit"
-                        isLoading={submitting}
-                    >
-                        Submit
-                    </Button>
-                </Modal.Body>
-            </Modal.Content>
-        </Modal>
+                        <Flex mb="1rem" flexDir="column">
+                            <Text fontWeight={600} mb="0.25rem">
+                                Privacy
+                            </Text>
+                            <Select
+                                defaultValue={roomPrivacy}
+                                onChange={e =>
+                                    setRoomPrivacy(
+                                        e.target.value as RoomPrivacy
+                                    )
+                                }
+                            >
+                                <option value="public">Public</option>
+                                <option value="private">Private</option>
+                            </Select>
+                        </Flex>
+                        {roomPrivacy === "private" && (
+                            <Flex flexDir="column" w="100%">
+                                <Text mb="0.25rem" fontWeight={600}>
+                                    Password
+                                </Text>
+                                <Input
+                                    autoFocus
+                                    type="password"
+                                    value={roomPassword}
+                                    onChange={e =>
+                                        setRoomPassword(e.target.value)
+                                    }
+                                />
+                            </Flex>
+                        )}
+                        <Button
+                            variant="primary"
+                            type="submit"
+                            isLoading={submitting}
+                        >
+                            Submit
+                        </Button>
+                    </Modal.Body>
+                </Modal.Content>
+            </Modal>
+        </Box>
     );
 }
