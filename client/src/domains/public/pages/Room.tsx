@@ -172,10 +172,12 @@ export function Room() {
     }, [publicSocket, roomId]);
 
     return (
-        <Flex flexGrow={1} maxH="100%" overflow="hidden">
+        <Flex flexGrow={1} maxH="100%" overflow="hidden" pos="relative">
+            <Modal.Overlay isOpen={authorized === false} pos="absolute" />
             <Modal
                 onClose={passwordPrompt.onClose}
                 isOpen={authorized === false}
+                pos="absolute"
             >
                 <Modal.Content>
                     <Modal.Body>
