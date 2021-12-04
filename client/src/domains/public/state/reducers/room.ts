@@ -2,10 +2,7 @@ import { ISocket } from "domains/common/@types/socket";
 import { RoomAction } from "domains/public/@types/actions";
 import { RoomActions } from "../actions/room";
 
-export function socketsReducer(
-    sockets: ISocket[],
-    action: RoomAction
-): ISocket[] {
+export function socketsReducer(sockets: ISocket[], action: RoomAction) {
     function editSocket(socketId: string, cb: (socket: ISocket) => ISocket) {
         return sockets.map(socket => {
             if (socket.id !== socketId) {
