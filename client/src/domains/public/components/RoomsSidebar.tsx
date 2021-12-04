@@ -138,11 +138,11 @@ export default function RoomsSidebar() {
                         }}
                     >
                         <Text>{room.name}</Text>
-                        <Flex>
+                        <Flex alignItems="center">
                             <Text ml="1rem" whiteSpace="nowrap">
                                 {`${room.sockets.length} / ${env.ROOM_MAX_SOCKETS}`}
                             </Text>
-                            <MdiIcon ml="0.5rem" path="mdiAccount" />
+                            <MdiIcon ml="0.5rem" path="mdiAccountGroup" />
                         </Flex>
                     </Flex>
                 ))}
