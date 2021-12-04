@@ -47,7 +47,8 @@ export default function RoomsSidebar() {
             <Flex
                 alignItems="center"
                 justifyContent="space-between"
-                p="0.5rem"
+                px="1rem"
+                py="0.5rem"
                 zIndex={10}
                 boxShadow="elevate.bottom"
             >
@@ -78,7 +79,7 @@ export default function RoomsSidebar() {
                 rooms.map(room => (
                     <Flex
                         justifyContent="space-between"
-                        p="0.5rem"
+                        p="1rem"
                         fontWeight={600}
                         as={NavLink}
                         to={`/room/${room.id}`}

@@ -46,7 +46,8 @@ export default function RoomInfo({ onClose }: IRoomInfoProps) {
             zIndex={100}
         >
             <Flex
-                p="0.5rem"
+                px="1rem"
+                py="0.5rem"
                 justifyContent="space-between"
                 alignItems="center"
                 boxShadow="elevate.bottom"
@@ -62,7 +63,7 @@ export default function RoomInfo({ onClose }: IRoomInfoProps) {
                 </Text>
                 <Button.Icon mdi="mdiClose" onClick={onClose} />
             </Flex>
-            <Flex p="0.5rem" flexDir="column">
+            <Flex p="1rem" flexDir="column">
                 <RoomDetail label="id">{room?.id}</RoomDetail>
                 <RoomDetail label="name">{room?.name}</RoomDetail>
                 {leader && (

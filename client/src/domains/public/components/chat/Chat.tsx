@@ -124,7 +124,8 @@ export function Chat() {
             {roomInfo.isOpen && <RoomInfo onClose={roomInfo.onClose} />}
             <Flex
                 align="center"
-                p="0.5rem"
+                px="1rem"
+                py="0.5rem"
                 justifyContent="space-between"
                 boxShadow="elevate.bottom"
                 zIndex={env.ROOM_MAX_MESSAGES + 5}
