@@ -181,7 +181,7 @@ export function Room() {
             <Modal
                 onClose={passwordPrompt.onClose}
                 isOpen={authorized === false}
-                pos="absolute"
+                style={{ pos: "absolute" }}
             >
                 <Modal.Content>
                     <Modal.Body>

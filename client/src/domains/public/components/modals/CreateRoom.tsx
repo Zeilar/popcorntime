@@ -9,8 +9,14 @@ import Button from "domains/common/components/styles/button";
 import { toast } from "react-toastify";
 import { IErrorPayload } from "domains/common/@types/listener";
 import { WebsocketContext } from "domains/public/contexts";
+import Modal from "domains/common/components/styles/modal";
 
-export function CreateRoom() {
+interface IProps {
+    onClose?(): void;
+    isOpen?: boolean;
+}
+
+export function CreateRoom({ isOpen, onClose }: IProps) {
     const [submitting, setSubmitting] = useState(false);
     const [roomPrivacy, setRoomPrivacy] = useState<RoomPrivacy>("public");
     const [roomName, setRoomName] = useState(
@@ -43,6 +49,15 @@ export function CreateRoom() {
     }
 
     useEffect(() => {
+        publicSocket.on("room:create", () => {
+            setSubmitting(false);
+            if (onClose) {
+                onClose();
+            }
+        });
+    }, [publicSocket, onClose]);
+
+    useEffect(() => {
         publicSocket.on("room:create:error", (payload: IErrorPayload) => {
             toast.error(`${payload.message}\n${payload.reason}`);
             setSubmitting(false);
@@ -56,29 +71,15 @@ export function CreateRoom() {
     }, [publicSocket]);
 
     return (
-        <Flex flexDir="column" alignItems="center" flexGrow={1}>
-            <Flex
-                mt="5rem"
-                flexDir="column"
-                bgColor="primary.darkest"
-                rounded="base"
-                boxShadow="elevate.all"
-                pos="relative"
-                alignItems="flex-start"
-                p="2rem"
-                as="form"
-                onSubmit={submit}
-            >
-                <Text as="h2" mb="1rem">
-                    Create room
-                </Text>
-                <Flex flexDir="column" mb="1rem">
+        <Modal isOpen={isOpen} onClose={onClose} onClickOutside={onClose}>
+            <Modal.Content as="form" onSubmit={submit}>
+                <Modal.Header>Create room</Modal.Header>
+                <Modal.Body>
                     <Text fontWeight={600} mb="0.25rem">
                         Name
                     </Text>
-                    <Flex>
+                    <Flex mb="1rem">
                         <Input
-                            h="100%"
                             placeholder="Fail compilations"
                             px="0.5rem"
                             value={roomName}
@@ -92,43 +93,42 @@ export function CreateRoom() {
                             Generate
                         </Button>
                     </Flex>
-                </Flex>
-                <Flex flexDir="column" w="100%" mb="1rem">
-                    <Text fontWeight={600} mb="0.25rem">
-                        Privacy
-                    </Text>
-                    <Select
-                        defaultValue={roomPrivacy}
-                        onChange={e =>
-                            setRoomPrivacy(e.target.value as RoomPrivacy)
-                        }
-                    >
-                        <option value="public">Public</option>
-                        <option value="private">Private</option>
-                    </Select>
-                </Flex>
-                {roomPrivacy === "private" && (
-                    <Flex flexDir="column" w="100%">
-                        <Flex mb="0.25rem">
-                            <Text fontWeight={600}>Password</Text>
-                        </Flex>
-                        <Input
-                            type="password"
-                            value={roomPassword}
-                            onChange={e => setRoomPassword(e.target.value)}
-                        />
+                    <Flex mb="1rem" flexDir="column">
+                        <Text fontWeight={600} mb="0.25rem">
+                            Privacy
+                        </Text>
+                        <Select
+                            defaultValue={roomPrivacy}
+                            onChange={e =>
+                                setRoomPrivacy(e.target.value as RoomPrivacy)
+                            }
+                        >
+                            <option value="public">Public</option>
+                            <option value="private">Private</option>
+                        </Select>
                     </Flex>
-                )}
-                <Button
-                    variant="primary"
-                    mt="1rem"
-                    flexGrow={0}
-                    type="submit"
-                    isLoading={submitting}
-                >
-                    Submit
-                </Button>
-            </Flex>
-        </Flex>
+                    {roomPrivacy === "private" && (
+                        <Flex flexDir="column" w="100%">
+                            <Text mb="0.25rem" fontWeight={600}>
+                                Password
+                            </Text>
+                            <Input
+                                autoFocus
+                                type="password"
+                                value={roomPassword}
+                                onChange={e => setRoomPassword(e.target.value)}
+                            />
+                        </Flex>
+                    )}
+                    <Button
+                        variant="primary"
+                        type="submit"
+                        isLoading={submitting}
+                    >
+                        Submit
+                    </Button>
+                </Modal.Body>
+            </Modal.Content>
+        </Modal>
     );
 }

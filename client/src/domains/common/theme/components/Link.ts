@@ -3,10 +3,9 @@ import { StyleConfig } from "@chakra-ui/theme-tools";
 export const Link: StyleConfig = {
     baseStyle: {
         transition: "none",
-        color: "red",
+        color: "primary.light",
         _focus: {
             boxShadow: "none",
-            outlineColor: "primary.light",
         },
     },
 };

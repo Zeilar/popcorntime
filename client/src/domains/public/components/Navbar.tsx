@@ -1,11 +1,15 @@
-import { Flex, Text } from "@chakra-ui/layout";
+import { useDisclosure } from "@chakra-ui/hooks";
+import { Flex, Link, Text } from "@chakra-ui/layout";
 import BrandLogo from "domains/common/components/styles/BrandLogo";
 import { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 import { MeContext } from "../contexts";
+import Button from "domains/common/components/styles/button";
+import { CreateRoom } from "./modals";
 
 export default function Navbar() {
     const { me } = useContext(MeContext);
+    const createRoom = useDisclosure();
     return (
         <Flex
             as="nav"
@@ -16,9 +20,22 @@ export default function Navbar() {
             py="0.5rem"
             px="1rem"
         >
-            <Link to="/">
+            <CreateRoom
+                isOpen={createRoom.isOpen}
+                onClose={createRoom.onClose}
+            />
+            <Link
+                to="/"
+                as={RouterLink}
+                mr="1rem"
+                color="auto"
+                _hover={{ textDecor: "none" }}
+            >
                 <BrandLogo />
             </Link>
+            <Button variant="link" ml="1rem" onClick={createRoom.onOpen}>
+                Create room
+            </Button>
             {me && (
                 <Text as="h3" ml="auto" color={`${me.color}.600`}>
                     {me.username}

@@ -35,5 +35,15 @@ export const Button: StyleConfig = {
                 boxShadow: "0 0 0 2px var(--chakra-colors-primary-light)",
             },
         },
+        link: {
+            color: "inherit",
+            _hover: {
+                color: "primary.light",
+                textDecor: "none",
+            },
+            _active: {
+                color: "primary.light",
+            },
+        },
     },
 };

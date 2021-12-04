@@ -1,17 +1,17 @@
 import { isEqual } from "lodash";
 import { useEffect, useRef, useState } from "react";
 
-interface Args {
+interface IArgs {
     condition?: boolean;
     mouseup?: boolean;
     onError?: (error: Error) => void;
 }
 
 export function useOnClickOutside<T extends HTMLElement>(
-    callback: (element?: T) => void,
-    args?: Args
+    callback?: (element?: T) => void,
+    args?: IArgs
 ) {
-    const [memoArgs, setMemoArgs] = useState<Args>();
+    const [memoArgs, setMemoArgs] = useState<IArgs>();
     const ref = useRef<T>(null);
 
     // This is to avoid infinite loops in the useEffect as args contains non-primitives
@@ -34,7 +34,10 @@ export function useOnClickOutside<T extends HTMLElement>(
                 if (memoArgs?.condition === false) {
                     return;
                 }
-                if (!element.contains(e.target as Node)) {
+                if (
+                    !element.contains(e.target as Node) &&
+                    typeof callback === "function"
+                ) {
                     callback(element);
                 }
             } catch (error) {
