@@ -132,18 +132,13 @@ export class Room {
                 body: "joined the room",
             })
         );
+        publicNamespace.emit("rooms:socket:join", {
+            roomId: this.id,
+            socket: socket.dto,
+        });
         adminNamespace.emit("room:join", {
             socketId: socket.id,
             roomId: this.id,
-        });
-    }
-
-    public serverMessage(args: { socket: Socket; body: string }) {
-        return new Message({
-            roomId: this.id,
-            serverMessage: true,
-            socket: args.socket.dto,
-            body: args.body,
         });
     }
 
@@ -161,9 +156,22 @@ export class Room {
                 body: "left the room",
             })
         );
+        publicNamespace.emit("rooms:socket:leave", {
+            roomId: this.id,
+            socketId: socket.id,
+        });
         adminNamespace.emit("room:leave", {
             socketId: socket.id,
             roomId: this.id,
+        });
+    }
+
+    public serverMessage(args: { socket: Socket; body: string }) {
+        return new Message({
+            roomId: this.id,
+            serverMessage: true,
+            socket: args.socket.dto,
+            body: args.body,
         });
     }
 

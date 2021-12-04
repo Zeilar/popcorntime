@@ -1,6 +1,7 @@
 import { Flex, Text } from "@chakra-ui/layout";
 import env from "config/env";
 import { IRoom } from "domains/common/@types/room";
+import { ISocket } from "domains/common/@types/socket";
 import Button from "domains/common/components/styles/button";
 import { useLocalStorage } from "domains/common/hooks";
 import { useContext, useEffect } from "react";
@@ -25,9 +26,24 @@ export default function RoomsSidebar() {
                 rooms,
             });
         });
-        publicSocket.on("rooms:socket:join", (socket: any) => {
-            console.log(socket);
-        });
+        publicSocket.on(
+            "rooms:socket:join",
+            (payload: { roomId: string; socket: ISocket }) => {
+                dispatchRooms({
+                    type: Actions.ADD_SOCKET_TO_ROOM,
+                    ...payload,
+                });
+            }
+        );
+        publicSocket.on(
+            "rooms:socket:leave",
+            (payload: { roomId: string; socketId: string }) => {
+                dispatchRooms({
+                    type: Actions.REMOVE_SOCKET_FROM_ROOM,
+                    ...payload,
+                });
+            }
+        );
         publicSocket.on("rooms:new", (room: IRoom) => {
             dispatchRooms({
                 type: Actions.ADD_ROOM,
@@ -51,7 +67,8 @@ export default function RoomsSidebar() {
                 .off("rooms:get")
                 .off("rooms:new")
                 .off("rooms:destroy")
-                .off("rooms:socket:join");
+                .off("rooms:socket:join")
+                .off("rooms:socket:leave");
         };
     }, [publicSocket, dispatchRooms]);
 
