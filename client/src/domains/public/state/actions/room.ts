@@ -1,4 +1,6 @@
-export const SET_SOCKETS = "SET_SOCKETS";
-export const REMOVE_SOCKET = "REMOVE_SOCKET";
-export const ADD_SOCKET = "ADD_SOCKET";
-export const EDIT_SOCKET_COLOR = "EDIT_SOCKET_COLOR";
+export enum RoomActions {
+    SET_SOCKETS = "SET_SOCKETS",
+    REMOVE_SOCKET = "REMOVE_SOCKET",
+    ADD_SOCKET = "ADD_SOCKET",
+    EDIT_SOCKET_COLOR = "EDIT_SOCKET_COLOR",
+}

@@ -8,7 +8,6 @@ import { Color } from "domains/common/@types/color";
 import { MeContext, WebsocketContext } from "domains/public/contexts";
 import { IErrorPayload } from "domains/common/@types/listener";
 import { RoomContext } from "../contexts";
-import * as Actions from "../state/actions/room";
 import Player from "../components/Player";
 import { IRoomParams } from "../@types/params";
 import { IRoom } from "domains/common/@types/room";
@@ -17,6 +16,7 @@ import { useDisclosure } from "@chakra-ui/hooks";
 import { Input } from "@chakra-ui/input";
 import Button from "domains/common/components/styles/button";
 import { useTitle } from "domains/common/hooks";
+import { RoomActions } from "../state/actions/room";
 
 export function Room() {
     const { roomId } = useParams<IRoomParams>();
@@ -44,7 +44,7 @@ export function Room() {
     useEffect(() => {
         publicSocket.on("room:join", (payload: IRoom) => {
             dispatchSockets({
-                type: Actions.SET_SOCKETS,
+                type: RoomActions.SET_SOCKETS,
                 sockets: payload.sockets,
             });
             setRoom({
@@ -68,13 +68,13 @@ export function Room() {
     useEffect(() => {
         publicSocket.on("room:socket:join", (socket: ISocket) => {
             dispatchSockets({
-                type: Actions.ADD_SOCKET,
+                type: RoomActions.ADD_SOCKET,
                 socket,
             });
         });
         publicSocket.on("room:socket:leave", (socket: ISocket) => {
             dispatchSockets({
-                type: Actions.REMOVE_SOCKET,
+                type: RoomActions.REMOVE_SOCKET,
                 socketId: socket.id,
             });
         });
@@ -82,7 +82,7 @@ export function Room() {
             "room:socket:update:color",
             (payload: { color: Color; socketId: string }) => {
                 dispatchSockets({
-                    type: Actions.EDIT_SOCKET_COLOR,
+                    type: RoomActions.EDIT_SOCKET_COLOR,
                     ...payload,
                 });
             }
@@ -169,7 +169,7 @@ export function Room() {
             setRoom({} as any);
             setPassword("");
             dispatchSockets({
-                type: Actions.SET_SOCKETS,
+                type: RoomActions.SET_SOCKETS,
                 sockets: [],
             });
         };

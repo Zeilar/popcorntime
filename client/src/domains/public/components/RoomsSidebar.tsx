@@ -8,7 +8,7 @@ import { useContext, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { WebsocketContext } from "../contexts";
 import { RoomsContext } from "../contexts/RoomsContext";
-import * as Actions from "domains/public/state/actions/rooms";
+import { RoomsActions } from "domains/public/state/actions/rooms";
 
 export default function RoomsSidebar() {
     const { publicSocket } = useContext(WebsocketContext);
@@ -22,7 +22,7 @@ export default function RoomsSidebar() {
     useEffect(() => {
         publicSocket.on("rooms:get", (rooms: IRoom[]) => {
             dispatchRooms({
-                type: Actions.SET_ROOMS,
+                type: RoomsActions.SET_ROOMS,
                 rooms,
             });
         });
@@ -30,7 +30,7 @@ export default function RoomsSidebar() {
             "rooms:socket:join",
             (payload: { roomId: string; socket: ISocket }) => {
                 dispatchRooms({
-                    type: Actions.ADD_SOCKET_TO_ROOM,
+                    type: RoomsActions.ADD_SOCKET_TO_ROOM,
                     ...payload,
                 });
             }
@@ -39,26 +39,26 @@ export default function RoomsSidebar() {
             "rooms:socket:leave",
             (payload: { roomId: string; socketId: string }) => {
                 dispatchRooms({
-                    type: Actions.REMOVE_SOCKET_FROM_ROOM,
+                    type: RoomsActions.REMOVE_SOCKET_FROM_ROOM,
                     ...payload,
                 });
             }
         );
         publicSocket.on("rooms:new", (room: IRoom) => {
             dispatchRooms({
-                type: Actions.ADD_ROOM,
+                type: RoomsActions.ADD_ROOM,
                 room,
             });
         });
         publicSocket.on("rooms:destroy", (roomId: string) => {
             dispatchRooms({
-                type: Actions.REMOVE_ROOM,
+                type: RoomsActions.REMOVE_ROOM,
                 roomId,
             });
         });
         publicSocket.on("disconnect", () => {
             dispatchRooms({
-                type: Actions.SET_ROOMS,
+                type: RoomsActions.SET_ROOMS,
                 rooms: [],
             });
         });

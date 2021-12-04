@@ -1,10 +1,11 @@
 import { IRoom } from "domains/common/@types/room";
 import { createContext, ReactNode, useReducer } from "react";
+import { RoomsAction } from "../@types/actions";
 import { roomsReducer } from "../state/reducers/rooms";
 
 interface IContext {
     rooms: IRoom[];
-    dispatchRooms: React.Dispatch<any>;
+    dispatchRooms: React.Dispatch<RoomsAction>;
 }
 
 interface IProps {

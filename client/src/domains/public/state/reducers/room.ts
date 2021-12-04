@@ -1,7 +1,11 @@
 import { ISocket } from "domains/common/@types/socket";
-import * as Actions from "../actions/room";
+import { RoomAction } from "domains/public/@types/actions";
+import { RoomActions } from "../actions/room";
 
-export function socketsReducer(sockets: ISocket[], action: any): ISocket[] {
+export function socketsReducer(
+    sockets: ISocket[],
+    action: RoomAction
+): ISocket[] {
     function editSocket(socketId: string, cb: (socket: ISocket) => ISocket) {
         return sockets.map(socket => {
             if (socket.id !== socketId) {
@@ -12,14 +16,14 @@ export function socketsReducer(sockets: ISocket[], action: any): ISocket[] {
     }
 
     switch (action.type) {
-        case Actions.SET_SOCKETS:
+        case RoomActions.SET_SOCKETS:
             return action.sockets;
-        case Actions.ADD_SOCKET:
+        case RoomActions.ADD_SOCKET:
             return [...sockets, action.socket];
-        case Actions.REMOVE_SOCKET:
+        case RoomActions.REMOVE_SOCKET:
             return sockets.filter(socket => socket.id !== action.socketId);
-        case Actions.EDIT_SOCKET_COLOR:
-            return editSocket(action.socket, socket => ({
+        case RoomActions.EDIT_SOCKET_COLOR:
+            return editSocket(action.socketId, socket => ({
                 ...socket,
                 color: action.color,
             }));
