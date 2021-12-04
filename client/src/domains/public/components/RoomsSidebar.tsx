@@ -125,7 +125,6 @@ export default function RoomsSidebar() {
                         _hover={{ bgColor: "gray.600" }}
                         _activeLink={{
                             bgColor: "primary.dark",
-                            color: "primary.light",
                             _after: {
                                 content: `""`,
                                 pos: "absolute",
