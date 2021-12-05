@@ -43,6 +43,7 @@ export function Room() {
 
     useEffect(() => {
         publicSocket.on("room:join", (payload: IRoom) => {
+            console.log("joined", payload);
             dispatchSockets({
                 type: RoomActions.SET_SOCKETS,
                 sockets: payload.sockets,
@@ -166,7 +167,7 @@ export function Room() {
     useEffect(() => {
         return () => {
             setMessages([]);
-            setRoom({} as any);
+            setRoom(null);
             setPassword("");
             dispatchSockets({
                 type: RoomActions.SET_SOCKETS,

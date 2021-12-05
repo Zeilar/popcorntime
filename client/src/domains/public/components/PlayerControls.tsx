@@ -17,9 +17,10 @@ export default function PlayerControls({ player }: IProps) {
     const { me } = useContext(MeContext);
     const { publicSocket } = useContext(WebsocketContext);
     const { roomId } = useParams<IRoomParams>();
-    const [canControl, setCanControl] = useState(false);
 
     const isRoomLeader = isLeader(me?.id);
+
+    const canControl = isRoomLeader && player !== undefined && room?.videoId;
 
     async function sync() {
         if (!canControl) {
@@ -77,12 +78,6 @@ export default function PlayerControls({ player }: IProps) {
             player.removeEventListener("onStateChange", onStateChange);
         };
     }, [player, isRoomLeader, publicSocket, room?.videoId, roomId]);
-
-    useEffect(() => {
-        setCanControl(
-            Boolean(isRoomLeader && player !== undefined && room?.videoId)
-        );
-    }, [room?.videoId, isRoomLeader, player]);
 
     return (
         <Grid

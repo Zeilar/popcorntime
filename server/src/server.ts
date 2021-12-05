@@ -144,6 +144,7 @@ publicNamespace.on("connection", socket => {
                 videoId: room.videoId,
             });
             ws.addRoom(room);
+            room.addSocket(_socket);
         }
     );
 
@@ -162,6 +163,10 @@ publicNamespace.on("connection", socket => {
                 message: "Failed joining room.",
                 reason: "That room does not exist.",
             });
+        }
+
+        if (_socket.room === room) {
+            return;
         }
 
         if (room.isPrivate) {

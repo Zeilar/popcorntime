@@ -1,10 +1,19 @@
-import { createContext, ReactNode, useReducer, useState } from "react";
+import {
+    createContext,
+    ReactNode,
+    useContext,
+    useEffect,
+    useReducer,
+    useState,
+} from "react";
 import { useLocalStorage } from "domains/common/hooks";
 import { socketsReducer } from "../state/reducers/room";
 import { ISocket } from "domains/common/@types/socket";
 import { IRoomDetails } from "domains/common/@types/room";
 import { IMessage } from "domains/common/@types/message";
 import env from "config/env";
+import { WebsocketContext } from ".";
+import { RoomActions } from "../state/actions/room";
 
 interface IContext {
     showServerMessages: boolean;
@@ -29,6 +38,7 @@ interface IProps {
 export const RoomContext = createContext({} as IContext);
 
 export function RoomContextProvider({ children }: IProps) {
+    const { publicSocket } = useContext(WebsocketContext);
     const [showServerMessages, setShowServerMessages] = useLocalStorage(
         "showServerMessages:chat",
         true
@@ -72,6 +82,17 @@ export function RoomContextProvider({ children }: IProps) {
         const leader = getLeader();
         return leader && leader.id === socketId;
     }
+
+    useEffect(() => {
+        publicSocket.on("disconnect", () => {
+            setRoom(null);
+            dispatchSockets({
+                type: RoomActions.SET_SOCKETS,
+                sockets: [],
+            });
+            setMessages([]);
+        });
+    }, [publicSocket]);
 
     const values: IContext = {
         showServerMessages,

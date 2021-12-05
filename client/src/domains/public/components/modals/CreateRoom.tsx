@@ -55,6 +55,9 @@ export function CreateRoom({ isOpen, onClose }: IProps) {
                 onClose();
             }
         });
+        return () => {
+            publicSocket.off("room:create");
+        };
     }, [publicSocket, onClose]);
 
     useEffect(() => {
