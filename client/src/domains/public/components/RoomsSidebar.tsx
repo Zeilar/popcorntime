@@ -45,6 +45,16 @@ export default function RoomsSidebar() {
                 });
             }
         );
+        publicSocket.on(
+            "rooms:video:change",
+            (payload: { roomId: string; videoId: string }) => {
+                console.log(payload);
+                dispatchRooms({
+                    type: RoomsActions.UPDATE_ROOM_VIDEO,
+                    ...payload,
+                });
+            }
+        );
         publicSocket.on("rooms:new", (room: IRoom) => {
             dispatchRooms({
                 type: RoomsActions.ADD_ROOM,
