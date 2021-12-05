@@ -6,10 +6,10 @@ import { toast } from "react-toastify";
 import YouTube from "react-youtube";
 import { RoomContext } from "../contexts";
 import PlayerControls from "./PlayerControls";
-
 import curtain from "domains/public/assets/images/curtain.png";
 import { Img } from "@chakra-ui/image";
 import { Spinner } from "@chakra-ui/spinner";
+import classNames from "classnames";
 
 export default function Player() {
     const { isLeader, room, changeVideo } = useContext(RoomContext);
@@ -119,25 +119,29 @@ export default function Player() {
             </Flex>
             <Flex
                 flexGrow={1}
-                sx={{ ".youtube": { flexGrow: 1, height: "100%", zIndex: 10 } }}
+                sx={{
+                    ".youtube": { flexGrow: 1, height: "100%", zIndex: 10 },
+                    ".youtube.stale": {
+                        display: "none",
+                        pointerEvents: "none",
+                    },
+                }}
                 bgColor="gray.900"
                 pos="relative"
                 justifyContent="center"
                 alignItems="center"
             >
-                {room?.videoId && (
-                    <>
-                        <AbsoluteCenter zIndex={1}>
-                            <Spinner />
-                        </AbsoluteCenter>
-                        <YouTube
-                            opts={{ width: "100%", height: "100%" }}
-                            ref={player}
-                            containerClassName="youtube"
-                            videoId={room.videoId}
-                        />
-                    </>
-                )}
+                <AbsoluteCenter zIndex={1}>
+                    <Spinner />
+                </AbsoluteCenter>
+                <YouTube
+                    opts={{ width: "100%", height: "100%" }}
+                    ref={player}
+                    containerClassName={classNames("youtube", {
+                        stale: !Boolean(room?.videoId),
+                    })}
+                    videoId={room?.videoId ?? undefined}
+                />
                 {room && !room.videoId && (
                     <Img
                         src={curtain}
@@ -147,6 +151,7 @@ export default function Player() {
                         pos="absolute"
                         pointerEvents="none"
                         bgColor="gray.900"
+                        zIndex={10}
                     />
                 )}
             </Flex>

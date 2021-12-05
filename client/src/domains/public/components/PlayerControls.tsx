@@ -16,23 +16,24 @@ export default function PlayerControls({ player }: IProps) {
     const { me } = useContext(MeContext);
     const { publicSocket } = useContext(WebsocketContext);
     const { roomId } = useParams<IRoomParams>();
+    const [canControl, setCanControl] = useState(false);
 
     const isRoomLeader = isLeader(me?.id);
 
-    const canControl = isRoomLeader && player !== undefined && room?.videoId;
+    // console.log(room?.videoId, isRoomLeader, player);
 
     async function sync() {
         if (!canControl) {
             return;
         }
-        publicSocket.emit("video:sync", await player.getCurrentTime<true>());
+        publicSocket.emit("video:sync", await player?.getCurrentTime<true>());
     }
 
     function play() {
         if (!canControl) {
             return;
         }
-        player.playVideo();
+        player?.playVideo();
         publicSocket.emit("video:play");
     }
 
@@ -40,7 +41,7 @@ export default function PlayerControls({ player }: IProps) {
         if (!canControl) {
             return;
         }
-        player.pauseVideo();
+        player?.pauseVideo();
         publicSocket.emit("video:pause");
     }
 
@@ -48,7 +49,7 @@ export default function PlayerControls({ player }: IProps) {
         if (!canControl) {
             return;
         }
-        player.seekTo((await player.getCurrentTime<true>()) - 15, true);
+        player?.seekTo((await player?.getCurrentTime<true>()) - 15, true);
         publicSocket.emit("video:skip:backward");
     }
 
@@ -56,7 +57,7 @@ export default function PlayerControls({ player }: IProps) {
         if (!canControl) {
             return;
         }
-        player.seekTo((await player.getCurrentTime<true>()) + 15, true);
+        player?.seekTo((await player?.getCurrentTime<true>()) + 15, true);
         publicSocket.emit("video:skip:forward");
     }
 
@@ -73,6 +74,13 @@ export default function PlayerControls({ player }: IProps) {
             player.removeEventListener("onStateChange", onStateChange);
         };
     }, [player, isRoomLeader, publicSocket, room?.videoId, roomId]);
+
+    useEffect(() => {
+        console.log("can control?", isRoomLeader, player, room?.videoId);
+        setCanControl(
+            Boolean(isRoomLeader && player !== undefined && room?.videoId)
+        );
+    }, [room?.videoId, isRoomLeader, player]);
 
     return (
         <Flex
