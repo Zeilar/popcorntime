@@ -1,4 +1,5 @@
-import { Flex } from "@chakra-ui/layout";
+import { Flex, Grid } from "@chakra-ui/layout";
+import MdiIcon from "domains/common/components/MdiIcon";
 import Button from "domains/common/components/styles/button";
 import { WebsocketContext } from "domains/public/contexts";
 import { useState, useContext, useEffect } from "react";
@@ -59,6 +60,10 @@ export default function PlayerControls({ player }: IProps) {
         publicSocket.emit("video:skip:forward");
     }
 
+    function destroyRoom() {
+        publicSocket.emit("room:destroy", roomId);
+    }
+
     useEffect(() => {
         if (!player) {
             return;
@@ -80,47 +85,58 @@ export default function PlayerControls({ player }: IProps) {
     }, [room?.videoId, isRoomLeader, player]);
 
     return (
-        <Flex
-            justify="center"
-            align="center"
-            py="1rem"
+        <Grid
+            gridTemplateColumns="repeat(3, 1fr)"
+            p="1rem"
             gridGap="0.5rem"
+            alignItems="center"
+            justifyContent="center"
             boxShadow="elevate.top"
             zIndex={10}
         >
-            <Button.Icon
-                tooltip="Skip backward 15 seconds"
-                mdi="mdiSkipBackward"
-                onClick={skipBackward}
-                disabled={!canControl}
-            />
-            <Button.Icon
-                mdi="mdiSync"
-                tooltip="Sync with room"
-                onClick={sync}
-                disabled={!canControl}
-            />
-            {playerState === 1 ? (
+            <Flex gridColumnStart="2" justifyContent="center">
                 <Button.Icon
-                    tooltip="Pause"
-                    onClick={pause}
-                    mdi="mdiPause"
+                    tooltip="Skip backward 15 seconds"
+                    mdi="mdiSkipBackward"
+                    onClick={skipBackward}
                     disabled={!canControl}
                 />
-            ) : (
                 <Button.Icon
-                    tooltip="Play"
-                    onClick={play}
-                    mdi="mdiPlay"
+                    mdi="mdiSync"
+                    tooltip="Sync with room"
+                    onClick={sync}
                     disabled={!canControl}
                 />
-            )}
-            <Button.Icon
-                tooltip="Skip forward 15 seconds"
-                mdi="mdiSkipForward"
-                onClick={skipForward}
-                disabled={!canControl}
-            />
-        </Flex>
+                {playerState === 1 ? (
+                    <Button.Icon
+                        tooltip="Pause"
+                        onClick={pause}
+                        mdi="mdiPause"
+                        disabled={!canControl}
+                    />
+                ) : (
+                    <Button.Icon
+                        tooltip="Play"
+                        onClick={play}
+                        mdi="mdiPlay"
+                        disabled={!canControl}
+                    />
+                )}
+                <Button.Icon
+                    tooltip="Skip forward 15 seconds"
+                    mdi="mdiSkipForward"
+                    onClick={skipForward}
+                    disabled={!canControl}
+                />
+            </Flex>
+            <Flex justifyContent="flex-end">
+                {isRoomLeader && (
+                    <Button variant="danger" onClick={destroyRoom}>
+                        <MdiIcon path="mdiTrashCan" mr="0.25rem" />
+                        Destroy room
+                    </Button>
+                )}
+            </Flex>
+        </Grid>
     );
 }

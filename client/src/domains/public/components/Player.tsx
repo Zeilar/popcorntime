@@ -131,9 +131,11 @@ export default function Player() {
                 justifyContent="center"
                 alignItems="center"
             >
-                <AbsoluteCenter zIndex={1}>
-                    <Spinner />
-                </AbsoluteCenter>
+                {room && (
+                    <AbsoluteCenter zIndex={1}>
+                        <Spinner />
+                    </AbsoluteCenter>
+                )}
                 <YouTube
                     opts={{ width: "100%", height: "100%" }}
                     ref={player}

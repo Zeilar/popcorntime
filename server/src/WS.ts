@@ -88,10 +88,11 @@ export class WS {
     }
 
     public deleteRoom(room: Room) {
+        this.rooms.delete(room.id);
         this.io.to(room.id).emit("room:destroy");
+        publicNamespace.emit("room:destroy", room.id);
         publicNamespace.emit("rooms:destroy", room.id);
         adminNamespace.emit("room:destroy", room.id);
-        this.rooms.delete(room.id);
         Logger.info(`Deleted room ${room.name}`);
     }
 }

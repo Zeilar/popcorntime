@@ -23,6 +23,12 @@ export const Button: StyleConfig = {
                 boxShadow: "0 0 0 2px var(--chakra-colors-primary-light)",
             },
         },
+        danger: {
+            bgColor: "danger",
+            _hover: {
+                bgColor: "red.700",
+            },
+        },
         ghost: {
             _hover: {
                 bgColor: "gray.300",

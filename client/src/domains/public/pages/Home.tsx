@@ -29,8 +29,11 @@ export function Home() {
                         bgColor="gray.800"
                         boxShadow="elevate.all"
                         h="100%"
+                        rounded="sm"
+                        _hover={{ boxShadow: "outline" }}
                     >
                         <Img
+                            pointerEvents="none"
                             src={
                                 room.videoId
                                     ? urlService.youtubeThumbnail(room.videoId)

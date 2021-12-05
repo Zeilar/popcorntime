@@ -164,13 +164,6 @@ publicNamespace.on("connection", socket => {
             });
         }
 
-        if (room.id !== payload.roomId) {
-            return socket.emit("error", {
-                message: "Failed joining room.",
-                reason: "Something went wrong.",
-            });
-        }
-
         if (room.isPrivate) {
             // Password should only be undefined when the client first visits the room.
             if (!payload.password) {
@@ -193,6 +186,26 @@ publicNamespace.on("connection", socket => {
 
         _socket.leaveRoom();
         room.addSocket(_socket);
+    });
+
+    socket.on("room:destroy", (roomId: string) => {
+        const room = ws.rooms.get(roomId);
+
+        if (!room) {
+            return socket.emit("error", {
+                message: "Failed destroying room.",
+                reason: "That room does not exist.",
+            });
+        }
+
+        if (!room.isLeader(_socket.id)) {
+            return socket.emit("error", {
+                message: "Failed destroying room.",
+                reason: "You must be the room leader to do that.",
+            });
+        }
+
+        ws.deleteRoom(room);
     });
 
     socket.on("room:video:change", (videoId: string) => {
