@@ -20,8 +20,6 @@ export default function PlayerControls({ player }: IProps) {
 
     const isRoomLeader = isLeader(me?.id);
 
-    // console.log(room?.videoId, isRoomLeader, player);
-
     async function sync() {
         if (!canControl) {
             return;
@@ -76,7 +74,6 @@ export default function PlayerControls({ player }: IProps) {
     }, [player, isRoomLeader, publicSocket, room?.videoId, roomId]);
 
     useEffect(() => {
-        console.log("can control?", isRoomLeader, player, room?.videoId);
         setCanControl(
             Boolean(isRoomLeader && player !== undefined && room?.videoId)
         );

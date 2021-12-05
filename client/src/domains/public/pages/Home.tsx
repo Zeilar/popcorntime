@@ -3,7 +3,7 @@ import { Flex, Grid, Text } from "@chakra-ui/layout";
 import env from "config/env";
 import MdiIcon from "domains/common/components/MdiIcon";
 import { useTitle } from "domains/common/hooks";
-import { urlService } from "domains/common/services/urlService";
+import { urlService } from "domains/common/services";
 import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { RoomsContext } from "../contexts/RoomsContext";
