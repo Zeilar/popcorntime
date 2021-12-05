@@ -142,17 +142,7 @@ export function Room() {
     }, [publicSocket]);
 
     useEffect(() => {
-        if (publicSocket.connected) {
-            publicSocket.emit("room:join", { roomId });
-        }
-        publicSocket.on("room:error:password", (payload: IErrorPayload) => {
-            toast.error(`${payload.message}\n${payload.reason}`);
-            setSubmittingPassword(false);
-            setAuthorized(false);
-        });
-        publicSocket.on("room:unauthorized", () => {
-            setAuthorized(false);
-        });
+        publicSocket.emit("room:join", { roomId });
         publicSocket.on("connect", () => {
             publicSocket.emit("room:join", { roomId });
         });
@@ -163,6 +153,22 @@ export function Room() {
                 .off("room:unauthorized");
         };
     }, [publicSocket, roomId]);
+
+    useEffect(() => {
+        publicSocket.on("room:error:password", (payload: IErrorPayload) => {
+            toast.error(`${payload.message}\n${payload.reason}`);
+            setSubmittingPassword(false);
+            setAuthorized(false);
+            passwordPrompt.onOpen();
+        });
+        publicSocket.on("room:unauthorized", () => {
+            setAuthorized(false);
+            passwordPrompt.onOpen();
+        });
+        return () => {
+            publicSocket.off("room:error:password").off("room:unauthorized");
+        };
+    }, [publicSocket, passwordPrompt]);
 
     useEffect(() => {
         return () => {
@@ -180,7 +186,8 @@ export function Room() {
         <Flex flexGrow={1} maxH="100%" overflow="hidden">
             <Modal
                 onClose={passwordPrompt.onClose}
-                isOpen={authorized === false}
+                isOpen={passwordPrompt.isOpen}
+                closeOnOutsideClick
             >
                 <Modal.Content>
                     <Modal.Body>
