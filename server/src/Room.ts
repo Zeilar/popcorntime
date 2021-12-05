@@ -57,7 +57,6 @@ export class Room {
         }
         this.videoId = id;
         publicNamespace.to(this.id).emit("room:video:change", this.videoId);
-        console.log("rooms:video:change");
         publicNamespace.emit("rooms:video:change", {
             roomId: this.id,
             videoId: this.videoId,
