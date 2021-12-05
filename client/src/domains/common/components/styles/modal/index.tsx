@@ -8,16 +8,20 @@ import { AnimatePresence } from "framer-motion";
 import { useOnClickOutside } from "domains/common/hooks";
 
 interface IModalProps {
-    onClose?(): void;
+    onClose(): void;
     isOpen?: boolean;
     blockScrollOnMount?: boolean;
-    onClickOutside?(): void;
+    closeOnOutsideClick?: boolean;
     children: React.ReactNode;
     style?: FlexProps;
 }
 
 export default function Modal(props: IModalProps) {
-    const wrapperEl = useOnClickOutside<HTMLDivElement>(props.onClickOutside);
+    const wrapperEl = useOnClickOutside<HTMLDivElement>(() => {
+        if (props.isOpen && props.closeOnOutsideClick) {
+            props.onClose();
+        }
+    });
 
     useEffect(() => {
         if (props.blockScrollOnMount) {

@@ -12,7 +12,7 @@ import { WebsocketContext } from "domains/public/contexts";
 import Modal from "domains/common/components/styles/modal";
 
 interface IProps {
-    onClose?(): void;
+    onClose(): void;
     isOpen?: boolean;
 }
 
@@ -49,19 +49,13 @@ export function CreateRoom({ isOpen, onClose }: IProps) {
     }
 
     useEffect(() => {
-        publicSocket.on("disconnect", () => {
-            if (onClose) {
-                onClose();
-            }
-        });
+        publicSocket.on("disconnect", onClose);
         publicSocket.on("room:create", () => {
             setSubmitting(false);
             generateRoomName();
             setRoomPrivacy("public");
             setRoomPassword("");
-            if (onClose) {
-                onClose();
-            }
+            onClose();
         });
         return () => {
             publicSocket.off("room:create");
@@ -84,7 +78,7 @@ export function CreateRoom({ isOpen, onClose }: IProps) {
     return (
         <Box>
             <Modal.Overlay isOpen={isOpen} />
-            <Modal isOpen={isOpen} onClose={onClose} onClickOutside={onClose}>
+            <Modal isOpen={isOpen} onClose={onClose} closeOnOutsideClick>
                 <Modal.Content as="form" onSubmit={submit}>
                     <Modal.Header>Create room</Modal.Header>
                     <Modal.Body>
