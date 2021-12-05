@@ -79,7 +79,8 @@ export default function RoomsSidebar() {
             h="100%"
             zIndex={100}
             bgColor="gray.800"
-            w={isOpen ? "18rem" : "3rem"}
+            maxW={isOpen ? "18rem" : "3rem"}
+            minW={isOpen ? "18rem" : "3rem"}
             flexDir="column"
         >
             <Flex
