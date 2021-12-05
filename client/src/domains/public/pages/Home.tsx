@@ -13,6 +13,14 @@ export function Home() {
 
     useTitle("SyncedTube");
 
+    if (rooms.length === 0) {
+        return (
+            <Flex flexGrow={1} justifyContent="center" alignItems="center">
+                <Text as="h2">There are no rooms, why not create one?</Text>
+            </Flex>
+        );
+    }
+
     return (
         <Grid
             flexDir="column"
