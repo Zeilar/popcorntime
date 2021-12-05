@@ -177,15 +177,11 @@ export function Room() {
     }, [roomId, setRoom, setMessages, dispatchSockets]);
 
     return (
-        <Flex flexGrow={1} maxH="100%" overflow="hidden" pos="relative">
-            <Modal.Overlay
-                isOpen={authorized === false}
-                style={{ pos: "absolute" }}
-            />
+        <Flex flexGrow={1} maxH="100%" overflow="hidden">
+            <Modal.Overlay isOpen={authorized === false} />
             <Modal
                 onClose={passwordPrompt.onClose}
                 isOpen={authorized === false}
-                style={{ pos: "absolute" }}
             >
                 <Modal.Content>
                     <Modal.Body>
