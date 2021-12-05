@@ -112,7 +112,7 @@ export function CreateRoom({ isOpen, onClose }: IProps) {
                             </Select>
                         </Flex>
                         {roomPrivacy === "private" && (
-                            <Flex flexDir="column" w="100%">
+                            <Flex flexDir="column" w="100%" mb="1rem">
                                 <Text mb="0.25rem" fontWeight={600}>
                                     Password
                                 </Text>
