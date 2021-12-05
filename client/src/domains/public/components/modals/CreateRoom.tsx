@@ -49,8 +49,16 @@ export function CreateRoom({ isOpen, onClose }: IProps) {
     }
 
     useEffect(() => {
+        publicSocket.on("disconnect", () => {
+            if (onClose) {
+                onClose();
+            }
+        });
         publicSocket.on("room:create", () => {
             setSubmitting(false);
+            generateRoomName();
+            setRoomPrivacy("public");
+            setRoomPassword("");
             if (onClose) {
                 onClose();
             }

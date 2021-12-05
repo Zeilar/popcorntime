@@ -4,7 +4,7 @@ import ModalContent from "./Content";
 import ModalOverlay from "./Overlay";
 import { Box, Flex, FlexProps } from "@chakra-ui/layout";
 import { useEffect } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import { useOnClickOutside } from "domains/common/hooks";
 
 interface IModalProps {
@@ -15,8 +15,6 @@ interface IModalProps {
     children: React.ReactNode;
     style?: FlexProps;
 }
-
-const Motion = motion<FlexProps>(Flex);
 
 export default function Modal(props: IModalProps) {
     const wrapperEl = useOnClickOutside<HTMLDivElement>(props.onClickOutside);
@@ -37,7 +35,7 @@ export default function Modal(props: IModalProps) {
         <Box ref={wrapperEl}>
             <AnimatePresence>
                 {props.isOpen && (
-                    <Motion
+                    <Flex
                         exit={{ top: "8rem", opacity: 0 }}
                         animate={{ top: "10rem", opacity: 1 }}
                         top="8rem"
@@ -48,10 +46,10 @@ export default function Modal(props: IModalProps) {
                         zIndex={100000}
                         rounded="base"
                         boxShadow="0 0 30px 0 rgba(0, 0, 0, 0.5)"
-                        {...(props.style as any)}
+                        {...props.style}
                     >
                         {props.children}
-                    </Motion>
+                    </Flex>
                 )}
             </AnimatePresence>
         </Box>

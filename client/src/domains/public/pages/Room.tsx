@@ -178,7 +178,10 @@ export function Room() {
 
     return (
         <Flex flexGrow={1} maxH="100%" overflow="hidden" pos="relative">
-            <Modal.Overlay isOpen={authorized === false} pos="absolute" />
+            <Modal.Overlay
+                isOpen={authorized === false}
+                style={{ pos: "absolute" }}
+            />
             <Modal
                 onClose={passwordPrompt.onClose}
                 isOpen={authorized === false}
