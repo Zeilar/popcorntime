@@ -8,10 +8,8 @@ import { IErrorPayload } from "domains/common/@types/listener";
 import { useDisclosure } from "@chakra-ui/hooks";
 import Modal from "domains/common/components/styles/modal";
 import Button from "domains/common/components/styles/button";
-import PageSpinner from "domains/common/components/styles/PageSpinner";
 import MdiIcon from "domains/common/components/MdiIcon";
 import { Flex } from "@chakra-ui/layout";
-import { AnimatePresence } from "framer-motion";
 import Navbar from "./components/Navbar";
 import Footer from "domains/common/components/Footer";
 import RoomsSidebar from "./components/RoomsSidebar";
@@ -19,14 +17,12 @@ import { validate } from "uuid";
 
 export default function Router() {
     const { publicSocket } = useContext(WebsocketContext);
-    const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const { push } = useHistory();
     const prompt = useDisclosure();
 
     function reconnect() {
         setError(null);
-        setIsLoading(true);
         publicSocket.connect();
     }
 
@@ -34,22 +30,33 @@ export default function Router() {
         function genericErrorHandler(error: Error) {
             console.error(error);
             setError("Unable to establish a connection.");
-            setIsLoading(false);
         }
+
+        toast.promise(
+            new Promise((resolve, reject) => {
+                publicSocket.on("connect", () => {
+                    resolve(undefined);
+                });
+                publicSocket.on("error", reject);
+            }),
+            {
+                pending: "Loading",
+                success: "Connected",
+                error: "Connection refused",
+            }
+        );
 
         publicSocket.on("error", (payload: IErrorPayload) => {
             toast.error(`${payload.message}\n${payload.reason}`);
         });
         publicSocket.on("connect", () => {
             setError(null);
-            setIsLoading(false);
         });
         publicSocket.on("connect_failed", genericErrorHandler);
         publicSocket.on("connect_error", genericErrorHandler);
         publicSocket.on("disconnect", error => {
             console.error(error);
             setError("You were disconnected.");
-            setIsLoading(false);
         });
         return () => {
             publicSocket.off("error");
@@ -73,7 +80,6 @@ export default function Router() {
 
     return (
         <Flex flexDir="column" flexGrow={1} bgColor="gray.900">
-            <AnimatePresence>{isLoading && <PageSpinner />}</AnimatePresence>
             <Modal
                 isOpen={Boolean(error)}
                 onClose={prompt.onClose}

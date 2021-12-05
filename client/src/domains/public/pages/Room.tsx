@@ -43,7 +43,6 @@ export function Room() {
 
     useEffect(() => {
         publicSocket.on("room:join", (payload: IRoom) => {
-            console.log("joined", payload);
             dispatchSockets({
                 type: RoomActions.SET_SOCKETS,
                 sockets: payload.sockets,
