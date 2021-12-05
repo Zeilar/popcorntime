@@ -20,17 +20,25 @@ export function Home() {
             p="1rem"
             gridTemplateColumns="repeat(5, 1fr)"
             alignContent="start"
+            gridGap="0.5rem"
         >
             {rooms.map(room => (
-                <Link to={`/room/${room.id}`}>
+                <Link to={`/room/${room.id}`} key={room.id}>
                     <Flex
-                        key={room.id}
                         flexDir="column"
                         bgColor="gray.800"
                         boxShadow="elevate.all"
+                        h="100%"
                     >
-                        <Img src={urlService.youtubeThumbnail(room.videoId)} />
+                        <Img
+                            src={
+                                room.videoId
+                                    ? urlService.youtubeThumbnail(room.videoId)
+                                    : urlService.curtainImage
+                            }
+                        />
                         <Flex
+                            mt="auto"
                             p="1rem"
                             justifyContent="space-between"
                             flexWrap="wrap"

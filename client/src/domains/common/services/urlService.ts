@@ -1,3 +1,5 @@
+import curtain from "domains/public/assets/images/curtain.png";
+
 type Size = "hq" | "mq" | "sd";
 
 class UrlService {
@@ -5,6 +7,10 @@ class UrlService {
         return typeof videoId === "string"
             ? `https://img.youtube.com/vi/${videoId}/${size}default.jpg`
             : undefined;
+    }
+
+    public get curtainImage() {
+        return curtain;
     }
 }
 
