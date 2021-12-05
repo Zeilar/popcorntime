@@ -143,9 +143,6 @@ export function Room() {
 
     useEffect(() => {
         publicSocket.emit("room:join", { roomId });
-        publicSocket.on("connect", () => {
-            publicSocket.emit("room:join", { roomId });
-        });
         return () => {
             publicSocket
                 .emit("room:leave", roomId)
