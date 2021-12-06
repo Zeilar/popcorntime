@@ -6,21 +6,29 @@ export const Button: StyleConfig = {
         rounded: "sm",
         pos: "relative",
         _focus: {
-            boxShadow: "none",
+            boxShadow: "outline",
         },
     },
     variants: {
         primary: {
-            overflow: "hidden",
             bgColor: "primary.dark",
             color: "primary.light",
             px: "2rem",
             py: "1rem",
-            _active: {
-                bgColor: "primary.darkest",
+            boxShadow: "elevate.all",
+        },
+        secondary: {
+            border: "2px solid",
+            borderColor: "primary.light",
+            color: "primary.light",
+            px: "2rem",
+            py: "1rem",
+            _hover: {
+                bgColor: "primary.light",
+                color: "black",
             },
             _focus: {
-                boxShadow: "0 0 0 2px var(--chakra-colors-primary-light)",
+                boxShadow: "none",
             },
         },
         danger: {
@@ -38,7 +46,6 @@ export const Button: StyleConfig = {
             },
             _focus: {
                 bgColor: "gray.300",
-                boxShadow: "0 0 0 2px var(--chakra-colors-primary-light)",
             },
         },
         link: {
@@ -49,6 +56,9 @@ export const Button: StyleConfig = {
             },
             _active: {
                 color: "primary.light",
+            },
+            _focus: {
+                boxShadow: "none",
             },
         },
     },

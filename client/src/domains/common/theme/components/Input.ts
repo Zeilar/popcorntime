@@ -1,6 +1,11 @@
 import { StyleConfig } from "@chakra-ui/theme-tools";
 
 export const Input: StyleConfig = {
+    baseStyle: {
+        field: {
+            boxShadow: "elevate.all",
+        },
+    },
     variants: {
         filled: {
             field: {

@@ -4,6 +4,7 @@ export const Select: StyleConfig = {
     baseStyle: {
         field: {
             bgColor: "primary.dark",
+            boxShadow: "elevate.all",
         },
     },
     variants: {
