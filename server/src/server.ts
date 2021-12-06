@@ -144,7 +144,6 @@ publicNamespace.on("connection", socket => {
                 videoId: room.videoId,
             });
             ws.addRoom(room);
-            room.addSocket(_socket);
         }
     );
 

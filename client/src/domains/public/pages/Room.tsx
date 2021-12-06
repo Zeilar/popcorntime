@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { useHistory, useParams } from "react-router";
+import { useHistory, useLocation, useParams } from "react-router";
 import { ISocket } from "domains/common/@types/socket";
 import { toast } from "react-toastify";
 import { Chat } from "../components/chat";
@@ -29,6 +29,7 @@ export function Room() {
     const passwordPrompt = useDisclosure();
     const [submittingPassword, setSubmittingPassword] = useState(false);
     const [password, setPassword] = useState("");
+    const location = useLocation<{ password?: string } | undefined>();
 
     function authorize(e: React.FormEvent) {
         e.preventDefault();
@@ -39,7 +40,7 @@ export function Room() {
         publicSocket.emit("room:join", { roomId, password });
     }
 
-    useTitle(room?.name && `SyncedTube | ${room.name}`);
+    useTitle(room && `SyncedTube | ${room.name}`);
 
     useEffect(() => {
         publicSocket.on("room:join", (payload: IRoom) => {
@@ -136,17 +137,23 @@ export function Room() {
             setSubmittingPassword(false);
         });
         return () => {
-            publicSocket.off("socket:kick");
+            publicSocket
+                .off("socket:kick")
+                .off("room:error:password")
+                .off("room:unauthorized");
         };
     }, [publicSocket]);
 
     useEffect(() => {
-        publicSocket.emit("room:join", { roomId });
+        publicSocket.emit("room:join", {
+            roomId,
+            password: location.state?.password,
+        });
+    }, [publicSocket, roomId, location.state?.password]);
+
+    useEffect(() => {
         return () => {
-            publicSocket
-                .emit("room:leave", roomId)
-                .off("room:error:password")
-                .off("room:unauthorized");
+            publicSocket.emit("room:leave", roomId);
         };
     }, [publicSocket, roomId]);
 

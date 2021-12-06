@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 import { IErrorPayload } from "domains/common/@types/listener";
 import { WebsocketContext } from "domains/public/contexts";
 import Modal from "domains/common/components/styles/modal";
+import { useHistory } from "react-router";
 
 interface IProps {
     onClose(): void;
@@ -24,6 +25,7 @@ export function CreateRoom({ isOpen, onClose }: IProps) {
     );
     const [roomPassword, setRoomPassword] = useState("");
     const { publicSocket } = useContext(WebsocketContext);
+    const { push } = useHistory();
 
     function generateRoomName() {
         setRoomName(uniqueNamesGenerator(roomNameConfig));
@@ -50,17 +52,24 @@ export function CreateRoom({ isOpen, onClose }: IProps) {
 
     useEffect(() => {
         publicSocket.on("disconnect", onClose);
-        publicSocket.on("room:create", () => {
+    }, [publicSocket, onClose]);
+
+    useEffect(() => {
+        publicSocket.on("room:create", (payload: { roomId: string }) => {
             setSubmitting(false);
             generateRoomName();
             setRoomPrivacy("public");
             setRoomPassword("");
             onClose();
+            push({
+                pathname: `/room/${payload.roomId}`,
+                state: { password: roomPassword },
+            });
         });
         return () => {
             publicSocket.off("room:create");
         };
-    }, [publicSocket, onClose]);
+    }, [publicSocket, onClose, push, roomPassword]);
 
     useEffect(() => {
         publicSocket.on("room:create:error", (payload: IErrorPayload) => {
