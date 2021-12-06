@@ -104,7 +104,7 @@ export function CreateRoom({ isOpen, onClose }: IProps) {
                             <Button
                                 ml="0.25rem"
                                 onClick={generateRoomName}
-                                variant="primary"
+                                variant="secondary"
                             >
                                 Generate
                             </Button>

@@ -33,7 +33,7 @@ export default function Navbar() {
             >
                 <BrandLogo />
             </Link>
-            <Button variant="link" ml="1rem" onClick={createRoom.onOpen}>
+            <Button variant="secondary" ml="1rem" onClick={createRoom.onOpen}>
                 Create room
             </Button>
             {me && (
