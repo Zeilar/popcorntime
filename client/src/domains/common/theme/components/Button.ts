@@ -33,9 +33,6 @@ export const Button: StyleConfig = {
         },
         danger: {
             bgColor: "danger",
-            _hover: {
-                bgColor: "red.700",
-            },
         },
         ghost: {
             _hover: {

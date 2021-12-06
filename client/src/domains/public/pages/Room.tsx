@@ -12,11 +12,13 @@ import Player from "../components/Player";
 import { IRoomParams } from "../@types/params";
 import { IRoom } from "domains/common/@types/room";
 import Modal from "domains/common/components/styles/modal";
+import Alert from "domains/common/components/styles/alert";
 import { useDisclosure } from "@chakra-ui/hooks";
 import { Input } from "@chakra-ui/input";
 import Button from "domains/common/components/styles/button";
-import { useTitle } from "domains/common/hooks";
+import { useSessionStorage, useTitle } from "domains/common/hooks";
 import { RoomActions } from "../state/actions/room";
+import { Text } from "@chakra-ui/layout";
 
 export function Room() {
     const { roomId } = useParams<IRoomParams>();
@@ -28,8 +30,14 @@ export function Room() {
     const [authorized, setAuthorized] = useState<boolean | null>(null);
     const passwordPrompt = useDisclosure();
     const [submittingPassword, setSubmittingPassword] = useState(false);
-    const [password, setPassword] = useState("");
+    // const [password, setPassword] = useState("");
     const location = useLocation<{ password?: string } | undefined>();
+    const [passwordError, setPasswordError] = useState<null | string>(null);
+    console.log(location.state?.password);
+    const [password, setPassword] = useSessionStorage<string>(
+        roomId,
+        location.state?.password ?? ""
+    );
 
     function authorize(e: React.FormEvent) {
         e.preventDefault();
@@ -41,6 +49,12 @@ export function Room() {
     }
 
     useTitle(room && `SyncedTube | ${room.name}`);
+
+    useEffect(() => {
+        if (location.state?.password) {
+            setPassword(location.state.password);
+        }
+    }, [location.state?.password, setPassword]);
 
     useEffect(() => {
         publicSocket.on("room:join", (payload: IRoom) => {
@@ -58,6 +72,7 @@ export function Room() {
             });
             setMessages(payload.messages);
             setSubmittingPassword(false);
+            setPasswordError(null);
             setAuthorized(true);
             passwordPrompt.onClose();
         });
@@ -158,9 +173,9 @@ export function Room() {
     }, [publicSocket, roomId]);
 
     useEffect(() => {
-        publicSocket.on("room:error:password", (payload: IErrorPayload) => {
-            toast.error(`${payload.message}\n${payload.reason}`);
+        publicSocket.on("room:error:password", () => {
             setSubmittingPassword(false);
+            setPasswordError("Incorrect password.");
             setAuthorized(false);
             passwordPrompt.onOpen();
         });
@@ -183,7 +198,7 @@ export function Room() {
                 sockets: [],
             });
         };
-    }, [roomId, setRoom, setMessages, dispatchSockets]);
+    }, [roomId, setRoom, setMessages, dispatchSockets, setPassword]);
 
     return (
         <Flex flexGrow={1} maxH="100%" overflow="hidden">
@@ -198,6 +213,11 @@ export function Room() {
                         <Modal.Header as="h3">
                             Please enter the password
                         </Modal.Header>
+                        {passwordError && (
+                            <Alert.Error mb="0.5rem">
+                                <Text>{passwordError}</Text>
+                            </Alert.Error>
+                        )}
                         <Flex as="form" onSubmit={authorize}>
                             <Input
                                 value={password}
@@ -209,7 +229,7 @@ export function Room() {
                             />
                             <Button
                                 ml="0.25rem"
-                                variant="primary"
+                                variant="secondary"
                                 type="submit"
                                 isSuccess={authorized}
                                 isLoading={submittingPassword}
