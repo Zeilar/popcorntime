@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export function useStorage<T>(storage: Storage, key: string, fallback: T) {
-    const [data, setData] = useState<T>(() => {
+    const parseData = useCallback(() => {
         try {
             const data = storage.getItem(key);
             return typeof data === "string"
@@ -10,11 +10,17 @@ export function useStorage<T>(storage: Storage, key: string, fallback: T) {
         } catch (error) {
             return fallback;
         }
-    });
+    }, [key, storage, fallback]);
+
+    const [data, setData] = useState<T>(parseData);
 
     useEffect(() => {
         storage.setItem(key, JSON.stringify(data));
     }, [data, key, storage]);
+
+    useEffect(() => {
+        setData(parseData);
+    }, [key, storage, parseData]);
 
     return [data, setData] as const;
 }
