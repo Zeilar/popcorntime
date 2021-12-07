@@ -144,6 +144,7 @@ publicNamespace.on("connection", socket => {
                 videoId: room.videoId,
             });
             ws.addRoom(room);
+            room.addSocket(_socket);
         }
     );
 
@@ -165,7 +166,8 @@ publicNamespace.on("connection", socket => {
         }
 
         if (_socket.room === room) {
-            return;
+            console.log("room matches");
+            return socket.emit("room:join", room.dto);
         }
 
         if (room.isPrivate) {
@@ -174,10 +176,7 @@ publicNamespace.on("connection", socket => {
                 return socket.emit("room:unauthorized");
             }
             if (!room.checkPassword(payload.password)) {
-                return socket.emit("room:error:password", {
-                    message: "Failed joining room.",
-                    reason: "Incorrect password.",
-                });
+                return socket.emit("room:error:password");
             }
         }
 

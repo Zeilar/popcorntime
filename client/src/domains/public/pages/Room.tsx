@@ -16,9 +16,10 @@ import Alert from "domains/common/components/styles/alert";
 import { useDisclosure } from "@chakra-ui/hooks";
 import { Input } from "@chakra-ui/input";
 import Button from "domains/common/components/styles/button";
-import { useSessionStorage, useTitle } from "domains/common/hooks";
+import { useLocalStorage, useTitle } from "domains/common/hooks";
 import { RoomActions } from "../state/actions/room";
 import { Text } from "@chakra-ui/layout";
+import { Checkbox } from "@chakra-ui/checkbox";
 
 export function Room() {
     const { roomId } = useParams<IRoomParams>();
@@ -30,14 +31,15 @@ export function Room() {
     const [authorized, setAuthorized] = useState<boolean | null>(null);
     const passwordPrompt = useDisclosure();
     const [submittingPassword, setSubmittingPassword] = useState(false);
-    // const [password, setPassword] = useState("");
     const location = useLocation<{ password?: string } | undefined>();
+    const [storedPassword, setStoredPassword] = useLocalStorage<
+        string | undefined
+    >(`room-${roomId}-password`, undefined);
+    const [rememberPassword, setRememberPassword] = useState(false);
+    const [password, setPassword] = useState("");
     const [passwordError, setPasswordError] = useState<null | string>(null);
-    console.log(location.state?.password);
-    const [password, setPassword] = useSessionStorage<string>(
-        roomId,
-        location.state?.password ?? ""
-    );
+
+    console.log(location.state?.password, storedPassword);
 
     function authorize(e: React.FormEvent) {
         e.preventDefault();
@@ -49,12 +51,6 @@ export function Room() {
     }
 
     useTitle(room && `SyncedTube | ${room.name}`);
-
-    useEffect(() => {
-        if (location.state?.password) {
-            setPassword(location.state.password);
-        }
-    }, [location.state?.password, setPassword]);
 
     useEffect(() => {
         publicSocket.on("room:join", (payload: IRoom) => {
@@ -74,12 +70,25 @@ export function Room() {
             setSubmittingPassword(false);
             setPasswordError(null);
             setAuthorized(true);
+            if (rememberPassword) {
+                setStoredPassword(password || undefined);
+            }
             passwordPrompt.onClose();
         });
         return () => {
             publicSocket.off("room:join");
         };
-    }, [publicSocket, dispatchSockets, setRoom, passwordPrompt, setMessages]);
+    }, [
+        publicSocket,
+        dispatchSockets,
+        setRoom,
+        passwordPrompt,
+        setMessages,
+        setStoredPassword,
+        password,
+        rememberPassword,
+        room?.privacy,
+    ]);
 
     useEffect(() => {
         publicSocket.on("room:socket:join", (socket: ISocket) => {
@@ -164,7 +173,7 @@ export function Room() {
             roomId,
             password: location.state?.password,
         });
-    }, [publicSocket, roomId, location.state?.password]);
+    }, [publicSocket, location.state?.password, roomId]);
 
     useEffect(() => {
         return () => {
@@ -198,7 +207,7 @@ export function Room() {
                 sockets: [],
             });
         };
-    }, [roomId, setRoom, setMessages, dispatchSockets, setPassword]);
+    }, [roomId, setRoom, setMessages, dispatchSockets]);
 
     return (
         <Flex flexGrow={1} maxH="100%" overflow="hidden">
@@ -218,24 +227,44 @@ export function Room() {
                                 <Text>{passwordError}</Text>
                             </Alert.Error>
                         )}
-                        <Flex as="form" onSubmit={authorize}>
-                            <Input
-                                value={password}
-                                onChange={e => setPassword(e.target.value)}
-                                type="password"
-                                autoFocus
-                                bgColor="primary.dark"
-                                placeholder="••••••••••"
-                            />
-                            <Button
-                                ml="0.25rem"
-                                variant="secondary"
-                                type="submit"
-                                isSuccess={authorized}
-                                isLoading={submittingPassword}
-                            >
-                                Submit
-                            </Button>
+                        <Flex flexDir="column">
+                            <Flex as="form" onSubmit={authorize}>
+                                <Input
+                                    value={password}
+                                    onChange={e => setPassword(e.target.value)}
+                                    type="password"
+                                    autoFocus
+                                    bgColor="primary.dark"
+                                    placeholder="••••••••••"
+                                />
+                                <Button
+                                    ml="0.25rem"
+                                    variant="secondary"
+                                    type="submit"
+                                    isSuccess={authorized}
+                                    isLoading={submittingPassword}
+                                >
+                                    Submit
+                                </Button>
+                            </Flex>
+                            <Flex mt="0.5rem">
+                                <Checkbox
+                                    defaultChecked={false}
+                                    onChange={e =>
+                                        setRememberPassword(e.target.checked)
+                                    }
+                                    mr="0.5rem"
+                                    id="room-password-prompt-remember"
+                                />
+                                <Text
+                                    as="label"
+                                    htmlFor="room-password-prompt-remember"
+                                    userSelect="none"
+                                    cursor="pointer"
+                                >
+                                    Remember password?
+                                </Text>
+                            </Flex>
                         </Flex>
                     </Modal.Body>
                 </Modal.Content>
