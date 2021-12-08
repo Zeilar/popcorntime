@@ -243,27 +243,15 @@ export function Room() {
                                 <Text>{passwordError}</Text>
                             </Alert.Error>
                         )}
-                        <Flex flexDir="column">
-                            <Flex as="form" onSubmit={authorize}>
-                                <Input
-                                    value={password}
-                                    onChange={e => setPassword(e.target.value)}
-                                    type="password"
-                                    autoFocus
-                                    bgColor="primary.dark"
-                                    placeholder="••••••••••"
-                                />
-                                <Button
-                                    ml="0.25rem"
-                                    variant="secondary"
-                                    type="submit"
-                                    isSuccess={authorized}
-                                    isLoading={submittingPassword}
-                                    flexShrink={0}
-                                >
-                                    Submit
-                                </Button>
-                            </Flex>
+                        <Flex flexDir="column" as="form" onSubmit={authorize}>
+                            <Input
+                                value={password}
+                                onChange={e => setPassword(e.target.value)}
+                                type="password"
+                                autoFocus
+                                bgColor="primary.dark"
+                                placeholder="••••••••••"
+                            />
                             <Flex mt="0.5rem">
                                 <Checkbox
                                     isChecked={rememberPassword}
@@ -282,6 +270,14 @@ export function Room() {
                                     Remember password
                                 </Text>
                             </Flex>
+                            <Button
+                                mt="1rem"
+                                variant="primary"
+                                type="submit"
+                                isLoading={submittingPassword}
+                            >
+                                Submit
+                            </Button>
                         </Flex>
                     </Modal.Body>
                 </Modal.Content>
