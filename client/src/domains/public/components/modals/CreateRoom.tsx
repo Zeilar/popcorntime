@@ -100,7 +100,6 @@ export function CreateRoom({ isOpen, onClose }: IProps) {
                                 placeholder="Fail compilations"
                                 px="0.5rem"
                                 value={roomName}
-                                h="2.5rem"
                                 onChange={e => setRoomName(e.target.value)}
                             />
                             <Button
