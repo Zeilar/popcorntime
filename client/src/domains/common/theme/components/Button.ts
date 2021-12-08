@@ -41,6 +41,13 @@ export const Button: StyleConfig = {
                 boxShadow: "none",
             },
         },
+        input: {
+            bgColor: "primary.dark",
+            boxShadow: "elevate.all",
+            _focus: {
+                bgColor: "primary.darkest",
+            },
+        },
         danger: {
             bgColor: "danger",
             px: "0.5rem",

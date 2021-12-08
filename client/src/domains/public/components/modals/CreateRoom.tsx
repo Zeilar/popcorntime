@@ -103,7 +103,7 @@ export function CreateRoom({ isOpen, onClose }: IProps) {
                                 onChange={e => setRoomName(e.target.value)}
                             />
                             <Button
-                                variant="secondary"
+                                variant="input"
                                 ml="0.25rem"
                                 onClick={generateRoomName}
                                 h="2.5rem"
