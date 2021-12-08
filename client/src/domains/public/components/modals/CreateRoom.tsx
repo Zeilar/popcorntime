@@ -11,6 +11,7 @@ import { IErrorPayload } from "domains/common/@types/listener";
 import { WebsocketContext } from "domains/public/contexts";
 import Modal from "domains/common/components/styles/modal";
 import { useHistory } from "react-router";
+import MdiIcon from "domains/common/components/MdiIcon";
 
 interface IProps {
     onClose(): void;
@@ -99,15 +100,16 @@ export function CreateRoom({ isOpen, onClose }: IProps) {
                                 placeholder="Fail compilations"
                                 px="0.5rem"
                                 value={roomName}
+                                h="2.5rem"
                                 onChange={e => setRoomName(e.target.value)}
                             />
                             <Button
+                                variant="secondary"
                                 ml="0.25rem"
                                 onClick={generateRoomName}
-                                variant="secondary"
                                 flexShrink={0}
                             >
-                                Generate
+                                <MdiIcon path="mdiRefresh" />
                             </Button>
                         </Flex>
                         <Flex mb="1rem" flexDir="column">
