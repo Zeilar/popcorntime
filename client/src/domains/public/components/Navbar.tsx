@@ -6,6 +6,7 @@ import { Link as RouterLink } from "react-router-dom";
 import { MeContext } from "../contexts";
 import Button from "domains/common/components/styles/button";
 import { CreateRoom } from "./modals";
+import MdiIcon from "domains/common/components/MdiIcon";
 
 export default function Navbar() {
     const { me } = useContext(MeContext);
@@ -33,7 +34,8 @@ export default function Navbar() {
             >
                 <BrandLogo />
             </Link>
-            <Button variant="secondary" ml="1rem" onClick={createRoom.onOpen}>
+            <Button variant="primary" ml="1rem" onClick={createRoom.onOpen}>
+                <MdiIcon path="mdiPlus" mr="0.25rem" />
                 Create room
             </Button>
             {me && (

@@ -1,4 +1,4 @@
-import { Flex, Grid, Text } from "@chakra-ui/layout";
+import { Flex, Grid } from "@chakra-ui/layout";
 import MdiIcon from "domains/common/components/MdiIcon";
 import Button from "domains/common/components/styles/button";
 import {
@@ -136,9 +136,9 @@ export default function PlayerControls({ player }: IProps) {
                     </Button>
                 )}
                 {!authorized && (
-                    <Button variant="secondary" onClick={passwordPrompt.onOpen}>
+                    <Button variant="primary" onClick={passwordPrompt.onOpen}>
                         <MdiIcon path="mdiLock" mr="0.25rem" />
-                        <Text>Join</Text>
+                        Join
                     </Button>
                 )}
             </Flex>
