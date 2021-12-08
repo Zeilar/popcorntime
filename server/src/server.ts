@@ -166,7 +166,6 @@ publicNamespace.on("connection", socket => {
         }
 
         if (_socket.room === room) {
-            console.log("room matches");
             return socket.emit("room:join", room.dto);
         }
 
