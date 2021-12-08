@@ -224,7 +224,7 @@ publicNamespace.on("connection", socket => {
     });
 
     socket.on("rooms:get", () => {
-        socket.emit("rooms:get", ws.roomsDto);
+        socket.emit("rooms:get", ws.publicRoomsDto);
     });
 
     socket.on("video:skip:forward", () => {

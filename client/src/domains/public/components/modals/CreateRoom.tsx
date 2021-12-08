@@ -98,7 +98,6 @@ export function CreateRoom({ isOpen, onClose }: IProps) {
                         <Flex mb="1rem">
                             <Input
                                 placeholder="Fail compilations"
-                                px="0.5rem"
                                 value={roomName}
                                 onChange={e => setRoomName(e.target.value)}
                             />

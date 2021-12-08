@@ -6,6 +6,7 @@ import { Textarea } from "./Textarea";
 import { Select } from "./Select";
 import { Spinner } from "./Spinner";
 import { Switch } from "./Switch";
+import { Checkbox } from "./Checkbox";
 
 export const components = {
     Button,
@@ -16,4 +17,5 @@ export const components = {
     Select,
     Spinner,
     Switch,
+    Checkbox,
 };

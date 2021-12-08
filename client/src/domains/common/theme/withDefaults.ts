@@ -7,6 +7,6 @@ export const withDefaults = [
     }),
     withDefaultSize({
         size: "md",
-        components: ["Button"],
+        components: ["Button", "Checkbox"],
     }),
 ];
