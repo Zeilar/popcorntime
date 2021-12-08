@@ -32,14 +32,16 @@ export function Room() {
     const passwordPrompt = useDisclosure();
     const [submittingPassword, setSubmittingPassword] = useState(false);
     const location = useLocation<{ password?: string } | undefined>();
-    const [storedPassword, setStoredPassword] = useLocalStorage<
-        string | undefined
-    >(`room-${roomId}-password`, undefined);
-    const [rememberPassword, setRememberPassword] = useState(false);
+    const [rememberPassword, setRememberPassword] = useLocalStorage(
+        "room-remember-password",
+        false
+    );
+    const [storedPassword, setStoredPassword] = useLocalStorage(
+        `room-${roomId}-password`,
+        ""
+    );
     const [password, setPassword] = useState("");
     const [passwordError, setPasswordError] = useState<null | string>(null);
-
-    console.log(location.state?.password, storedPassword);
 
     function authorize(e: React.FormEvent) {
         e.preventDefault();
@@ -51,6 +53,12 @@ export function Room() {
     }
 
     useTitle(room && `SyncedTube | ${room.name}`);
+
+    useEffect(() => {
+        if (rememberPassword && passwordPrompt.isOpen) {
+            setPassword(storedPassword);
+        }
+    }, [storedPassword, passwordPrompt.isOpen, rememberPassword]);
 
     useEffect(() => {
         publicSocket.on("room:join", (payload: IRoom) => {
@@ -71,7 +79,7 @@ export function Room() {
             setPasswordError(null);
             setAuthorized(true);
             if (rememberPassword) {
-                setStoredPassword(password || undefined);
+                setStoredPassword(location.state?.password ?? password);
             }
             passwordPrompt.onClose();
         });
@@ -88,6 +96,7 @@ export function Room() {
         password,
         rememberPassword,
         room?.privacy,
+        location.state?.password,
     ]);
 
     useEffect(() => {
@@ -249,7 +258,7 @@ export function Room() {
                             </Flex>
                             <Flex mt="0.5rem">
                                 <Checkbox
-                                    defaultChecked={false}
+                                    isChecked={rememberPassword}
                                     onChange={e =>
                                         setRememberPassword(e.target.checked)
                                     }
@@ -262,7 +271,7 @@ export function Room() {
                                     userSelect="none"
                                     cursor="pointer"
                                 >
-                                    Remember password?
+                                    Remember password
                                 </Text>
                             </Flex>
                         </Flex>

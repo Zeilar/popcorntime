@@ -15,12 +15,12 @@ export function useStorage<T>(storage: Storage, key: string, fallback: T) {
     const [data, setData] = useState<T>(parseData);
 
     useEffect(() => {
-        storage.setItem(key, JSON.stringify(data));
-    }, [data, key, storage]);
+        setData(parseData());
+    }, [key, parseData]);
 
     useEffect(() => {
-        setData(parseData);
-    }, [key, storage, parseData]);
+        storage.setItem(key, JSON.stringify(data));
+    }, [key, storage, data]);
 
     return [data, setData] as const;
 }
