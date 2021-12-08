@@ -34,7 +34,6 @@ export function Room() {
         setLeader,
         room,
         setMessages,
-        authorized,
         setAuthorized,
     } = useContext(RoomContext);
     const { me } = useContext(MeContext);
