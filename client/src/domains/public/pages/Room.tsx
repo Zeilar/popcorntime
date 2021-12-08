@@ -5,7 +5,11 @@ import { toast } from "react-toastify";
 import { Chat } from "../components/chat";
 import { Flex } from "@chakra-ui/react";
 import { Color } from "domains/common/@types/color";
-import { MeContext, WebsocketContext } from "domains/public/contexts";
+import {
+    MeContext,
+    PasswordPromptModalContext,
+    WebsocketContext,
+} from "domains/public/contexts";
 import { IErrorPayload } from "domains/common/@types/listener";
 import { RoomContext } from "../contexts";
 import Player from "../components/Player";
@@ -13,7 +17,6 @@ import { IRoomParams } from "../@types/params";
 import { IRoom } from "domains/common/@types/room";
 import Modal from "domains/common/components/styles/modal";
 import Alert from "domains/common/components/styles/alert";
-import { useDisclosure } from "@chakra-ui/hooks";
 import { Input } from "@chakra-ui/input";
 import Button from "domains/common/components/styles/button";
 import { useLocalStorage, useTitle } from "domains/common/hooks";
@@ -35,7 +38,7 @@ export function Room() {
         setAuthorized,
     } = useContext(RoomContext);
     const { me } = useContext(MeContext);
-    const passwordPrompt = useDisclosure();
+    const passwordPrompt = useContext(PasswordPromptModalContext);
     const [submittingPassword, setSubmittingPassword] = useState(false);
     const location = useLocation<{ password?: string } | undefined>();
     const [rememberPassword, setRememberPassword] = useLocalStorage(

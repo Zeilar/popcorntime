@@ -1,7 +1,10 @@
 import { Flex, Grid, Text } from "@chakra-ui/layout";
 import MdiIcon from "domains/common/components/MdiIcon";
 import Button from "domains/common/components/styles/button";
-import { WebsocketContext } from "domains/public/contexts";
+import {
+    PasswordPromptModalContext,
+    WebsocketContext,
+} from "domains/public/contexts";
 import { useState, useContext, useEffect } from "react";
 import { useParams } from "react-router";
 import { IRoomParams } from "../@types/params";
@@ -16,6 +19,7 @@ export default function PlayerControls({ player }: IProps) {
     const { isLeader, room, authorized } = useContext(RoomContext);
     const { me } = useContext(MeContext);
     const { publicSocket } = useContext(WebsocketContext);
+    const passwordPrompt = useContext(PasswordPromptModalContext);
     const { roomId } = useParams<IRoomParams>();
 
     const isRoomLeader = isLeader(me?.id);
@@ -132,7 +136,7 @@ export default function PlayerControls({ player }: IProps) {
                     </Button>
                 )}
                 {!authorized && (
-                    <Button variant="secondary">
+                    <Button variant="secondary" onClick={passwordPrompt.onOpen}>
                         <MdiIcon path="mdiLock" mr="0.25rem" />
                         <Text>Join</Text>
                     </Button>
