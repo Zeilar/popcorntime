@@ -6,7 +6,11 @@ export const withDefaults = [
         components: ["Input", "Textarea", "Select", "Checkbox", "Switch"],
     }),
     withDefaultSize({
+        size: "btn-md",
+        components: ["Button"],
+    }),
+    withDefaultSize({
         size: "md",
-        components: ["Button", "Checkbox"],
+        components: ["Checkbox"],
     }),
 ];

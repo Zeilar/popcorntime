@@ -2,29 +2,33 @@ import { StyleConfig } from "@chakra-ui/theme-tools";
 
 export const Button: StyleConfig = {
     baseStyle: {
-        height: "revert",
         fontFamily: "Poppins",
         transitionDuration: "0.1s",
         rounded: "sm",
         pos: "relative",
+        p: "0.5rem",
         _focus: {
             boxShadow: "outline",
         },
     },
     sizes: {
-        md: {
-            paddingInline: 0,
-            p: "0.5rem",
+        "btn-md": {
+            fontSize: "md",
+        },
+        "btn-lg": {
+            paddingX: "1.5rem",
+            fontSize: "lg",
         },
     },
     variants: {
         primary: {
-            bgColor: "primary.dark",
-            color: "primary.light",
-            boxShadow: "elevate.all",
+            bgColor: "primary.light",
+            color: "black",
+            _focus: {
+                boxShadow: "none",
+            },
         },
         secondary: {
-            paddingInline: "0",
             border: "2px solid",
             borderColor: "primary.light",
             color: "primary.light",

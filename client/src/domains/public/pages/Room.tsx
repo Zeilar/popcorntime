@@ -270,10 +270,11 @@ export function Room() {
                                 </Text>
                             </Flex>
                             <Button
-                                mt="1rem"
+                                mt="2rem"
                                 variant="primary"
                                 type="submit"
                                 isLoading={submittingPassword}
+                                size="btn-lg"
                             >
                                 Submit
                             </Button>
