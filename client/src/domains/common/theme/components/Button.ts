@@ -2,6 +2,8 @@ import { StyleConfig } from "@chakra-ui/theme-tools";
 
 export const Button: StyleConfig = {
     baseStyle: {
+        height: "revert",
+        fontFamily: "Poppins",
         transitionDuration: "0.1s",
         rounded: "sm",
         pos: "relative",
@@ -9,20 +11,24 @@ export const Button: StyleConfig = {
             boxShadow: "outline",
         },
     },
+    sizes: {
+        md: {
+            paddingInline: 0,
+            p: "0.5rem",
+        },
+    },
     variants: {
         primary: {
             bgColor: "primary.dark",
             color: "primary.light",
-            px: "2rem",
-            py: "1rem",
             boxShadow: "elevate.all",
         },
         secondary: {
+            paddingInline: "0",
             border: "2px solid",
             borderColor: "primary.light",
             color: "primary.light",
-            px: "2rem",
-            py: "1rem",
+            textTransform: "uppercase",
             _hover: {
                 bgColor: "primary.light",
                 color: "black",
@@ -33,8 +39,11 @@ export const Button: StyleConfig = {
         },
         danger: {
             bgColor: "danger",
+            px: "0.5rem",
+            textTransform: "uppercase",
         },
         ghost: {
+            p: "0.5rem",
             _hover: {
                 bgColor: "gray.300",
             },

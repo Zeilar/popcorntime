@@ -25,10 +25,16 @@ export function Room() {
     const { roomId } = useParams<IRoomParams>();
     const { publicSocket } = useContext(WebsocketContext);
     const { push } = useHistory();
-    const { dispatchSockets, setRoom, setLeader, room, setMessages } =
-        useContext(RoomContext);
+    const {
+        dispatchSockets,
+        setRoom,
+        setLeader,
+        room,
+        setMessages,
+        authorized,
+        setAuthorized,
+    } = useContext(RoomContext);
     const { me } = useContext(MeContext);
-    const [authorized, setAuthorized] = useState<boolean | null>(null);
     const passwordPrompt = useDisclosure();
     const [submittingPassword, setSubmittingPassword] = useState(false);
     const location = useLocation<{ password?: string } | undefined>();
@@ -97,6 +103,7 @@ export function Room() {
         rememberPassword,
         room?.privacy,
         location.state?.password,
+        setAuthorized,
     ]);
 
     useEffect(() => {
@@ -170,10 +177,7 @@ export function Room() {
             setSubmittingPassword(false);
         });
         return () => {
-            publicSocket
-                .off("socket:kick")
-                .off("room:error:password")
-                .off("room:unauthorized");
+            publicSocket.off("socket:kick");
         };
     }, [publicSocket]);
 
@@ -204,7 +208,7 @@ export function Room() {
         return () => {
             publicSocket.off("room:error:password").off("room:unauthorized");
         };
-    }, [publicSocket, passwordPrompt]);
+    }, [publicSocket, passwordPrompt, setAuthorized]);
 
     useEffect(() => {
         return () => {
@@ -252,6 +256,7 @@ export function Room() {
                                     type="submit"
                                     isSuccess={authorized}
                                     isLoading={submittingPassword}
+                                    flexShrink={0}
                                 >
                                     Submit
                                 </Button>

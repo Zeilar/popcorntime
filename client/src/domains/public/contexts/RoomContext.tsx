@@ -29,6 +29,8 @@ interface IContext {
     messages: IMessage[];
     setMessages: React.Dispatch<React.SetStateAction<IMessage[]>>;
     addMessage(message: IMessage): void;
+    authorized: boolean;
+    setAuthorized: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 interface IProps {
@@ -46,6 +48,7 @@ export function RoomContextProvider({ children }: IProps) {
     const [sockets, dispatchSockets] = useReducer(socketsReducer, []);
     const [messages, setMessages] = useState<IMessage[]>([]);
     const [room, setRoom] = useState<IRoomDetails | null>(null);
+    const [authorized, setAuthorized] = useState(false);
 
     function addMessage(message: IMessage) {
         setMessages(messages => {
@@ -108,6 +111,8 @@ export function RoomContextProvider({ children }: IProps) {
         messages,
         addMessage,
         setMessages,
+        authorized,
+        setAuthorized,
     };
 
     return (

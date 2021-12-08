@@ -1,4 +1,4 @@
-import { Flex, Grid } from "@chakra-ui/layout";
+import { Flex, Grid, Text } from "@chakra-ui/layout";
 import MdiIcon from "domains/common/components/MdiIcon";
 import Button from "domains/common/components/styles/button";
 import { WebsocketContext } from "domains/public/contexts";
@@ -13,7 +13,7 @@ interface IProps {
 
 export default function PlayerControls({ player }: IProps) {
     const [playerState, setPlayerState] = useState(-1);
-    const { isLeader, room } = useContext(RoomContext);
+    const { isLeader, room, authorized } = useContext(RoomContext);
     const { me } = useContext(MeContext);
     const { publicSocket } = useContext(WebsocketContext);
     const { roomId } = useParams<IRoomParams>();
@@ -127,8 +127,14 @@ export default function PlayerControls({ player }: IProps) {
             <Flex justifyContent="flex-end">
                 {isRoomLeader && (
                     <Button variant="danger" onClick={destroyRoom}>
-                        <MdiIcon path="mdiTrashCan" mr="0.25rem" />
+                        <MdiIcon path="mdiTrashCan" mr="0.5rem" />
                         Destroy room
+                    </Button>
+                )}
+                {!authorized && (
+                    <Button variant="secondary">
+                        <MdiIcon path="mdiLock" mr="0.25rem" />
+                        <Text>Join</Text>
                     </Button>
                 )}
             </Flex>

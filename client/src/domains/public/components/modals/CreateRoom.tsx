@@ -105,6 +105,7 @@ export function CreateRoom({ isOpen, onClose }: IProps) {
                                 ml="0.25rem"
                                 onClick={generateRoomName}
                                 variant="secondary"
+                                flexShrink={0}
                             >
                                 Generate
                             </Button>

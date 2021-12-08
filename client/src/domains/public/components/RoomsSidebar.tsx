@@ -95,8 +95,7 @@ export default function RoomsSidebar() {
             <Flex
                 alignItems="center"
                 justifyContent="space-between"
-                px={isOpen ? "1rem" : "0.5rem"}
-                py="0.5rem"
+                p="0.5rem"
                 zIndex={10}
                 boxShadow="elevate.bottom"
             >
