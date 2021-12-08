@@ -99,13 +99,15 @@ export function CreateRoom({ isOpen, onClose }: IProps) {
                             <Input
                                 placeholder="Fail compilations"
                                 value={roomName}
+                                h="2.5rem"
                                 onChange={e => setRoomName(e.target.value)}
                             />
                             <Button
                                 variant="secondary"
                                 ml="0.25rem"
                                 onClick={generateRoomName}
-                                flexShrink={0}
+                                h="2.5rem"
+                                w="2.5rem"
                             >
                                 <MdiIcon path="mdiRefresh" />
                             </Button>
@@ -142,9 +144,12 @@ export function CreateRoom({ isOpen, onClose }: IProps) {
                             </Flex>
                         )}
                         <Button
+                            mt="1rem"
                             variant="primary"
                             type="submit"
                             isLoading={submitting}
+                            size="btn-lg"
+                            w="100%"
                         >
                             Submit
                         </Button>
