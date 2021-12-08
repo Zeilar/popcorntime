@@ -108,6 +108,7 @@ export function CreateRoom({ isOpen, onClose }: IProps) {
                                 onClick={generateRoomName}
                                 h="2.5rem"
                                 w="2.5rem"
+                                flexShrink={0}
                             >
                                 <MdiIcon path="mdiRefresh" />
                             </Button>
