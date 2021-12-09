@@ -138,6 +138,12 @@ publicNamespace.on("connection", socket => {
                     reason: "There are too many rooms, please try again later.",
                 });
             }
+            if (payload.name.length > 50) {
+                return socket.emit("room:create:error", {
+                    message: "Failed creating room.",
+                    reason: "Name is too long, max 50 characters.",
+                });
+            }
             const room = new Room({ ...payload });
             socket.emit("room:create", {
                 roomId: room.id,
