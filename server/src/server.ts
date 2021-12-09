@@ -66,17 +66,6 @@ publicNamespace.on("connection", socket => {
 
     socket.on("socket:update:color", (color: Color) => {
         _socket.setColor(color);
-        const room = _socket.room;
-        if (room) {
-            room.sendMessageToAll(
-                new Message({
-                    body: `changed their color to ${color}`,
-                    socket: _socket.dto,
-                    roomId: room.id,
-                    serverMessage: true,
-                })
-            );
-        }
     });
 
     // Sender includes id so that they can create a message on their client immediately, and gray it out if something went wrong
