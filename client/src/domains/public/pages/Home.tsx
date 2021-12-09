@@ -22,47 +22,55 @@ export function Home() {
     }
 
     return (
-        <Grid
-            flexDir="column"
-            flexGrow={1}
-            p="1rem"
-            gridTemplateColumns="repeat(5, 1fr)"
-            alignContent="start"
-            gridGap="0.5rem"
-        >
-            {rooms.map(room => (
-                <Link to={`/room/${room.id}`} key={room.id}>
-                    <Flex
-                        flexDir="column"
-                        bgColor="gray.800"
-                        boxShadow="elevate.all"
-                        h="100%"
-                        rounded="sm"
-                        _hover={{ boxShadow: "outline" }}
-                    >
-                        <Img
-                            pointerEvents="none"
-                            src={
-                                room.videoId
-                                    ? urlService.youtubeThumbnail(room.videoId)
-                                    : urlService.curtainImage
-                            }
-                        />
+        <Flex flexDir="column" p="1rem">
+            <Text as="h2" mb="0.5rem">
+                Public rooms
+            </Text>
+            <Grid
+                flexDir="column"
+                gridTemplateColumns="repeat(5, 1fr)"
+                alignContent="start"
+                gridGap="0.5rem"
+            >
+                {rooms.map(room => (
+                    <Link to={`/room/${room.id}`} key={room.id}>
                         <Flex
-                            mt="auto"
-                            p="1rem"
-                            justifyContent="space-between"
-                            flexWrap="wrap"
+                            flexDir="column"
+                            bgColor="gray.800"
+                            boxShadow="elevate.all"
+                            h="100%"
+                            rounded="sm"
+                            _hover={{ boxShadow: "outline" }}
                         >
-                            <Text>{room.name}</Text>
-                            <Flex>
-                                <Text>{`${room.sockets.length} / ${env.ROOM_MAX_SOCKETS}`}</Text>
-                                <MdiIcon ml="0.5rem" path="mdiAccountGroup" />
+                            <Img
+                                pointerEvents="none"
+                                src={
+                                    room.videoId
+                                        ? urlService.youtubeThumbnail(
+                                              room.videoId
+                                          )
+                                        : urlService.curtainImage
+                                }
+                            />
+                            <Flex
+                                mt="auto"
+                                p="1rem"
+                                justifyContent="space-between"
+                                flexWrap="wrap"
+                            >
+                                <Text>{room.name}</Text>
+                                <Flex>
+                                    <Text>{`${room.sockets.length} / ${env.ROOM_MAX_SOCKETS}`}</Text>
+                                    <MdiIcon
+                                        ml="0.5rem"
+                                        path="mdiAccountGroup"
+                                    />
+                                </Flex>
                             </Flex>
                         </Flex>
-                    </Flex>
-                </Link>
-            ))}
-        </Grid>
+                    </Link>
+                ))}
+            </Grid>
+        </Flex>
     );
 }
