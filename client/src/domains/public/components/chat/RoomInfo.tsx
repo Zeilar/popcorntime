@@ -46,8 +46,7 @@ export default function RoomInfo({ onClose }: IRoomInfoProps) {
             zIndex={100}
         >
             <Flex
-                px="1rem"
-                py="0.5rem"
+                p="0.5rem"
                 justifyContent="space-between"
                 alignItems="center"
                 boxShadow="elevate.bottom"

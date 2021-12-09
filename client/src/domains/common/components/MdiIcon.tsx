@@ -11,8 +11,8 @@ export default function MdiIcon({ path, ...props }: IProps) {
         <ChakraIcon
             as={Icon}
             path={MdiIcons[path]}
-            w="1.5rem"
-            h="1.5rem"
+            w="1.25rem"
+            h="1.25rem"
             {...props}
         />
     );
