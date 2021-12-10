@@ -4,12 +4,13 @@ export const Popover: StyleConfig = {
     baseStyle: {
         // @ts-ignore _focus doesn't work with Chakra's typings for some reason
         content: {
+            bgColor: "gray.900",
             p: "1rem",
             border: 0,
-            boxShadow: "lg",
+            boxShadow: "xl",
             rounded: "sm",
             _focus: {
-                boxShadow: "lg",
+                boxShadow: "xl",
             },
         },
         header: {
