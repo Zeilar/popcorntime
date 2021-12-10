@@ -7,6 +7,7 @@ import { Select } from "./Select";
 import { Spinner } from "./Spinner";
 import { Switch } from "./Switch";
 import { Checkbox } from "./Checkbox";
+import { Popover } from "./Popover";
 
 export const components = {
     Button,
@@ -18,4 +19,5 @@ export const components = {
     Spinner,
     Switch,
     Checkbox,
+    Popover,
 };

@@ -1,12 +1,11 @@
-import { Box, Flex, Text } from "@chakra-ui/layout";
-import { useContext, useEffect, useRef, useState } from "react";
+import { Box, Divider, Flex, Text } from "@chakra-ui/layout";
+import { useContext, useEffect, useRef } from "react";
 import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
 import { IMessage } from "domains/common/@types/message";
 import Message from "domains/common/components/ChatMessage";
 import { MeContext, RoomContext } from "domains/public/contexts";
-import { ChatSettings } from "./";
-import { useLocalStorage, useOnClickOutside } from "domains/common/hooks";
+import { useLocalStorage } from "domains/common/hooks";
 import { WebsocketContext } from "domains/public/contexts";
 import Button from "domains/common/components/styles/button";
 import { IErrorPayload } from "domains/common/@types/listener";
@@ -17,22 +16,25 @@ import { useParams } from "react-router";
 import env from "config/env";
 import ChatName from "./ChatName";
 import { Textarea } from "@chakra-ui/textarea";
+import * as Popover from "@chakra-ui/popover";
+import { Switch } from "@chakra-ui/switch";
 
 export function Chat() {
     const [showChat, setShowChat] = useLocalStorage<boolean>("showChat", true);
-    const { showServerMessages, messages, setMessages, addMessage } =
-        useContext(RoomContext);
+    const {
+        showServerMessages,
+        setShowServerMessages,
+        messages,
+        setMessages,
+        addMessage,
+    } = useContext(RoomContext);
     const { roomId } = useParams<IRoomParams>();
     const { me } = useContext(MeContext);
     const scrollChat = useRef<boolean>(true);
     const chatElement = useRef<HTMLDivElement>(null);
     const input = useRef<HTMLTextAreaElement>(null);
-    const [settingsOpen, setSettingsOpen] = useState(false);
     const { publicSocket } = useContext(WebsocketContext);
     const roomInfo = useDisclosure();
-    const settingsEl = useOnClickOutside<HTMLDivElement>(() => {
-        setSettingsOpen(false);
-    });
 
     function toggle() {
         setShowChat(p => !p);
@@ -95,10 +97,6 @@ export function Chat() {
         }
     }
 
-    function toggleSettings() {
-        setSettingsOpen(open => !open);
-    }
-
     useEffect(() => {
         scrollChat.current = false;
         chatElement.current?.scrollTo({ top: 9999 });
@@ -112,16 +110,48 @@ export function Chat() {
         ? messages
         : messages.filter(message => !message.serverMessage);
 
-    return (
-        <Flex
-            flexDir="column"
-            w={showChat ? "25rem" : "3rem"}
-            zIndex={10}
-            pos="relative"
-            boxShadow="elevate.left"
-            bgColor="gray.600"
-        >
-            {roomInfo.isOpen && <RoomInfo onClose={roomInfo.onClose} />}
+    function SettingsPopover() {
+        return (
+            <Popover.Popover>
+                {({ onClose }) => (
+                    <>
+                        <Popover.PopoverTrigger>
+                            <Box>
+                                <Button.Icon tooltip="Settings" mdi="mdiCog" />
+                            </Box>
+                        </Popover.PopoverTrigger>
+                        <Popover.PopoverContent>
+                            <Button.Icon
+                                right="0.5rem"
+                                top="0.5rem"
+                                pos="absolute"
+                                mdi="mdiClose"
+                                onClick={onClose}
+                            />
+                            <Popover.PopoverHeader>
+                                Settings
+                            </Popover.PopoverHeader>
+                            <Popover.PopoverBody>
+                                <Divider my="1rem" />
+                                <Text size="lg" mb="0.5rem">
+                                    Show server messages
+                                </Text>
+                                <Switch
+                                    isChecked={showServerMessages}
+                                    onChange={e =>
+                                        setShowServerMessages(e.target.checked)
+                                    }
+                                />
+                            </Popover.PopoverBody>
+                        </Popover.PopoverContent>
+                    </>
+                )}
+            </Popover.Popover>
+        );
+    }
+
+    function TopBar() {
+        return (
             <Flex
                 align="center"
                 p="0.5rem"
@@ -159,57 +189,76 @@ export function Chat() {
                     </>
                 )}
             </Flex>
+        );
+    }
+
+    function Messages() {
+        return (
+            <Flex flexDir="column" overflowY="auto" ref={chatElement}>
+                {filteredMessages.map((message, i) => (
+                    <Message key={message.id} message={message} index={i} />
+                ))}
+            </Flex>
+        );
+    }
+
+    function BottomBar() {
+        return (
+            <Box px="1rem" mb="1rem">
+                <Flex pos="relative">
+                    <SettingsPopover />
+                    <Button.Icon
+                        tooltip="Send"
+                        ml="auto"
+                        mdi="mdiSend"
+                        onClick={sendMessage}
+                    />
+                </Flex>
+            </Box>
+        );
+    }
+
+    function ChatInput() {
+        return (
+            <Box as="form" onSubmit={sendMessage} p="1rem">
+                {me && (
+                    <Text
+                        display="inline-flex"
+                        color={`${me.color}.600`}
+                        mb="0.75rem"
+                        fontWeight={700}
+                    >
+                        {publicSocket.connected && <ChatName socket={me} />}
+                    </Text>
+                )}
+                <Textarea
+                    onKeyDown={inputHandler}
+                    ref={input}
+                    placeholder="Send a message"
+                    resize="none"
+                />
+            </Box>
+        );
+    }
+
+    return (
+        <Flex
+            flexDir="column"
+            w={showChat ? "25rem" : "3rem"}
+            zIndex={10}
+            pos="relative"
+            boxShadow="elevate.left"
+            bgColor="gray.600"
+        >
+            {roomInfo.isOpen && <RoomInfo onClose={roomInfo.onClose} />}
+            <TopBar />
             {showChat && (
                 <>
-                    <Flex flexDir="column" overflowY="auto" ref={chatElement}>
-                        {filteredMessages.map((message, i) => (
-                            <Message
-                                key={message.id}
-                                message={message}
-                                index={i}
-                            />
-                        ))}
-                    </Flex>
+                    <Messages />
                     <Box zIndex={env.ROOM_MAX_MESSAGES + 5} mt="auto">
-                        <Box h={2} boxShadow="elevate.top" />
-                        <Box as="form" onSubmit={sendMessage} p="1rem">
-                            {me && (
-                                <Text
-                                    display="inline-flex"
-                                    color={`${me.color}.600`}
-                                    mb="0.75rem"
-                                    fontWeight={700}
-                                >
-                                    {publicSocket.connected && (
-                                        <ChatName socket={me} />
-                                    )}
-                                </Text>
-                            )}
-                            <Textarea
-                                onKeyDown={inputHandler}
-                                ref={input}
-                                placeholder="Send a message"
-                                resize="none"
-                            />
-                        </Box>
-                        <Box px="1rem" mb="1rem">
-                            <Flex pos="relative">
-                                <Box pos="relative" ref={settingsEl}>
-                                    <Button.Icon
-                                        tooltip="Settings"
-                                        mdi="mdiCog"
-                                        onClick={toggleSettings}
-                                    />
-                                    {settingsOpen && <ChatSettings />}
-                                </Box>
-                                <Button.Icon
-                                    tooltip="Send"
-                                    ml="auto"
-                                    mdi="mdiSend"
-                                    onClick={sendMessage}
-                                />
-                            </Flex>
-                        </Box>
+                        <Box h="2px" boxShadow="elevate.top" />
+                        <ChatInput />
+                        <BottomBar />
                     </Box>
                 </>
             )}
