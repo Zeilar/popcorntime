@@ -1,4 +1,4 @@
-import { Box, Divider, Flex, Text } from "@chakra-ui/layout";
+import { Box, Flex, Text } from "@chakra-ui/layout";
 import { useContext, useEffect, useRef } from "react";
 import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
@@ -132,7 +132,6 @@ export function Chat() {
                                 Settings
                             </Popover.PopoverHeader>
                             <Popover.PopoverBody>
-                                <Divider my="1rem" />
                                 <Text size="lg" mb="0.5rem">
                                     Show server messages
                                 </Text>

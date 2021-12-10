@@ -14,7 +14,12 @@ export const Popover: StyleConfig = {
         },
         header: {
             border: 0,
-            p: 0,
+            px: 0,
+            pt: 0,
+            pb: "1rem",
+            mb: "1rem",
+            borderBottom: "1px solid",
+            borderColor: "inherit",
         },
         body: {
             p: 0,

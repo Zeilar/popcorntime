@@ -7,6 +7,7 @@ import { MeContext } from "../contexts";
 import Button from "domains/common/components/styles/button";
 import { CreateRoom } from "./modals";
 import MdiIcon from "domains/common/components/MdiIcon";
+import * as Popover from "@chakra-ui/popover";
 
 export default function Navbar() {
     const { me } = useContext(MeContext);
@@ -18,30 +19,69 @@ export default function Navbar() {
             bgColor="gray.800"
             zIndex={1000}
             alignItems="center"
-            py="0.5rem"
-            px="1rem"
         >
             <CreateRoom
                 isOpen={createRoom.isOpen}
                 onClose={createRoom.onClose}
             />
             <Link
+                px="1rem"
+                h="100%"
+                display="flex"
+                alignItems="center"
+                boxShadow="elevate.right"
                 to="/"
                 as={RouterLink}
-                mr="1rem"
                 color="inherit"
                 _hover={{ textDecor: "none" }}
             >
                 <BrandLogo />
             </Link>
-            <Button variant="primary" ml="1rem" onClick={createRoom.onOpen}>
-                <MdiIcon path="mdiPlus" mr="0.25rem" />
-                Create room
-            </Button>
+            <Flex gridGap="0.5rem" p="1rem">
+                <Button variant="primary" onClick={createRoom.onOpen}>
+                    <MdiIcon path="mdiPlus" mr="0.25rem" />
+                    Create room
+                </Button>
+            </Flex>
             {me && (
-                <Text as="h3" ml="auto" color={`${me.color}.600`}>
-                    {me.username}
-                </Text>
+                <Popover.Popover placement="bottom">
+                    {({ onClose }) => (
+                        <>
+                            <Popover.PopoverTrigger>
+                                <Text
+                                    userSelect="none"
+                                    display="flex"
+                                    alignItems="center"
+                                    h="100%"
+                                    boxShadow="elevate.left"
+                                    p="1rem"
+                                    as="h3"
+                                    ml="auto"
+                                    color={`${me.color}.600`}
+                                    _hover={{
+                                        textDecor: "underline",
+                                        cursor: "pointer",
+                                    }}
+                                >
+                                    {me.username}
+                                </Text>
+                            </Popover.PopoverTrigger>
+                            <Popover.PopoverContent mr="1rem">
+                                <Button.Icon
+                                    right="0.5rem"
+                                    top="0.5rem"
+                                    pos="absolute"
+                                    mdi="mdiClose"
+                                    onClick={onClose}
+                                />
+                                <Popover.PopoverHeader>
+                                    Settings
+                                </Popover.PopoverHeader>
+                                <Popover.PopoverBody>Body</Popover.PopoverBody>
+                            </Popover.PopoverContent>
+                        </>
+                    )}
+                </Popover.Popover>
             )}
         </Flex>
     );
