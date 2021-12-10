@@ -7,8 +7,11 @@ export const Button: StyleConfig = {
         rounded: "sm",
         pos: "relative",
         p: "0.5rem",
+        border: "2px solid",
+        borderColor: "transparent",
         _focus: {
-            boxShadow: "outline",
+            boxShadow: "none",
+            borderColor: "primary.light",
         },
     },
     sizes: {
