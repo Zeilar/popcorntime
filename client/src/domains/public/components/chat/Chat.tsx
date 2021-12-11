@@ -112,7 +112,7 @@ export function Chat() {
 
     function SettingsPopover() {
         return (
-            <Popover.Popover>
+            <Popover.Popover closeOnBlur={false}>
                 {({ onClose }) => (
                     <>
                         <Popover.PopoverTrigger>

@@ -26,14 +26,14 @@ export function ColorButton({ children, color, ...props }: IProps) {
             onClick={setColor}
             as="button"
             rounded="full"
-            h="2rem"
-            w="2rem"
-            transition="0.25s"
+            h="1.5rem"
+            w="1.5rem"
+            transition="0.15s"
             bgColor={`${color}.600`}
-            _hover={!active ? { bgColor: `${color}.300` } : undefined}
+            _hover={{ bgColor: !active ? `${color}.500` : undefined }}
             boxShadow={
                 active
-                    ? `0 0 0 3px var(--chakra-colors-${color}-300)`
+                    ? `0 0 0 2px var(--chakra-colors-whiteAlpha-900)`
                     : undefined
             }
             {...props}

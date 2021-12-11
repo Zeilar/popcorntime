@@ -1,5 +1,5 @@
 import { useDisclosure } from "@chakra-ui/hooks";
-import { Flex, Link, Text } from "@chakra-ui/layout";
+import { Flex, Grid, Link, Text } from "@chakra-ui/layout";
 import BrandLogo from "domains/common/components/styles/BrandLogo";
 import { useContext } from "react";
 import { Link as RouterLink } from "react-router-dom";
@@ -8,6 +8,7 @@ import Button from "domains/common/components/styles/button";
 import { CreateRoom } from "./modals";
 import MdiIcon from "domains/common/components/MdiIcon";
 import * as Popover from "@chakra-ui/popover";
+import { colors } from "data/colors";
 
 export default function Navbar() {
     const { me } = useContext(MeContext);
@@ -44,7 +45,7 @@ export default function Navbar() {
                 </Button>
             </Flex>
             {me && (
-                <Popover.Popover placement="bottom">
+                <Popover.Popover placement="bottom" closeOnBlur={false}>
                     {({ onClose }) => (
                         <>
                             <Popover.PopoverTrigger>
@@ -77,7 +78,17 @@ export default function Navbar() {
                                 <Popover.PopoverHeader>
                                     Settings
                                 </Popover.PopoverHeader>
-                                <Popover.PopoverBody>Body</Popover.PopoverBody>
+                                <Popover.PopoverBody>
+                                    <Text mb="0.5rem">Color</Text>
+                                    <Grid
+                                        gridGap="0.5rem"
+                                        gridTemplateColumns={`repeat(${colors.length}, 1.5rem)`}
+                                    >
+                                        {colors.map(color => (
+                                            <Button.Color color={color} />
+                                        ))}
+                                    </Grid>
+                                </Popover.PopoverBody>
                             </Popover.PopoverContent>
                         </>
                     )}
