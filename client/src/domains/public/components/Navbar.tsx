@@ -82,7 +82,7 @@ export default function Navbar() {
                                     <Text mb="0.5rem">Color</Text>
                                     <Grid
                                         gridGap="0.5rem"
-                                        gridTemplateColumns={`repeat(${colors.length}, 1.5rem)`}
+                                        gridTemplateColumns={`repeat(${colors.length}, 1fr)`}
                                     >
                                         {colors.map(color => (
                                             <Button.Color color={color} />

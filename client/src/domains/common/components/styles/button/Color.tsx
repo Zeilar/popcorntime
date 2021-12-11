@@ -26,8 +26,8 @@ export function ColorButton({ children, color, ...props }: IProps) {
             onClick={setColor}
             as="button"
             rounded="full"
-            h="1.5rem"
-            w="1.5rem"
+            w="100%"
+            sx={{ aspectRatio: "1/1" }}
             transition="0.15s"
             bgColor={`${color}.600`}
             _hover={{ bgColor: !active ? `${color}.500` : undefined }}
