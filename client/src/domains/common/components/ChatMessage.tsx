@@ -38,6 +38,10 @@ export default function ChatMessage({ message, index }: IProps) {
             _even={{ bgColor: "gray.600" }}
             boxShadow="elevate.bottom"
             zIndex={env.ROOM_MAX_MESSAGES - index}
+            pos="relative"
+            mt="2px"
+            borderLeft="4px solid"
+            borderLeftColor={`${message.socket.color}.600`}
             {...notSentStyling}
         >
             <Box {...serverMessageStyling}>
