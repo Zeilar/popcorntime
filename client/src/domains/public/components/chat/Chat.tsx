@@ -212,6 +212,7 @@ export function Chat() {
                         tooltip="Send"
                         ml="auto"
                         mdi="mdiSend"
+                        disabled={authorized === false}
                         onClick={sendMessage}
                     />
                 </Flex>
@@ -233,6 +234,7 @@ export function Chat() {
                     </Text>
                 )}
                 <Textarea
+                    disabled={authorized === false}
                     onKeyDown={inputHandler}
                     ref={input}
                     placeholder="Send a message"
