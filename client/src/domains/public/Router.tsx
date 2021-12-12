@@ -17,18 +17,18 @@ export default function Router() {
 
     useEffect(() => {
         connect({
-            pending: "Connecting...",
-            success: "Connected.",
-            error: "Connection refused.",
+            pending: "Connecting to server...",
+            success: "Connected to server.",
+            error: "Connection to server refused.",
         });
     }, [connect]);
 
     useEffect(() => {
         publicSocket.on("disconnect", () =>
             connect({
-                pending: "Reconnecting...",
-                success: "Connected.",
-                error: "Connection refused.",
+                pending: "Reconnecting to server...",
+                success: "Connected to server.",
+                error: "Connection to server refused.",
             })
         );
     }, [publicSocket, connect]);

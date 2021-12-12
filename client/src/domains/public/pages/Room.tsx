@@ -16,7 +16,6 @@ import Player from "../components/Player";
 import { IRoomParams } from "../@types/params";
 import { IRoom } from "domains/common/@types/room";
 import Modal from "domains/common/components/styles/modal";
-import Alert from "domains/common/components/styles/alert";
 import { Input } from "@chakra-ui/input";
 import Button from "domains/common/components/styles/button";
 import { useLocalStorage, useTitle } from "domains/common/hooks";
@@ -238,9 +237,9 @@ export function Room() {
                             Please enter the password
                         </Modal.Header>
                         {passwordError && (
-                            <Alert.Error mb="0.5rem">
+                            <Flex mb="0.5rem">
                                 <Text>{passwordError}</Text>
-                            </Alert.Error>
+                            </Flex>
                         )}
                         <Flex flexDir="column" as="form" onSubmit={authorize}>
                             <Input
