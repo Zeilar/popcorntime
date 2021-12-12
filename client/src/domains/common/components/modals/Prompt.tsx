@@ -34,10 +34,10 @@ export function Prompt(props: IProps) {
     return (
         <Modal blockScrollOnMount isOpen={props.isOpen} onClose={props.onClose}>
             <ModalOverlay />
-            <ModalContent w="fit-content">
+            <ModalContent>
                 <ModalHeader>{props.header}</ModalHeader>
                 <ModalBody>{props.body}</ModalBody>
-                <ModalFooter justifyContent="flex-start">
+                <ModalFooter>
                     <Button
                         variant="primary"
                         onClick={submit}
