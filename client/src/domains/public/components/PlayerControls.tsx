@@ -1,5 +1,7 @@
+import { useDisclosure } from "@chakra-ui/hooks";
 import { Flex, Grid } from "@chakra-ui/layout";
 import MdiIcon from "domains/common/components/MdiIcon";
+import { Prompt } from "domains/common/components/modals";
 import Button from "domains/common/components/styles/button";
 import {
     PasswordPromptModalContext,
@@ -21,6 +23,7 @@ export default function PlayerControls({ player }: IProps) {
     const { publicSocket } = useContext(WebsocketContext);
     const passwordPrompt = useContext(PasswordPromptModalContext);
     const { roomId } = useParams<IRoomParams>();
+    const destroyPrompt = useDisclosure();
 
     const isRoomLeader = isLeader(me?.id);
 
@@ -94,6 +97,13 @@ export default function PlayerControls({ player }: IProps) {
             zIndex={10}
             minH="4.5rem"
         >
+            <Prompt
+                header={`Destroy room ${room?.name}`}
+                body="Are you sure? This cannot be undone!"
+                onClose={destroyPrompt.onClose}
+                isOpen={destroyPrompt.isOpen}
+                onSubmit={destroyRoom}
+            />
             <Flex gridColumnStart="2" justifyContent="center">
                 <Button.Icon
                     tooltip="Skip backward 15 seconds"
@@ -131,7 +141,7 @@ export default function PlayerControls({ player }: IProps) {
             </Flex>
             <Flex justifyContent="flex-end">
                 {isRoomLeader && (
-                    <Button variant="danger" onClick={destroyRoom}>
+                    <Button variant="danger" onClick={destroyPrompt.onOpen}>
                         <MdiIcon path="mdiTrashCan" mr="0.5rem" />
                         Destroy room
                     </Button>

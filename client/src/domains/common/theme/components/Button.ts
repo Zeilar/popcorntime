@@ -28,6 +28,7 @@ export const Button: StyleConfig = {
             bgColor: "primary.light",
             border: 0,
             color: "black",
+            px: "1rem",
             _focus: {
                 boxShadow: "none",
             },
