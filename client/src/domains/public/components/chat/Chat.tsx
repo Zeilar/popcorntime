@@ -18,6 +18,7 @@ import ChatName from "./ChatName";
 import { Textarea } from "@chakra-ui/textarea";
 import * as Popover from "@chakra-ui/popover";
 import { Switch } from "@chakra-ui/switch";
+import { Portal } from "@chakra-ui/portal";
 
 export function Chat() {
     const [showChat, setShowChat] = useLocalStorage<boolean>("showChat", true);
@@ -111,47 +112,16 @@ export function Chat() {
         ? messages
         : messages.filter(message => !message.serverMessage);
 
-    function SettingsPopover() {
-        return (
-            <Popover.Popover closeOnBlur={false} placement="top-start">
-                {({ onClose }) => (
-                    <>
-                        <Popover.PopoverTrigger>
-                            <Box>
-                                <Button.Icon tooltip="Settings" mdi="mdiCog" />
-                            </Box>
-                        </Popover.PopoverTrigger>
-                        <Popover.PopoverContent>
-                            <Button.Icon
-                                right="0.5rem"
-                                top="0.5rem"
-                                pos="absolute"
-                                mdi="mdiClose"
-                                onClick={onClose}
-                            />
-                            <Popover.PopoverHeader>
-                                Settings
-                            </Popover.PopoverHeader>
-                            <Popover.PopoverBody>
-                                <Text size="lg" mb="0.5rem">
-                                    Show server messages
-                                </Text>
-                                <Switch
-                                    isChecked={showServerMessages}
-                                    onChange={e =>
-                                        setShowServerMessages(e.target.checked)
-                                    }
-                                />
-                            </Popover.PopoverBody>
-                        </Popover.PopoverContent>
-                    </>
-                )}
-            </Popover.Popover>
-        );
-    }
-
-    function TopBar() {
-        return (
+    return (
+        <Flex
+            flexDir="column"
+            w={showChat ? "25rem" : "3rem"}
+            zIndex={10}
+            pos="relative"
+            boxShadow="elevate.left"
+            bgColor="gray.600"
+        >
+            {roomInfo.isOpen && <RoomInfo onClose={roomInfo.onClose} />}
             <Flex
                 align="center"
                 p="0.5rem"
@@ -190,78 +160,101 @@ export function Chat() {
                     </>
                 )}
             </Flex>
-        );
-    }
-
-    function Messages() {
-        return (
-            <Flex flexDir="column" overflowY="auto" ref={chatElement}>
-                {filteredMessages.map((message, i) => (
-                    <Message key={message.id} message={message} index={i} />
-                ))}
-            </Flex>
-        );
-    }
-
-    function BottomBar() {
-        return (
-            <Box px="1rem" mb="1rem">
-                <Flex pos="relative">
-                    <SettingsPopover />
-                    <Button.Icon
-                        tooltip="Send"
-                        ml="auto"
-                        mdi="mdiSend"
-                        disabled={authorized === false}
-                        onClick={sendMessage}
-                    />
-                </Flex>
-            </Box>
-        );
-    }
-
-    function ChatInput() {
-        return (
-            <Box as="form" onSubmit={sendMessage} p="1rem">
-                {me && (
-                    <Text
-                        display="inline-flex"
-                        color={`${me.color}.600`}
-                        mb="0.75rem"
-                        fontWeight={700}
-                    >
-                        {publicSocket.connected && <ChatName socket={me} />}
-                    </Text>
-                )}
-                <Textarea
-                    disabled={authorized === false}
-                    onKeyDown={inputHandler}
-                    ref={input}
-                    placeholder="Send a message"
-                    resize="none"
-                />
-            </Box>
-        );
-    }
-
-    return (
-        <Flex
-            flexDir="column"
-            w={showChat ? "25rem" : "3rem"}
-            zIndex={10}
-            pos="relative"
-            boxShadow="elevate.left"
-            bgColor="gray.600"
-        >
-            {roomInfo.isOpen && <RoomInfo onClose={roomInfo.onClose} />}
-            <TopBar />
             {showChat && (
                 <>
-                    <Messages />
+                    <Flex flexDir="column" overflowY="auto" ref={chatElement}>
+                        {filteredMessages.map((message, i) => (
+                            <Message
+                                key={message.id}
+                                message={message}
+                                index={i}
+                            />
+                        ))}
+                    </Flex>
                     <Box zIndex={env.ROOM_MAX_MESSAGES + 5} mt="auto">
                         <Box h="2px" boxShadow="elevate.top" />
-                        <ChatInput />
-                        <BottomBar />
+                        <Box as="form" onSubmit={sendMessage} p="1rem">
+                            {me && (
+                                <Text
+                                    display="inline-flex"
+                                    color={`${me.color}.600`}
+                                    mb="0.75rem"
+                                    fontWeight={700}
+                                >
+                                    {publicSocket.connected && (
+                                        <ChatName socket={me} />
+                                    )}
+                                </Text>
+                            )}
+                            <Textarea
+                                disabled={authorized === false}
+                                onKeyDown={inputHandler}
+                                ref={input}
+                                placeholder="Send a message"
+                                resize="none"
+                            />
+                        </Box>
+                        <Box px="1rem" mb="1rem">
+                            <Flex pos="relative">
+                                <Popover.Popover
+                                    closeOnBlur={false}
+                                    placement="top-start"
+                                >
+                                    {({ onClose }) => (
+                                        <>
+                                            <Popover.PopoverTrigger>
+                                                <Box>
+                                                    <Button.Icon
+                                                        tooltip="Settings"
+                                                        mdi="mdiCog"
+                                                    />
+                                                </Box>
+                                            </Popover.PopoverTrigger>
+                                            <Portal>
+                                                <Popover.PopoverContent>
+                                                    <Button.Icon
+                                                        right="0.5rem"
+                                                        top="0.5rem"
+                                                        pos="absolute"
+                                                        mdi="mdiClose"
+                                                        onClick={onClose}
+                                                    />
+                                                    <Popover.PopoverHeader>
+                                                        Settings
+                                                    </Popover.PopoverHeader>
+                                                    <Popover.PopoverBody>
+                                                        <Text
+                                                            size="lg"
+                                                            mb="0.5rem"
+                                                        >
+                                                            Show server messages
+                                                        </Text>
+                                                        <Switch
+                                                            isChecked={
+                                                                showServerMessages
+                                                            }
+                                                            onChange={e =>
+                                                                setShowServerMessages(
+                                                                    e.target
+                                                                        .checked
+                                                                )
+                                                            }
+                                                        />
+                                                    </Popover.PopoverBody>
+                                                </Popover.PopoverContent>
+                                            </Portal>
+                                        </>
+                                    )}
+                                </Popover.Popover>
+                                <Button.Icon
+                                    tooltip="Send"
+                                    ml="auto"
+                                    mdi="mdiSend"
+                                    disabled={authorized === false}
+                                    onClick={sendMessage}
+                                />
+                            </Flex>
+                        </Box>
                     </Box>
                 </>
             )}
