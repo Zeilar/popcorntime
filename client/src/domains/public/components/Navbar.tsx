@@ -35,6 +35,7 @@ export default function Navbar() {
                 as={RouterLink}
                 color="inherit"
                 _hover={{ textDecor: "none" }}
+                _focus={{ boxShadow: "elevate.right" }}
             >
                 <BrandLogo />
             </Link>
