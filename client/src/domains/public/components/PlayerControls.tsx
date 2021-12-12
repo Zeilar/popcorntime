@@ -92,6 +92,7 @@ export default function PlayerControls({ player }: IProps) {
             justifyContent="center"
             boxShadow="elevate.top"
             zIndex={10}
+            minH="4.5rem"
         >
             <Flex gridColumnStart="2" justifyContent="center">
                 <Button.Icon
@@ -135,7 +136,7 @@ export default function PlayerControls({ player }: IProps) {
                         Destroy room
                     </Button>
                 )}
-                {!authorized && (
+                {authorized === false && (
                     <Button variant="primary" onClick={passwordPrompt.onOpen}>
                         <MdiIcon path="mdiLock" mr="0.25rem" />
                         Join

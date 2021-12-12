@@ -26,6 +26,7 @@ export const Button: StyleConfig = {
     variants: {
         primary: {
             bgColor: "primary.light",
+            border: 0,
             color: "black",
             _focus: {
                 boxShadow: "none",
