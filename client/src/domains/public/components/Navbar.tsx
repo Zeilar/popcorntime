@@ -84,8 +84,11 @@ export default function Navbar() {
                                         gridGap="0.5rem"
                                         gridTemplateColumns={`repeat(${colors.length}, 1fr)`}
                                     >
-                                        {colors.map(color => (
-                                            <Button.Color color={color} />
+                                        {colors.map((color, i) => (
+                                            <Button.Color
+                                                key={i}
+                                                color={color}
+                                            />
                                         ))}
                                     </Grid>
                                 </Popover.PopoverBody>
