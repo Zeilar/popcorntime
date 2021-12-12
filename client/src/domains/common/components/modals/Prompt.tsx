@@ -37,7 +37,7 @@ export function Prompt(props: IProps) {
             <ModalContent w="fit-content">
                 <ModalHeader>{props.header}</ModalHeader>
                 <ModalBody>{props.body}</ModalBody>
-                <ModalFooter justifyContent="flex-start" mt="1rem">
+                <ModalFooter justifyContent="flex-start">
                     <Button
                         variant="primary"
                         onClick={submit}
