@@ -11,7 +11,8 @@ export default function Footer() {
             zIndex={200}
         >
             <Text gridColumnStart={2} textAlign="center">
-                Footer
+                Contact me at{" "}
+                <a href="mailto:philip@angelin.dev">philip@angelin.dev</a>
             </Text>
             <Text textAlign="right">v{process.env.REACT_APP_VERSION}</Text>
         </Grid>
