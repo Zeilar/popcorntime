@@ -27,6 +27,7 @@ export function Chat() {
         messages,
         setMessages,
         addMessage,
+        authorized,
     } = useContext(RoomContext);
     const { roomId } = useParams<IRoomParams>();
     const { me } = useContext(MeContext);
@@ -181,6 +182,7 @@ export function Chat() {
                             Chat
                         </Text>
                         <Button.Icon
+                            disabled={authorized === false}
                             mdi="mdiInformationOutline"
                             onClick={roomInfo.onOpen}
                             tooltip="Room details"
