@@ -237,7 +237,15 @@ export function Room() {
                             Please enter the password
                         </Modal.Header>
                         {passwordError && (
-                            <Flex mb="0.5rem">
+                            <Flex
+                                rounded="sm"
+                                py="0.5rem"
+                                px="1rem"
+                                bgColor="red.800"
+                                borderLeft="4px solid"
+                                borderLeftColor="danger"
+                                mb="0.5rem"
+                            >
                                 <Text>{passwordError}</Text>
                             </Flex>
                         )}
