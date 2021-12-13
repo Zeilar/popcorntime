@@ -34,7 +34,7 @@ export function Prompt(props: IProps) {
     return (
         <Modal blockScrollOnMount isOpen={props.isOpen} onClose={props.onClose}>
             <ModalOverlay />
-            <ModalContent>
+            <ModalContent mx="1rem">
                 <ModalHeader>{props.header}</ModalHeader>
                 <ModalBody>{props.body}</ModalBody>
                 <ModalFooter>

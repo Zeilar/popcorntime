@@ -28,7 +28,7 @@ export function Home() {
             </Text>
             <Grid
                 flexDir="column"
-                gridTemplateColumns="repeat(5, 1fr)"
+                gridTemplateColumns={[null, "repeat(5, 1fr)"]}
                 alignContent="start"
                 gridGap="0.5rem"
             >

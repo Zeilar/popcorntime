@@ -116,7 +116,7 @@ export function Chat() {
         <Flex
             flexDir="column"
             w={[null, showChat ? "25rem" : "3rem"]}
-            h={["100vh", null]}
+            h={[showChat ? "100vh" : null, null]}
             zIndex={10}
             pos="relative"
             boxShadow={["elevate.top", "elevate.left"]}
@@ -138,6 +138,7 @@ export function Chat() {
                     />
                 ) : (
                     <Button.Icon
+                        ml={["auto", null]}
                         onClick={toggle}
                         tooltip="Show chat"
                         mdi="mdiArrowExpandLeft"

@@ -1,4 +1,4 @@
-import { Box, Flex, Text } from "@chakra-ui/layout";
+import { Flex, Text } from "@chakra-ui/layout";
 import { Select } from "@chakra-ui/select";
 import { RoomPrivacy } from "domains/common/@types/room";
 import { useContext, useEffect, useState } from "react";
@@ -86,10 +86,19 @@ export function CreateRoom({ isOpen, onClose }: IProps) {
     }, [publicSocket]);
 
     return (
-        <Box>
+        <>
             <Modal.Overlay isOpen={isOpen} />
             <Modal isOpen={isOpen} onClose={onClose} closeOnOutsideClick>
-                <Modal.Content as="form" onSubmit={submit}>
+                <Modal.Content as="form" onSubmit={submit} minW="20rem">
+                    <Button
+                        variant="unstyled"
+                        pos="absolute"
+                        right="1rem"
+                        top="1rem"
+                        onClick={onClose}
+                    >
+                        <MdiIcon path="mdiClose" w="1.5rem" h="1.5rem" />
+                    </Button>
                     <Modal.Header>Create room</Modal.Header>
                     <Modal.Body>
                         <Text fontWeight={600} mb="0.25rem">
@@ -157,6 +166,6 @@ export function CreateRoom({ isOpen, onClose }: IProps) {
                     </Modal.Body>
                 </Modal.Content>
             </Modal>
-        </Box>
+        </>
     );
 }

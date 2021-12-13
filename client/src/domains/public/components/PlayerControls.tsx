@@ -103,7 +103,7 @@ export default function PlayerControls({ player }: IProps) {
             minH="4.5rem"
         >
             <Prompt
-                header={`De stroy room ${room?.name}`}
+                header={`Destroy room ${room?.name}`}
                 body="Are you sure? This cannot be undone!"
                 onClose={destroyPrompt.onClose}
                 isOpen={destroyPrompt.isOpen}
