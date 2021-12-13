@@ -9,10 +9,44 @@ import { CreateRoom } from "./modals";
 import MdiIcon from "domains/common/components/MdiIcon";
 import * as Popover from "@chakra-ui/popover";
 import { colors } from "data/colors";
+import { useTheme } from "@chakra-ui/system";
+import { useMediaQuery } from "@chakra-ui/media-query";
 
 export default function Navbar() {
     const { me } = useContext(MeContext);
     const createRoom = useDisclosure();
+    const theme = useTheme();
+    const [isDesktop] = useMediaQuery(
+        `(min-width: ${theme.breakpoints.desktop})`
+    );
+
+    if (!isDesktop) {
+        return (
+            <Flex
+                h="4rem"
+                bgColor="gray.800"
+                boxShadow="elevate.bottom"
+                zIndex={1000}
+                as="nav"
+                justifyContent="space-between"
+                alignItems="center"
+            >
+                <Link
+                    px="1rem"
+                    to="/"
+                    as={RouterLink}
+                    color="inherit"
+                    _hover={{ textDecor: "none" }}
+                >
+                    <BrandLogo />
+                </Link>
+                <Button variant="unstyled" p="1rem">
+                    <MdiIcon path="mdiMenu" h="2rem" w="2rem" />
+                </Button>
+            </Flex>
+        );
+    }
+
     return (
         <Flex
             as="nav"

@@ -83,6 +83,7 @@ export default function RoomsSidebar() {
 
     return (
         <Flex
+            display={["none", "flex"]}
             boxShadow="elevate.right"
             h="100%"
             zIndex={100}

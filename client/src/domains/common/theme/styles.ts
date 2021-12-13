@@ -7,7 +7,7 @@ export const styles = {
         body: {
             height: "100vh",
             backgroundColor: "gray.600",
-            overflow: "hidden",
+            overflowX: "hidden",
             "::-webkit-scrollbar-thumb": {
                 backgroundColor: "brand.default",
                 backgroundClip: "padding-box",

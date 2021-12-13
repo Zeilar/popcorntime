@@ -98,7 +98,12 @@ export default function Player() {
     }, [publicSocket, internalPlayer]);
 
     return (
-        <Flex flexDir="column" flexGrow={1} overflowX="auto" bgColor="gray.600">
+        <Flex
+            flexDir="column"
+            flexGrow={1}
+            bgColor="gray.600"
+            h={["100vh", null]}
+        >
             <Flex
                 as="form"
                 onSubmit={submitVideo}

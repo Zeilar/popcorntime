@@ -65,7 +65,11 @@ export default function Router() {
     return (
         <Flex flexDir="column" flexGrow={1} bgColor="gray.900">
             <Navbar />
-            <Flex flexGrow={1} overflow="hidden">
+            <Flex
+                flexGrow={1}
+                overflow={[null, "hidden"]}
+                flexDir={["column", "row"]}
+            >
                 <RoomsSidebar />
                 <Switch>
                     <Route path="/" exact>

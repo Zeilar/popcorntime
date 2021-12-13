@@ -115,10 +115,11 @@ export function Chat() {
     return (
         <Flex
             flexDir="column"
-            w={showChat ? "25rem" : "3rem"}
+            w={[null, showChat ? "25rem" : "3rem"]}
+            h={["100vh", null]}
             zIndex={10}
             pos="relative"
-            boxShadow="elevate.left"
+            boxShadow={["elevate.top", "elevate.left"]}
             bgColor="gray.600"
         >
             {roomInfo.isOpen && <RoomInfo onClose={roomInfo.onClose} />}

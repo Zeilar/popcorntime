@@ -14,7 +14,6 @@ export function Watch() {
     useEffect(() => {
         const videoId = new URLSearchParams(search).get("v");
         setVideoId(videoId);
-        console.log({ videoId });
     }, [search, publicSocket]);
 
     useEffect(() => {
@@ -22,7 +21,6 @@ export function Watch() {
         if (videoId === undefined) {
             return;
         }
-        console.log("video id changed", videoId);
         if (videoId) {
             publicSocket.emit("room:create", {
                 privacy: "public",

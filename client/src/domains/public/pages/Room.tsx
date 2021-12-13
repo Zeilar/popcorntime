@@ -224,7 +224,12 @@ export function Room() {
     }, [roomId, setRoom, setMessages, dispatchSockets]);
 
     return (
-        <Flex flexGrow={1} maxH="100%" overflow="hidden">
+        <Flex
+            flexGrow={1}
+            maxH="100%"
+            overflow={[null, "hidden"]}
+            flexDir={["column", "row"]}
+        >
             <Modal.Overlay isOpen={passwordPrompt.isOpen} />
             <Modal
                 onClose={passwordPrompt.onClose}

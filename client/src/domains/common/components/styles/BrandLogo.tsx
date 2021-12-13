@@ -4,7 +4,12 @@ import { ReactComponent as PopcornIcon } from "domains/common/assets/svg/popcorn
 
 export default function BrandLogo() {
     return (
-        <Flex alignItems="center" w="fit-content" minH="3rem" userSelect="none">
+        <Flex
+            alignItems="center"
+            w="fit-content"
+            minH="3.5rem"
+            userSelect="none"
+        >
             <Flex
                 pos="relative"
                 bgColor="brand.default"

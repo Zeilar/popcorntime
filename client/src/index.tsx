@@ -13,6 +13,7 @@ ReactDOM.render(
             toastStyle={{
                 backgroundColor: "var(--chakra-colors-gray-600)",
                 boxShadow: "var(--chakra-shadows-xl)",
+                margin: "0.5rem",
             }}
             theme="dark"
             hideProgressBar={true}

@@ -6,6 +6,7 @@ import { fonts } from "./fonts";
 import { shadows } from "./shadows";
 import { styles } from "./styles";
 import { withDefaults } from "./withDefaults";
+import { breakpoints } from "./breakpoints";
 
 export default extendTheme(
     {
@@ -15,6 +16,7 @@ export default extendTheme(
         fonts,
         components,
         styles,
+        breakpoints,
     },
     ...withDefaults
 );

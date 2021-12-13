@@ -6,6 +6,7 @@ export default function Footer() {
             as="footer"
             bgColor="gray.800"
             boxShadow="elevate.top"
+            alignItems="center"
             p="1rem"
             gridTemplateColumns="repeat(3, 1fr)"
             zIndex={200}

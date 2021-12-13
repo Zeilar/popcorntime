@@ -83,5 +83,8 @@ export const Button: StyleConfig = {
                 boxShadow: "none",
             },
         },
+        unstyled: {
+            border: 0,
+        },
     },
 };
