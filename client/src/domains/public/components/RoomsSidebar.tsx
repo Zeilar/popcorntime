@@ -122,36 +122,40 @@ export default function RoomsSidebar() {
                     />
                 )}
             </Flex>
-            {isOpen &&
-                rooms.map(room => (
-                    <Flex
-                        justifyContent="space-between"
-                        p="1rem"
-                        fontWeight={600}
-                        as={NavLink}
-                        to={`/room/${room.id}`}
-                        key={room.id}
-                        pos="relative"
-                        _hover={{ bgColor: "gray.600" }}
-                        _activeLink={{
-                            bgColor: "primary.dark",
-                            _after: {
-                                content: `""`,
-                                pos: "absolute",
-                                w: "4px",
-                                h: "100%",
-                                bgColor: "primary.light",
-                                right: 0,
-                                top: 0,
-                            },
-                        }}
-                    >
-                        <Text>{room.name}</Text>
-                        <Text ml="1rem" whiteSpace="nowrap">
-                            {`${room.sockets.length} / ${env.ROOM_MAX_SOCKETS}`}
-                        </Text>
-                    </Flex>
-                ))}
+            {isOpen && (
+                <Flex flexDir="column" overflowY="auto">
+                    {rooms.map(room => (
+                        <Flex
+                            flexShrink={0}
+                            justifyContent="space-between"
+                            p="1rem"
+                            fontWeight={600}
+                            as={NavLink}
+                            to={`/room/${room.id}`}
+                            key={room.id}
+                            pos="relative"
+                            _hover={{ bgColor: "gray.600" }}
+                            _activeLink={{
+                                bgColor: "primary.dark",
+                                _after: {
+                                    content: `""`,
+                                    pos: "absolute",
+                                    w: "4px",
+                                    h: "100%",
+                                    bgColor: "primary.light",
+                                    right: 0,
+                                    top: 0,
+                                },
+                            }}
+                        >
+                            <Text>{room.name}</Text>
+                            <Text ml="1rem" whiteSpace="nowrap">
+                                {`${room.sockets.length} / ${env.ROOM_MAX_SOCKETS}`}
+                            </Text>
+                        </Flex>
+                    ))}
+                </Flex>
+            )}
         </Flex>
     );
 }

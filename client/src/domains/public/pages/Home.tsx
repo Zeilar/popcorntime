@@ -16,14 +16,16 @@ export function Home() {
     if (rooms.length === 0) {
         return (
             <Flex flexGrow={1} justifyContent="center" alignItems="center">
-                <Text as="h2">There are no rooms, why not create one?</Text>
+                <Text textAlign="center" as="h2">
+                    There are no rooms, why not create one?
+                </Text>
             </Flex>
         );
     }
 
     return (
         <Flex flexDir="column" p="1rem">
-            <Text as="h2" mb="0.5rem">
+            <Text mx="0.5rem" as="h2" mb="0.5rem">
                 Public rooms
             </Text>
             <Grid
@@ -31,6 +33,8 @@ export function Home() {
                 gridTemplateColumns={[null, "repeat(5, 1fr)"]}
                 alignContent="start"
                 gridGap="0.5rem"
+                overflowY="auto"
+                p="0.5rem"
             >
                 {rooms.map(room => (
                     <Link to={`/room/${room.id}`} key={room.id}>
