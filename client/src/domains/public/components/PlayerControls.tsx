@@ -153,8 +153,8 @@ export default function PlayerControls({ player }: IProps) {
                 )}
                 {authorized === false && (
                     <Button variant="primary" onClick={passwordPrompt.onOpen}>
-                        <MdiIcon path="mdiLock" mr="0.25rem" />
-                        Join
+                        <MdiIcon path="mdiLock" mr={[null, "0.25rem"]} />
+                        {isDesktop && "Join"}
                     </Button>
                 )}
             </Flex>
