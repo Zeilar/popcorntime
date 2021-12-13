@@ -8,7 +8,6 @@ const {
     REACT_APP_HOST_PORT,
     REACT_APP_ROOM_MAX_MESSAGES,
     REACT_APP_ROOM_MAX_SOCKETS,
-    REACT_APP_ROOM_MAX_PLAYLIST,
     REACT_APP_SECURE,
 } = process.env;
 
@@ -16,7 +15,6 @@ const variables = {
     REACT_APP_HOST_PORT,
     REACT_APP_ROOM_MAX_MESSAGES,
     REACT_APP_ROOM_MAX_SOCKETS,
-    REACT_APP_ROOM_MAX_PLAYLIST,
     REACT_APP_SECURE,
 };
 const notFound: string[] = [];

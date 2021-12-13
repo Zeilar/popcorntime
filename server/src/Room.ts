@@ -6,12 +6,11 @@ import env from "../config/env";
 import { v4 as uuidv4 } from "uuid";
 import { compareSync, hashSync } from "bcrypt";
 
-const { ROOM_MAX_SOCKETS, ROOM_MAX_MESSAGES, ROOM_MAX_PLAYLIST } = env;
+const { ROOM_MAX_SOCKETS, ROOM_MAX_MESSAGES } = env;
 
 export class Room {
     public static readonly MAX_SOCKETS = ROOM_MAX_SOCKETS;
     public static readonly MAX_MESSAGES = ROOM_MAX_MESSAGES;
-    public static readonly MAX_PLAYLIST = ROOM_MAX_PLAYLIST;
     public static readonly MAX_MESSAGE_LENGTH = 500;
 
     public id: string;
