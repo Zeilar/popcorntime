@@ -35,12 +35,6 @@ const envConfig = convict({
         default: 30,
         env: "ROOM_MAX_MESSAGES",
     },
-    ROOM_MAX_PLAYLIST: {
-        doc: "Max amount of videos in a playlist.",
-        nullable: true,
-        default: 20,
-        env: "ROOM_MAX_PLAYLIST",
-    },
     MAX_ROOMS: {
         doc: "Max amount of rooms the app can be open at once.",
         nullable: true,
