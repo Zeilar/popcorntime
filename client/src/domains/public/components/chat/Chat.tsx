@@ -117,6 +117,7 @@ export function Chat() {
             flexDir="column"
             w={[null, showChat ? "25rem" : "3rem"]}
             h={[showChat ? "100vh" : null, null]}
+            maxH="100%"
             zIndex={10}
             pos="relative"
             boxShadow={["elevate.top", "elevate.left"]}

@@ -103,6 +103,7 @@ export default function Player() {
             flexGrow={1}
             bgColor="gray.600"
             h={["100vh", null]}
+            maxH="100%"
         >
             <Flex
                 as="form"
